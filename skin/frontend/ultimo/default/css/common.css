@@ -430,16 +430,16 @@ a:hover,
 /* Carets
 -------------------------------------------------------------- */
 #nav a.level-top .caret {
-	transition:			border-top-color 450ms ease-in-out;
+	/*transition:			border-top-color 450ms ease-in-out;
 	-moz-transition:	border-top-color 450ms ease-in-out;
 	-webkit-transition:	border-top-color 450ms ease-in-out;
-	-o-transition:		border-top-color 450ms ease-in-out;
+	-o-transition:		border-top-color 450ms ease-in-out;*/
 }
 #nav > li:hover a.level-top .caret {
-	transition-duration:			100ms;
+	/*transition-duration:			100ms;
 	-moz-transition-duration:		100ms;
 	-webkit-transition-duration:	100ms;
-	-o-transition-duration:			100ms;
+	-o-transition-duration:			100ms;*/
 }
 
 /* Elements with animated color, background color and borders

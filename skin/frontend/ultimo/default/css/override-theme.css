@@ -11,7 +11,7 @@
 /* Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
 
-.wrapper { border-top-style:solid; border-top-width:5px; }
+.wrapper { /*border-top-style:solid; border-top-width:5px; */ background:#fff url(../images/bg_top.png) 0 0 repeat-x;}
 .main { padding:30px 0 40px; }
 
 /* Additional margin for main sidebars

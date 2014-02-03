@@ -2943,7 +2943,62 @@ a.availability-only { cursor:pointer; }
 */
 /* Home page */
 body.cms-index-index .breadcrumbs { display:none; }
+.header-top-container .header-top div.item-left, .footer-container .footer-top-container, .footer-secondary-container{display: none !important;}
+.header-top-container .header-top .top-text{
+	float: left!important;
+	font-family: "Benton Sans"!important;
+	font-size: 13px!important;
+    font-style: normal!important;
+    font-weight: bold!important;
+    line-height: 29px !important;
+    text-transform: uppercase!important;
+}
+.header-top-container .header-top .top-text span{color: #B19D68!important;}
 
+#nav{margin-left: 0;}
+#nav li#nav-home, #nav li.nav-custom-link, #nav li:last-child{display: none;}
+#nav a.level-top .caret{
+	border-bottom: 8px solid #2F2F2F!important;
+    border-left: 8px solid rgba(0, 0, 0, 0)!important;
+    border-right: 8px solid rgba(0, 0, 0, 0)!important;
+    border-top: none !important;
+    display: none!important;
+    left: 20px;
+    bottom: 0px;
+    position: absolute;
+ 	transition: border-top-color 1000ms ease-in-out 0s !important;
+    -moz-transition: opacity 1000ms ease-in-out 0s !important;
+    -webkit-transition: opacity 1000ms ease-in-out 0s !important;
+}
+#nav > li:hover a.level-top .caret {
+    transition-duration: 5000ms!important;
+    -moz-transition-duration: 5000ms!important;
+    -webkit-transition-duration: 5000ms!important;
+}
+#nav > li > a{ 
+	color: #303337;
+    float: none;
+    font-family: "Benton Sans", arial;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 19px;
+    margin-right: 50px;
+    padding: 0;
+    text-decoration: none;
+}
+#nav ul{width: 300px !important;}
+#nav ul li{display: inline!important; float:left!important;line-height: 24px; width: 50%;}
+#nav ul li a:hover{color:#000!important;text-decoration: underline!important;}
+#nav a.level-top:hover .caret{display: inline-block!important;}
+#nav .level0-wrapper, #nav.classic ul.level0{
+	border: 1px solid #333;
+	box-shadow: none;
+	top: 85%;
+}
+#nav .level0-wrapper, #nav.classic ul.level0{top: 94% !important;}
+
+.footer-primary-container{padding: 0 !important;}
+.footer-primary{background: none!important;}
 
 /* Magento widgets
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
