@@ -3108,3 +3108,5 @@ body.cms-index-index .breadcrumbs { display:none; }
 .home-content .home-talent-list li a img {display: block; margin: 0 0 12px 0;}
 .home-content .home-talent-list li a span {font-size: 12px; font-weight: 400; color: #878787;}
 .home-content .home-talent-list li a:hover span {color: #b19d68;}
+.main-container .sticker-wrapper, .main-container ul .item .actions, .main-container .home-content .toolbar {display: none!important;}
+.main-container ul .item {border-top: 0!important;}
