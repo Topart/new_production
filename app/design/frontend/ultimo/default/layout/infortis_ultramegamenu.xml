@@ -42,6 +42,7 @@
 		<!-- Sidebar menu block -->
 		<reference name="root">
 			<block type="ultramegamenu/navigation" name="umm.sidemenu" template="infortis/ultramegamenu/categories.phtml" before="-" />
+			<remove name="umm.sidemenu" />
 		</reference>
 
 	</default>
