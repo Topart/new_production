@@ -3141,7 +3141,12 @@ body.cms-index-index .breadcrumbs { display:none; }
 .page-title h1 {padding: 0 0 8px 10px; /*border-bottom: 1px solid #dddddd;*/ margin: 0 0 30px 0; font-size: 25px; font-weight: 400; color: #000000;font-family: baskervilleoldfacscdregular,tahoma,times new roman, serif;text-transform: uppercase;letter-spacing: 3px;}
 .page-title {border-bottom: 0!important;}
 .home-content .home-collection-list li,.category-collections .main-container .collection-list li {position: relative; float: left; margin: 0 0 4em 0;}
-.home-content .home-collection-list li:nth-child(3n+2) {margin: 0 4% 4em 4%;}
+.home-content h2.home-sections-title, .page .main-container h2.inner-sections-title,
+.page-title h1 {padding: 0 0 8px 10px; border-bottom: 1px solid #dddddd; margin: 0 0 30px 0!important; font-size: 18px; font-weight: 400; color: #000000; text-transform: uppercase;}
+.page-title h1 {padding-left: 0; font-size: 30px;}
+.catalog-category-view .page-title h1 {padding-left: 0; font-size: 18px;}
+.home-content .home-collection-list li,.page .main-container .collection-list li {position: relative; float: left; margin: 0 0 4em 0;}
+.home-content .home-collection-list:nth-child(3n+2) {margin: 0 4% 4em 4%;}
 .home-content .home-collection-list li a,.category-collections .main-container .collection-list li a {display: block; float: left;}
 .home-content .home-collection-list li a img,.category-collections .main-container .collection-list li a img {display: block; float: left;}
 .home-content .home-collection-list li a span.collection-name,.category-collections .main-container .collection-list li a span.collection-name {display: block; width: 100%; line-height: 100%; padding: 17px 0; position: absolute; top: 0; left: 0; z-index: 3; background: rgba(0,0,0,0.3); text-align: center; font-size: 16px; font-weight: 400; color: #ffffff; transition: background 300ms ease-in-out; -moz-transition: background 300ms ease-in-out; -webkit-transition: background 300ms ease-in-out; -o-transition: background 300ms ease-in-out;font-family: bentonsansmedium,arial;text-transform: uppercase;}
@@ -3157,3 +3162,12 @@ body.cms-index-index .breadcrumbs { display:none; }
 /* = BROWSE CATEGORIES PAGE ===============================================================================================*/
 .category-collections .main-container .collection-list li {display: inline-table; width: 25%; float: left; margin: 0 0 1.5em 0;}
 .category-collections .main-container .collection-list li a {position: relative;}
+/* = CATEGORIES PAGE ===============================================================================================*/
+.block_category_above_collection {margin: 0 0 20px 0!important;}
+.catalog-category-view .category-top {position: relative;}
+.catalog-category-view .category-top img {position: relative; z-index: 1;}
+.catalog-category-view .category-top .category-info {width: 54%; position: absolute; bottom: 0; left: 0; z-index: 3;}
+.catalog-category-view .category-top .category-name,
+.catalog-category-view .category-top .category-intro {display:block; padding: 0; margin: 0; background: rgba(0,0,0,0.8); color: #BEAD81;}
+.catalog-category-view .category-top .category-name {padding: 15px 25px; margin-bottom: 5px; font-size: 25px; text-transform: uppercase;}
+.catalog-category-view .category-top .category-intro {padding: 20px 18px 25px 18px; font-size: 14px;}
