@@ -1756,8 +1756,9 @@ a.availability-only { cursor:pointer; }
 /* Add-to links
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
-.add-to-links .separator { display:none; }
+.add-to-links .separator, .add-to-links li:last-child { display:none; }
 .add-to-links li { float:left; }
+
 
 .addto-gaps-right li { margin-right:10px; } /* Add gaps at the right side of links */
 
