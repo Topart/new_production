@@ -3143,7 +3143,7 @@ body.cms-index-index .breadcrumbs { display:none; }
 .page-title {border-bottom: 0!important;}
 .home-content .home-collection-list li,.category-collections .main-container .collection-list li {position: relative; float: left; margin: 0 0 4em 0;}
 .home-content h2.home-sections-title, .page .main-container h2.inner-sections-title,
-.page-title h1 {padding: 0 0 8px 10px; border-bottom: 1px solid #dddddd; margin: 0 0 30px 0!important; font-size: 18px; font-weight: 400; color: #000000; text-transform: uppercase;}
+.page-title h1 {padding: 0 0 8px 10px; /*border-bottom: 1px solid #dddddd;*/ margin: 0 0 30px 0!important; font-size: 18px; font-weight: 400; color: #000000; text-transform: uppercase;}
 .page-title h1 {padding-left: 0; font-size: 30px;}
 .catalog-category-view .page-title h1 {padding-left: 0; font-size: 18px;}
 .home-content .home-collection-list li,.page .main-container .collection-list li {position: relative; float: left; margin: 0 0 4em 0;}
