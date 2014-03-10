@@ -548,7 +548,7 @@ p.required,
 -------------------------------------------------------------- */
 .toolbar {
 	border-top:1px solid #e5e5e5;
-	border-bottom:1px solid #e5e5e5;
+	border-bottom: 1px dashed #e5e5e5;
 	margin-bottom:-1px; /* To cover the top line of the products grid/list */
 	
 	/* Move up to cover adjacent lines/elements */
@@ -2944,14 +2944,15 @@ a.availability-only { cursor:pointer; }
 /* Home page */
 body.cms-index-index .breadcrumbs { display:none; }
 .header-top-container .header-top div.item-left, .footer-container .footer-top-container, .footer-secondary-container{display: none !important;}
+
 .header-top-container .header-top .top-text{
 	float: left!important;
-	font-family: "Benton Sans"!important;
-	font-size: 13px!important;
-    font-style: normal!important;
-    font-weight: bold!important;
-    line-height: 29px !important;
-    text-transform: uppercase!important;
+	font-family: Arial!important;
+	font-size: 14px!important;
+	font-style: normal!important;
+	font-weight: bold!important;
+	line-height: 34px !important;
+	text-transform: uppercase!important;
 }
 .header-top-container .header-top .top-text span{color: #B19D68!important;}
 
@@ -3110,3 +3111,186 @@ body.cms-index-index .breadcrumbs { display:none; }
 .home-content .home-talent-list li a:hover span {color: #b19d68;}
 .main-container .sticker-wrapper, .main-container ul .item .actions, .main-container .home-content .toolbar {display: none!important;}
 .main-container ul .item {border-top: 0!important;}
+
+
+
+
+
+
+
+
+/*%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%*/
+.category-your-photos-to-art .page-title{
+	display: none;
+}
+.create-art{
+	color: white;
+	margin-top: 15px;
+}
+.create-art-steps h2{
+	font-size: 30px;
+	font-weight: bold;
+}
+.create-art-steps h3{
+	font-size: 16px;
+	font-weight: normal;
+}
+.create-art .create-art-content,
+.create-art .create-main-image{
+	height: 538px;
+}
+.create-art .create-art-content {
+	width: 50%;
+	display: inline-block;
+	background-color: #303337;
+}
+form#create-art-upload{
+	margin-top: 20px;
+	display: inline-block;
+}
+.create-art .create-main-image {
+	width: 50%;
+	height: auto;
+	display: inline-block;
+	vertical-align: top;
+	background-color: black;
+}
+.create-art > .create-art-content > .create-art-info{
+	padding: 75px 55px 118px 55px;
+}
+.create-art-steps > div{
+	border-top: 1px solid #B19D68;
+	border-bottom: 1px solid #B19D68;
+	padding: 30px 0px;
+}
+#create-art-upload input#s3_image_submit{
+	display: inline-block;
+	width: 320px;
+	height: 50px;
+	color: white;
+	background-color: #B19D68;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	margin: auto;
+	text-align: center;
+	margin-top: 60px;
+}
+#create-art-upload #disclaimer{
+	font-size: 11px;
+	padding-left: 5px;
+	display: inline-block;
+	width: 280px;
+	vertical-align: top;
+}
+#create-art-upload #disclaimer > a{
+	color: #04A6E5;
+}
+.create-art-list-container{
+	margin-top: 55px;
+}
+.create-art-list-container > ul > li{
+	display: inline-block;
+	width: 30%;
+	vertical-align: top;
+	position: relative;
+}
+.create-art-list-container > ul > li.middle-li{
+	margin: 0em 5% 2em 5%;
+}
+.create-art-list li a > div{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	text-align: center;
+	font-size: 16px;
+	color: white;
+	background: rgba(39, 39, 39, 0.5);
+	padding: 16px 10px;
+	text-transform: uppercase;
+}
+#create-accept-checkbox {
+	vertical-align: top;
+	margin-top: 4px;
+}
+.create-art-list li > div{
+	margin: 10px 0px;
+}
+#create-accept-checkbox {
+	vertical-align: top;
+	margin-top: 4px;
+}
+.create-art-info-bottom{
+	text-align: center;
+	border-top: 3px solid #B19D68;
+	margin-top: 10px;
+	margin-bottom: 70px;
+	padding: 35px 15px 10px 15px;
+}
+
+
+@media only screen and (max-width : 1280px) {
+	.create-art .create-art-content, 
+	.create-art .create-main-image {
+		height: 430px;
+	}
+	#create-art-upload input#s3_image_submit{
+		margin-top: 20px;
+	}
+	.create-art > .create-art-content > .create-art-info{
+		padding: 40px;
+	}
+}
+
+@media only screen and (max-width : 960px) {
+	.create-art .create-art-content, 
+	.create-art .create-main-image {
+		height: 415px;
+	}
+}
+
+@media only screen and (max-width : 768px) {
+	.create-art .create-art-content, 
+	.create-art .create-main-image {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+	.create-art-steps > div {
+		padding: 15px 0px;
+	}
+	#create-art-upload #disclaimer {
+		width: 245px;
+	}
+}
+@media only screen and (max-width : 640px) {
+	.create-art-list li a > div{
+		font-size: 12px;
+	}
+}
+
+@media only screen and (max-width : 480px) {
+	.create-art-list-container > ul > li {
+		display: block;
+		width: 80%;
+		left: 0px;
+		right: 0px;
+		margin: auto !important;
+	}
+	.create-art-list li > div {
+		margin-bottom: 35px;
+	}
+	.create-art-list li a > div{
+		font-size: 16px;
+	}
+}
+
+@media only screen and (max-width : 380px) {
+	#create-art-upload #disclaimer {
+		width: 190px;
+	}
+	#create-art-upload input#s3_image_submit{
+		width: 215px;
+	}
+}
