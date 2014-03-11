@@ -44,6 +44,9 @@ $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage
             <?php echo $this->escapeHtml($this->getProductName()) ?>
         <?php endif; ?>
         </h2>
+        <div class="short-description">
+                <div class="std"><?php  $custom = Mage::getModel('catalog/product')->load($_item->getProductId()); echo $custom->getShortDescription();  ?></div>
+            </div>
         <?php if ($_options = $this->getOptionList()):?>
         <dl class="item-options">
             <?php foreach ($_options as $_option) : ?>

@@ -140,6 +140,7 @@
 		<!-- Left ====================================================================== -->
 		<reference name="left">
 			
+			<block  type="catalog/navigation" name="catalog.leftnav"  before="-" template="catalog/navigation/left.phtml"/>	
 			<remove name="left.newsletter"/> <!-- Moved newsletter to the footer -->
 			<action method="unsetChild"><name>tags_popular</name></action>
 
@@ -153,6 +154,13 @@
 			</block>
 			<block type="tag/popular" name="tags_popular" template="tag/popular.phtml"/>
 			<block type="paypal/logo" name="paypal.partner.right.logo" template="paypal/partner/logo.phtml"/>
+			<remove name="catalog.compare.sidebar" />
+			<remove name="right.reports.product.compared" />
+			<remove name="left.reports.product.viewed" />
+			<remove name="wishlist_sidebar" />
+			<remove name="right.poll" />
+			<remove name="tags_popular" />
+			<remove name="paypal.partner.right.logo" />
 			
 			<!-- Custom static blocks -->
 			<block type="cms/block" name="block_left_top" before="-">
@@ -161,7 +169,9 @@
 			<block type="cms/block" name="block_left_bottom" after="-">
 				<action method="setBlockId"><block_id>block_left_bottom</block_id></action>
 			</block>
-			
+			<remove name="block_left_top" />
+			<remove name="block_left_bottom" />
+
 			<action ifconfig="ultimo/header/compare" method="unsetChild"><name>catalog.compare.sidebar</name></action>
 			
 		</reference>
@@ -212,6 +222,7 @@
 			
 			<!-- Compare block -->
 			<block type="catalog/product_compare_sidebar" name="compare.mini" as="compareMini" template="catalog/product/compare/mini.phtml"/>
+			<remove name="compare.mini" />
 			
 		</reference>
 		
@@ -317,7 +328,7 @@
 	<customer_logged_out>
 		
 		<reference name="top.links">
-			<action method="addLink" translate="label title"><label>Sign Up</label><url>customer/account/create</url><title>Sign Up</title><prepare>true</prepare><urlParams/><position>101</position><liParams>id="link-sign-up"</liParams></action>
+			<!--action method="addLink" translate="label title"><label>Sign Up</label><url>customer/account/create</url><title>Sign Up</title><prepare>true</prepare><urlParams/><position>101</position><liParams>id="link-sign-up"</liParams></action-->
 		</reference>
 		
 	</customer_logged_out>
@@ -531,6 +542,8 @@
 			<block type="cms/block" name="block_cart_below_totals">
 				<action method="setBlockId"><block_id>block_cart_below_totals</block_id></action>
 			</block>
+			<remove name="block_cart_below_table" />
+			<remove name="block_cart_below_totals" />
 			
 		</reference>
 		
