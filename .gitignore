@@ -1,0 +1,9 @@
+app/etc/local.xml
+downloader/connect.cfg
+includes/stat
+tmp/
+var/*
+media/catalog/product/cache/*
+sitemap.xml
+downloader/*
+.project
