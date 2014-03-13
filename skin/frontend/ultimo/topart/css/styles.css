@@ -3041,9 +3041,12 @@ body.cms-index-index .breadcrumbs { display:none; }
 	top: 85%;
 }
 #nav .level0-wrapper, #nav.classic ul.level0{top: 94% !important;}
+.nav-container > .nav {box-shadow: none;-webkit-box-shadow: none;}
 
 .footer-primary-container{padding: 0 !important;}
 .footer-primary{background: none!important;}
+body.cms-index-index .main, 
+body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 
 /* Magento widgets
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
