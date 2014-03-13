@@ -3015,6 +3015,7 @@ body.cms-index-index .breadcrumbs { display:none; }
     -webkit-transition: opacity 1000ms ease-in-out 0s !important;
 }
 #nav > li:hover a.level-top .caret {
+	display: none !important;
     transition-duration: 5000ms!important;
     -moz-transition-duration: 5000ms!important;
     -webkit-transition-duration: 5000ms!important;
@@ -3032,7 +3033,7 @@ body.cms-index-index .breadcrumbs { display:none; }
 }
 #nav ul{width: 300px !important;}
 #nav ul li{display: inline!important; float:left!important;line-height: 24px; width: 50%;}
-#nav ul li a:hover{color:#000!important;text-decoration: underline!important;}
+#nav ul li a:hover{color:#000;}
 #nav a.level-top:hover .caret{display: inline-block!important;}
 #nav .level0-wrapper, #nav.classic ul.level0{
 	border: 1px solid #333;
