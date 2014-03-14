@@ -461,19 +461,18 @@
         </div>
         -->
 
+        <!-- New short description -->
+        <?php if ($_product->getShortDescription()):?>
+            <div class="short-description">
+                <h2><?php echo $this->__('Quick Overview') ?></h2>
+                <div class="std"><?php echo "By " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" ?></div>
+            </div>
+        <?php endif;?>
+        <!-- End of new short description -->
+
         <div class="product-shop <?php echo $primaryColGridClass; ?>">
             
             <?php echo $this->getReviewsSummaryHtml($_product, false, true); //reviews ?>
-          
-
-            <!-- New short description -->
-            <?php if ($_product->getShortDescription()):?>
-                <div class="short-description">
-                    <h2><?php echo $this->__('Quick Overview') ?></h2>
-                    <div class="std"><?php echo "By " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" ?></div>
-                </div>
-            <?php endif;?>
-            <!-- End of new short description -->
 
 
             <!-- New special features -->

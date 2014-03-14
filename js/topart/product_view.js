@@ -2313,7 +2313,7 @@
 			{
 				// Show the color switch tab
 				$j("#color_switch").slideDown("slow");
-				$j("#hide_button").css("top", "403px");
+				$j("#hide_button").css("top", "340px");
 				$j("#hide_button").slideDown("slow");
 			}
 			
@@ -2366,7 +2366,7 @@
 			{
 				// Show the room switch tab
 				$j("#room_switch").slideDown("slow");
-				$j("#hide_button").css("top", "388px");
+				$j("#hide_button").css("top", "345px");
 				$j("#hide_button").slideDown("slow");
 			}
 			
@@ -2417,7 +2417,7 @@
 			{
 				// Show the details switch tab
 				$j("#details_switch").slideDown("slow");
-				$j("#hide_button").css("top", "388px");
+				$j("#hide_button").css("top", "345px");
 				$j("#hide_button").slideDown("slow");
 			}
 			

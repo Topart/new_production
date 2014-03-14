@@ -154,7 +154,7 @@ select#frame_categories
 {
   position: absolute;
   top: -31px;
-  left: 325px;
+  left: 349px;
 
   width: 460px;
 
@@ -191,13 +191,13 @@ dd.mat ul
 
 #custom_options_images ul#custom_option_mat
 {
-  position: absolute;
-top: 133px;
-left: 307px;
-width: 500px;
-height: 115px;
-overflow: auto;
-display: none;
+  	position: absolute;
+	top: 133px;
+	left: 331px;
+	width: 500px;
+	height: 115px;
+	overflow: auto;
+	display: none;
 }
 
 ul#custom_option_mat li
@@ -523,7 +523,10 @@ dd.canvas_stretching span.label
 
 .product-options dl
 {
-  z-index: 1;
+	position: relative;
+	left: -13px;
+
+	z-index: 1;
 }
 
 ul#custom_option_size li:nth-last-child(-n+4)
@@ -576,7 +579,7 @@ ul#custom_option_size li:nth-last-child(-n+4)
 .product-view
 {
 	position: relative;
-	left: 186px;
+	left: 155px;
 	top: 214px;
 
   display: none;
@@ -738,7 +741,7 @@ z-index: 1;
   width: 590px;
   position: absolute;
   top: -60px;
-  left: 323px;
+  left: 347px;
   margin-top: 20px;
 }
 
@@ -788,7 +791,7 @@ ul#custom_option_size
 {
   position: absolute;
   top: 149px;
-  left: 320px;
+  left: 344px;
 }
 
 ul#custom_option_size li
@@ -826,8 +829,8 @@ ul#custom_option_size .custom_option_label
 ul#custom_option_borders
 {
 	position: absolute;
-top: -33px;
-left: -24px;
+	top: -33px;
+	left: 0px;
 }
 
 #custom_option_borders li:nth-of-type(2)
@@ -898,7 +901,7 @@ left: -24px;
 	width: 450px;
 	position: absolute;
 	top: -41px;
-	left: 323px;
+	left: 347px;
 	height: 285px;
 	overflow: auto;
 }
@@ -945,10 +948,10 @@ font-style: normal;
 .product-options dl dd
 {
 	position: absolute;
-	top: 162px;
-	left: 315px;
+	top: 166px;
+	left: 348px;
 	
-	width: 650px;
+	width: 638px;
 
   z-index: 1;
 }
@@ -1302,7 +1305,7 @@ a#details .product_function_text
 #room_switch
 {
 	position: absolute;
-	top: 408px;
+	top: 365px;
 	left: 32px;
 	width: 450px;
 	height: 87px;
@@ -1529,7 +1532,7 @@ li#custom_option_treatments_none_background
 {
   position: absolute;
   top: 151px;
-  left: 497px;
+  left: 494px;
 }
 
 #options_sequence div
@@ -1567,8 +1570,8 @@ li#custom_option_treatments_none_background
 #product_configuration
 {
   position: absolute;
-  top: -158px;
-  left: 558px;
+  top: -167px;
+  left: 758px;
 
   font-size: 12px;
 }
@@ -1759,4 +1762,16 @@ a
 .feature-wrapper.top-border, .block_product_replace_related, .add-to-cart .qty-wrapper, .product-view .box-tabs
 {
 	display: none;
+}
+
+.product-view .product-shop
+{
+	position: relative;
+	top: -151px;
+	left: 500px;
+}
+
+.product-view .container1-wrapper, .product-view .container2-wrapper, .product-view .add-to-box, .product-view .product-type-data > .price-box
+{
+	border: 0px;
 }
