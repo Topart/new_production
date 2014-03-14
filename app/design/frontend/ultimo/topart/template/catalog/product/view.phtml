@@ -21,6 +21,309 @@
 <script type="text/javascript">
     var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
 </script>
+
+
+
+
+<!-- New code -->
+
+<div id="product_view_container">
+
+<?php $site_base_url = "http://" . $_SERVER["SERVER_NAME"]; ?>
+
+<?php
+
+	function endsWith( $str, $sub ) 
+	{
+	   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) === $sub );
+	}
+	
+
+	function get_first_number_index($text)
+	{
+	    preg_match('/^\D*(?=\d)/', $text, $m);
+	    return strlen($m[0]);
+	}
+
+	function compute_size_initial($size_ui)
+	{
+		if ($size_ui < 40) 
+			return "xs";
+
+		if ($size_ui >= 40 and $size_ui < 50)
+			return "s";
+
+		if ($size_ui >= 50 and $size_ui < 60)
+			return "m";
+
+		if ($size_ui >= 60 and $size_ui < 70)
+			return "l";
+
+		if ($size_ui >= 70)
+			return "xl";
+
+		return "l";
+	}
+?>
+
+<?php
+	
+	$popularity = $this->getProduct()->getPopularity();
+	$this->getProduct()->setPopularity($popularity + 1)->save();
+
+	$description = $_product->getName() .  " was created by " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" . ". <br />";
+
+	$orientation = strtolower($_product->getAttributeText('udf_orientation'));
+
+	// Show Canvas as material only when allowed
+	$canvas_available = $_product->getUdfCanvas();
+	$poster_available = $_product->getUdfPoster();
+	$paper_available = $_product->getUdfPhotoPaper();
+
+	// Stock information
+	$is_in_stock = 0;
+	$stockItem = $_product->getStockItem();
+	if ($stockItem->getIsInStock())
+	{
+		$is_in_stock = 1;
+	}
+	else
+	{
+		$is_in_stock = 0;
+	}
+
+	echo "<div class='is_in_stock'>" . $is_in_stock . "</div>";
+
+?>
+
+<div id="final_product_image_background">
+
+	<?php 
+
+		$original_sku = $_product->getSku();
+		$image_file_name = "";
+
+		if ( endsWith($original_sku, "DG") )
+		{
+			$dg_suffix_index = strrpos($original_sku, "DG");
+			$image_file_name = substr_replace($original_sku, "", $dg_suffix_index, 2) . ".jpg";
+		}
+		else
+		{
+			$image_file_name = $original_sku . ".jpg";
+		}
+		
+		$one_corner_flag = 0;
+
+		$thumbnail_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/thumbnail_images/";
+		$small_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/small_images/";
+		$large_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/large_images/";
+		
+		$thumbnail_image_file_url = $thumbnail_image_base_url . $image_file_name;
+		$small_image_file_url = $small_image_base_url . $image_file_name;
+		$large_image_file_url = $large_image_base_url . $image_file_name;
+
+
+		$framing_profile_url = "http://d3odr912zwpuhm.cloudfront.net/icons/framing_profiles/";
+		$framing_corner_url = "http://d3odr912zwpuhm.cloudfront.net/icons/framing_corners/";
+
+
+		// User uploaded image
+		if ( isset($_POST['s3file']) )
+		{
+			$thumbnail_image_file_url = $_POST['s3file'];
+			$small_image_file_url = $_POST['s3file'];
+			$large_image_file_url = $_POST['s3file'];
+		}
+
+		echo "<div class='image_url'>" . $thumbnail_image_file_url . "</div>";
+
+	?>
+
+	
+	<a href="<?php echo $large_image_file_url; ?>" rel="prettyPhoto" title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>, by <?php echo $_product->getUdfArtistName() ?>.">
+
+		<div id="jcanvas_frame">
+
+			<canvas id="corner_top_left" width="40" height="40" class="jcanvas_corner"></canvas>
+			<canvas id="corner_top_right" width="40" height="40" class="jcanvas_corner"></canvas>
+			<canvas id="corner_bottom_left" width="40" height="40" class="jcanvas_corner"></canvas>
+			<canvas id="corner_bottom_right" width="40" height="40" class="jcanvas_corner"></canvas>
+
+			<canvas id="edge_top" width="574" height="40" class="jcanvas_edge"></canvas>
+			<canvas id="edge_left" height="574" width="40" class="jcanvas_edge"></canvas>
+			<canvas id="edge_bottom" width="574" height="40" class="jcanvas_edge"></canvas>
+			<canvas id="edge_right" height="574" width="40" class="jcanvas_edge"></canvas>
+
+		</div>
+
+		<div id="jcanvas_mats">
+			
+		</div>
+
+		<div id="final_product_image" class="custom_option_viewport" style="background-image: url('<?php echo $small_image_file_url; ?>');">
+
+			<div id="load_icon">
+			</div>
+			
+		</div>
+	</a>
+	
+</div>
+
+<div id="hide_button">
+	<div id="hide_down_arrow">
+	
+	</div>
+
+	Hide
+</div>
+
+<div id="color_switch">
+	<?php
+		$color_set = array("#ffffff", "#f1efdc", "#fdf8de", "#f8ecc6","#faeddc", "#f5e7dc", "#fbebcf", "#ffe8a4", "#f6d9ad", "#f3c585", "#f3c589", "#7a4f3e", "#fbf7ec", "#e0d7c6", "#e1cead", "#b48b75", "#4c2625", "#6b6a6f", "#fdf0e7", "#d1797c", "#b2463a", "#c7a5be", "#493371", "#7086ab", "#ebf4f3", "#c4dae7", "#c2dbd8", "#98977b", "#d8e6b3", "#5fadaf");
+		
+		foreach ($color_set as $color) 
+		{
+			//echo "<div id='" . $color . "' class='color'></div>";
+			echo "<div class='color' style='background-color: " . $color . "'></div>";
+		}
+	?>	
+</div>
+
+<div id="room_switch">
+	<?php
+		$dir =  getcwd() . '/media/rooms';
+		//$dir = 'https://s3.amazonaws.com/topart_images/rooms/';
+
+		$room_set = array();
+		
+		// Open a known directory, and proceed to read its contents
+		if (is_dir($dir)) 
+		{
+			if ($dh = opendir($dir)) 
+			{
+				while (($file = readdir($dh)) !== false) 
+				{
+					$path_parts = pathinfo($dir . $file);
+					$file_type = $path_parts['extension'];
+					
+					if ($file_type == "png" || $file_type == "jpg" || $file_type == "jpeg")
+						array_push($room_set, $file);
+				}
+				closedir($dh);
+
+				sort($room_set);
+			}
+		}
+		
+		$image_dir = $site_base_url . "/media/rooms/";
+		
+		foreach ($room_set as $room) 
+		{
+			echo "<img class='room_thumbnail' src='" . $image_dir . $room . "' />";
+		}
+		
+	?>
+</div>
+
+<div id="details_switch">
+	
+	<div id="text">
+		<?php echo $description; ?>
+	</div>
+
+	<?php
+
+    	$udf_specpaper = $_product->getAttributeText('udf_specpaper');
+    	$udf_foil = $_product->getAttributeText('udf_foil');
+    	$udf_metallic_ink = $_product->getAttributeText('udf_metallic_ink');
+    	$udf_embellished = $_product->getAttributeText('udf_embellished');
+    	$udf_limited = $_product->getAttributeText('udf_limited');
+    	$poster_size = $_product->getUdfImageSizeIn();
+
+    	$special_features = "";
+
+    	if ($udf_specpaper == "Yes")
+    	{
+    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Special Paper</span> - Fine Art Paper is specifically selected to enhance the image.</div>";
+    	}
+
+    	if ($udf_foil == "Yes")
+    	{
+    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Foil</span> - The addition of Metallic gold foil creates a subtle but dramatic visual effect.</div>";
+    	}
+
+    	if ($udf_metallic_ink == "Yes")
+    	{
+    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Metallic Inks</span> - Metallic Inks duplicate effects in the original painting, and enhance the image.</div>";
+    	}
+
+    	if ($udf_limited == "Yes")
+    	{
+    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Limited Edition</span> - Our Limited Edition pieces are hand signed, numbered and rare.</div>";
+    	}
+
+    ?>
+
+	<div id="features">
+		<?php echo $special_features; ?>
+	</div>
+
+	<div class="poster_size">
+		<?php echo $poster_size; ?>
+	</div>
+
+</div>
+
+
+<div id="options_sequence">
+
+	<div id="option_one">1.</div>
+	<div id="option_two">2.</div>
+	<div id="option_three">3.</div>
+
+</div>
+
+<div id="product_image_functions">
+
+	<a id="full_screen" class="function_icon">
+		<div class="product_function_text">Full screen</div>
+	</a>
+	
+	<a id="zoom_in" class="function_icon">
+		<div class="product_function_text">Zoom in</div>
+	</a>
+	
+	<a id="wall_color" class="function_icon">
+		<div class="product_function_text">Wall color</div>
+	</a>
+	
+	<a id="rooms" class="function_icon">
+		<div class="product_function_text">Rooms</div>
+	</a>
+
+	<a id="reset" class="function_icon">
+		<div class="product_function_text">Reset</div>
+	</a>
+	
+	<a id="details" class="function_icon">
+		<div class="product_function_text">Details</div>
+	</a>
+	
+</div>
+
+<!-- End of new code -->
+
+
+
+
+
+
+
+
+
+
 <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
 <div class="product-view">
 
@@ -325,3 +628,5 @@
     <?php endif; ?>
     
 </div> <!-- end: product-view -->
+
+</div> <!-- end: product_view_container -->
