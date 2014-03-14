@@ -908,6 +908,9 @@
 					activate_option_tab("borders");
 					$j("li.treatments_none").hide();
 
+					// Hide the framing from the configuration panel
+					$j("#selected_frame").parent().hide();
+
 					// Show canvas related sizes
 					show_canvas(1);
 
@@ -972,6 +975,9 @@
 
 					deactivate_option_tab("borders");
 					$j("li.treatments_none").hide();
+
+					// Show the framing in the configuration panel
+					$j("#selected_frame").parent().show();
 
 					// Hide the borders
 					$j("#three_inches_white_top_border").hide();
