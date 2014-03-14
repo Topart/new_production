@@ -58,7 +58,7 @@
 
 		var rooms_view_enabled = 0;
 
-		var browser = BrowserDetect.browser;
+		//var browser = BrowserDetect.browser;
 
 		// Product configuration variables
 		var selected_substrate = "";
@@ -2490,11 +2490,13 @@
 		}
 
 
+		/*
 		if (browser.indexOf("Safari") != -1)
 		{
 			final_product_image_margin_top_safari = parseInt($j("#final_product_image").css("margin-top")) + 220;
 			$j("#final_product_image").css("margin-top", final_product_image_margin_top_safari + "px");
 		}
+		*/
 
 
 		$j("#customize_substrate_link").click(
