@@ -2313,7 +2313,7 @@
 			{
 				// Show the color switch tab
 				$j("#color_switch").slideDown("slow");
-				$j("#hide_button").css("top", "340px");
+				$j("#hide_button").css("top", "360px");
 				$j("#hide_button").slideDown("slow");
 			}
 			
