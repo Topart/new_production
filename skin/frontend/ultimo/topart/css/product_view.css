@@ -959,8 +959,8 @@ font-style: normal;
 #product_view_container
 {
 	position: relative;
-	top: 80px;
-	left: 90px;
+	top: 0px;
+	left: -18px;
 	background-color: #ffffff;
 	height: 1150px;
 
@@ -989,6 +989,19 @@ font-style: normal;
 	z-index: 2;
 
 	display: none;
+}
+
+.product-name h1
+{
+	position: absolute;
+	top: -222px;
+	left: 344px;
+
+	font-family: "BaskervilleOldFacSCD";
+	font-weight: normal;
+	font-style: normal;
+	font-size: 35px;
+	color: #9e9e9e;
 }
 
 .product-options-bottom .price
@@ -1681,7 +1694,11 @@ li#custom_option_treatments_none_background
 	height: 42px;
 }
 
-
+a 
+{
+	color: #04a6e4;
+	text-decoration: none;
+}
 
 
 
@@ -1726,6 +1743,14 @@ li#custom_option_treatments_none_background
 }
 
 .poster_size
+{
+	display: none;
+}
+
+
+/* Changes to the Ultimo related template view */
+
+.feature-wrapper.top-border, .block_product_replace_related
 {
 	display: none;
 }
