@@ -576,8 +576,8 @@ ul#custom_option_size li:nth-last-child(-n+4)
 .product-view
 {
 	position: relative;
-	left: 160px;
-	top: 260px;
+	left: 186px;
+	top: 214px;
 
   display: none;
   z-index: 1;
@@ -970,7 +970,7 @@ font-style: normal;
 #final_product_image_background
 {
 	position: absolute;
-	top: 43px;
+	top: 0px;
 	left: 30px;
 	
 	background-color: #ffffff;
@@ -1133,7 +1133,7 @@ font-weight: bold;
 #product_image_functions
 {
 	position: absolute;
-	top: 505px;
+	top: 461px;
 	left: 65px;
 	
 	z-index: 2;
@@ -1141,8 +1141,14 @@ font-weight: bold;
 
 #product_image_functions div
 {
-	display: inline;
-	margin-right: 45px;
+	position: relative;
+	top: 3px;
+	left: 30px;
+	
+	width: 75px;
+
+	display: block;
+	
 }
 
 .product_function_text
@@ -1522,7 +1528,7 @@ li#custom_option_treatments_none_background
 #options_sequence
 {
   position: absolute;
-  top: 198px;
+  top: 151px;
   left: 497px;
 }
 
@@ -1750,7 +1756,7 @@ a
 
 /* Changes to the Ultimo related template view */
 
-.feature-wrapper.top-border, .block_product_replace_related
+.feature-wrapper.top-border, .block_product_replace_related, .add-to-cart .qty-wrapper, .product-view .box-tabs
 {
 	display: none;
 }
