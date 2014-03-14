@@ -469,10 +469,15 @@
 
 		<reference name="head">
 			
+			<action method="addCss"><stylesheet>css/prettyPhoto.css</stylesheet></action>
 			<action method="addCss"><stylesheet>css/product_view.css</stylesheet></action>
+
 			<action method="addJs"><script>topart/jcanvas.min.js</script></action>
+			<action method="addJs"><script>topart/jquery.prettyPhoto.js</script></action>
 			<action method="addJs"><script>topart/purl.js</script></action>
 			<action method="addJs"><script>topart/product_view.js</script></action>
+
+			
 			
 		</reference>
 
