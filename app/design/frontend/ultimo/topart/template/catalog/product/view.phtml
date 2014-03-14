@@ -1138,6 +1138,21 @@
         	<!-- End of new code for product configuration div -->
 
 
+        	<!-- New code for copyright text -->
+        	<div id="copyright_text">
+		        <?php
+		        	$copyright_flag = $_product->getAttributeText('udf_copyright');
+		        	$copyright_text = $_product->getUdfCrline();
+
+		        	if ($copyright_flag == "Yes")
+		        	{
+		        		echo $copyright_text;
+		        	}
+		        ?>
+        	</div>
+        	<!-- End of new code for copyright text -->
+
+
         <?php endif; ?>
 
     </form>
