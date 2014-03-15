@@ -307,7 +307,7 @@
 		{
 			$j("dd.mat li.mats_none input").trigger("click");
 			opConfig.reloadPrice();
-			$j("#customize_substrate_link").trigger("click");
+			//$j("#customize_substrate_link").trigger("click");
 		}
 
 		function reset_framing_matting()
