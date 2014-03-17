@@ -3155,7 +3155,7 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 .home-content .home-collection-list li:nth-child(3n+2) {margin: 0 4% 4em 4%;}
 .home-content .home-collection-list li a,.category-collections .main-container .collection-list li a {display: block; float: left;}
 .home-content .home-collection-list li a img,.category-collections .main-container .collection-list li a img {display: block; float: left;width: 100%;}
-.home-content .home-collection-list li a span.collection-name,.category-collections .main-container .collection-list li a span.collection-name {display: block; width: 100%; line-height: 100%; padding: 17px 0; position: absolute; top: 0; left: 0; z-index: 3; background: rgba(0,0,0,0.3); text-align: center; font-size: 16px; font-weight: 400; color: #ffffff; transition: background 300ms ease-in-out; -moz-transition: background 300ms ease-in-out; -webkit-transition: background 300ms ease-in-out; -o-transition: background 300ms ease-in-out;font-family: bentonsansmedium,arial;text-transform: uppercase;}
+.home-content .home-collection-list li a span.collection-name,.category-collections .main-container .collection-list li a span.collection-name {display: block; width: 100%; line-height: 100%; padding: 17px 0; position: absolute; top: 0; left: 0; z-index: 3; background: rgba(0,0,0,0.3); text-align: center; font-size: 16px; font-weight: 400; color: #ffffff; transition: background 300ms ease-in-out; -moz-transition: background 300ms ease-in-out; -webkit-transition: background 300ms ease-in-out; -o-transition: background 300ms ease-in-out;font-family: bentonsansregular,arial;text-transform: uppercase;}
 .home-content .home-collection-list li a:hover span.collection-name,.category-collections .main-container .collection-list li a:hover span.collection-name {background: rgba(0,0,0,0.5);}
 .home-content .home-talent-list,.category-collections .main-container .collection-list {display: table; width: 100%; min-width: 100%;}
 .home-content .home-talent-list li,.category-collections .main-container .collection-list li {display: table-cell; text-align: center;}
@@ -3257,6 +3257,9 @@ form#create-art-upload{
 	text-align: center;
 	margin-top: 60px;
 }
+#create-art-upload input#s3_image_submit:hover{
+	background-color: #97844F;
+}
 #create-art-upload #disclaimer{
 	font-size: 11px;
 	padding-left: 5px;
@@ -3276,6 +3279,9 @@ form#create-art-upload{
 	vertical-align: top;
 	position: relative;
 }
+.create-art-list-container > ul > li > a > img{
+	width: 100%;
+}
 .create-art-list-container > ul > li.middle-li{
 	margin: 0em 5% 2em 5%;
 }
@@ -3287,9 +3293,12 @@ form#create-art-upload{
 	text-align: center;
 	font-size: 16px;
 	color: white;
-	background: rgba(39, 39, 39, 0.5);
+	background: rgba(0,0,0,0.3);
 	padding: 16px 10px;
 	text-transform: uppercase;
+}
+.create-art-list li a:hover > div{
+	background: rgba(0,0,0,0.5);
 }
 #create-accept-checkbox {
 	vertical-align: top;
