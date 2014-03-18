@@ -3,7 +3,7 @@
 
 * { margin:0; padding:0; }
 html { font-size:16px; /* Fix for Opera */ }
-body          {	font:75%/150% bentonsansregular,Arial, Helvetica, sans-serif; background-color:#fff; color:#333; text-align:center; }
+body          {	font:75%/150% bentonsansregular, Arial, Helvetica, sans-serif; background-color:#fff; color:#333; text-align:center; }
 #root-wrapper {}
 
 img           { border:0; vertical-align:top; max-width:100%; }
@@ -3225,6 +3225,9 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 	display: inline-block;
 	background-color: #303337;
 }
+.create-art .create-art-info .sun-text{
+	margin: 15px 0px;
+}
 form#create-art-upload{
 	margin-top: 20px;
 	display: inline-block;
@@ -3318,7 +3321,25 @@ form#create-art-upload{
 	margin-bottom: 70px;
 	padding: 35px 15px 10px 15px;
 }
-
+.custom-column-style{
+	display: inline-block;
+	vertical-align: top;
+	overflow: hidden;
+}
+.custom-column-style.custom-60{
+	width: 60%;
+}
+.custom-column-style.custom-50{
+	width: 50%;
+}
+.custom-column-style.custom-40{
+	width: 40%;
+}
+.custom-column-style img{
+	margin-left: 20px;
+	margin-bottom: 20px;
+	width: calc(100% - 20px);
+}
 
 @media only screen and (max-width : 1280px) {
 	.create-art .create-art-content, 
