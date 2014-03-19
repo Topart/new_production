@@ -778,8 +778,8 @@ tr.summary-details-excluded { font-style:italic; }
 
 .std .subtitle { padding:0; }
 .std ol.ol { list-style:decimal outside; padding-left:1.5em; }
-.std dl dt { font-weight:bold; }
-.std dl dd { margin:0 0 10px; }
+.std dl dt { font-weight:bold; font-size: 16px; line-height: 26px;}
+.std dl dd { margin:0 0 30px; }
 .std dl,
 .std p,
 .std address,
@@ -852,7 +852,7 @@ ul.disc ul li { background:url(../images/infortis/_shared/cck/list/bullet-small.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 .std dt { font-weight:bold; }
-.std dd { padding:0 0 0 1.5em; }
+.std dd { padding:0; }
 .std blockquote { font-style:italic; padding:0 0 0 1.5em; }
 .std address { font-style:normal; }
 .std b,
@@ -3218,7 +3218,7 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 }
 .create-art .create-art-content,
 .create-art .create-main-image{
-	height: 538px;
+	height: 540px;
 }
 .create-art .create-art-content {
 	width: 50%;
@@ -3336,9 +3336,33 @@ form#create-art-upload{
 	width: 40%;
 }
 .custom-column-style img{
-	margin-left: 20px;
+	margin-left: 30px;
 	margin-bottom: 20px;
-	width: calc(100% - 20px);
+	width: calc(100% - 30px);
+}
+.btn-yellow-main{
+	display: inline-block;
+	width: 320px;
+	height: 50px;
+	color: white;
+	background-color: #B19D68;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	margin: auto;
+	text-align: center;
+	margin-top: 35px;
+	line-height: 52px;
+}
+.btn-yellow-main:hover{
+	background-color: #97844F;
+}
+.main.container,
+.footer-primary.footer.container,
+.nav-container .nav.container{
+	box-shadow: none !important;
+	-moz-box-shadow: none !important;
+	-webkit-box-shadow: none !important;
 }
 
 @media only screen and (max-width : 1280px) {
@@ -3351,6 +3375,18 @@ form#create-art-upload{
 	}
 	.create-art > .create-art-content > .create-art-info{
 		padding: 40px;
+	}
+	.create-art-steps > div{
+		padding: 22px 0px;
+	}
+	.create-art-steps h3{
+		font-size: 13px;
+	}
+	.create-art-steps h2{
+		font-size: 20px;
+	}
+	.btn-yellow-main{
+		margin-top: 20px;
 	}
 }
 
@@ -3379,6 +3415,28 @@ form#create-art-upload{
 	.create-art-list li a > div{
 		font-size: 12px;
 	}
+	.cms-faq-for-business .custom-column-style.custom-40,
+	.cms-custom-orders .custom-column-style.custom-40,
+	.cms-shipping-delivery .custom-column-style.custom-40,
+	.cms-return-policy .custom-column-style.custom-40,
+	.cms-international-sales .custom-column-style.custom-40,
+	.cms-faq-for-consumers .custom-column-style.custom-40,
+	.cms-tos .custom-column-style.custom-40,
+	.cms-privacy-policy .custom-column-style.custom-40,
+	.cms-faq-for-artists .custom-column-style.custom-40{
+		display: none;
+	}
+	.cms-faq-for-business .custom-column-style.custom-60,
+	.cms-custom-orders .custom-column-style.custom-60,
+	.cms-shipping-delivery .custom-column-style.custom-60,
+	.cms-return-policy .custom-column-style.custom-60,
+	.cms-international-sales .custom-column-style.custom-60,
+	.cms-faq-for-consumers .custom-column-style.custom-60,
+	.cms-tos .custom-column-style.custom-60,
+	.cms-privacy-policy .custom-column-style.custom-60,
+	.cms-faq-for-artists .custom-column-style.custom-60{
+		width: 100%;
+	}
 }
 
 @media only screen and (max-width : 480px) {
@@ -3394,6 +3452,9 @@ form#create-art-upload{
 	}
 	.create-art-list li a > div{
 		font-size: 16px;
+	}
+	.btn-yellow-main{
+		width: 208px;
 	}
 }
 
