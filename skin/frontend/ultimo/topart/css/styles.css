@@ -842,7 +842,7 @@ ul.disc ul li { background:url(../images/infortis/_shared/cck/list/bullet-small.
 .std ul.no-bullets li { background-image:none !important; padding-left:0 !important; }
 
 /* Ordered lists */
-.std ol { list-style:decimal outside; margin:10px 0; padding:0 0 0 1.5em; }
+.std ol { list-style:decimal outside; margin:10px 0; padding:0 0 0 2em; }
 .std ol ol,
 .std ul ol,
 .std ol ul { margin:0.5em 0; }
@@ -3410,11 +3410,7 @@ form#create-art-upload{
 	#create-art-upload #disclaimer {
 		width: 245px;
 	}
-}
-@media only screen and (max-width : 640px) {
-	.create-art-list li a > div{
-		font-size: 12px;
-	}
+	.cms-about-topart .custom-column-style.custom-40,
 	.cms-faq-for-business .custom-column-style.custom-40,
 	.cms-custom-orders .custom-column-style.custom-40,
 	.cms-shipping-delivery .custom-column-style.custom-40,
@@ -3426,6 +3422,7 @@ form#create-art-upload{
 	.cms-faq-for-artists .custom-column-style.custom-40{
 		display: none;
 	}
+	.cms-about-topart .custom-column-style.custom-60,
 	.cms-faq-for-business .custom-column-style.custom-60,
 	.cms-custom-orders .custom-column-style.custom-60,
 	.cms-shipping-delivery .custom-column-style.custom-60,
@@ -3436,6 +3433,11 @@ form#create-art-upload{
 	.cms-privacy-policy .custom-column-style.custom-60,
 	.cms-faq-for-artists .custom-column-style.custom-60{
 		width: 100%;
+	}
+}
+@media only screen and (max-width : 640px) {
+	.create-art-list li a > div{
+		font-size: 12px;
 	}
 }
 
