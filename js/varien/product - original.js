@@ -19,7 +19,7 @@
  *
  * @category    Varien
  * @package     js
- * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 if(typeof Product=='undefined') {
@@ -41,8 +41,6 @@ Product.Zoom.prototype = {
         this.handleEl = $(handleEl);
         this.trackEl = $(trackEl);
         this.hintEl = $(hintEl);
-        this.size_ui = $(".selected_size_ui").html();
-        this.selected_mats_size = $(".selected_mats_size").html();
 
         this.containerDim = Element.getDimensions(this.containerEl);
         this.imageDim = Element.getDimensions(this.imageEl);
@@ -135,14 +133,17 @@ Product.Zoom.prototype = {
         this.imageZoom = this.floorZoom+(v*(this.ceilingZoom-this.floorZoom));
 
         if (overSize) {
-            if (this.imageDim.width > this.containerDim.width) {
+            if (this.imageDim.width > this.imageDim.height) {
                 this.imageEl.style.width = (this.imageZoom*this.containerDim.width)+'px';
-            } else if (this.imageDim.height > this.containerDim.height) {
+            } else {
                 this.imageEl.style.height = (this.imageZoom*this.containerDim.height)+'px';
             }
-
-            if(this.containerDim.ratio){
-                this.imageEl.style.height = (this.imageZoom*this.containerDim.width*this.containerDim.ratio)+'px'; // for safari
+            if (this.containerDim.ratio) {
+                if (this.imageDim.width > this.imageDim.height) {
+                    this.imageEl.style.height = (this.imageZoom*this.containerDim.width*this.containerDim.ratio)+'px'; // for safari
+                } else {
+                    this.imageEl.style.width = (this.imageZoom*this.containerDim.height*this.containerDim.ratio)+'px'; // for safari
+                }
             }
         } else {
             this.slider.setDisabled();
@@ -367,7 +368,8 @@ Product.Config.prototype = {
         var attributeId = element.id.replace(/[a-z]*/, '');
         var options = this.getAttributeOptions(attributeId);
         this.clearSelect(element);
-        element.options[0] = new Option(this.config.chooseText, '');
+        element.options[0] = new Option('', '');
+        element.options[0].innerHTML = this.config.chooseText;
 
         var prevConfig = false;
         if(element.prevSetting){
@@ -563,7 +565,7 @@ Product.OptionsPrice.prototype = {
         this.productOldPrice    = config.productOldPrice;
         this.priceInclTax       = config.priceInclTax;
         this.priceExclTax       = config.priceExclTax;
-        this.skipCalculate      = config.skipCalculate;//@deprecated after 1.5.1.0
+        this.skipCalculate      = config.skipCalculate; /** @deprecated after 1.5.1.0 */
         this.duplicateIdSuffix  = config.idSuffix;
         this.specialTaxPrice    = config.specialTaxPrice;
         this.tierPrices         = config.tierPrices;
@@ -685,27 +687,7 @@ Product.OptionsPrice.prototype = {
                 var subPriceincludeTax = 0;
                 Object.values(this.customPrices).each(function(el){
                     if (el.excludeTax && el.includeTax) {
-
-                        // Framing and Stretching
-                        if ( parseFloat(el.excludeTax) < 5.0 && parseFloat(el.excludeTax) > 1.0 )
-                        {
-                            if ( !isNaN(parseFloat(this.selected_mats_size)) )
-                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui) + 4.0 * parseFloat(this.selected_mats_size) );
-                            else
-                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui));
-                            
-                            // Canvas stretching does not have the additional mounting price: change this whenever the canvas stretching retail price is updated
-                            if (parseFloat(el.excludeTax) != 1.08)
-                                subPrice += parseFloat(12.00);
-                        }
-                        // Matting
-                        else if ( parseFloat(el.excludeTax) < 1.0 )
-                        {
-                            subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui) + 4.0 * parseFloat(this.selected_mats_size) );
-                        }
-                        else
-                            subPrice += parseFloat(el.excludeTax);
-                        
+                        subPrice += parseFloat(el.excludeTax);
                         subPriceincludeTax += parseFloat(el.includeTax);
                     } else {
                         subPrice += parseFloat(el.price);
@@ -767,11 +749,7 @@ Product.OptionsPrice.prototype = {
             };
         }.bind(this));
 
-		// The product price is not correctly updated with the below commented original... 
-		// ...statement condition, i.e. "i < this.tierPrices.length;". So, I replaced it with "i < 2;"
-		
-		// for (var i = 0; i < this.tierPrices.length; i++) {
-        for (var i = 0; i < 2; i++) {
+        for (var i = 0; i < this.tierPrices.length; i++) {
             $$('.price.tier-' + i).each(function (el) {
                 var price = this.tierPrices[i] + parseFloat(optionPrices);
                 el.innerHTML = this.formatPrice(price);
@@ -786,8 +764,8 @@ Product.OptionsPrice.prototype = {
                 };
                 var container = $(this.containers[3]) ? this.containers[3] : this.containers[0];
                 var price = parsePrice($(container).innerHTML);
-                var tierPrice = $$('.price.tier-' + i);
-                tierPrice = tierPrice.length ? parseInt(tierPrice[0].innerHTML, 10) : 0;
+                var tierPrice = $$('.tier-price.tier-' + i+' .price');
+                tierPrice = tierPrice.length ? parsePrice(tierPrice[0].innerHTML, 10) : 0;
                 var $percent = Selector.findChildElements(el, ['.percent.tier-' + i]);
                 $percent.each(function (el) {
                     el.innerHTML = Math.ceil(100 - ((100 / price) * tierPrice));
