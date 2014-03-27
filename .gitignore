@@ -7,3 +7,4 @@ media/catalog/product/cache/*
 sitemap.xml
 downloader/*
 .project
+wordpress/wp-content/uploads/*
