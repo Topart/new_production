@@ -8,3 +8,4 @@ sitemap.xml
 downloader/*
 .project
 wordpress/wp-content/uploads/*
+skin/frontend/ultimo/default/css/_config/*
