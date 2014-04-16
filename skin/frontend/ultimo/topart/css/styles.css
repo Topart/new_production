@@ -3033,8 +3033,8 @@ body.cms-index-index .breadcrumbs { display:none; }
     padding: 0;
     text-decoration: none;
 }
-#nav ul{width: 300px !important;}
-#nav ul li{display: inline-block !important; float:left!important;line-height: 24px; width: 250px;}
+#nav ul{}
+#nav ul li{display: inline-block !important; float:left!important;line-height: 24px; width: 158px;}
 #nav ul li a:hover{color:#000;}
 #nav a.level-top:hover .caret{display: inline-block!important;}
 #nav .level0-wrapper, #nav.classic ul.level0{
