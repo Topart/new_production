@@ -1878,7 +1878,7 @@ a.availability-only { cursor:pointer; }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 /* Generic wrapper for product page collaterals */
-.product-view .box-additional { margin-top:20px; }
+.product-view .box-additional { margin-top:20px;float: inherit; display:block;}
 .product-view .box-tabs {}
 .product-view .box-sidebar {}
 .product-view .box-up-sell {}
@@ -1897,7 +1897,7 @@ a.availability-only { cursor:pointer; }
 /* Product primary column
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
-.product-view .product-shop { float:left; }
+.product-view .product-shop { float:inherit; }
 .product-view .product-shop .product-name {	margin:0 0 1.6666em; /*20px*/ }
 .product-view .product-shop .product-name h1 { margin:0; }
 .product-view .product-shop .ratings-table { margin:15px 0 5px; }
@@ -2048,7 +2048,7 @@ a.availability-only { cursor:pointer; }
 .product-options ul.options-list label { font-weight:normal; }
 .product-options ul.validation-failed { padding:0 7px; }
 .product-options p.note { margin:0; font-size:0.9166em; }
-.product-options p.required { position:absolute; right:0; top:-15px; }
+.product-options p.required { position:relative;}
 
 /* Override form colors */
 /* .product-options dd select,

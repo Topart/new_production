@@ -36,12 +36,7 @@
 
 .short-description .std
 {
-	position: absolute;
-	top: -183px;
-	left: 347px;
-	
-	width: 400px;
-	
+	position: relative;
 	font-family: "Benton Sans Medium";
   font-style: normal;
   font-weight: normal;
@@ -79,10 +74,7 @@
 
 .product-options label.required
 {
-	position: absolute;
-	top: -30px;
-	left: 0px;
-
+	position: relative;
 	background-color: #333333;
 	width: 145px;
 	height: 20px;
@@ -120,23 +112,14 @@
 
 .product-options dd.frame select
 {
-  position: absolute;
-  top: -320px;
-  left: 288px;
-
   width: 190px;
-
   display: none;
 }
 
 select#frame_categories
 {
-  position: absolute;
-  top: -79px;
-  left: 583px;
-
   width: 125px;
-
+  position: absolute;
   display: none;
 }
 
@@ -144,30 +127,19 @@ select#frame_categories
 {
   width: 103px;
   height: 65px;
-
   border: 1px solid #cccccc;
-
-  position: absolute;
 }
 
 #mats_previews
 {
-  position: absolute;
-  top: -31px;
-  left: 349px;
-
   width: 460px;
-
   display: none;
 }
 
 #mats_previews li
 {
   position: relative;
-  float: left;
-  
-  margin-right: 82px;
-  margin-bottom: 70px;
+  display: inline-block;
 }
 
 
@@ -179,9 +151,6 @@ select#frame_categories
 
 dd.mat ul
 {
-  position: absolute;
-  top: -42px;
-  width: 580px;
 }
 
 .active_option
@@ -191,9 +160,6 @@ dd.mat ul
 
 #custom_options_images ul#custom_option_mat
 {
-  	position: absolute;
-	top: 133px;
-	left: 331px;
 	width: 500px;
 	height: 115px;
 	overflow: auto;
@@ -222,19 +188,11 @@ ul#custom_option_mat li
 
 #available_mats
 {
-  position: absolute;
-  top: 110px;
-  left: 347px;
-  
   font-size: 16px;
 }
 
 #mats_line
 {
-  position: absolute;
-  top: 125px;
-  left: 457px;
-
   background-color: #e1e1e1;
   width: 374px;
   height: 1px;
@@ -244,71 +202,41 @@ ul#custom_option_mat li
 
 #more_mats
 {
-  position: absolute;
-  left: 754px;
-  top: 190px;
-
   font-size: 16px;
-
   cursor: pointer;
-
   display: none;
 }
 
 #category_frames_left_arrow_1
 {
-  position: absolute;
-  top: -74px;
-  left: 566px;
-
   cursor: pointer;
-
   display: none;
 }
 
 #category_frames_left_arrow_2
 {
-  position: absolute;
-  top: -74px;
-  left: 569px;
-
   border-right: 10px solid #ffffff;
-
   cursor: pointer;
-
   display: none;
 }
 
 #category_frames_right_arrow_1
 {
-  position: absolute;
-  top: -74px;
-  left: 715px;
-
   cursor: pointer;
-
   display: none;
 }
 
 #category_frames_right_arrow_2
 {
-  position: absolute;
-  top: -74px;
-  left: 712px;
-
   border-left: 10px solid #ffffff;
-
   cursor: pointer;
-
   display: none;
 }
 
 .arrow_left 
 {
-  position: absolute;
   width: 0;
   height: 0;
-  
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-right: 10px solid #cccccc;
@@ -317,23 +245,16 @@ ul#custom_option_mat li
 
 .arrow_right 
 {
-  position: absolute;
-
   width: 0; 
   height: 0; 
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
-  
   border-left: 10px solid #cccccc;
   z-index: 1;
 }
 
 #three_inches_white_top_border
 {
-  position: absolute;
-  left: 348px;
-  top: -33px;
-
   border-left-color: #ffffff;
   border-top: 1px solid #ffffff;
   border-bottom: 10px solid transparent;
@@ -343,10 +264,6 @@ ul#custom_option_mat li
 
 #three_inches_white_right_border
 {
-  position: absolute;
-  top: 92px;
-  left: 469px;
-
   border-top: 12px solid transparent;
   border-bottom: 0px solid transparent;
   border-right: 10px solid #ffffff;
@@ -356,10 +273,6 @@ ul#custom_option_mat li
 
 #two_inches_black_one_inch_white_top_border
 {
-  position: absolute;
-  left: 511px;
-  top: -33px;
-
   border-left-color: #ffffff;
   border-top: 1px solid #ffffff;
   border-bottom: 10px solid transparent;
@@ -369,10 +282,6 @@ ul#custom_option_mat li
 
 #two_inches_black_one_inch_white_right_border
 {
-  position: absolute;
-  top: 95px;
-  left: 641px;
-
   border-top: 12px solid transparent;
   border-bottom: 0px solid transparent;
   border-right: 10px solid #ffffff;
@@ -382,10 +291,6 @@ ul#custom_option_mat li
 
 #canvas_top_border
 {
-  position: absolute;
-  left: -1px;
-  top: -9px;
-
   border-left-color: #ffffff;
   border-top: 0px solid #ffffff;
   border-bottom: 10px solid transparent;
@@ -393,10 +298,6 @@ ul#custom_option_mat li
 
 #canvas_right_border
 {
-  position: absolute;
-  top: 107px;
-  left: 116px;
-
   border-top: 12px solid transparent;
   border-bottom: 0px solid transparent;
   border-right: 10px solid #ffffff;
@@ -428,7 +329,6 @@ ul#custom_option_mat li
 
 .product-options dd.border_treatments
 {
-  position: absolute;
   top: 300px;
 }
 
@@ -450,10 +350,6 @@ ul#custom_option_mat li
 
 .product-options dt.border_treatments label
 {
-  position: absolute;
-  top: 285px;
-  left: 553px;
-
   text-decoration: underline;
   font-style: italic;
 
@@ -463,10 +359,6 @@ ul#custom_option_mat li
 
 .product-shop.span4 .price
 {
-	position: absolute;
-	left: 460px;
-	top: -140px;
-
 	font-family: "Benton Sans Medium";
 	font-style: normal;
 	color: #ffffff;
@@ -504,28 +396,22 @@ dd.mat .input-box ul li
 
 dd.borders .input-box ul li
 {
-  width: 195px;
   position: relative;
-  top: 20px;
 }
 
 dd.canvas_stretching .input-box ul li
 {
-  top: -20px;
+
 }
 
 dd.canvas_stretching span.label
 {
   position: relative;
-  top: -18px;
-  left: 13px;
 }
 
 .product-options dl
 {
 	position: relative;
-	left: -13px;
-
 	z-index: 1;
 }
 
@@ -543,8 +429,6 @@ ul#custom_option_size li:nth-last-child(-n+4)
 {
 	display: none;
 }
-
-
 
 
 .gold_text
@@ -565,41 +449,24 @@ ul#custom_option_size li:nth-last-child(-n+4)
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 .product-view
 {
 	position: relative;
-	left: 155px;
-	top: 214px;
-
   display: none;
   z-index: 1;
+  width: 60%;
+  height: 100%;
+  float: right;
 }
 
 .product-options-bottom button
 {
-	position: absolute;
-	left: 346px;
-	top: -135px;
+	position: relative;
 }
 
 #custom_options_images 
 {
-	position: absolute;
-	left: 0px;
-	top: 45px;
-
-  !z-index: -1;
+  z-index: -1;
 }
 
 #custom_options_images div
@@ -620,17 +487,7 @@ ul#custom_option_size li:nth-last-child(-n+4)
 
 .custom_option_size_text
 {
-  position: absolute;
-  
-  top: 50%;
-  left: 50%;
-  
-  width: 40%;
-  height: 40%;
-  
-  margin-top: -20%;
-  margin-left: -20%;
-
+  position: relative;
   text-transform: uppercase;
   color: #303337;
 }
@@ -640,7 +497,6 @@ ul#custom_option_size li:nth-last-child(-n+4)
 	border-style: solid;
 	border-color: #cccccc;
 	border-width: 1px;
-	
 	width: 161px;
 	height: 161px;
 
@@ -667,22 +523,15 @@ ul#custom_option_size li:nth-last-child(-n+4)
 
 #custom_size_button_background
 {
-  position: absolute;
-  top: 200px;
-  left: 345px;
-  
   width: 76px;
-
   z-index: 1;
 }
 
 #custom_size_link
 {
   position: relative;
-top: 201px;
-left: 346px;
-font-size: 12px;
-z-index: 1;
+  font-size: 12px;
+  z-index: 1;
 }
 
 /***************** CUSTOM OPTIONS ***************************/
@@ -692,65 +541,45 @@ z-index: 1;
 /* Tabs positioning */
 .product-options dl dt.material
 {
-  position: absolute;
-  top: 0px;
-  left: 347px;
 }
 
 .product-options dl dt.size
 {
-  position: absolute;
-  top: 0px;
-  left: 462px;
-
   visibility: hidden;
 }
 
 .product-options dl dt.borders
 {
-  position: absolute;
-  top: 0px;
-  left: 496px;
 }
 
 .product-options dl dt.frame
 {
-  position: absolute;
-  top: 0px;
-  left: 577px;
 }
 
 .product-options dl dt.mat
 {
-  position: absolute;
-  top: 0px;
-  left: 691px;
+}
+
+.product-options dl dt{
+  left: auto !important;
 }
 
 /* End of Tabs positioning */
 
 .product-options dd.canvas_stretching
 {
-  position: absolute;
-  top: 300px;
-  left: 315px;
+  position: relative;
 }
 
 #custom_options_images ul#custom_option_material
 {
-  width: 590px;
-  position: absolute;
-  top: -60px;
-  left: 347px;
-  margin-top: 20px;
+  position: relative;
 }
 
 ul#custom_option_material li
 {
   width: 124px;
   height: 124px;
-
-  float: left;
   margin-right: 25px;
   margin-bottom: 70px;
 }
@@ -760,7 +589,6 @@ ul#custom_option_material li
 	position: relative;
 	top: 3px;
 	left: 3px;
-
 	width: 118px;
 	height: 118px;
 }
@@ -769,7 +597,6 @@ ul#custom_option_material #custom_option_material_canvas_background
 {
   width: 116px;
   height: 118px;
-
   border-top: 9px solid #000000;
   border-right: 9px solid #000000;
 }
@@ -779,7 +606,6 @@ ul#custom_option_material #custom_option_material_canvas_background
 	position: relative;
   top: 0px;
   left: 3px;
-
   width: 112px;
   height: 112px;
 }
@@ -789,9 +615,6 @@ ul#custom_option_material #custom_option_material_canvas_background
 
 ul#custom_option_size
 {
-  position: absolute;
-  top: 149px;
-  left: 344px;
 }
 
 ul#custom_option_size li
@@ -814,10 +637,6 @@ ul#custom_option_size .custom_option_label
 
 #size_info
 {
-  position: absolute;
-  top: 127px;
-  left: 346px;
-  
   font-size: 14px;
   width: 350px;
 }
@@ -828,67 +647,40 @@ ul#custom_option_size .custom_option_label
 
 ul#custom_option_borders
 {
-	position: absolute;
-	top: -33px;
-	left: 0px;
 }
 
 #custom_option_borders li:nth-of-type(2)
 {
-  position: absolute;
-  top: 0px;
-  left: 347px;
-
   width: 130px;
   height: 130px;
 }
 
 #custom_option_borders li:nth-of-type(2) div
 {
-  position: relative;
-  top: 2px;
-  left: 2px;
-
   width: 125px;
   height: 125px;
 }
 
 #custom_option_borders li:nth-of-type(3)
 {
-  position: absolute;
-  top: 0px;
-  left: 510px;
-
   width: 130px;
   height: 130px;
 }
 
 #custom_option_borders li:nth-of-type(3) div
 {
-  position: relative;
-  top: 2px;
-  left: 2px;
-
   width: 125px;
   height: 125px;
 }
 
 #custom_option_borders li:nth-of-type(4)
 {
-  position: absolute;
-  top: 7px;
-  left: 683px;
-
   width: 130px;
   height: 130px;
 }
 
 #custom_option_borders li:nth-of-type(4) div
 {
-  position: relative;
-  top: 2px;
-  left: 2px;
-  
   width: 125px;
   height: 125px;
 }
@@ -899,9 +691,6 @@ ul#custom_option_borders
 #custom_options_images ul#custom_option_frame 
 {
 	width: 450px;
-	position: absolute;
-	top: -41px;
-	left: 347px;
 	height: 285px;
 	overflow: auto;
 }
@@ -921,7 +710,6 @@ ul#custom_option_frame li
 
 .frame_description
 {
-  position: absolute;
 top: 86px;
 font-family: "Benton Sans Medium";
 font-style: normal;
@@ -947,12 +735,7 @@ font-style: normal;
 
 .product-options dl dd
 {
-	position: absolute;
-	top: 166px;
-	left: 348px;
-	
-	width: 638px;
-
+	position: relative;
   z-index: 1;
 }
 
@@ -966,8 +749,7 @@ font-style: normal;
 	left: -18px;
 	background-color: #ffffff;
 	height: 1150px;
-
-  	z-index: 0;
+ 	z-index: 0;
 }
 
 #final_product_image_background
@@ -996,10 +778,6 @@ font-style: normal;
 
 .product-name h1
 {
-	position: absolute;
-	top: -222px;
-	left: 344px;
-
 	font-family: "BaskervilleOldFacSCD";
 	font-weight: normal;
 	font-style: normal;
@@ -1019,24 +797,15 @@ font-style: normal;
 
 .custom_option_label
 {
-	position: absolute;
-	top: -75px;
-	left: 347px;
-	
 	font-family: "BaskervilleOldFacSCD";
 	font-weight: normal;
 	font-style: normal;
 	color: #9e9e9e;
 	font-size: 22px;
-	
-	width: 650px;
 }
 
 #custom_options_images ul
 {
-  float: left;
-  width: 630px;
-
   display: none;
 }
 
@@ -1058,18 +827,11 @@ dd.mat .input-box
 
 .catalog-product-view .btn.btn-primary
 {
-	position: absolute;
-	left: 345px;
-	top: -155px;
 }
 
 
 #special_products_features
 {
-	position: absolute;
-	top: -40px;
-	left: 320px;
-	
 	list-style-type: none;
 }
 
@@ -1104,9 +866,6 @@ dd.mat .input-box
 
 .product-view .price_details
 {
-	position: absolute;
-	top: -132px;
-	left: 580px;
 	font-family: "Benton Sans";
 font-style: normal;
 font-weight: bold;
@@ -1120,9 +879,6 @@ font-weight: bold;
 
 .product-view .divider_line
 {
-	position: absolute;
-	top: -77px;
-	left: 580px;
 	border-style: solid;
 	border-width: 1px;
 	border-top-color: white;
@@ -1135,10 +891,9 @@ font-weight: bold;
 
 #product_image_functions
 {
-	position: absolute;
-	top: 461px;
-	left: 65px;
-	
+  position: absolute; /* DON'T DELETE */
+  top: 465px;
+  left: 65px;
 	z-index: 2;
 }
 
@@ -1485,7 +1240,7 @@ a#details .product_function_text
 
 #jcanvas_frame canvas
 {
-  position: absolute;
+  position: absolute; /*DONT DELETE*/
 }
 
 .jcanvas_corner
@@ -1505,9 +1260,8 @@ dt.canvas_stretching label, dt.height label, dt.width label, div.selected_mats_s
 
 #jcanvas_mats
 {
-  position: absolute;
-  
   display: none;
+  position: absolute; /*DONT DELETE*/
 }
 
 
@@ -1530,9 +1284,6 @@ li#custom_option_treatments_none_background
 
 #options_sequence
 {
-  position: absolute;
-  top: 151px;
-  left: 494px;
 }
 
 #options_sequence div
@@ -1544,20 +1295,14 @@ li#custom_option_treatments_none_background
 
 #option_one
 {
-  position: absolute;
-  left: 14px;
 }
 
 #option_two
 {
-  position: absolute;
-  left: 164px;
 }
 
 #option_three
 {
-  position: absolute;
-  left: 313px;
 }
 
 #size_data
@@ -1566,14 +1311,13 @@ li#custom_option_treatments_none_background
   font-size: 17px;
 }
 
-
 #product_configuration
 {
   position: absolute;
-  top: -167px;
-  left: 758px;
-
   font-size: 12px;
+  width: 200px;
+  top: 0px;
+  right: 0px;
 }
 
 #product_configuration_title
@@ -1599,8 +1343,6 @@ li#custom_option_treatments_none_background
 
 #product-options-wrapper
 {
-	position: absolute;
-	top: -33px;
 }
 
 #product_configuration span, #product_configuration .configuration_link
@@ -1724,9 +1466,6 @@ a
 #special_features
 {
 	position: relative;
-	top: -183px;
-	left: 345px;
-	width: 506px;
 	font-size: 10px;
 	font-style: italic;
 	line-height: 10px;
@@ -1767,8 +1506,7 @@ a
 .product-view .product-shop
 {
 	position: relative;
-	top: -151px;
-	left: 500px;
+	margin: 0px;
 }
 
 .product-view .container1-wrapper, .product-view .container2-wrapper, .product-view .add-to-box, .product-view .product-type-data > .price-box
