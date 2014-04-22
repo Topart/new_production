@@ -33,8 +33,19 @@
 ?>
 
 <?php
-    $_productCollection=$this->getLoadedProductCollection();
+     
+    $_productCollection = $this->getLoadedProductCollection();
+       
+    if($this->getIsHomepage()){ // if home, show only products within the limit
+       $productLimit = (int) $this->getLimit();
+       if($productLimit){
+         $_productCollection->clear()->setPageSize($productLimit)->load();
+       }
+    }   
+ 
     $_collectionSize = $_productCollection->count();
+
+
 ?>
 
 <?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_above_collection')): ?>
