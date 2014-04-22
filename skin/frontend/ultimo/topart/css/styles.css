@@ -1670,6 +1670,13 @@ a.availability-only { cursor:pointer; }
 .price-box .price {}
 .price-box .price-label {}
 
+.product-view .price-box .price {
+	font-family: Arial, sans-serif !important;
+	color: #B19D68 !important;
+	font-size: 38px !important;
+	font-weight: bold;
+}
+
 /* Common labels */
 .old-price .price-label,
 .special-price .price-label { white-space:nowrap; }
@@ -1914,7 +1921,7 @@ a.availability-only { cursor:pointer; }
 /* Product primary column's elements
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
-.product-view .short-description { margin:15px 0; line-height:1.25em; /*15px*/ }
+.product-view .short-description { line-height:1.25em; /*15px*/ }
 .product-view .short-description ul { margin-top:5px; margin-bottom:5px; }
 
 /* Add-to links */

@@ -452,11 +452,12 @@ ul#custom_option_size li:nth-last-child(-n+4)
 .product-view
 {
 	position: relative;
-  display: none;
-  z-index: 1;
-  width: 60%;
-  height: 100%;
-  float: right;
+	display: inline-block !important;
+	z-index: 1;
+	width: calc(100% - 690px);
+	vertical-align: top;
+	font-size: initial;
+	padding: 0px 20px;
 }
 
 .product-options-bottom button
@@ -741,30 +742,27 @@ font-style: normal;
 
 /***************** END OF CUSTOM OPTIONS ***************************/
 
-
 #product_view_container
 {
 	position: relative;
-	top: 0px;
-	left: -18px;
 	background-color: #ffffff;
 	height: 1150px;
  	z-index: 0;
+ 	font-size: 0;
 }
-
+.product-visualize{
+	display: inline-block;
+	width: 450px;
+	font-size: initial;
+}
 #final_product_image_background
 {
-	position: absolute;
-	top: 0px;
-	left: 30px;
-	
+	position: relative;
 	background-color: #ffffff;
 	width: 450px;
 	height: 450px;
-	
 	border: 2px solid #E1E1E1;
 	box-shadow: 1px 1px 1px #E1E1E1;
-	
 	z-index: 1;
 }
 
@@ -781,8 +779,9 @@ font-style: normal;
 	font-family: "BaskervilleOldFacSCD";
 	font-weight: normal;
 	font-style: normal;
-	font-size: 35px;
-	color: #9e9e9e;
+	font-size: 28px;
+	color: #000000;
+	text-transform: uppercase;
 }
 
 .product-options-bottom .price
@@ -936,59 +935,32 @@ a#details .product_function_text
 
 #product_image_functions #full_screen
 {
-	position: absolute;
-	top: -3px;
-	left: -28px;
-	width: 20px;
-	height: 20px;
-
 	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/zoom_2.jpg');
 }
 
 #product_image_functions #zoom_in
 {
-	position: absolute;
-	top: -3px;
-	left: 95px;
-
 	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/zoom_in.png');
-
   display: none;
 }
 
 #product_image_functions #wall_color
 {
-	position: absolute;
-	top: -3px;
-	left: 75px;
-
 	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/water_drop.jpg');
 }
 
 #product_image_functions #rooms
 {
-	position: absolute;
-	top: -3px;
-	left: 180px;
-
 	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/camera.jpg');
 }
 
 #product_image_functions #reset
 {
-	position: absolute;
-	top: -3px;
-	left: 265px;
-
 	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/refresh.jpg');
 }
 
 #product_image_functions #details
 {
-	position: absolute;
-	top: -3px;
-	left: 340px;
-
 	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/list_details.jpg');
 }
 
@@ -1005,11 +977,9 @@ a#details .product_function_text
 {
 	position: absolute;
 	top: 380px;
-	left: 32px;
-	
+	left: 0px;
 	width: 450px;
 	height: 71px;
-	
 	z-index: 2;
 	display: none;
 }
@@ -1061,7 +1031,7 @@ a#details .product_function_text
 {
 	position: absolute;
 	top: 365px;
-	left: 32px;
+	left: 0px;
 	width: 450px;
 	height: 87px;
 	background-color: #2a2a2a;
@@ -1091,7 +1061,7 @@ a#details .product_function_text
 {
 	position: absolute;
 	top: 365px;
-	left: 32px;
+	left: 0px;
 	width: 450px;
 	height: 87px;
 	background-color: #303337;
@@ -1313,11 +1283,11 @@ li#custom_option_treatments_none_background
 
 #product_configuration
 {
-  position: absolute;
-  font-size: 12px;
-  width: 200px;
-  top: 0px;
-  right: 0px;
+	 position: relative;
+	display: inline-block;
+	font-size: 12px;
+	width: 200px;
+	vertical-align: top;
 }
 
 #product_configuration_title
@@ -1456,9 +1426,6 @@ a
 #copyright_text
 {
 	position: relative;
-	top: 230px;
-	left: -130px;
-	width: 980px;
 	font-size: 12px;
 	font-style: italic;
 }
