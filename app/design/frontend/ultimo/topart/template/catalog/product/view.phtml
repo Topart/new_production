@@ -23,8 +23,6 @@
 </script>
 
 
-
-
 <!-- New code -->
 
 <div id="product_view_container">
@@ -554,534 +552,561 @@
             </div> <!-- end: product-secondary-column -->
         <?php endif; ?>
 
-        <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
-			<?php if ($container2_html = $this->getChildChildHtml('container2', '', true, true)): ?>
-        		<div class="box-additional <?php echo $container2ColGridClass; ?>">
-					<div class="container2-wrapper"><?php echo $container2_html; ?></div>
-				</div>
+<!--
+<div class="product-reloaded">
+	<div class="option-reloaded">
+		<div class="step-reloaded" id="clickme">
+			<strong class="step-number">Step 1</strong>
+			<span class="step-title">Material and Size</span>
+			<span class="step-selected"></span>
+		</div>
+		<div class="content-reloaded">
+			
+		</div>	
+	</div>
+
+	<div class="option-reloaded">
+		<div class="step-reloaded">
+			<strong class="step-number">Step 2</strong>
+			<span class="step-title">Borders</span>
+			<span class="step-selected"></span>
+		</div>
+		<div class="content-reloaded">
+			
+		</div>	
+	</div>
+
+	<div class="option-reloaded">
+		<div class="step-reloaded">
+			<strong class="step-number">Step 3</strong>
+			<span class="step-title">Frame</span>
+			<span class="step-selected"></span>
+		</div>
+		<div class="content-reloaded">
+			
+		</div>	
+	</div>
+
+	<div class="option-reloaded">
+		<div class="step-reloaded">
+			<strong class="step-number">Step 4</strong>
+			<span class="step-title">Mat</span>
+			<span class="step-selected"></span>
+		</div>
+		<div class="content-reloaded">
+			
+		</div>	
+	</div>
+
+</div>
+-->
+      <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
+				<?php if ($container2_html = $this->getChildChildHtml('container2', '', true, true)): ?>
+        	<div class="box-additional <?php echo $container2ColGridClass; ?>">
+						<div class="container2-wrapper"><?php echo $container2_html; ?></div>
+					</div>
 				
-				<div id="custom_options_images">
-					
-					<ul id="mats_previews">
+					<div id="custom_options_images">
+						<ul id="mats_previews">
+							<li id='mats_2_inches' class='mats_style'>
+								<div class="mats_l_shape"></div>
+							</li>
+							<li id='mats_3_inches' class='mats_style'>
+								<div class="mats_l_shape"></div>
+							</li>
+							<li id='mats_none' class='mats_style'></li>
+						</ul>
+						
+						<?php
 
-						<li id='mats_2_inches' class='mats_style'>
-							<div class="mats_l_shape"></div>
-						</li>
+							// Fame categories list
+							$frame_categories = array();
 
-						<li id='mats_3_inches' class='mats_style'>
-							<div class="mats_l_shape"></div>
-						</li>
+							$selected_size_ui = "<div class='selected_size_ui'></div>";
+							echo $selected_size_ui;
 
-						<li id='mats_none' class='mats_style'></li>
+							$selected_mats_size = "<div class='selected_mats_size'></div>";
+							echo $selected_mats_size;
 
-					</ul>
-
-					<?php
-
-						// Fame categories list
-						$frame_categories = array();
-
-						$selected_size_ui = "<div class='selected_size_ui'></div>";
-						echo $selected_size_ui;
-
-						$selected_mats_size = "<div class='selected_mats_size'></div>";
-						echo $selected_mats_size;
-
-						$custom_size_label_counter = 0;
+							$custom_size_label_counter = 0;
 
 
-						// Current product state
-						$current_material = "<div class='current_material'></div>";
-						echo $current_material;
+							// Current product state
+							$current_material = "<div class='current_material'></div>";
+							echo $current_material;
 
-						$current_size = "<div class='current_size'></div>";
-						echo $current_size;
+							$current_size = "<div class='current_size'></div>";
+							echo $current_size;
 
-						$current_borders = "<div class='current_borders'></div>";
-						echo $current_borders;
+							$current_borders = "<div class='current_borders'></div>";
+							echo $current_borders;
 
-						$current_canvas_stretching = "<div class='current_canvas_stretching'></div>";
-						echo $current_canvas_stretching;
+							$current_canvas_stretching = "<div class='current_canvas_stretching'></div>";
+							echo $current_canvas_stretching;
 
-						$current_frame = "<div class='current_frame'></div>";
-						echo $current_frame;
+							$current_frame = "<div class='current_frame'></div>";
+							echo $current_frame;
 
-						$current_mats = "<div class='current_mats'></div>";
-						echo $current_mats;
+							$current_mats = "<div class='current_mats'></div>";
+							echo $current_mats;
 
 
-						foreach ($_product->getOptions() as $o) 
-						{			
-							$option_type = $o->getType();
-						    $option_title = strtolower(str_replace(" ","_", $o->getTitle()));
+							foreach ($_product->getOptions() as $o) 
+							{			
+								$option_type = $o->getType();
+							    $option_title = strtolower(str_replace(" ","_", $o->getTitle()));
 
-						    if ( $option_title == "material" )
-						    {
-						    	$option_label = "Select Material";
-						    }
+							    if ( $option_title == "material" )
+							    {
+							    	$option_label = "Select Material";
+							    }
 
-						    if ( $option_title == "size" )
-						    {
-						    	echo "<div id='size_info'>Select Your Size (Inches): <div id='size_data'></div></div>";
+							    if ( $option_title == "size" )
+							    {
+							    	echo "<div id='size_info'>Select Your Size (Inches): <div id='size_data'></div></div>";
 
-						    	// Custom Size is not available on Limited Edition items
-						    	if ($udf_limited != "Yes")
-						    		echo "<a id='custom_size_link' class='fancybox' href='#info_custom_size'>Custom Size?</a>";
-						    }
+							    	// Custom Size is not available on Limited Edition items
+							    	if ($udf_limited != "Yes")
+							    		echo "<a id='custom_size_link' class='fancybox' href='#info_custom_size'>Custom Size?</a>";
+							    }
 
-						    if ( $option_title == "borders" )
-						    {
-						    	// First border
-						    	echo "<div id='three_inches_white_top_border' class='arrow_right'></div>";
-								echo "<div id='three_inches_white_right_border' class='arrow_left'></div>";
+							    if ( $option_title == "borders" )
+							    {
+							    	// First border
+							    	echo "<div id='three_inches_white_top_border' class='arrow_right'></div>";
+									echo "<div id='three_inches_white_right_border' class='arrow_left'></div>";
 
-								// Second border
-						    	echo "<div id='two_inches_black_one_inch_white_top_border' class='arrow_right'></div>";
-								echo "<div id='two_inches_black_one_inch_white_right_border' class='arrow_left'></div>";
-						    }
+									// Second border
+							    	echo "<div id='two_inches_black_one_inch_white_top_border' class='arrow_right'></div>";
+									echo "<div id='two_inches_black_one_inch_white_right_border' class='arrow_left'></div>";
+							    }
 
-						    if ( $option_title == "frame" )
-						    {
-						    	$option_label = "Select Frame";
+							    if ( $option_title == "frame" )
+							    {
+							    	$option_label = "Select Frame";
 
-						    	// Draw the 2 arrows that allow framing category sliding
-						    	echo "<div id='category_frames_left_arrow_1' class='arrow_left category_framing'></div>";
-						    	echo "<div id='category_frames_right_arrow_1' class='arrow_right category_framing'></div>";
-						    	echo "<div id='category_frames_left_arrow_2' class='arrow_left category_framing'></div>";
-						    	echo "<div id='category_frames_right_arrow_2' class='arrow_right category_framing'></div>";
-						    }
+							    	// Draw the 2 arrows that allow framing category sliding
+							    	echo "<div id='category_frames_left_arrow_1' class='arrow_left category_framing'></div>";
+							    	echo "<div id='category_frames_right_arrow_1' class='arrow_right category_framing'></div>";
+							    	echo "<div id='category_frames_left_arrow_2' class='arrow_left category_framing'></div>";
+							    	echo "<div id='category_frames_right_arrow_2' class='arrow_right category_framing'></div>";
+							    }
 
-						    if ( $option_title == "mat" )
-						    {
-						    	$option_label = "Select Mat";
-						    	echo "<div id='available_mats' class='custom_option_label'>Available mats</div>";
-						    	echo "<div id='mats_line'></div>";
-						    }
+							    if ( $option_title == "mat" )
+							    {
+							    	$option_label = "Select Mat";
+							    	echo "<div id='available_mats' class='custom_option_label'>Available mats</div>";
+							    	echo "<div id='mats_line'></div>";
+							    }
 
-					?>
+						?>
 
-							<!-- Informational lightboxes -->
-							<div id="info_custom_size" style="width:400px; display: none;">
-								Top Art specializes in custom orders.
-								<br /> 
-								Please contact us at <a href="mailto:cs@topart.com?Subject=Custom Order">cs@topart.com</a> to place your custom order.
-							</div>
-	
-						    <div id="info_material" style="width:600px; display: none;">
-								<h3>Material Options</h3>
-								<p>
+								<!-- Informational lightboxes -->
+								<div id="info_custom_size" style="width:400px; display: none;">
+									Top Art specializes in custom orders.
+									<br /> 
+									Please contact us at <a href="mailto:cs@topart.com?Subject=Custom Order">cs@topart.com</a> to place your custom order.
+								</div>
+		
+							  <div id="info_material" style="width:600px; display: none;">
+									<h3>Material Options</h3>
+									<p>
 
-									<div>
-										<div class="bold">Poster</div>
-										Our Posters are high quality fine art prints that are produced using a high speed four color offset lithography printing press.
+										<div>
+											<div class="bold">Poster</div>
+											Our Posters are high quality fine art prints that are produced using a high speed four color offset lithography printing press.
 
-										<br />
-										<br />
+											<br />
+											<br />
 
-										This is a traditional method of printing that still utilizes individual metal plates to create the final print. Today, digital technology plays an important roll in the pre-press stages of offset printing.  
+											This is a traditional method of printing that still utilizes individual metal plates to create the final print. Today, digital technology plays an important roll in the pre-press stages of offset printing.  
 
-										<br />
-										<br />
+											<br />
+											<br />
 
-										The results are fine art posters that very accurately reproduce the color, shading, and details of the original artworks.  
-									</div>
-
-									<br />
-
-									<div>
-										<div class="bold">Paper Substrate</div>
-										Giclées on paper are printed on high quality 275 gram satin paper.  Smaller images may be printed on slightly lighter weight paper.  
+											The results are fine art posters that very accurately reproduce the color, shading, and details of the original artworks.  
+										</div>
 
 										<br />
+
+										<div>
+											<div class="bold">Paper Substrate</div>
+											Giclées on paper are printed on high quality 275 gram satin paper.  Smaller images may be printed on slightly lighter weight paper.  
+
+											<br />
+											<br />
+
+											Images printed on this bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting.    
+
+											<br />
+											<br />
+
+											Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council. 
+										</div>
+
 										<br />
-
-										Images printed on this bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting.    
-
-										<br />
-										<br />
-
-										Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council. 
-									</div>
-
-									<br />
-									
-									<div>
-										<div class="bold">Canvas Substrate</div>
-										Giclées on canvas are printed on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  
-
-										<br />
-										<br />
-
-										After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting. 
-									</div>
-									
-								</p>
-							</div>
-
-							<!-- Informational lightboxes -->
-						    <div id="info_size" style="width:600px; display: none;">
-								<h3>Our Materials:</h3>
-								<p>
-									<div>
-										<span style="font-style:italic; font-weight:bold;">Posters</span>
-										<br /><br />
-
-										Depending on the size of the poster we use between 180-270 gram satin paper, with a high quality 90 brightness and a satin finish.  Our posters are environmentally responsible made with 30% recycled post consumer pulp. Our poster paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.  Images printed as offset posters may, over time, fade when exposed to direct sunlight, interior lighting or florescent lighting
-									</div>
-								</p>
-
-								<p>
-									<div>
-										<span style="font-style:italic; font-weight:bold;">Paper</span>
-										<br /><br />
-
-										We use high quality 275 gram satin paper for our paper art prints . This bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting. Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.
-									</div>
-								</p>
-
-								<p>
-									<div>
-										<span style="font-style:italic; font-weight:bold;">Canvas</span> 
-										<br /><br />
-
-										We print on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting.
-									</div>
-								</p>
-							</div>
-
-							<!-- Informational lightboxes -->
-						    <div id="info_borders" style="width:600px; display: none;">
-								<h3>Canvas Borders</h3>
-								<p>
-									<div>
-										All fine art canvas is printed with image borders ready for <span class="italic">gallery wrap stretching</span> on 1.5” stretcher bars.
 										
+										<div>
+											<div class="bold">Canvas Substrate</div>
+											Giclées on canvas are printed on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  
+
+											<br />
+											<br />
+
+											After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting. 
+										</div>
+										
+									</p>
+								</div>
+
+								<!-- Informational lightboxes -->
+							  <div id="info_size" style="width:600px; display: none;">
+									<h3>Our Materials:</h3>
+									<p>
+										<div>
+											<span style="font-style:italic; font-weight:bold;">Posters</span>
+											<br /><br />
+
+											Depending on the size of the poster we use between 180-270 gram satin paper, with a high quality 90 brightness and a satin finish.  Our posters are environmentally responsible made with 30% recycled post consumer pulp. Our poster paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.  Images printed as offset posters may, over time, fade when exposed to direct sunlight, interior lighting or florescent lighting
+										</div>
+									</p>
+
+									<p>
+										<div>
+											<span style="font-style:italic; font-weight:bold;">Paper</span>
+											<br /><br />
+
+											We use high quality 275 gram satin paper for our paper art prints . This bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting. Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.
+										</div>
+									</p>
+
+									<p>
+										<div>
+											<span style="font-style:italic; font-weight:bold;">Canvas</span> 
+											<br /><br />
+
+											We print on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting.
+										</div>
+									</p>
+								</div>
+
+								<!-- Informational lightboxes -->
+							  <div id="info_borders" style="width:600px; display: none;">
+									<h3>Canvas Borders</h3>
+									<p>
+										<div>
+											All fine art canvas is printed with image borders ready for <span class="italic">gallery wrap stretching</span> on 1.5” stretcher bars.
+											
+											<br />
+
+											Please <a href="mailto:cs@topart.com">contact us</a> if you want to buy it unstretched.
+										</div>
+
+										<br />
 										<br />
 
-										Please <a href="mailto:cs@topart.com">contact us</a> if you want to buy it unstretched.
-									</div>
-
-									<br />
-									<br />
-
-									<div>
-										<div class="bold">Gallery Stretching</div>
-										Gallery stretching is a method that stretches an added border around thick stretcher bars to create a visible decorative edge.  The stretched canvas can then be hung directly on the wall without framing to produce a clean contemporary design.  In addition, a canvas float frame can also be selected that will keep the decorative edges visible.  The float frame adds a wood element to the design and creates a professional finished fine art statement.
-									</div>
-
-									<br />
-
-									<div>
-										<div class="bold">3” White Borders</div>
-										Choose this border to create a clean contemporary white edge when your art is gallery wrapped or float framed.
-										The canvas will have at least 3” of unprinted white canvas around the image.
-									</div>
-
-									<div id="canvas_white_borders" class="canvas_borders_preview">
-									</div>
-
-									<br />
-
-									<div>
-										<div class="bold"> 2” Black Border + 1” White</div>
-										Choose this border to create a sophisticated black edge when your art is gallery wrapped or float framed.
-										The canvas will have a 2” black border around the image plus at least 1” of additional plain white canvas for stretching.
-									</div>
-
-									<div id="canvas_black_borders" class="canvas_borders_preview">
-									</div>
-
-									<br />
-
-									<div>
-										<div class="bold">2” Mirrored Border + 1” White</div>
-										Choose this border to create a colorful edge that is a dramatic extension of the image when your art is gallery wrapped or float framed.
+										<div>
+											<div class="bold">Gallery Stretching</div>
+											Gallery stretching is a method that stretches an added border around thick stretcher bars to create a visible decorative edge.  The stretched canvas can then be hung directly on the wall without framing to produce a clean contemporary design.  In addition, a canvas float frame can also be selected that will keep the decorative edges visible.  The float frame adds a wood element to the design and creates a professional finished fine art statement.
+										</div>
 
 										<br />
+
+										<div>
+											<div class="bold">3” White Borders</div>
+											Choose this border to create a clean contemporary white edge when your art is gallery wrapped or float framed.
+											The canvas will have at least 3” of unprinted white canvas around the image.
+										</div>
+
+										<div id="canvas_white_borders" class="canvas_borders_preview">
+										</div>
+
 										<br />
 
-										The canvas will have a 2” mirrored extension of the image plus at least 1” of additional canvas for stretching.
-									</div>
+										<div>
+											<div class="bold"> 2” Black Border + 1” White</div>
+											Choose this border to create a sophisticated black edge when your art is gallery wrapped or float framed.
+											The canvas will have a 2” black border around the image plus at least 1” of additional plain white canvas for stretching.
+										</div>
 
-									<div id="canvas_mirrored" class="canvas_borders_preview">
-									</div>
+										<div id="canvas_black_borders" class="canvas_borders_preview">
+										</div>
 
-								</p>
-							</div>
+										<br />
 
-							<!-- Informational lightboxes -->
-						    <div id="info_frame" style="width:600px; display: none;">
-								<h3>Frames:</h3>
-								<p>
-									<div>
-										Our frame suppliers use 100% sustainable woods that are certified by the "Forest Stewardship Council" (FSC). We use finishes that recreate the look of exotic woods. Choose from black, metallic, wood, and white frames.
-									</div>
-								</p>
-							</div>
+										<div>
+											<div class="bold">2” Mirrored Border + 1” White</div>
+											Choose this border to create a colorful edge that is a dramatic extension of the image when your art is gallery wrapped or float framed.
 
-							<!-- Informational lightboxes -->
-						    <div id="info_mats" style="width:600px; display: none;">
-								<h3>Mats Boards:</h3>
-								<p>
-									<div>
-										All mat boards are made from the finest acid-free ph neutral buffered pulp cores and lined with acid free backing papers.
-									</div>
-								</p>
-							</div>
+											<br />
+											<br />
 
-							<div class="custom_option_label">
-				        		<?php 
+											The canvas will have a 2” mirrored extension of the image plus at least 1” of additional canvas for stretching.
+										</div>
 
-				        			// Information light box link
-						    		$information_lightbox = "<a class='fancybox' href='#info_". $option_title . "'>(?)</a>";
+										<div id="canvas_mirrored" class="canvas_borders_preview">
+										</div>
 
-				        			echo $option_label . $information_lightbox; 
-				        		?>
-				        	</div>
+									</p>
+								</div>
 
-						    <ul id="custom_option_<?php echo $option_title; ?>">
+								<!-- Informational lightboxes -->
+							  <div id="info_frame" style="width:600px; display: none;">
+									<h3>Frames:</h3>
+									<p>
+										<div>
+											Our frame suppliers use 100% sustainable woods that are certified by the "Forest Stewardship Council" (FSC). We use finishes that recreate the look of exotic woods. Choose from black, metallic, wood, and white frames.
+										</div>
+									</p>
+								</div>
 
-						        <?php
+								<!-- Informational lightboxes -->
+							 	<div id="info_mats" style="width:600px; display: none;">
+									<h3>Mats Boards:</h3>
+									<p>
+										<div>
+											All mat boards are made from the finest acid-free ph neutral buffered pulp cores and lined with acid free backing papers.
+										</div>
+									</p>
+								</div>
 
-						        	// Used to display the 3 mats dimensions only once in the loop
-						        	$mats_counter = 0;
+								<div class="custom_option_label">
+					        		<?php 
 
-							        $values = $o->getValues();
-							        foreach ($values as $v) 
-							        {
-							        	$option_sku = $v->getData('sku');
-							        	$option_choice = $v->getData('title');
-							        	$option_price = $v->getData('price');
-							        	$i++;
+					        			// Information light box link
+							    		$information_lightbox = "<a class='fancybox' href='#info_". $option_title . "'>(?)</a>";
 
-							        	$option_name = strtolower(str_replace(" ","_", $v->getData('title')));
-							        	$material_name = "";
+					        			echo $option_label . $information_lightbox; 
+					        		?>
+					      </div>
 
-							        	
+							  <ul id="custom_option_<?php echo $option_title; ?>">
 
-							        	// If the option is the size, then check if is related to paper or canvas
-							        	if ( $option_title == "size" )
-							        	{
-								        	if ( strpos( $option_sku, '_paper_' ) !== false)
+							        <?php
+
+							        	// Used to display the 3 mats dimensions only once in the loop
+							        	$mats_counter = 0;
+
+								        $values = $o->getValues();
+								        foreach ($values as $v) 
+								        {
+								        	$option_sku = $v->getData('sku');
+								        	$option_choice = $v->getData('title');
+								        	$option_price = $v->getData('price');
+								        	$i++;
+
+								        	$option_name = strtolower(str_replace(" ","_", $v->getData('title')));
+								        	$material_name = "";
+
+								        	
+
+								        	// If the option is the size, then check if is related to paper or canvas
+								        	if ( $option_title == "size" )
 								        	{
-								        		$material_name = "paper";
-								        	}
+									        	if ( strpos( $option_sku, '_paper_' ) !== false)
+									        	{
+									        		$material_name = "paper";
+									        	}
 
-								        	if ( strpos( $option_sku, '_canvas_' ) !== false)
-								        	{
-								        		$material_name = "canvas";
-								        	}
+									        	if ( strpos( $option_sku, '_canvas_' ) !== false)
+									        	{
+									        		$material_name = "canvas";
+									        	}
 
-								        	if ( strpos( $option_sku, 'custom' ) !== false)
-								        	{
-								        		$custom_size_label = "<li class='custom_size_label'><a href='/contact-us' target='blank'>Contact us</a> to specify your preferred height or width for the perfect fit.</li>";
+									        	if ( strpos( $option_sku, 'custom' ) !== false)
+									        	{
+									        		$custom_size_label = "<li class='custom_size_label'><a href='/contact-us' target='blank'>Contact us</a> to specify your preferred height or width for the perfect fit.</li>";
 
-								        		if ( $custom_size_label_counter == 0)
-								        		{
-								        			echo $custom_size_label;
-								        			$custom_size_label_counter++;	
-								        		}
-								        		
-								        	}
+									        		if ( $custom_size_label_counter == 0)
+									        		{
+									        			echo $custom_size_label;
+									        			$custom_size_label_counter++;	
+									        		}
+									        		
+									        	}
 
-								        	else
-								        	{
+									        	else
+									        	{
 
-								        		$custom_size_label = "";
+									        		$custom_size_label = "";
 
-								        		// Size initials out of the sku name
-									        	$size_initial = "";
-								        		if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
-								        			$size_initial = "xs";
-								 
-								        		else if (strpos($option_sku, "small") !== false || strpos($option_sku, "size_posterpaper_s_") !== false)
-								        			$size_initial = "s";
+									        		// Size initials out of the sku name
+										        	$size_initial = "";
+									        		if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
+									        			$size_initial = "xs";
+									 
+									        		else if (strpos($option_sku, "small") !== false || strpos($option_sku, "size_posterpaper_s_") !== false)
+									        			$size_initial = "s";
 
-								        		else if (strpos($option_sku, "medium") !== false || strpos($option_sku, "size_posterpaper_m_") !== false)
-								        			$size_initial = "m";
+									        		else if (strpos($option_sku, "medium") !== false || strpos($option_sku, "size_posterpaper_m_") !== false)
+									        			$size_initial = "m";
 
-								        		else if (strpos($option_sku, "large") !== false || strpos($option_sku, "size_posterpaper_l_") !== false)
-								        			$size_initial = "l";
+									        		else if (strpos($option_sku, "large") !== false || strpos($option_sku, "size_posterpaper_l_") !== false)
+									        			$size_initial = "l";
 
-							        			else if (strpos($option_sku, "oversize") !== false || strpos($option_sku, "size_posterpaper_xl_") !== false)
-								        			$size_initial = "xl";
-								  
-								        		else
-							        			{
-							        				
-							        			}
+								        			else if (strpos($option_sku, "oversize") !== false || strpos($option_sku, "size_posterpaper_xl_") !== false)
+									        			$size_initial = "xl";
+									  
+									        		else
+								        			{
+								        				
+								        			}
 
 
-								        		$colon_position = strpos($option_name, ':', 1);
-									        	$option_name = substr($option_name, 0, $colon_position);
+									        		$colon_position = strpos($option_name, ':', 1);
+										        	$option_name = substr($option_name, 0, $colon_position);
 
-								        		?>
+									        		?>
 
-								        		<li id="custom_option_<?php echo $option_sku; ?>" class="background_border_size <?php echo $material_name; ?>">
+									        		<li id="custom_option_<?php echo $option_sku; ?>" class="background_border_size <?php echo $material_name; ?>">
 
-													<div class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text">
-														<?php echo $size_initial; ?>
+														<div class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text">
+															<?php echo $size_initial; ?>
+														</div>
+														
+													</li>
+
+													<?php
+									        	}
+
+									        }
+
+									        else if ( $option_title == "frame" ) 
+									        {
+
+									        	// Get the framing product by sku. Every other related information can be extracted from this product.
+												$product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
+									        	$frame_product = Mage::getModel('catalog/product')->load($product_id);
+
+									        	// The frame item number is uppercase
+									        	$frame_item_number = strtoupper($option_sku);
+									        	$frame_title = $option_choice;
+
+									        	$category_name = $frame_product->getUdfFramecat();
+									        	$frame_size = $frame_product->getUdfMouldingWidth();
+									        	$frame_available_4_paper = $frame_product->getAttributeText('udf_f_m_avail_4_paper');
+									        	$frame_available_4_canvas = $frame_product->getAttributeText('udf_f_m_avail_4_canvas');
+
+									        	$frame_maximum_long_side = $frame_product->getUdfFmaxslsin();
+									        	$frame_maximum_short_side = $frame_product->getUdfFmaxsssin();
+									        	
+
+									        	// Add each frame category name to an array, to be used later to dynamically build the dropdown of categories
+									        	if ( !in_array($category_name, $frame_categories) )
+									        	{
+									        		array_push($frame_categories, $category_name);
+									        	}
+
+									        	if ($option_sku == "frame_none")
+									        	{
+									        		$frame_item_number = "";
+									        	}
+
+									        	?>
+
+									        	
+									        	<li id="<?php echo $option_sku; ?>" class="background_border custom_option_viewport" data-frame_category="<?php echo $category_name; ?>" style="background-image: url('<?php echo $framing_profile_url . $frame_item_number . ".png"; ?>')" data-frame_size="<?php echo $frame_size; ?>" data-frame_available_4_paper="<?php echo $frame_available_4_paper; ?>" data-frame_available_4_canvas="<?php echo $frame_available_4_canvas; ?>" data-frame_maximum_long_side="<?php echo $frame_maximum_long_side; ?>" data-frame_maximum_short_side="<?php echo $frame_maximum_short_side; ?>">
+													<div class="frame_description">
+														<div class="frame_title"><?php echo $frame_title; ?></div>
+														<div class="frame_price">Add $
+															<div class="frame_real_price">
+																0.00
+															</div>
+															<div class="frame_ui_price">
+																<?php echo number_format((float)$option_price, 2, '.', ''); ?>
+															</div>
+														</div>
 													</div>
-													
+													<div id="custom_option_<?php echo $option_sku; ?>_corner_image" class="frame_corner_image" style="background-image: url('<?php echo $framing_corner_url . $frame_item_number . ".png"; ?>')">
+													</div>
 												</li>
 
 												<?php
-								        	}
+									        }
 
-								        }
+									        else if ( $option_title == "mat" ) 
+									        {
 
-								        else if ( $option_title == "frame" ) 
-								        {
+									        	// Get the framing product by sku. Every other related information can be extracted from this product.
+												$product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
+									        	$mat_product = Mage::getModel('catalog/product')->load($product_id);
 
-								        	// Get the framing product by sku. Every other related information can be extracted from this product.
-											$product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
-								        	$frame_product = Mage::getModel('catalog/product')->load($product_id);
+									        	$mats_sku = strtolower($mat_product->getSku());
+									        	$category_name = $mat_product->getUdfFramecat();
+									        	$mats_color_code = $mat_product->getUdfColorcode();
+									        	$mats_size = $mat_product->getUdfMouldingWidth();
+									        	$mat_available_4_paper = $mat_product->getAttributeText('udf_f_m_avail_4_paper');
+									        	$mat_available_4_canvas = $mat_product->getAttributeText('udf_f_m_avail_4_canvas');
 
-								        	// The frame item number is uppercase
-								        	$frame_item_number = strtoupper($option_sku);
-								        	$frame_title = $option_choice;
+									        	$mat_maximum_long_side = $mat_product->getUdfFmaxslsin();
+									        	$mat_maximum_short_side = $mat_product->getUdfFmaxsssin();
+									        	
 
-								        	$category_name = $frame_product->getUdfFramecat();
-								        	$frame_size = $frame_product->getUdfMouldingWidth();
-								        	$frame_available_4_paper = $frame_product->getAttributeText('udf_f_m_avail_4_paper');
-								        	$frame_available_4_canvas = $frame_product->getAttributeText('udf_f_m_avail_4_canvas');
+									        	?>
 
-								        	$frame_maximum_long_side = $frame_product->getUdfFmaxslsin();
-								        	$frame_maximum_short_side = $frame_product->getUdfFmaxsssin();
-								        	
-
-								        	// Add each frame category name to an array, to be used later to dynamically build the dropdown of categories
-								        	if ( !in_array($category_name, $frame_categories) )
-								        	{
-								        		array_push($frame_categories, $category_name);
-								        	}
-
-								        	if ($option_sku == "frame_none")
-								        	{
-								        		$frame_item_number = "";
-								        	}
-
-								        	?>
-
-								        	
-								        	<li id="<?php echo $option_sku; ?>" class="background_border custom_option_viewport" data-frame_category="<?php echo $category_name; ?>" style="background-image: url('<?php echo $framing_profile_url . $frame_item_number . ".png"; ?>')" data-frame_size="<?php echo $frame_size; ?>" data-frame_available_4_paper="<?php echo $frame_available_4_paper; ?>" data-frame_available_4_canvas="<?php echo $frame_available_4_canvas; ?>" data-frame_maximum_long_side="<?php echo $frame_maximum_long_side; ?>" data-frame_maximum_short_side="<?php echo $frame_maximum_short_side; ?>">
-												<div class="frame_description">
-													<div class="frame_title"><?php echo $frame_title; ?></div>
-													<div class="frame_price">Add $
-														<div class="frame_real_price">
-															0.00
-														</div>
-														<div class="frame_ui_price">
-															<?php echo number_format((float)$option_price, 2, '.', ''); ?>
-														</div>
+									        	<!-- Mats color for each choice -->
+									        	<li id="<?php echo $option_sku; ?>" class="mats_color" style="background-color: <?php echo $mats_color_code; ?>;" data-mat_category="<?php echo $category_name; ?>" data-mats_sku="<?php echo $mats_sku; ?>" data-mats_size="<?php echo $mats_size; ?>" data-mat_available_4_paper="<?php echo $mat_available_4_paper; ?>" data-mat_available_4_canvas="<?php echo $mat_available_4_canvas; ?>" data-mat_maximum_long_side="<?php echo $mat_maximum_long_side; ?>" data-mat_maximum_short_side="<?php echo $mat_maximum_short_side; ?>">
+									        		<div class="mats_ui_price">
+														<?php echo number_format((float)$option_price, 2, '.', ''); ?>
 													</div>
-												</div>
-												<div id="custom_option_<?php echo $option_sku; ?>_corner_image" class="frame_corner_image" style="background-image: url('<?php echo $framing_corner_url . $frame_item_number . ".png"; ?>')">
-												</div>
-											</li>
-
-											<?php
-								        }
-
-								        else if ( $option_title == "mat" ) 
-								        {
-
-								        	// Get the framing product by sku. Every other related information can be extracted from this product.
-											$product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
-								        	$mat_product = Mage::getModel('catalog/product')->load($product_id);
-
-								        	$mats_sku = strtolower($mat_product->getSku());
-								        	$category_name = $mat_product->getUdfFramecat();
-								        	$mats_color_code = $mat_product->getUdfColorcode();
-								        	$mats_size = $mat_product->getUdfMouldingWidth();
-								        	$mat_available_4_paper = $mat_product->getAttributeText('udf_f_m_avail_4_paper');
-								        	$mat_available_4_canvas = $mat_product->getAttributeText('udf_f_m_avail_4_canvas');
-
-								        	$mat_maximum_long_side = $mat_product->getUdfFmaxslsin();
-								        	$mat_maximum_short_side = $mat_product->getUdfFmaxsssin();
-								        	
-
-								        	?>
-
-								        	<!-- Mats color for each choice -->
-								        	<li id="<?php echo $option_sku; ?>" class="mats_color" style="background-color: <?php echo $mats_color_code; ?>;" data-mat_category="<?php echo $category_name; ?>" data-mats_sku="<?php echo $mats_sku; ?>" data-mats_size="<?php echo $mats_size; ?>" data-mat_available_4_paper="<?php echo $mat_available_4_paper; ?>" data-mat_available_4_canvas="<?php echo $mat_available_4_canvas; ?>" data-mat_maximum_long_side="<?php echo $mat_maximum_long_side; ?>" data-mat_maximum_short_side="<?php echo $mat_maximum_short_side; ?>">
-								        		<div class="mats_ui_price">
-													<?php echo number_format((float)$option_price, 2, '.', ''); ?>
-												</div>
-											</li>
+												</li>
 
 
 
-											<?php
-								        }
+												<?php
+									        }
 
-								        else
-								        {
-								        	
-							    ?>	
+									        else
+									        {
+									        	
+								    ?>	
 
-								        	<li id="custom_option_<?php echo $option_sku; ?>_background" class="background_border">
-												<div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport" style="background-image: url('<?php echo $thumbnail_image_file_url; ?>')" >
-												</div>
+									       <li id="custom_option_<?php echo $option_sku; ?>_background" class="background_border">
+													<div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport" style="background-image: url('<?php echo $thumbnail_image_file_url; ?>')" >
+													</div>
 
-												<?php 
-
-														if ( $option_sku == "material_canvas" && $one_corner_flag == 0 )
-														{
-						    								echo "<div id='canvas_top_border' class='arrow_right'></div>";
-															echo "<div id='canvas_right_border' class='arrow_left'></div>";
-
-															$one_corner_flag++;
-														}
-													?>
-											</li>
-
-									<?php
-										}
-							        
-							        }
-
-							 ?>
-							</ul>
-
-							<select id="frame_categories">
-
-					    		<?php
-					    			
-					    			$i = 0;
-
-					    			// Dynamically build the list of frame categories
-					    			foreach ($frame_categories as $category_name)
-					    			{
-					    				
-					    				// Rename each category name that will be displayed, except for the first one i.e. "No Frame"
-					    				if ( $i > 0)
-					    				{
-								        	$category_name_displayed = ucfirst($category_name);
-								        }
-
-								        else
-								        {
-								        	$category_name = "no_frame";
-								        	$category_name_displayed = "No Frame";
-								        }
-
-					    				?>
-
-										<option value=<?php echo $category_name; ?>><?php echo $category_name_displayed; ?></option>
-
+													<?php
+															if ( $option_sku == "material_canvas" && $one_corner_flag == 0 ){
+							    							echo "<div id='canvas_top_border' class='arrow_right'></div>";
+																echo "<div id='canvas_right_border' class='arrow_left'></div>";
+																$one_corner_flag++;
+															}
+														?>
+												</li>
 										<?php
+											} 
+								    }
+								 	?>
+								</ul>
 
-										$i++;
-									}
-								?>
-							</select>
-						    
-						    <?php    		
-						}
-					?>
-							
-				</div>
+								<select id="frame_categories">
+						    		<?php
+						    			$i = 0;
+						    			// Dynamically build the list of frame categories
+						    			foreach ($frame_categories as $category_name)
+						    			{
+						    				// Rename each category name that will be displayed, except for the first one i.e. "No Frame"
+						    				if ( $i > 0)
+						    				{
+									        	$category_name_displayed = ucfirst($category_name);
+									        }
+									        else
+									        {
+									        	$category_name = "no_frame";
+									        	$category_name_displayed = "No Frame";
+									        }
+						    				?>
+											<option value=<?php echo $category_name; ?>><?php echo $category_name_displayed; ?></option>
+
+											<?php
+												$i++;
+										}
+									?>
+								</select>
+							    <?php    		
+							}
+						?>
+					</div>
 
 				<?php
 					echo "<div class='canvas_available'>" . $canvas_available . "</div>";
@@ -1091,9 +1116,7 @@
 				?>
 
         	<?php endif; ?>
-
         	<!-- End of new code for product configuration div -->
-
 
         	<!-- New code for copyright text -->
         	<div id="copyright_text">
@@ -1108,7 +1131,6 @@
 		        ?>
         	</div>
         	<!-- End of new code for copyright text -->
-
 
         <?php endif; ?>
 
@@ -1186,6 +1208,7 @@
     
 </div> <!-- end: product-view -->
 
+<!-- It's not Necesary now 
 <div id="product_configuration">
 	
 	<div id="product_configuration_title">
@@ -1218,5 +1241,8 @@
 	</div>
 
 </div>
+-->
 
 </div> <!-- end: product_view_container -->
+
+

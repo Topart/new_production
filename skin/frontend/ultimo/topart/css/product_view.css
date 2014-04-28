@@ -75,13 +75,12 @@
 .product-options label.required
 {
 	position: relative;
-	background-color: #333333;
-	width: 145px;
+	width: 100%;
 	height: 20px;
 	
 	font-family: "Benton Sans Medium";
 	font-style: normal;
-	color: #ffffff;
+	color: #ABABAB;
 	font-size: 13px;
 
 	text-transform: uppercase;
@@ -90,6 +89,10 @@
   border-radius: 3px;
 
   cursor: pointer;
+  text-align: left;
+padding: 10px 0px;
+background-color: transparent !important;
+
 }
 
 .product-options label.required em
@@ -454,7 +457,7 @@ ul#custom_option_size li:nth-last-child(-n+4)
 	position: relative;
 	display: inline-block !important;
 	z-index: 1;
-	width: calc(100% - 690px);
+	width: calc(100% - 490px);
 	vertical-align: top;
 	font-size: initial;
 	padding: 0px 20px;
@@ -746,7 +749,6 @@ font-style: normal;
 {
 	position: relative;
 	background-color: #ffffff;
-	height: 1150px;
  	z-index: 0;
  	font-size: 0;
 }
@@ -1479,4 +1481,50 @@ a
 .product-view .container1-wrapper, .product-view .container2-wrapper, .product-view .add-to-box, .product-view .product-type-data > .price-box
 {
 	border: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+.product-reloaded{
+	font-size: initial;
+}
+.option-reloaded{
+	font-size: initial;
+}
+.option-reloaded dt{
+	cursor: pointer;
+	background-image:url(../images/logo.png);
+	background-repeat: no-repeat;
+	background-size: 30px 30px;
+	background-position: calc(100% - 10px) center;
+}
+.option-reloaded dt label{
+	border-bottom: 2px solid #B19D68;
+}
+.option-reloaded .step-reloaded .step-number{
+	
+}
+.option-reloaded .step-reloaded .step-title{
+	color: #ABABAB;
+}
+.option-reloaded .step-reloaded .step-selected{
+	
+}
+.content-reloaded{
+	border-top: 2px solid #B19D68;
+	background-color: green;
+	height: 300px;
+}
+
+
+/*NO SE QUE ES*/
+.product-secondary-column{
+	display: none;
 }
