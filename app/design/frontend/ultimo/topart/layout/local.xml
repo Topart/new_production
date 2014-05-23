@@ -140,7 +140,7 @@
 		<!-- Left ====================================================================== -->
 		<reference name="left">
 			
-			<block  type="catalog/navigation" name="catalog.leftnav"  before="-" template="catalog/navigation/left.phtml"/>	
+			<!--block  type="catalog/navigation" name="catalog.leftnav"  before="-" template="catalog/navigation/left.phtml"/-->
 			<remove name="left.newsletter"/> <!-- Moved newsletter to the footer -->
 			<action method="unsetChild"><name>tags_popular</name></action>
 
@@ -541,6 +541,7 @@
 		<reference name="left">
 			<action method="unsetChild"><name>currency</name></action>			
 		</reference>
+
 		
 	</catalog_category_layered>
 	
