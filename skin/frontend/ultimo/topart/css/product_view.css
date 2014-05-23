@@ -824,13 +824,9 @@ dd.mat .input-box
 
     padding-right: 10px;
 }
-
-
 .catalog-product-view .btn.btn-primary
 {
 }
-
-
 #special_products_features
 {
 	list-style-type: none;
@@ -854,17 +850,6 @@ dd.mat .input-box
 	line-height: 1.5;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 .product-view .price_details
 {
 	font-family: "Benton Sans";
@@ -886,28 +871,42 @@ font-weight: bold;
 	width: 319px;
 	color: #E1E1E1;
 }
-
-
-
-
 #product_image_functions
 {
-  position: absolute; /* DON'T DELETE */
-  top: 465px;
-  left: 65px;
+	position: relative;
 	z-index: 2;
+	text-align: center;
 }
 
 #product_image_functions div
 {
 	position: relative;
-	top: 3px;
-	left: 30px;
-	
-	width: 75px;
-
-	display: block;
-	
+	display: inline-block;
+	margin-right: 25px;
+	margin-top: 10px;
+}
+#product_image_functions div:before{
+	position: absolute;
+	top: -3px;
+	left: -27px;
+}
+#product_image_functions #full_screen div:before{
+	content:url('https://d3odr912zwpuhm.cloudfront.net/icons/zoom_2.jpg');
+}
+#product_image_functions #zoom_in div:before{
+	content: url('https://d3odr912zwpuhm.cloudfront.net/icons/zoom_in.png');
+}
+#product_image_functions #wall_color div:before{
+	content: url('https://d3odr912zwpuhm.cloudfront.net/icons/water_drop.jpg');
+}
+#product_image_functions #rooms div:before{
+	content: url('https://d3odr912zwpuhm.cloudfront.net/icons/camera.jpg');
+}
+#product_image_functions #reset div:before{
+	content: url('https://d3odr912zwpuhm.cloudfront.net/icons/refresh.jpg');
+}
+#product_image_functions #details div:before{
+	content: url('https://d3odr912zwpuhm.cloudfront.net/icons/list_details.jpg');
 }
 
 .product_function_text
@@ -935,45 +934,10 @@ a#details .product_function_text
 	height: 25px;
 }
 
-#product_image_functions #full_screen
-{
-	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/zoom_2.jpg');
-}
-
-#product_image_functions #zoom_in
-{
-	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/zoom_in.png');
-  display: none;
-}
-
-#product_image_functions #wall_color
-{
-	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/water_drop.jpg');
-}
-
-#product_image_functions #rooms
-{
-	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/camera.jpg');
-}
-
-#product_image_functions #reset
-{
-	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/refresh.jpg');
-}
-
-#product_image_functions #details
-{
-	background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/list_details.jpg');
-}
-
-
 .catalog-product-view .product-collateral
 {
 	display: none;
 }
-
-
-
 
 #color_switch
 {
@@ -1256,6 +1220,7 @@ li#custom_option_treatments_none_background
 
 #options_sequence
 {
+	position: absolute;
 }
 
 #options_sequence div
