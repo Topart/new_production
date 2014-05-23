@@ -38,7 +38,11 @@ $sku = $_item->getProduct()->getData('sku');
 <tr>
     <td class="col-img">
     	<?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" title="<?php echo $this->escapeHtml($this->getProductName()) ?>" class="product-image"><?php endif;?>
-    	<?php /*<img src="<?php echo $this->getProductThumbnail()->constrainOnly(true)->keepAspectRatio(true)->keepFrame(false)->resize(168); ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" />*/?>
+    	<?php
+    	   /*[START] Change the images logic as topArt has all the images located outside Magento
+    	        <img src="<?php echo $this->getProductThumbnail()->constrainOnly(true)->keepAspectRatio(true)->keepFrame(false)->resize(168); ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" />
+           [END]*/
+        ?>
     	<img src="<?php echo $this->helper('infortis/image')->getImg($sku,'','','thumbnail') ?>" alt="<?php echo $this->escapeHtml($this->getProductName()) ?>" />
     	<?php if ($this->hasProductUrl()):?></a><?php endif;?>
 	</td>

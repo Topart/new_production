@@ -31,7 +31,7 @@
 
 		<?php
 
-			function endsWith( $str, $sub ) 
+			function endsWith( $str, $sub )
 			{
 			   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) === $sub );
 			}
@@ -498,11 +498,12 @@
             <?php endif; ?>
 
             <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
+
                 <?php if ($container1_html = $this->getChildChildHtml('container1', '', true, true)): ?>
                     <div class="container1-wrapper"><?php echo $container1_html; ?></div>
                 <?php endif; ?>
             <?php endif;?>
-            
+
             <?php if ($addtoLinksHtml = $this->getChildHtml('addto')): //compare, wishlist, to friend ?>
                 <div class="action-box clearer">
 					<?php echo $addtoLinksHtml; ?>
@@ -603,9 +604,14 @@
       <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
 				<?php if ($container2_html = $this->getChildChildHtml('container2', '', true, true)): ?>
         	<div class="box-additional <?php echo $container2ColGridClass; ?>">
-						<div class="container2-wrapper"><?php echo $container2_html; ?></div>
-					</div>
-				
+
+
+                    <div  class="container2-wrapper">
+                            <?php echo $container2_html; ?>
+                        </div>
+                    </div>
+            </div>
+				    <?php /*
 					<div id="custom_options_images">
 						<ul id="mats_previews">
 							<li id='mats_2_inches' class='mats_style'>
@@ -616,8 +622,8 @@
 							</li>
 							<li id='mats_none' class='mats_style'></li>
 						</ul>
-						
-						<?php
+						*/?>
+						<?php /*
 
 							// Fame categories list
 							$frame_categories = array();
@@ -625,7 +631,7 @@
 							$selected_size_ui = "<div class='selected_size_ui'></div>";
 							echo $selected_size_ui;
 
-							$selected_mats_size = "<div class='selected_mats_size'></div>";
+						    $selected_mats_size = "<div class='selected_mats_size'></div>";
 							echo $selected_mats_size;
 
 							$custom_size_label_counter = 0;
@@ -1105,8 +1111,8 @@
 								</select>
 							    <?php    		
 							}
-						?>
-					</div>
+
+					</div>*/?>
 
 				<?php
 					echo "<div class='canvas_available'>" . $canvas_available . "</div>";

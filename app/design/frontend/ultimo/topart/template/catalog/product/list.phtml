@@ -138,7 +138,8 @@
             </div>
                 
             <div class="right-column grid12-3 mobile-grid-half">
-                <?php echo $this->getPriceHtml($_product, true) ?>
+                <?php /*echo $this->getPriceHtml($_product, true) */?>
+                <?php echo $this->getTopArtPrice($_product);?>
                 <?php if($_product->isSaleable()): ?>
                     <p><button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button></p>
                 <?php else: ?>
@@ -257,7 +258,8 @@
                 <?php endif; ?>
                 
                 <?php if ($gc['display_price'] == 1) echo '<div class="display-onhover">'; ?>
-                    <?php echo $this->getPriceHtml($_product, true); ?>
+                    <?php /*echo $this->getPriceHtml($_product, true); */?>
+                    <?php echo $this->getTopArtPrice($_product);?>
                 <?php if ($gc['display_price'] == 1) echo '</div>'; ?>
 
                 <?php
