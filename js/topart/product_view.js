@@ -119,25 +119,25 @@
 		function show_options_images(option_name)
 		{
 			// Hide every image first
-			$j("#custom_options_images ul").hide();
+			$j(".custom_options_images ul").hide();
 
 			// Show the option node
-			$j("#custom_options_images #custom_option_" + option_name ).show();
+			$j(".custom_options_images #custom_option_" + option_name ).show();
 			// Show every descendant node for that option
-			$j("#custom_options_images #custom_option_" + option_name  + "*" ).show();
+			$j(".custom_options_images #custom_option_" + option_name  + "*" ).show();
 
 			// Show the option label
-			$j("#custom_options_images #custom_option_" + option_name).prev(".custom_option_label").show();
+			$j(".custom_options_images #custom_option_" + option_name).prev(".custom_option_label").show();
 
 			if (option_name == "material")
 			{
 				// Show the option node
-				$j("#custom_options_images #custom_option_" + "size" ).show();
+				$j(".custom_options_images #custom_option_" + "size" ).show();
 				// Show every descendant node for that option
-				$j("#custom_options_images #custom_option_" + "size"  + "*" ).show();
+				$j(".custom_options_images #custom_option_" + "size"  + "*" ).show();
 
 				// Show the option label
-				$j("#custom_options_images #custom_option_" + "size").prev(".custom_option_label").show();
+				$j(".custom_options_images #custom_option_" + "size").prev(".custom_option_label").show();
 
 				$j("#size_info").show();
 			}
@@ -152,9 +152,9 @@
 		function hide_options_images(option_name)
 		{
 			// Hide the option node
-			$j("#custom_options_images #custom_option_" + option_name ).hide();
+			$j(".custom_options_images #custom_option_" + option_name ).hide();
 			// Hide every descendant node for that option
-			$j("#custom_options_images #custom_option_material" + option_name  + "*" ).hide();
+			$j(".custom_options_images #custom_option_material" + option_name  + "*" ).hide();
 		}
 
 		// Parametrically activate a tab
@@ -204,8 +204,8 @@
 			$j("dd.size li[class*='size_posterpaper']").show();
 
 			// Handle options images
-			$j("#custom_options_images #custom_option_size li").hide();
-			$j("#custom_options_images #custom_option_size li[id*='size_posterpaper']").show();
+			$j(".custom_options_images #custom_option_size li").hide();
+			$j(".custom_options_images #custom_option_size li[id*='size_posterpaper']").show();
 		}
 
 		// Show specific material related sizes
@@ -217,8 +217,8 @@
 			$j("dd.size li[class*='size_photopaper']").show();
 
 			// Handle options images
-			$j("#custom_options_images #custom_option_size li").hide();
-			$j("#custom_options_images #custom_option_size li[id*='size_photopaper']").show();
+			$j(".custom_options_images #custom_option_size li").hide();
+			$j(".custom_options_images #custom_option_size li[id*='size_photopaper']").show();
 		}
 
 		// Show specific material related sizes
@@ -233,8 +233,8 @@
 				$j("dd.size li[class*='treatment_" + treatment_index + "']").show();
 
 				// Handle options images
-				$j("#custom_options_images #custom_option_size li").hide();
-				$j("#custom_options_images #custom_option_size li[id*='treatment_"+ treatment_index +"']").show();
+				$j(".custom_options_images #custom_option_size li").hide();
+				$j(".custom_options_images #custom_option_size li[id*='treatment_"+ treatment_index +"']").show();
 			}
 		}
 
@@ -765,7 +765,7 @@
 				$j(this).css("background-color", "#000000");
 
 				// Hide the option label
-				$j("#custom_options_images .custom_option_label").hide();
+				$j(".custom_options_images .custom_option_label").hide();
 
 				// Show the corresponding options images
 				show_options_images(clicked_option);
@@ -1044,8 +1044,8 @@
 
 					// Make the currently selected size background dark green and deselect all the others
 					clicked_size_index = $j(this).index()+1;
-					$j("#custom_options_images ul .background_border_size").css("background-color", "");
-					$j("#custom_options_images ul .background_border_size:nth-child(" + clicked_size_index +")").css("background-color", selected_size_background_color);
+					$j(".custom_options_images ul .background_border_size").css("background-color", "");
+					$j(".custom_options_images ul .background_border_size:nth-child(" + clicked_size_index +")").css("background-color", selected_size_background_color);
 
 					oversize_flag = false;
 
@@ -2108,7 +2108,7 @@
 			size_ui = selected_size_name.replace(/.*ui_/, '');
 
 		// Clicking a custom option image should automatically select the corresponding button
-		$j("#custom_options_images ul .custom_option_viewport").click(
+		$j(".custom_options_images ul .custom_option_viewport").click(
 
 			function()
 			{
