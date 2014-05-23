@@ -876,14 +876,17 @@ font-weight: bold;
 	position: relative;
 	z-index: 2;
 	text-align: center;
+	margin-top: 15px;
 }
 
 #product_image_functions div
 {
 	position: relative;
 	display: inline-block;
-	margin-right: 25px;
-	margin-top: 10px;
+	margin-left: 25px;
+	max-width: 52px;
+	vertical-align: top;
+	text-align: left;
 }
 #product_image_functions div:before{
 	position: absolute;
