@@ -104,73 +104,52 @@
 <?php
 	$s3_images_base_url = "http://s3.amazonaws.com/topart_images/";
 ?>
+<form id="s3_image_upload" action="" method='post' enctype="multipart/form-data">
 
-<div id="your_photos_to_art" class="span11 custom_art">
-
-	<div class="upload section">
-
-	<div class="content">
-
-		<div id="main" class="title big upper_case">Turn Your Photos To Art</div>
-		<div class="continuous_divider_line"></div>
-		
-		<div class="title medium">1. Upload your photo</div>
-		<div class="title medium">2. Customize</div>
-		<div class="title medium">3. Hang your art</div>
-		
-		<div class="continuous_divider_line"></div>
-		<div class="button"></div>
-
-			<form id="s3_image_upload" action="" method='post' enctype="multipart/form-data">
-
-				<input type="file" name="file" id="s3_file_input" size="10" multiple="false" />
+        <input type="file" name="file" id="s3_file_input" size="10" multiple="false" />
 
 
-				<div id="user_image_preview">
-					
-				</div>
+        <div id="user_image_preview">
 
-				<input type="checkbox" id="accept_checkbox" />
-				<div id="disclaimer">
-					Check this box, to confirm that you have read and agree to our <a class="fancybox" href="#terms_and_conditions" title="Terms and conditions">terms and conditions</a>.
-				</div>
+        </div>
 
-				<div id="terms_and_conditions" style="width:600px; display: none;">
-					<h3>Terms and conditions</h3>
-					<p>
-						<div>
-							All Photographic and digital images are subject to copyright law. In compliance with federal copyright law, Topart.com will not reproduce a copyrighted photograph taken by a professional photographer without a signed release from the original photographer/artists and or studio. The release must be signed by both you and the professional or studio who shot the photograph. You can obtain a pdf version of this form here: <a href="/documents/photographers_release.doc">Topart.com Copyright release form</a>. If you do not have permission or the right to order prints, canvas etc please terminate this order.
-						</div>
+        <input type="checkbox" id="accept_checkbox" />
+        <div id="disclaimer">
+            Check this box, to confirm that you have read and agree to our <a class="fancybox" href="#terms_and_conditions" title="Terms and conditions">terms and conditions</a>.
+        </div>
 
-						<br />
+        <div id="terms_and_conditions" style="width:600px; display: none;">
+            <h3>Terms and conditions</h3>
+            <p>
+                <div>
+                    All Photographic and digital images are subject to copyright law. In compliance with federal copyright law, Topart.com will not reproduce a copyrighted photograph taken by a professional photographer without a signed release from the original photographer/artists and or studio. The release must be signed by both you and the professional or studio who shot the photograph. You can obtain a pdf version of this form here: <a href="/documents/photographers_release.doc">Topart.com Copyright release form</a>. If you do not have permission or the right to order prints, canvas etc please terminate this order.
+                </div>
 
-						<div class="bold">
-							By uploading and ordering photo products from Topart.com, I acknowledge that I own the copyright to the images in my order or that I have obtained the written permission of the copyright owner and forwarded the Topart.com Copyright release form to Topart.com.
-						</div>
-					</p>
-				</div>
-				
-				<input type='submit' name='submit' id="s3_image_submit" value='Upload Image' />
-				
-				<a id="s3_result_light_box" class="fancybox" href="#s3_message"></a>
-				<div id="s3_message" style="width:400px; display: none;">
-					<?php echo $msg; ?>
-				</div>
+                <br />
 
-			</form>
+                <div class="bold">
+                    By uploading and ordering photo products from Topart.com, I acknowledge that I own the copyright to the images in my order or that I have obtained the written permission of the copyright owner and forwarded the Topart.com Copyright release form to Topart.com.
+                </div>
+            </p>
+        </div>
 
-			<form id="s3_redirect" action="<?php echo $site_base_url . "/your-photos-to-art-" . $custom_url_suffix; ?>" method='post'>
+        <input type='submit' name='submit' id="s3_image_submit" value='Upload Image' />
 
-				<input type='hidden' name='s3file' value="<?php echo $s3file; ?>" />
-				<input type='submit' name='redirect' id="s3_redirect_submit" value='Continue'/>
+        <a id="s3_result_light_box" class="fancybox" href="#s3_message"></a>
+        <div id="s3_message" style="width:400px; display: none;">
+            <?php echo $msg; ?>
+        </div>
 
-			</form>
+    </form>
 
-			<div class="button gold_background">Upload Your Image</div>
+    <form id="s3_redirect" action="<?php echo $site_base_url . "/your-photos-to-art-" . $custom_url_suffix; ?>" method='post'>
 
-		</div>
+        <input type='hidden' name='s3file' value="<?php echo $s3file; ?>" />
+        <input type='submit' name='redirect' id="s3_redirect_submit" value='Continue'/>
 
-	</div>
+    </form>
+
+    <div class="button gold_background">Upload Your Image</div>
 
 	<div class="drag section" style="background-image: url('<?php echo $s3_images_base_url . 'your_photos_to_art/your_photos_to_art-grey_box_image.jpg' ?>');">
 	</div>

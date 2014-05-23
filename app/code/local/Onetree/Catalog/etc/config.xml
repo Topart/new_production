@@ -17,5 +17,15 @@
                 </rewrite>
             </catalog>
 		</blocks>
+        <helpers>
+            <otcatalog>
+                <class>Onetree_Catalog_Helper</class>
+            </otcatalog>
+            <catalog>
+                <rewrite>
+                    <output>Onetree_Catalog_Helper_Output</output>
+                </rewrite>
+            </catalog>
+        </helpers>
    </global>
 </config>
