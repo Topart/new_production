@@ -81,7 +81,7 @@
 	font-family: "Benton Sans Medium";
 	font-style: normal;
 	color: #ABABAB;
-	font-size: 13px;
+	font-size: 15px;
 
 	text-transform: uppercase;
 	text-align: center;
@@ -90,8 +90,13 @@
 
   cursor: pointer;
   text-align: left;
-padding: 10px 0px;
+padding: 7px 0px;
 background-color: transparent !important;
+
+background-image: url(../images/arrow_down_product.jpg);
+background-repeat: no-repeat;
+background-size: 18px 18px;
+background-position: calc(100% - 10px) center;
 
 }
 
@@ -121,9 +126,11 @@ background-color: transparent !important;
 
 select#frame_categories
 {
-  width: 125px;
-  position: absolute;
-  display: none;
+  	width: 125px;
+	position: absolute;
+	display: none;
+	top: 0px;
+	right: 30px;
 }
 
 .mats_style
@@ -135,14 +142,18 @@ select#frame_categories
 
 #mats_previews
 {
-  width: 460px;
   display: none;
+  margin-bottom: 60px;
+margin-top: 15px;
 }
-
+dd.mat {
+	top: 115px;
+}
 #mats_previews li
 {
   position: relative;
   display: inline-block;
+  margin-right: 45px;
 }
 
 
@@ -173,7 +184,7 @@ ul#custom_option_mat li
 {
   float: left;
   
-  margin-left: 15px;
+  margin-right: 15px;
   margin-bottom: 15px;
 
   display: none;
@@ -209,7 +220,9 @@ ul#custom_option_mat li
   cursor: pointer;
   display: none;
 }
-
+.mat input.radio{
+	margin-top: 7px;
+}
 #category_frames_left_arrow_1
 {
   cursor: pointer;
@@ -240,20 +253,26 @@ ul#custom_option_mat li
 {
   width: 0;
   height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid #cccccc;
+  border-top: 10px solid transparent !important;
+  border-bottom: 10px solid transparent !important;
+  border-right: 10px solid #cccccc !important;
   z-index: 1;
+	position: absolute;
+	right: 165px;
+	top: 8px;
 }
 
 .arrow_right 
 {
   width: 0; 
   height: 0; 
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 10px solid #cccccc;
-  z-index: 1;
+  border-top: 10px solid transparent !important;
+  border-bottom: 10px solid transparent !important;
+  border-left: 10px solid #cccccc !important;
+	z-index: 1;
+	position: absolute;
+	right: 10px;
+	top: 8px;
 }
 
 #three_inches_white_top_border
@@ -276,34 +295,40 @@ ul#custom_option_mat li
 
 #two_inches_black_one_inch_white_top_border
 {
-  border-left-color: #ffffff;
-  border-top: 1px solid #ffffff;
-  border-bottom: 10px solid transparent;
-
+  border-left-color: #ffffff !important;
+  border-top: 0px solid #ffffff !important;
+  border-bottom: 10px solid transparent !important;
+  right: 107px;
+top: -10px;
   display: none;
 }
 
 #two_inches_black_one_inch_white_right_border
 {
-  border-top: 12px solid transparent;
-  border-bottom: 0px solid transparent;
-  border-right: 10px solid #ffffff;
-
+  border-top: 12px solid transparent !important;
+  border-bottom: 0px solid transparent !important;
+  border-right: 10px solid #ffffff !important;
+  right: -10px;
+top: 107px;
   display: none;
 }
 
 #canvas_top_border
 {
-  border-left-color: #ffffff;
-  border-top: 0px solid #ffffff;
-  border-bottom: 10px solid transparent;
+  border-left-color: #ffffff !important;
+  border-top: 0px solid #ffffff !important;
+  border-bottom: 10px solid transparent !important;
+  right: 107px;
+top: -10px;
 }
 
 #canvas_right_border
 {
-  border-top: 12px solid transparent;
-  border-bottom: 0px solid transparent;
-  border-right: 10px solid #ffffff;
+  border-top: 12px solid transparent !important;
+  border-bottom: 0px solid transparent !important;
+  border-right: 10px solid #ffffff !important;
+  right: -10px;
+top: 107px;
 }
 
 #custom_option_border_treatment_3_inches_of_white_background
@@ -394,7 +419,13 @@ dd.material .input-box ul li, dd.borders .input-box ul li
 
 dd.mat .input-box ul li
 {
-	width: 33%;
+	vertical-align: top;
+vertical-align: top;
+margin-right: 10px;
+margin-top: 10px;
+height: 50px;
+overflow: hidden;
+width: 145px;
 }
 
 dd.borders .input-box ul li
@@ -487,6 +518,7 @@ ul#custom_option_size li:nth-last-child(-n+4)
   cursor: pointer; 
 
   z-index: 1;
+  background-size: 100%;
 }
 
 .custom_option_size_text
@@ -590,6 +622,7 @@ ul#custom_option_material li
   height: 124px;
   margin-right: 18px;
   display: inline-block;
+  overflow: hidden;
 }
 
 #custom_option_material_posterpaper, #custom_option_material_photopaper
@@ -597,8 +630,8 @@ ul#custom_option_material li
 	position: relative;
 	top: 3px;
 	left: 3px;
-	width: 118px;
-	height: 118px;
+	width: 92%;
+	height: 92%;
 }
 
 ul#custom_option_material #custom_option_material_canvas_background
@@ -614,8 +647,8 @@ ul#custom_option_material #custom_option_material_canvas_background
 	position: relative;
   top: 0px;
   left: 3px;
-  width: 112px;
-  height: 112px;
+  width: 100%;
+  height: 100%;
 }
 
 
@@ -623,6 +656,7 @@ ul#custom_option_material #custom_option_material_canvas_background
 
 ul#custom_option_size
 {
+	min-height: 55px;
 }
 
 ul#custom_option_size li
@@ -656,7 +690,9 @@ ul#custom_option_size .custom_option_label
 ul#custom_option_borders
 {
 }
-
+#custom_option_borders li {
+	display: inline-block;
+}
 #custom_option_borders li:nth-of-type(2)
 {
   width: 130px;
@@ -710,7 +746,7 @@ ul#custom_option_frame li
 
   float: left;
   margin-right: 12px;
-  margin-bottom: 55px;
+  margin-bottom: 60px;
 
   cursor: pointer;
   display: none;
@@ -721,6 +757,7 @@ ul#custom_option_frame li
 top: 86px;
 font-family: "Benton Sans Medium";
 font-style: normal;
+position: absolute;
 }
 
 .frame_description .frame_title
@@ -743,10 +780,12 @@ font-style: normal;
 
 .product-options dl dd
 {
-	position: relative;
+	position: absolute;
   z-index: 1;
 }
-
+#custom_option_mat{
+	overflow: hidden;
+}
 /***************** END OF CUSTOM OPTIONS ***************************/
 
 #product_view_container
@@ -755,18 +794,19 @@ font-style: normal;
 	background-color: #ffffff;
  	z-index: 0;
  	font-size: 0;
+ 	overflow: hidden;
 }
 .product-visualize{
 	display: inline-block;
-	width: 450px;
+	max-width: 450px;
 	font-size: initial;
 }
 #final_product_image_background
 {
 	position: relative;
 	background-color: #ffffff;
-	width: 450px;
-	height: 450px;
+	width: 100%;
+	padding-bottom: 100%;
 	border: 2px solid #E1E1E1;
 	box-shadow: 1px 1px 1px #E1E1E1;
 	z-index: 1;
@@ -808,6 +848,7 @@ font-style: normal;
 	color: #9e9e9e;
 	font-size: 16px;
 	line-height: 28px;
+	margin-top: 15px;
 }
 
 #custom_options_images ul
@@ -1460,27 +1501,19 @@ a
 	border: 0px;
 }
 
-
-
-
-
-
-
-
-
-
+#custom_option_frame{
+	margin-top: 30px;
+	overflow: hidden;
+}
 .product-reloaded{
 	font-size: initial;
 }
 .option-reloaded{
 	font-size: initial;
+	position: relative;
 }
 .option-reloaded dt{
 	cursor: pointer;
-	background-image:url(../images/logo.png);
-	background-repeat: no-repeat;
-	background-size: 30px 30px;
-	background-position: calc(100% - 10px) center;
 }
 .option-reloaded dt label{
 	border-bottom: 2px solid #B19D68;
@@ -1507,16 +1540,24 @@ a
 }
 dd.material{
 	position: absolute;
-	top: 200px;
+	top: 215px;
+}
+.custom_options_images{
+	position: relative;
 }
 
-
-
+.product-options ul.options-list input.radio{
+	margin-top: 7px;
+}
+.product-options p.required{
+	display: none;
+}
 
 @media only screen and (max-width : 1024px) {
 	.product-visualize{
 		display: block;
-		width: 100% !important;
+		width: 99% !important;
+		margin: auto;
 		margin-bottom: 40px;
 	}
 	#final_product_image_background{
@@ -1528,3 +1569,93 @@ dd.material{
 	}
 }
 
+@media only screen and (max-width : 640px) {
+	ul#custom_option_material li {
+		margin-right: 12px;
+	}
+	dd.material .input-box ul li, dd.borders .input-box ul li {
+		width: 139px;
+	}
+	.product-options {
+	margin-bottom: 55px;
+	}
+	#product_image_functions div:before{
+		top: 5px;
+		left: -29px;
+	}
+	#product_image_functions div{
+		height: 34px;
+		line-height: 34px;
+	}
+}
+
+
+@media only screen and (max-width : 520px) {
+	ul#custom_option_material li,
+	ul#custom_option_material #custom_option_material_canvas_background
+	{
+	  width: 75px;
+	  height: 75px;
+	  margin-right: 9px;
+	}
+	dd.material{
+		top: 170px;
+	}
+	#mats_previews li{
+		margin-right: 9px;
+	}
+	dd.mat .input-box ul li{
+		width: 98px;
+		margin-right: 20px;
+		height: 50px;
+		overflow: hidden;
+	}
+	dd.material .input-box ul li, 
+	dd.borders .input-box ul li{
+		width: 88px;
+	}
+	.product-view .add-to-cart{
+		float: inherit;
+		margin: auto;
+		padding: 0;
+		width: auto;
+	}
+	.product-view .add-to-cart .button{
+		margin-right: 0;
+	}
+	.product-view .btn-cart span span{
+		padding: 5px 35px;
+	}
+}
+@media only screen and (max-width : 410px) {
+	.mats_style{
+		width: 76px;
+		height: 62px;
+	}
+	#mats_3_inches .mats_l_shape{
+		width: 53px;
+	}
+	dd.mat .input-box ul li{
+		width: 73px;
+	}
+}
+@media only screen and (max-width : 340px) {
+	.arrow_right{
+		right: 55px;
+		top: 47px;
+	}
+	.arrow_left{
+		top: 47px;
+		right: auto;
+		left: 55px;
+	}
+	select#frame_categories{
+		top: 40px;
+		right: 0px;
+		left: 0px;
+		margin: auto;
+	}
+	#custom_option_frame {
+		margin-top: 70px;
+	}
+}
