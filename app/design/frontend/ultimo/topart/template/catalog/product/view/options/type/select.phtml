@@ -131,7 +131,7 @@
 
         if ( $option_title == "size" )
         {
-            echo "<div id='size_info' class='custom_option_label'>Select Your Size (Inches): <div id='size_data'></div></div>";
+            echo "<div id='size_info' class='custom_option_label label_size_custom'>Select Your Size (Inches): <div id='size_data'></div></div>";
 
             // Custom Size is not available on Limited Edition items
             if ($udf_limited != "Yes")
@@ -163,7 +163,7 @@
         if ( $option_title == "mat" )
         {
             $option_label = "Select Mat";
-            echo "<div id='available_mats' class='custom_option_label'>Available mats</div>";
+            echo "<div id='available_mats' class='custom_option_label label_mat_custom'>Available mats</div>";
             echo "<div id='mats_line'></div>";
         }
 
