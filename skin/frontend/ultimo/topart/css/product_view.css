@@ -2,7 +2,7 @@
 {
 	position: relative;
 	top: -121px;
-	left: 20px;
+	left: 320px;
 
 	width: 0; 
 	height: 0; 
@@ -159,6 +159,7 @@ dd.mat {
 
 #mats_none
 {
+	margin-right: 0 !important;
   border: 1px dashed #cccccc;
 }
 
@@ -277,19 +278,21 @@ ul#custom_option_mat li
 
 #three_inches_white_top_border
 {
-  border-left-color: #ffffff;
-  border-top: 1px solid #ffffff;
-  border-bottom: 10px solid transparent;
-
+border-left-color: #ffffff !important;
+border-top: 1px solid #ffffff !important;
+border-bottom: 10px solid transparent !important;
+left: -2px;
+top: 28px;
   display: none;
 }
 
 #three_inches_white_right_border
 {
-  border-top: 12px solid transparent;
-  border-bottom: 0px solid transparent;
-  border-right: 10px solid #ffffff;
-
+  border-top: 12px solid transparent !important;
+border-bottom: 0px solid transparent !important;
+border-right: 10px solid #ffffff !important;
+left: 131px;
+top: 156px;
   display: none;
 }
 
@@ -298,8 +301,9 @@ ul#custom_option_mat li
   border-left-color: #ffffff !important;
   border-top: 0px solid #ffffff !important;
   border-bottom: 10px solid transparent !important;
-  right: 107px;
-top: -10px;
+left: 143px;
+top: 28px;
+
   display: none;
 }
 
@@ -308,8 +312,8 @@ top: -10px;
   border-top: 12px solid transparent !important;
   border-bottom: 0px solid transparent !important;
   border-right: 10px solid #ffffff !important;
-  right: -10px;
-top: 107px;
+left: 275px;
+top: 156px;
   display: none;
 }
 
@@ -333,8 +337,8 @@ top: 107px;
 
 #custom_option_border_treatment_3_inches_of_white_background
 {
-  border-top: 9px solid #ffffff;
-  border-right: 9px solid #ffffff;
+  border-top: 9px solid #F8F8F8;
+  border-right: 9px solid #F8F8F8;
 }
 
 #custom_option_border_treatment_2_inches_of_black_and_1_inch_of_white_background
@@ -630,8 +634,8 @@ ul#custom_option_material li
 	position: relative;
 	top: 3px;
 	left: 3px;
-	width: 92%;
-	height: 92%;
+	width: 96%;
+	height: 96%;
 }
 
 ul#custom_option_material #custom_option_material_canvas_background
@@ -640,6 +644,7 @@ ul#custom_option_material #custom_option_material_canvas_background
   height: 118px;
   border-top: 9px solid #000000;
   border-right: 9px solid #000000;
+  overflow: visible;
 }
 
 #custom_option_material_canvas
@@ -701,8 +706,8 @@ ul#custom_option_borders
 
 #custom_option_borders li:nth-of-type(2) div
 {
-  width: 125px;
-  height: 125px;
+width: 100%;
+height: 100%;
 }
 
 #custom_option_borders li:nth-of-type(3)
@@ -713,8 +718,8 @@ ul#custom_option_borders
 
 #custom_option_borders li:nth-of-type(3) div
 {
-  width: 125px;
-  height: 125px;
+width: 100%;
+height: 100%;
 }
 
 #custom_option_borders li:nth-of-type(4)
@@ -725,8 +730,8 @@ ul#custom_option_borders
 
 #custom_option_borders li:nth-of-type(4) div
 {
-  width: 125px;
-  height: 125px;
+width: 100%;
+height: 100%;
 }
 
 
@@ -750,6 +755,7 @@ ul#custom_option_frame li
 
   cursor: pointer;
   display: none;
+  border-width: 0px !important;
 }
 
 .frame_description
@@ -1421,7 +1427,7 @@ font-weight: bold;
 	top: -2px;
 	left: 17px;
 
-	width: 86px;
+	width: 87px;
 	height: 48px;
 }
 
@@ -1516,7 +1522,7 @@ a
 	cursor: pointer;
 }
 .option-reloaded dt label{
-	border-bottom: 2px solid #B19D68;
+	border-bottom: 1px solid #B19D68;
 }
 .option-reloaded .step-reloaded .step-number{
 	
@@ -1552,6 +1558,11 @@ dd.material{
 .product-options p.required{
 	display: none;
 }
+.custom_option_label a[href^="#info_size"]:parent{
+	position: absolute !important;
+
+}
+
 
 @media only screen and (max-width : 1024px) {
 	.product-visualize{
