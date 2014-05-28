@@ -65,17 +65,18 @@ $is_framed = true;
             <?php foreach ($_options as $_option) : ?>
             <?php $_formatedOptionValue = $this->getFormatedOptionValue($_option) ?>
             <dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
-            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>><?php echo $_formatedOptionValue['value'] ?>
+            <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>>
+                <?php
+                if ($_formatedOptionValue['value'] == "No Frame" )
+                    $is_framed = false;
+                echo $_formatedOptionValue['value'] ?>
                 <?php if (isset($_formatedOptionValue['full_view'])): ?>
                 <div class="truncated_full_value">
                     <dl class="item-options">
                         <dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
                         <dd><?php
 
-            	        	if ($_formatedOptionValue['value'] == "No Frame" )
-                                $is_framed = false;
-
-                            echo $_formatedOptionValue['full_view'] ?></dd>
+            	        	echo $_formatedOptionValue['full_view'] ?></dd>
                     </dl>
                 </div>
                 <?php endif; ?>
@@ -97,6 +98,7 @@ $is_framed = true;
         <ul>
 
             <?php
+            var_dump($is_framed);
             if ($is_framed)
             {
                 ?>
