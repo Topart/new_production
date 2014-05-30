@@ -3147,7 +3147,7 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 .footer-container .footer-bottom-container .footer-bottom .item-left .footer-copyright {float: none; font-size: 1em; line-height: 100%; margin: 0;}
 .footer-container .footer-bottom-container .footer-bottom .item-left .footer-bottom-slogan {display: block; font-style: italic; font-size: 14px; color: #B19D68; text-align: center; padding: 0 0 5px 0; border-bottom: 1px solid #dddddd; margin: 0 0 7px 0;}
 .footer-container .footer-bottom-container .footer-bottom .item-left .copy {display: block; text-align: center; text-transform: uppercase; font-weight: 700; margin: 0 0 40px 0;}
-.footer-container .footer-primary .block-title.heading {font-size: 12px!important; font-weight: 700!important; color: #B19D68!important; text-transform: uppercase!important;}
+.footer-container .footer-primary .block-title.heading {font-size: 12px!important;font-weight: 700!important;color: black!important;text-transform: uppercase!important;border-bottom: 1px solid #b19d68;}
 .footer-container .footer-primary ul.bullet li {background: 0; padding: 0;}
 /* = HOME PAGE ===============================================================================================*/
 .home-content {padding: 50px 0 0 0;}
@@ -3156,6 +3156,7 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 .page-title {border-bottom: 0!important;}
 .home-content .home-collection-list li,.category-collections .main-container .collection-list li {position: relative; float: left; margin: 0 0 4em 0;}
 .home-content h2.home-sections-title, .page .main-container h2.inner-sections-title,
+.home-content h2.home-sections-title { font-size: 25px !important; border-bottom: 2px solid #b19d68;}
 .page-title h1 {padding: 0 0 8px 10px; /*border-bottom: 1px solid #dddddd;*/ margin: 0 0 30px 0!important; font-size: 18px; font-weight: 400; color: #000000; text-transform: uppercase;}
 .page-title h1 {padding-left: 0; font-size: 30px;}
 .catalog-category-view .page-title h1 {padding-left: 0; font-size: 18px;}
@@ -3163,7 +3164,7 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 .home-content .home-collection-list li:nth-child(3n+2) {margin: 0 4% 4em 4%;}
 .home-content .home-collection-list li a,.category-collections .main-container .collection-list li a {display: block; float: left;}
 .home-content .home-collection-list li a img,.category-collections .main-container .collection-list li a img {display: block; float: left;width: 100%;}
-.home-content .home-collection-list li a span.collection-name,.category-collections .main-container .collection-list li a span.collection-name {display: block; width: 100%; line-height: 100%; padding: 17px 0; position: absolute; top: 0; left: 0; z-index: 3; background: rgba(0,0,0,0.3); text-align: center; font-size: 16px; font-weight: 400; color: #ffffff; transition: background 300ms ease-in-out; -moz-transition: background 300ms ease-in-out; -webkit-transition: background 300ms ease-in-out; -o-transition: background 300ms ease-in-out;font-family: bentonsansregular,arial;text-transform: uppercase;}
+.home-content .home-collection-list li a span.collection-name,.category-collections .main-container .collection-list li a span.collection-name {display: block; width: 100%; line-height: 100%; padding: 17px 0; position: absolute; top: 0; left: 0; z-index: 3; background: #b19d68; text-align: center; font-size: 16px; font-weight: 400; color: #ffffff; transition: background 300ms ease-in-out; -moz-transition: background 300ms ease-in-out; -webkit-transition: background 300ms ease-in-out; -o-transition: background 300ms ease-in-out;font-family: bentonsansregular,arial;text-transform: uppercase;}
 .home-content .home-collection-list li a:hover span.collection-name,.category-collections .main-container .collection-list li a:hover span.collection-name {background: rgba(0,0,0,0.5);}
 .home-content .home-talent-list,.category-collections .main-container .collection-list {display: table; width: 100%; min-width: 100%;}
 .home-content .home-talent-list li,.category-collections .main-container .collection-list li {display: table-cell; text-align: center;}
@@ -3173,6 +3174,8 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 .home-content .home-talent-list li a:hover span {color: #b19d68;}
 .main-container .sticker-wrapper, .main-container ul .item .actions, .main-container .home-content .toolbar,.category-collections .main-container .toolbar {display: none!important;}
 .main-container ul .item {border-top: 0!important;}
+a.title-anchor h2{color: black;}
+a.title-anchor:hover h2{color: #b19d68}
 /* = BROWSE CATEGORIES PAGE ===============================================================================================*/
 .category-collections .main-container .collection-list li {display: inline-table; width: 25%; float: left; margin: 0 0 1.5em 0;}
 .category-collections .main-container .collection-list li a {position: relative;}
@@ -3291,7 +3294,8 @@ form#create-art-upload{
 	position: relative;
 }
 .create-art-list-container > ul > li > a > img{
-	width: 100%;
+	/*width: 100%;*/
+	max-height: 272px;
 }
 .create-art-list-container > ul > li.middle-li{
 	margin: 0em 5% 2em 5%;
