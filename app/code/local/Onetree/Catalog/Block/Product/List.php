@@ -58,6 +58,6 @@ class Onetree_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_List
         }else {
             $sizePrice = $this->getPriceHtml($product, true);
         }
-        return $sizePrice;
+        return 'from: '.$sizePrice;
     }
 }
