@@ -3357,13 +3357,15 @@ form#create-art-upload{
 	color: #04A6E5;
 }
 .create-art-list-container{
-	margin-top: 55px;
+	margin-top: 20px;
 }
 .create-art-list-container > ul > li{
 	display: inline-block;
 	width: 30%;
 	vertical-align: top;
 	position: relative;
+	text-align: center;
+	background-color: white;
 }
 .create-art-list-container > ul > li > a > img{
 	/*width: 100%;*/
@@ -3472,7 +3474,20 @@ form#create-art-upload{
 .contact-data .other-info{
 	margin-bottom: 30px;
 }
-
+.category-subjects .category-description,
+.category-collections .category-description {
+	padding-left: 0;
+	min-height: 1.3125em;
+	padding: 0 0 18px 10px;
+	border-bottom: 1px solid #dddddd;
+	margin: 0 0 30px 0!important;
+	font-size: 18px;
+	font-weight: 400;
+	color: #000000;
+	text-transform: uppercase;
+	font-family: baskervilleoldfacscdregular,tahoma,times new roman, serif;
+	letter-spacing: 3px;
+}
 @media only screen and (max-width : 1280px) {
 	.create-art .create-art-content, 
 	.create-art .create-main-image {
