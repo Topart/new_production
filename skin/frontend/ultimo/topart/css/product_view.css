@@ -1579,7 +1579,9 @@ dd.material{
 	position: absolute !important;
 
 }
-
+.box-tabs {
+	font-size: 12px;
+}
 
 @media only screen and (max-width : 1024px) {
 	.product-visualize{
