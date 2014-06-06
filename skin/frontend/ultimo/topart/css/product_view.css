@@ -998,7 +998,13 @@ a#details .product_function_text
 {
   width: 70px;
 }
-
+.product-visualize #final_product_image_background > a[rel~="prettyPhoto"]{
+	width: 100%;
+	position: absolute;
+	height: 100%;
+	display: block;
+	overflow: hidden;
+}
 .function_icon
 {
 	background-repeat: no-repeat;
