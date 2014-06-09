@@ -1598,6 +1598,7 @@ dd.material{
 	}
 	#final_product_image_background{
 		margin: auto;
+		background-size: 100% !important;
 	}
 	.product-view{
 		width: 97%;
