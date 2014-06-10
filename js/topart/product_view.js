@@ -1869,6 +1869,13 @@
 		var original_image_left = 1;
 		var original_image_margin_top = 1;
 		var original_image_margin_left = 1;
+        //in%
+        var original_image_widthPoc = 1;
+        var original_image_heightPoc = 1;
+        var original_image_topPoc = 1;
+        var original_image_leftPoc = 1;
+        var original_image_margin_topPoc = 1;
+        var original_image_margin_leftPoc = 1;
 
 
 		function load_product_image()
@@ -1917,13 +1924,30 @@
 				margin_top = background_height * (margin_top_percentage/100);
 				margin_left = background_width * (margin_left_percentage/100);
 
+                var widthPoc = '';
+                var heightPoc = '';
+                if(width > height){
+                    widthPoc = "100%";
+                    heightPoc = height * 100 / 450;
+                    heightPoc = heightPoc + "%";
+                }else{
+                    widthPoc = width * 100 / 450;
+                    widthPoc = widthPoc + "%";
+                    heightPoc = "100%";
+                }
+
+
+                //new top and left distance
+                var topPoc = ((top_distance * 100) /  background_height ) + "%";
+                var leftPoc = ((left_distance * 100) /  background_width ) + "%";
+
 				// Set the final product image coordinates
-				$j("#final_product_image").css("width", width);
-				$j("#final_product_image").css("height", height);
-				$j("#final_product_image").css("top", top_distance);
-				$j("#final_product_image").css("left", left_distance);
-				$j("#final_product_image").css("margin-top", margin_top);
-				$j("#final_product_image").css("margin-left", margin_left);
+				$j("#final_product_image").css("width", width_percentage + "%");
+				$j("#final_product_image").css("height", height_percentage + "%");
+				$j("#final_product_image").css("top", topPoc);
+				$j("#final_product_image").css("left", leftPoc);
+				$j("#final_product_image").css("margin-top", margin_top_percentage + "%");
+				$j("#final_product_image").css("margin-left", margin_left_percentage + "%");
 
 				original_image_width = width;
 				original_image_height = height;
@@ -1931,6 +1955,14 @@
 				original_image_left = left_distance;
 				original_image_margin_top = margin_top;
 				original_image_margin_left = margin_left;
+
+                //in %
+                original_image_widthPoc = width_percentage + "%";
+                original_image_heightPoc = height_percentage + "%";
+                original_image_topPoc = topPoc;
+                original_image_leftPoc = leftPoc;
+                original_image_margin_topPoc = margin_top_percentage + "%";
+                original_image_margin_leftPoc = margin_left_percentage + "%";
 
 
 				$j("#final_product_image").show();
@@ -2190,8 +2222,21 @@
 		// Automatic image resizing based on the image ratio
 		function resize_image(width, height, top, left, margin_top, margin_left)
 		{
-			// Animate the automatic image resizing to make it fit nicely into the room			
-			$j("#final_product_image").animate({ width: width, height: height, top: top, left: left, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
+			/*if(width > height){
+                width = "100%";
+                height = height * 100 / 450;
+                height = height + "%";
+
+
+            }else{
+                width = width * 100 / 450;
+                width = width + "%";
+                height = "100%";
+            }*/
+
+            // Animate the automatic image resizing to make it fit nicely into the room
+            $j("#final_product_image").animate({ width: width, height: height, top: top, left: left, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
+            //$j("#final_product_image").animate({ width: width, height: height, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
 				activate_dynamic_framing_matting(frame_image_url, mats_color_code, mats_size)
 			});
 		}
@@ -2221,7 +2266,7 @@
 			width = original_image_width;
 			height = original_image_height;
 
-			reset_framing_matting();
+            reset_framing_matting();
 
 			// In Percentage
 			top_percentage = 50;
@@ -2249,10 +2294,17 @@
 			top = background_height * (top_percentage/100) + frame_height;
 			left = background_width * (left_percentage/100) + frame_width;
 
+
 			margin_top = background_height * (margin_top_percentage/100);
 			margin_left = background_width * (margin_left_percentage/100);
 
-			resize_image(width, height, image_top, image_left, margin_top, margin_left);
+            //in %
+            margin_top_percentage = original_image_margin_topPoc;
+            margin_left_percentage = original_image_margin_leftPoc;
+            image_top = original_image_topPoc;
+            image_left = original_image_leftPoc;
+
+			resize_image(width_percentage + "&", height_percentage + "%", image_top, image_left, margin_top_percentage, margin_left_percentage);
 		}
 
 		function display_rooms_view(room_index, rooms_view_state)
@@ -2266,7 +2318,9 @@
 				selected_length = temp;
 			}
 
-			real_width = selected_width * size_scale_factor;
+            alert( "selected =" + selected_width + " scale =" + size_scale_factor);
+
+            real_width = selected_width * size_scale_factor;
 			real_height = selected_length * size_scale_factor;
 
 			real_top = furniture_image_gap - real_height;
@@ -2286,12 +2340,15 @@
 				background_height -= 2 * mats_size*dpi;
 			}
 
-			resize_image(real_width, real_height, real_top, real_left, 0, 0);
+
+
+			resize_image(real_width, real_height, "2%", "45%", 0, 0);
 		}
 		
 		// Wall Color
 		$j("#wall_color").click(function () {
-		
+
+
 			var original_background_color = $j("#final_product_image_background").css("background-color");
 
 			// Hide the rooms view first if it is visible or if the image background has been altered in the meantime
