@@ -1655,6 +1655,12 @@ dd.material{
 	.border_treatment_2_inches_mirrored_and_1_inch_of_white {
 		left: 294px;
 	}
+	#room_switch {
+		bottom: 50px;
+	}
+	#product_image_functions {
+		width: 100%;
+	}
 }
 
 
