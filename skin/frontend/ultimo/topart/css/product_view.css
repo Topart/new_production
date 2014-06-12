@@ -37,7 +37,7 @@
 .short-description .std
 {
 	position: relative;
-	font-family: "Benton Sans Medium";
+	font-family: Arial, "Benton Sans Medium";
   font-style: normal;
   font-weight: normal;
 	color: #404040;
@@ -203,7 +203,8 @@ ul#custom_option_mat li
 
 #available_mats
 {
-  font-size: 16px;
+	 font-size: 12px;
+	margin-top: 75px;
 }
 
 #mats_line
@@ -610,7 +611,7 @@ right: 0px;
 
 .product-options dl dt.mat
 {
-	margin-top: 40px;
+
 }
 
 .product-options dl dt{
@@ -694,6 +695,7 @@ ul#custom_option_size .custom_option_label
 {
   font-size: 14px;
   width: 350px;
+  margin-top: 35px;
 }
 
 
@@ -844,8 +846,9 @@ position: absolute;
 	font-weight: normal;
 	font-style: normal;
 	font-size: 28px;
-	color: #000000;
+	color: #AAAAAA;
 	text-transform: uppercase;
+	margin-bottom: 2px;
 }
 
 .product-options-bottom .price
@@ -860,13 +863,14 @@ position: absolute;
 
 .custom_option_label
 {
-	font-family: "BaskervilleOldFacSCD";
+	font-family: Arial, "BaskervilleOldFacSCD";
 	font-weight: normal;
 	font-style: normal;
-	color: #9e9e9e;
-	font-size: 16px;
+	color: #AAAAAA;
+	font-size: 12px;
 	line-height: 28px;
-	margin-top: 15px;
+	margin-top: 10px;
+	text-transform: uppercase;
 }
 
 #custom_options_images ul
@@ -1023,49 +1027,55 @@ a#details .product_function_text
 #color_switch
 {
 	position: absolute;
-	top: 380px;
-	left: 0px;
-	width: 450px;
-	height: 71px;
+	bottom: 30px;
+	left: 4px;
+	width: 100%;
+	height: auto;
 	z-index: 2;
 	display: none;
+	text-align: center;
 }
 
 .color
 {
-	float: left;
-	
-	width: 45px;
+	float: inherit;
+	display: inline-block;
+	width: 10%;
 	height: 24px;
+	margin: 0;
+	padding: 0;
+	line-height: 0;
+	margin-top: -4px;
 }
 
 #hide_button
 {
 	position: absolute;
 	top: 403px;
-	left: 217px;
+	left: 42%;
 
 	width: 53px;
-	height: 20px;
+	height: 22px;
 	
 	padding-left: 27px;
 	
-	background-color: #000000;
+	background-color: #2a2a2a;
 	color: #ffffff;
 	
 	display: none;
 	z-index: 2;
+	line-height: 24px;
 }
 
 #hide_down_arrow
 {
 	position: absolute;
-	top: 5px;
+	top: 7px;
 	left: 5px;
 	width: 0;
 	height: 0;
-	border-left: 8px solid black;
-	border-right: 8px solid black;
+	border-left: 8px solid #2a2a2a;
+	border-right: 8px solid #2a2a2a;
 	border-top: 8px solid grey;
 }
 
@@ -1077,30 +1087,26 @@ a#details .product_function_text
 #room_switch
 {
 	position: absolute;
-	top: 365px;
-	left: 0px;
-	width: 450px;
-	height: 87px;
+	bottom: 34px;
+	left: 2px;
+	width: 100%;
+	height: auto;
 	background-color: #2a2a2a;
 	z-index: 2;
-
 	display: none;
+	text-align: center;
 }
 
 .room_thumbnail
 {
-	float: left;
-	
+	display: inline-block;
+	float: inherit;
 	width: 55px;
 	height: 55px;
-	
-	margin-left: 17px;
-	margin-top: 17px;
-	
+	margin: 14px 8px;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
-	
 	cursor: pointer;
 }
 
@@ -1192,14 +1198,11 @@ a#details .product_function_text
 
 .custom_option_label .fancybox
 {
-  font-size: 16px;
-
+  font-size: 12px;
   position: relative;
   top: -2px;
   left: 10px;
 }
-
-
 .canvas_available
 {
   display: none;
@@ -1540,12 +1543,15 @@ a
 .option-reloaded{
 	font-size: initial;
 	position: relative;
+	margin-top: 14px;
 }
 .option-reloaded dt{
 	cursor: pointer;
 }
 .option-reloaded dt label{
-	border-bottom: 1px solid #B19D68;
+	border-bottom: 2px solid #B19D68;
+	font-family: Arial !important;
+	text-transform: capitalize !important;
 }
 .option-reloaded .step-reloaded .step-number{
 	
@@ -1561,22 +1567,21 @@ a
 	background-color: green;
 	height: 300px;
 }
-
-
-/*NO SE QUE ES*/
 .product-secondary-column{
 	display: none;
 }
 dd.material{
 	position: absolute;
-	top: 208px;
+	top: 202px;
 }
 .custom_options_images{
 	position: relative;
 }
 
 .product-options ul.options-list input.radio{
-	margin-top: 7px;
+	margin-top: 3px;
+	width: 18px;
+	height: 18px;
 }
 .product-options p.required{
 	display: none;
@@ -1588,7 +1593,14 @@ dd.material{
 .box-tabs {
 	font-size: 12px;
 }
-
+.product-view .btn-cart span {
+	background-color: #333333;
+	color: #B19D68;
+}
+.gen-tabs .tabs a {
+	padding: 0 25px;	
+	font-weight: bold;
+}
 @media only screen and (max-width : 1024px) {
 	.product-visualize{
 		display: block;
@@ -1677,6 +1689,11 @@ dd.material{
 	}
 	.product-view .btn-cart span span{
 		padding: 5px 35px;
+	}
+}
+@media only screen and (max-width : 485px) {
+	#room_switch{
+		top: 259px;
 	}
 }
 @media only screen and (max-width : 410px) {

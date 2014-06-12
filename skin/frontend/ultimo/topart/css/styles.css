@@ -1610,6 +1610,7 @@ h3.product-name {
 */
 .ratings,
 .no-rating { line-height:1.0833em; margin:15px 0 15px; }
+.product-view .no-rating {font-size: 14px;}
 .ratings a { line-height:1.0833em; }
 .ratings strong { float:left; margin:1px 5px 0 0; }
 .ratings .rating-links .separator {
@@ -1886,7 +1887,7 @@ a.availability-only { cursor:pointer; }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 /* Generic wrapper for product page collaterals */
-.product-view .box-additional { margin-top:20px;float: inherit; display:block;}
+.product-view .box-additional { margin-top:5px;margin-left: 0px;float: inherit; display:block;}
 .product-view .box-tabs {}
 .product-view .box-sidebar {}
 .product-view .box-up-sell {}
@@ -1924,7 +1925,7 @@ a.availability-only { cursor:pointer; }
 .product-view .short-description ul { margin-top:5px; margin-bottom:5px; }
 
 /* Add-to links */
-.product-view .action-box { margin:20px 0; }
+.product-view .action-box { margin:0px 0; }
 
 	/* Add-to links in different places of the product page */
 	.product-view .add-to-links li { margin-right: 10px; }
@@ -2053,7 +2054,10 @@ a.availability-only { cursor:pointer; }
 .product-options ul.options-list input.radio { float:left; }
 .product-options ul.options-list input.checkbox { float:left; }
 .product-options ul.options-list .label { display:block; margin-left:18px; }
-.product-options ul.options-list label { font-weight:normal; }
+.product-options ul.options-list label { 
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 12px;}
 .product-options ul.validation-failed { padding:0 7px; }
 .product-options p.note { margin:0; font-size:0.9166em; }
 .product-options p.required { position:relative;}
