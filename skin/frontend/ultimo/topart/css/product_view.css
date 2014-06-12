@@ -945,7 +945,8 @@ font-weight: bold;
 	z-index: 2;
 	text-align: center;
 	margin-top: 15px;
-	width: 442px;
+	width: 100%;
+	font-size: 0;
 }
 
 #product_image_functions div
@@ -1014,9 +1015,12 @@ a#details .product_function_text
 	background-repeat: no-repeat;
 	background-position: center;
 	background-size: cover;
-	
-	width: 25px;
-	height: 25px;
+	width: 25%;
+	height: auto;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
 }
 
 .catalog-product-view .product-collateral
@@ -1027,8 +1031,8 @@ a#details .product_function_text
 #color_switch
 {
 	position: absolute;
-	bottom: 30px;
-	left: 4px;
+	bottom: 40px;
+	left: 2px;
 	width: 100%;
 	height: auto;
 	z-index: 2;
@@ -1689,11 +1693,6 @@ dd.material{
 	}
 	.product-view .btn-cart span span{
 		padding: 5px 35px;
-	}
-}
-@media only screen and (max-width : 485px) {
-	#room_switch{
-		top: 259px;
 	}
 }
 @media only screen and (max-width : 410px) {
