@@ -2304,7 +2304,7 @@
             image_top = original_image_topPoc;
             image_left = original_image_leftPoc;
 
-			resize_image(width_percentage + "&", height_percentage + "%", image_top, image_left, margin_top_percentage, margin_left_percentage);
+			resize_image(width_percentage + "%", height_percentage + "%", image_top, image_left, margin_top_percentage, margin_left_percentage);
 		}
 
 		function display_rooms_view(room_index, rooms_view_state)
@@ -2318,7 +2318,7 @@
 				selected_length = temp;
 			}
 
-            alert( "selected =" + selected_width + " scale =" + size_scale_factor);
+            alert(furniture_image_gap);
 
             real_width = selected_width * size_scale_factor;
 			real_height = selected_length * size_scale_factor;
@@ -2340,9 +2340,14 @@
 				background_height -= 2 * mats_size*dpi;
 			}
 
+            // caluculate % with and height
+            var widthAux = original_image_widthPoc.replace("%","");
+            var heightAux = original_image_heightPoc.replace("%","");
 
+            var withPoc = ((real_width * widthAux) / original_image_width);
+            var heightPoc = ((real_height * heightAux) / original_image_height);
 
-			resize_image(real_width, real_height, "2%", "45%", 0, 0);
+			resize_image(withPoc + "%", heightPoc + "%", real_top, real_left, 0, 0);
 		}
 		
 		// Wall Color
