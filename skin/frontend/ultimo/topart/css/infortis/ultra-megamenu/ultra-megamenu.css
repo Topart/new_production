@@ -400,3 +400,14 @@ padding-top: 6px !important;
 .vertnav-top ul.level0 > li > a {
 	text-transform: capitalize !important;
 }
+
+
+
+@media only screen and (min-width : 980px) {
+	#nav .level0 .level0-wrapper{
+		max-width: 345px;
+	}
+	#nav .level0:nth-child(1) .level0-wrapper{
+		left: 150px !important;
+	}
+}
