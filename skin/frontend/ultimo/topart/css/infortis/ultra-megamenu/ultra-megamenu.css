@@ -382,6 +382,10 @@ ul.vertnav-top li > a > span > .cat-label {
 }
 #nav ul.level0 > li > a {
 	color: white !important;
+	text-transform: capitalize;
+	margin-bottom: 0;
+	padding-bottom: 6px;
+	padding-top: 6px;
 }
 #nav ul.level0 > li > a:hover {
 	color: #b19d68 !important;
