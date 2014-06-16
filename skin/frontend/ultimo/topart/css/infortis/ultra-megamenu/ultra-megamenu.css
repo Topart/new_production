@@ -397,3 +397,6 @@ padding-top: 6px !important;
 	margin-top: 2px;
 	border: 0;
 }
+.vertnav-top ul.level0 > li > a {
+	text-transform: capitalize !important;
+}
