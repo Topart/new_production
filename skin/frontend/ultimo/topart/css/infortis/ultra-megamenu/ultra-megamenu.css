@@ -407,7 +407,7 @@ padding-top: 6px !important;
 	#nav .level0 .level0-wrapper{
 		max-width: 345px;
 	}
-	#nav .level0:nth-child(1) .level0-wrapper{
+	#nav .level0.nav-5 .level0-wrapper{
 		left: 150px !important;
 	}
 }
