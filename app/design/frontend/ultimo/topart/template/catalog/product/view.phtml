@@ -24,7 +24,6 @@
 
 
 <!-- New code -->
-
 <div id="product_view_container">
 
 		<?php $site_base_url = "http://" . $_SERVER["SERVER_NAME"]; ?>
@@ -301,10 +300,6 @@
 			<a id="rooms" class="function_icon">
 				<div class="product_function_text">Rooms</div>
 			</a>
-
-			<a id="reset" class="function_icon">
-				<div class="product_function_text">Reset</div>
-			</a>
 			
 			<a id="details" class="function_icon">
 				<div class="product_function_text">Details</div>
@@ -484,7 +479,10 @@
                 <div class="extrahint-wrapper"><?php echo $extrahint_html; ?></div>
             <?php endif; ?>
             
-            <div class="product-type-data<?php echo $productTypeClasses; ?>"><?php echo $this->getChildHtml('product_type_data'); ?></div>
+            <div class="product-type-data<?php echo $productTypeClasses; ?>">
+            	<a id="reset" class="function_icon"></a>
+            	<?php echo $this->getChildHtml('product_type_data'); ?>
+            </div>
             
             <?php echo $this->getTierPriceHtml(); //tier prices ?>
 
@@ -610,6 +608,7 @@
                             <?php echo $container2_html; ?>
                         </div>
                     </div>
+                    <div class="addthis_native_toolbox"></div>
             </div>
 				    <?php /*
 					<div id="custom_options_images">

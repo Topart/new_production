@@ -86,20 +86,22 @@
 	text-transform: uppercase;
 	text-align: center;
 
-  border-radius: 3px;
+	border-radius: 3px;
 
-  cursor: pointer;
-  text-align: left;
-padding: 7px 0px;
-background-color: transparent !important;
+ 	cursor: pointer;
+	text-align: left;
+	padding: 7px 0px;
+	background-color: transparent !important;
 
-background-image: url(../images/arrow_down_product.jpg);
-background-repeat: no-repeat;
-background-size: 18px 18px;
-background-position: calc(100% - 10px) center;
+	background-image: url(../images/arrow_down_product.jpg);
+	background-repeat: no-repeat;
+	background-size: 18px 18px;
+	background-position: calc(100% - 10px) center;
 
 }
-
+.product-options label.arrow-changed {
+	background-image: url(../images/icon_prod_reset.png);
+}
 .product-options label.required em
 {
 	display: none;
@@ -1091,7 +1093,7 @@ a#details .product_function_text
 #room_switch
 {
 	position: absolute;
-	bottom: 34px;
+	bottom: 42px;
 	left: 2px;
 	width: 100%;
 	height: auto;
@@ -1553,7 +1555,7 @@ a
 	cursor: pointer;
 }
 .option-reloaded dt label{
-	border-bottom: 2px solid #B19D68;
+	border-bottom: 1px solid #B19D68;
 	font-family: Arial !important;
 	text-transform: capitalize !important;
 }
@@ -1592,10 +1594,13 @@ dd.material{
 }
 .custom_option_label a[href^="#info_size"]:parent{
 	position: absolute !important;
-
+}
+.product-view .container2-wrapper{
+	padding: 0 !important;
 }
 .box-tabs {
 	font-size: 12px;
+	margin-top: 30px;
 }
 .product-view .btn-cart span {
 	background-color: #333333;
@@ -1604,6 +1609,23 @@ dd.material{
 .gen-tabs .tabs a {
 	padding: 0 25px;	
 	font-weight: bold;
+}
+.addthis_native_toolbox {
+	display: inline-block !important;
+	display: inline-block !important;
+	padding-top: 25px;
+	border-top: 1px solid rgb(219, 219, 219);
+	width: 500px;
+}
+.addthis_native_toolbox .addthis_button_tweet iframe {
+	width: 80px !important;
+}
+.addthis_native_toolbox .addthis_button_pinterest_pinit iframe{
+	width: 45px !important;
+}
+.addthis_native_toolbox .addthis_button_google_plusone > div,
+.addthis_native_toolbox .addthis_button_google_plusone iframe {
+	width: 65px !important;
 }
 @media only screen and (max-width : 1024px) {
 	.product-visualize{

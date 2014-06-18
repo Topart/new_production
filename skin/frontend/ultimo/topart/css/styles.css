@@ -3214,10 +3214,25 @@ a.title-anchor:hover h2{color: #b19d68}
 .catalog-category-view .category-top .category-intro {display:block; padding: 0; margin: 0; background: rgba(0,0,0,0.8); color: #BEAD81;}
 .catalog-category-view .category-top .category-name {padding: 15px 25px; margin-bottom: 5px; font-size: 25px; text-transform: uppercase;}
 .catalog-category-view .category-top .category-intro {padding: 20px 18px 25px 18px; font-size: 14px;}
-
+.product-type-data a#reset {
+	background-image: url(../images/icon_prod_reset.png);
+	position: absolute;
+	bottom: 0px;
+	right: 20px;
+	width: 30px;
+	height: 30px;
+	background-size: 100%;
+	cursor: pointer;
+}
+.box-tabs {
+	width: 100% !important;
+}
 @media only screen and (max-width : 1280px) {
  	.home-content .home-collection-list li {
 		max-height: 313px;
+	}
+	.product-type-data a#reset {
+		right: 15px;
 	}
 }
 @media only screen and (max-width : 1024px) {
@@ -3238,6 +3253,9 @@ a.title-anchor:hover h2{color: #b19d68}
 @media only screen and (max-width : 760px) {
 	.home-content .home-collection-list li {
 		max-height: 185px;
+	}
+	.product-type-data a#reset {
+		right: 5px;
 	}
 }
 @media only screen and (max-width : 640px) {
@@ -3616,3 +3634,4 @@ form#create-art-upload{
 		width: 215px;
 	}
 }
+

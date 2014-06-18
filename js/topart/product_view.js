@@ -18,6 +18,19 @@
 		// Only the active tab has a black background, all the others are grey.
 		$j(".product-options dt:not(.material) label.required").css("background-color", "#b19d68");
 
+		var viewportWidth = $j(window).width();
+		$j(window).resize(function() {
+			viewportWidth = $j(window).width();
+			if (! $j("#room_switch").is(":hidden") ) {
+				if(viewportWidth > 640){
+					$j("#hide_button").css("bottom", 116);
+				}else if(viewportWidth > 480){
+					$j("#hide_button").css("bottom", 132);
+				}else{
+					$j("#hide_button").css("bottom", 215);
+				}
+			}
+		});
 		// Tracks if the canvas option has been selected or not
 		var canvas_active = 0;
 		var paper_active = 0;
@@ -69,6 +82,9 @@
 		var selected_frame = "";
 		var selected_mats = "";
 		// End of product configuration variables
+
+		var height_color = 330;
+		var height_rooms = 0;
 
 		var active_option = "";
 		oversize_flag = false;
@@ -422,8 +438,6 @@
 			);
 		}
 
-
-
 		function show_mats_colors_grid()
 		{
 			$j("li.mats_color").show();
@@ -435,7 +449,6 @@
 			}
 			
 		}
-
 
 		function is_mat_available(mats_sku)
 		{
@@ -487,7 +500,6 @@
 
 		}
 
-
 		// When you select a mat color, show the corresponding valid skus (compatible with the given size)
 		function show_mats_options(mats_color)
 		{
@@ -524,7 +536,6 @@
 			);
 
 		}
-
 
 		old_size_ui = 1;
 
@@ -2381,7 +2392,8 @@
 			{
 				// Show the color switch tab
 				$j("#color_switch").slideDown("slow");
-				$j("#hide_button").css("top", "360px");
+				$j("#hide_button").css("top", "inherit");
+				$j("#hide_button").css("bottom", 115);
 				$j("#hide_button").slideDown("slow");
 			}
 			
@@ -2434,7 +2446,15 @@
 			{
 				// Show the room switch tab
 				$j("#room_switch").slideDown("slow");
-				$j("#hide_button").css("top", "345px");
+				$j("#hide_button").css("top", "inherit");
+
+				if(viewportWidth > 640){
+					$j("#hide_button").css("bottom", 124);
+				}else if(viewportWidth > 480){
+					$j("#hide_button").css("bottom", 132);
+				}else{
+					$j("#hide_button").css("bottom", 215);
+				}
 				$j("#hide_button").slideDown("slow");
 			}
 			
