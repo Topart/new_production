@@ -3140,8 +3140,8 @@ body.cms-index-defaultindex .main{box-shadow: none;-webkit-box-shadow: none;}
 .block-related-thumbnails .product:after,
 .cart .crosssell:after,
 .section-line:after,
-.section-title:after
-
+.section-title:after,
+ul.blog-posts:after
 { display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }
 
 /* = FOOTER ==================================================================================================*/
