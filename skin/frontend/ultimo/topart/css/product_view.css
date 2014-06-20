@@ -583,10 +583,11 @@ line-height: 40px;
 
 #custom_size_link
 {
-  font-size: 12px;
-  z-index: 1;
-position: absolute;
-right: 0px;
+ 	font-size: 12px;
+	z-index: 1;
+	position: absolute;
+	left: 300px;
+	top: 7px;
 }
 
 /***************** CUSTOM OPTIONS ***************************/
@@ -600,7 +601,7 @@ right: 0px;
 
 .product-options dl dt.size
 {
-  visibility: hidden;
+  display: none;
 }
 
 .product-options dl dt.borders
@@ -1559,6 +1560,17 @@ a
 	font-family: Arial !important;
 	text-transform: capitalize !important;
 }
+.option-reloaded dt .step-selection{
+	position: absolute;
+	top: 10px;
+	right: 40px;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: Arial !important;
+}
+.option-reloaded dt label span{
+	color: black;
+}
 .option-reloaded .step-reloaded .step-number{
 	
 }
@@ -1626,6 +1638,16 @@ dd.material{
 .addthis_native_toolbox .addthis_button_google_plusone > div,
 .addthis_native_toolbox .addthis_button_google_plusone iframe {
 	width: 65px !important;
+}
+#cont_size {
+	position: absolute;
+	left: 260px;
+	top: 3px;
+	margin: 0;
+	width: 35px;
+}
+.canvas_stretching .step-selection {
+	display: none;
 }
 @media only screen and (max-width : 1024px) {
 	.product-visualize{
@@ -1733,6 +1755,9 @@ dd.material{
 	}
 	dd.mat .input-box ul li{
 		width: 73px;
+	}
+	.addthis_native_toolbox {
+		width: auto;
 	}
 }
 @media only screen and (max-width : 340px) {
