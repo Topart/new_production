@@ -35,7 +35,7 @@
                 <div class="blog-cust-logo">
                     <a href="<?php echo $post->getPermalink() ?>" title="<?php echo $this->escapeHtml($post->getPostTitle()) ?>">
                     <span class="blog-cust-more">+</span>
-                    <span class="blog-cust-text">Read more</span>
+                    <span class="blog-cust-text"><?php echo $this->__($this->escapeHtml($post->getPostTitle())); ?></span>
                     </a>
                 </div>
             <?php endif; ?>
