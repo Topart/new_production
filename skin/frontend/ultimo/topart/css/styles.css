@@ -99,6 +99,27 @@ ul,ol         { list-style:none; }
     font-weight: normal;
     font-style: normal;
  }
+@font-face {
+    font-family: 'baskervilleclassico';
+    src: url('../fonts/baskerville_classico-webfont.eot');
+    src: url('../fonts/baskerville_classico-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/baskerville_classico-webfont.woff') format('woff'),
+    url('../fonts/baskerville_classico-webfont.ttf') format('truetype'),
+    url('../fonts/baskerville_classico-webfont.svg#baskerville_classico') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'baskervilleclassicoitalic';
+    src: url('../fonts/baskerville_classico_italic-webfont.eot');
+    src: url('../fonts/baskerville_classico_italic-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/baskerville_classico_italic-webfont.woff') format('woff'),
+    url('../fonts/baskerville_classico_italic-webfont.ttf') format('truetype'),
+    url('../fonts/baskerville_classico_italic-webfont.svg#baskerville_classicoitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 /* Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% */
@@ -3149,7 +3170,7 @@ ul.blog-posts:after
 .footer-container .footer-bottom-container .footer-bottom {float: none; padding-top: 0; margin: 0 auto;}
 .footer-container .footer-bottom-container .footer-bottom .item-left {float: none; margin: 0;}
 .footer-container .footer-bottom-container .footer-bottom .item-left .footer-copyright {float: none; font-size: 1em; line-height: 100%; margin: 0;}
-.footer-container .footer-bottom-container .footer-bottom .item-left .footer-bottom-slogan {display: block; font-style: italic; font-size: 16px; color: #B19D68; text-align: center; padding: 0 0 5px 0; border-bottom: 1px solid #dddddd; margin: 0 0 7px 0; font-family: "baskervilleoldfacscdregular";}
+.footer-container .footer-bottom-container .footer-bottom .item-left .footer-bottom-slogan {display: block; font-size: 16px; color: #B19D68; text-align: center; padding: 0 0 5px 0; border-bottom: 1px solid #dddddd; margin: 0 0 7px 0; font-family: "baskervilleclassicoitalic";letter-spacing:0.04em;word-spacing:0.1em; }
 .footer-container .footer-bottom-container .footer-bottom .item-left .copy {display: block; text-align: center; text-transform: uppercase; font-weight: 700; margin: 0 0 40px 0;}
 .footer-container .footer-primary .block-title.heading {font-size: 12px!important;font-weight: 700!important;color: black!important;text-transform: uppercase!important;border-bottom: 1px solid #b19d68;}
 .footer-container .footer-primary ul.bullet li {background: 0; padding: 0;}
