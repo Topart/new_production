@@ -3211,8 +3211,8 @@ ul.blog-posts:after
 .home-content .home-collection-list li a img{
 	height: 100%;
 }
-.home-content .home-collection-list li a span.collection-name,.category-collections .main-container .collection-list li a span.collection-name {display: block; width: 100%; line-height: 100%; padding: 17px 0; position: absolute; top: 0; left: 0; z-index: 3; background: #b19d68; text-align: center; font-size: 16px; font-weight: 400; color: #ffffff; transition: background 300ms ease-in-out; -moz-transition: background 300ms ease-in-out; -webkit-transition: background 300ms ease-in-out; -o-transition: background 300ms ease-in-out;font-family: bentonsansregular,arial;text-transform: uppercase;}
-.home-content .home-collection-list li a:hover span.collection-name,.category-collections .main-container .collection-list li a:hover span.collection-name {background: rgba(0,0,0,0.5);}
+.home-content .home-collection-list li a span.collection-name,.category-collections .main-container .collection-list li a span.collection-name {display: block; width: 100%; line-height: 100%; padding: 17px 0; position: absolute; top: 0; left: 0; z-index: 3; background: rgba(0, 0, 0, 0.5); text-align: center; font-size: 16px; font-weight: 400; color: #ffffff; transition: background 300ms ease-in-out; -moz-transition: background 300ms ease-in-out; -webkit-transition: background 300ms ease-in-out; -o-transition: background 300ms ease-in-out;font-family: bentonsansregular,arial;text-transform: uppercase;}
+.home-content .home-collection-list li a:hover span.collection-name,.category-collections .main-container .collection-list li a:hover span.collection-name {background: rgba(177, 157, 104, 0.8);}
 .home-content .home-talent-list,.category-collections .main-container .collection-list {display: table; width: 100%; min-width: 100%;}
 .home-content .home-talent-list li,.category-collections .main-container .collection-list li {display: table-cell; text-align: center;vertical-align: top;}
 .home-content .home-talent-list li a {display: inline-block; text-align: center;}
@@ -3427,12 +3427,12 @@ form#create-art-upload{
 	text-align: center;
 	font-size: 16px;
 	color: white;
-	background: rgba(0,0,0,0.3);
+	background: rgba(0,0,0,0.5);
 	padding: 16px 10px;
 	text-transform: uppercase;
 }
 .create-art-list li a:hover > div{
-	background: rgba(0,0,0,0.5);
+	background: rgba(177, 157, 104, 0.8);
 }
 #create-accept-checkbox {
 	vertical-align: top;
