@@ -360,6 +360,8 @@ ul.vertnav-top li > a > span > .cat-label {
 /* Top-level item */
 #nav > li > a
 {
+   /* border: 1px solid #fff !important;
+    border-bottom: none !important;*/
 	line-height:35px;
 }
 
@@ -373,18 +375,21 @@ ul.vertnav-top li > a > span > .cat-label {
 
 #nav > li:hover > a, 
 .vertnav-top li > a:hover {
-	background-color: rgba(0, 0, 0, 0.85) !important;
-	color: #b19d68 !important;
+	background-color: #b19d68 !important;
+	color: #fff !important;
+   /*border: 1px solid #b19d68 !important;
+    border-bottom: none !important;*/
 }
 #nav .level0-wrapper, 
 #nav.classic ul {
-	background-color: rgba(0, 0, 0, 0.85) !important;
+	background-color: #fff !important;
+    border: 1px solid #b19d68 !important;
 }
 #nav ul.level0 > li {
 	padding-bottom: 0px !important;
 }
 #nav ul.level0 > li > a {
-	color: white !important;
+	color: #000 !important;
 text-transform: capitalize !important;
 margin: 0 !important;
 padding-bottom: 6px !important;
