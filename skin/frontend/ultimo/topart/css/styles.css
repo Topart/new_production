@@ -134,7 +134,7 @@ ul,ol         { list-style:none; }
 .main { padding:20px 0; min-height:370px; }
 /* Decrease padding on home page */
 body.cms-index-index .main,
-body.cms-index-defaultindex .main { padding-top:20px; padding-bottom:20px; }
+body.cms-index-defaultindex .main { padding-top:20px; padding-bottom:50px; }
 
 /* Base Columns */
 .col-left { float:left; }
@@ -618,6 +618,7 @@ p.required,
 
 /* Bottom toolbar */
 .toolbar-bottom { margin-top:10px; }
+.home-content .toolbar-bottom{margin-top: 50px;}
 .toolbar-bottom .toolbar { border-bottom:none; }
 .toolbar-bottom .toolbar .pager { border-top:none; }
 .toolbar-bottom .sorter { display:none; }
@@ -3179,7 +3180,7 @@ ul.blog-posts:after
 .home-content h2.home-sections-title, .category-collections .main-container h2.inner-sections-title,
 .page-title h1 {padding: 0 0 8px 10px; /*border-bottom: 1px solid #dddddd;*/ margin: 0 0 30px 0; font-size: 25px; font-weight: 400; color: #000000;font-family: baskervilleoldfacscdregular,tahoma,times new roman, serif;text-transform: uppercase;letter-spacing: 3px;}
 .page-title {border-bottom: 0!important;}
-.home-content .home-collection-list li,.category-collections .main-container .collection-list li {position: relative; float: left; margin: 0 0 4em 0;}
+.home-content .home-collection-list li,.category-collections .main-container .collection-list li {position: relative; float: left; margin: 0 0 50px 0;}
 .home-content h2.home-sections-title, .page .main-container h2.inner-sections-title,
 .home-content h2.home-sections-title { font-size: 25px !important; border-bottom: 2px solid #b19d68;}
 .page-title h1 {padding: 14px 0 0 10px; /*border-bottom: 1px solid #dddddd;*/ margin: 0 0 5px 0!important; font-size: 18px; font-weight: 400; color: #000000; text-transform: uppercase;}
@@ -3187,7 +3188,7 @@ ul.blog-posts:after
 .catalog-category-view .page-title h1 {padding-left: 0; font-size: 18px;}
 .home-content .home-collection-list li,
 .page .main-container .collection-list li {
-	position: relative; float: left; margin: 0 0 4em 0;
+	position: relative; float: left; margin: 0 0 50px 0;
 }
 .home-content .home-collection-list li{
 	width: 31.3%;
