@@ -21,11 +21,11 @@
 <?php if(!empty($_imgUrl)): ?>
 <?php $parent = $_category->getParentCategory();?>
     <div class="page-title category-title-top">
-    <h1>
-        <?php $parentName = $_helper->categoryAttribute($parent, $parent->getName(), 'name'); ?>
-        <?php echo $this->__('Shop our %s',$parentName)?>
-    </h1>
-</div>
+        <h1>
+            <?php $parentName = $_helper->categoryAttribute($parent, $parent->getName(), 'name'); ?>
+            <?php echo $this->__('Shop our %s',$parentName)?>
+        </h1>
+    </div>
 <?php endif; ?>
 <div <?php echo (!empty($_imgUrl)?' class="category-top"':'')?>>
 <?php if(!$this->isSubcategoriesMode()):?>

@@ -1142,6 +1142,16 @@
     </form>
     <script type="text/javascript">
     //<![CDATA[
+
+        jQuery(document).ready(function(){
+            jQuery('.info').magnificPopup({
+                items: {
+                    src: '<div class="white-popup">Dynamically created popup</div>',
+                    type: 'inline'
+                }
+            });
+        });
+
         var productAddToCartForm = new VarienForm('product_addtocart_form');
         productAddToCartForm.submit = function(button, url) {
             if (this.validator.validate()) {

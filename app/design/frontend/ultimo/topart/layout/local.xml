@@ -368,7 +368,10 @@
 
 	<!-- PRODUCT VIEW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 	<catalog_product_view>
-	
+	    <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/jquery.magnific-popup.min.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/magnific-popup.css</name></action>
+	    </reference>
 		<!-- Change default template for product view. IMPORTANT: the same as in 'review_product_list'. -->
 		<reference name="root">
 			<action method="setTemplate"><template>page/1column.phtml</template></action>
