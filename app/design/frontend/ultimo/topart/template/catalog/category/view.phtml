@@ -30,11 +30,10 @@
 <div <?php echo (!empty($_imgUrl)?' class="category-top"':'')?>>
     <div <?php echo (!empty($_imgUrl)?' class="category-info"':'')?>>
     <?php if(!$this->isSubcategoriesMode()):?>
+        <?php if(!empty($_imgUrl)): ?>
+            <?php echo $_imgHtml ?>
+        <?php endif; ?>
 
-    <?php if(!empty($_imgUrl)): ?>
-        <?php echo $_imgHtml ?>
-    <?php endif; ?>
-    
         <div class="page-title category-title <?php echo (!empty($_imgUrl)?' category-name':'')?>">
             <?php if($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
                 <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
