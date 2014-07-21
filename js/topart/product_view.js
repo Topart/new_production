@@ -2621,7 +2621,23 @@
 				$j(".product-options dl dt.mat label").trigger("click");
 			}
 		);
-
+        
+                /*
+                 * Init Fancys Product
+                 */
+                $j("#custom_size_link").fancybox({
+                    'content':$j("#info_custom_size").html()
+                });
+                
+                $j("#info_size_link").fancybox({
+                    'content':$j("#info_size").html(),
+                    'width':'55%',
+                    'height': '65%',
+                    'autoDimensions':false,
+                    'autoSize':false
+                });
+                
+                
 	});
 	
 	
