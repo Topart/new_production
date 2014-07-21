@@ -1780,3 +1780,16 @@ dd.material{
 		margin-top: 70px;
 	}
 }
+
+/*
+ * JP Product Add Wish and Quantity FIX
+ */
+.product-options-bottom .add-to-cart{
+    width: 260px;
+}
+.product-options-bottom .btn-cart{
+    float: left;
+}
+.product-options-bottom .qty-wrapper{
+    margin-top: 10px;
+}

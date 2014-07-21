@@ -3685,3 +3685,12 @@ form#create-art-upload{
 #fancybox-wrap{
     z-index:11000 !important;
 }
+#wish-list .add-to-links,#wish-list .add-to-links li{
+    display:block !important;
+}
+#wish-list .add-to-links li:first-child{
+    margin-top: 10px;
+}
+.feature-wrapper.top-border, .block_product_replace_related, .add-to-cart .qty-wrapper, .product-view .box-tabs{
+    display:block !important;
+}
