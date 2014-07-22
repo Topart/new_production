@@ -673,7 +673,7 @@ ul#custom_option_material #custom_option_material_canvas_background
 
 ul#custom_option_size
 {
-	min-height: 55px;
+	min-height: 30px;
 }
 
 ul#custom_option_size li
@@ -682,6 +682,23 @@ ul#custom_option_size li
   margin-right: 16px;
   margin-bottom: 10px;
 }
+
+#custom_option_size .background_border_size {
+    background-color: transparent !important;
+    height: auto;
+    margin-bottom: 0 !important;
+    min-width: 86px;
+}
+
+#custom_option_size .background_border_size label {
+	 font-family: Arial;
+    font-size: 12px;
+    font-weight: bold;
+    color: #888;
+}
+
+#custom_option_size .background_border_size input {cursor: pointer;}
+
 
 ul#custom_option_size .custom_option_label
 {

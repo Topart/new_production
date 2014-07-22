@@ -402,7 +402,13 @@
 
                         // Size initials out of the sku name
                         $size_initial = "";
-                        if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
+
+
+                        $size_value_array = explode( "_" , $option_sku );
+                        $product_size = $size_value_array[6] ."&#34; x " . $size_value_array[8] . "&#34;";
+
+
+                        /*if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
                             $size_initial = "xs";
 
                         else if (strpos($option_sku, "small") !== false || strpos($option_sku, "size_posterpaper_s_") !== false)
@@ -421,7 +427,9 @@
                         {
 
                         }
+                        */
 
+                        $size_initial = $product_size;
 
                         $colon_position = strpos($option_name, ':', 1);
                         $option_name = substr($option_name, 0, $colon_position);
@@ -430,9 +438,9 @@
 
                         <li id="custom_option_<?php echo $option_sku; ?>" class="background_border_size <?php echo $material_name; ?>">
 
-                            <div class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text">
-                                <?php echo $size_initial; ?>
-                            </div>
+                            <input name="size" type="radio" class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text" />
+                                <label for="size"><?php echo $size_initial;?></label>
+                            
 
                         </li>
 
