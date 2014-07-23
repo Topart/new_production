@@ -127,16 +127,16 @@
 
 				// By the time this loop ends, we know what sku corresponds to what color, for every mat option
 			}
-		);
-
-
-
-		// Parametrically show specific custom options images
+		); 
+                                   
+                // Parametrically show specific custom options images
 		function show_options_images(option_name)
 		{
 			// Hide every image first
 			$j(".custom_options_images ul").hide();
-
+                        
+                        //show_option_selected();
+                        
 			// Show the option node
 			$j(".custom_options_images #custom_option_" + option_name ).show();
 			// Show every descendant node for that option
@@ -2637,7 +2637,101 @@
                     'autoSize':false
                 });
                 
+                /* Agregados para el ticket 107 */
                 
+                    /*
+                     * Actualiza la opcion seleccionada en cualqueira 
+                     * de los step (Material & size,Frame,Mat)
+                     */
+                    function ShowSelectedOption(selected,option_name){
+                        if(selected !== null){
+                            //$j(document).find(".option-reloaded span.step-selection").text("");
+
+                            $j(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
+                       }
+                    }   
+
+                    /*
+                     * Muestra la opcion seleccionada por defecto en el paso Materials & Size, Mat y Borders
+                     * apenas carga la pagina
+                     */
+                    (function(){
+                        var selected_material,
+                            selected_mat,
+                            selected_borders;
+                            
+                        selected_material = $j(document).find("dd.material ul.options-list li input[type=radio]:checked")
+                                                        .next()
+                                                        .find("label:first")
+                                                        .text();
+                        
+                        selected_mat =  selected_borders = $j(document).find("dd.mat ul.options-list li input[type=radio]:checked")
+                                                        .next()
+                                                        .find("label:first")
+                                                        .text();        
+                                
+                        selected_borders = $j(document).find("dd.borders ul.options-list li input[type=radio]:first")
+                                                        .next()
+                                                        .find("label:first")
+                                                        .text();
+                        
+                        ShowSelectedOption(selected_material,"material");
+                        ShowSelectedOption(selected_mat,"mat");
+                        ShowSelectedOption(selected_borders,"borders");
+                        
+                    })();
+
+                    /*
+                     * Actualizan la "opcion seleccionada" al seleccionar 
+                     * una opcion de las disponibles para su step
+                     */
+                        
+                        /*
+                         * Set  "Material & Size"
+                         */
+                        $j(document).on("click", "dd.material ul.options-list li input[type=radio]", function(){
+                            var selected = $j(this)
+                                                .next()
+                                                .find("label:first")
+                                                .text();
+
+                            ShowSelectedOption(selected,"material");
+                        });  
+                        
+                        /*
+                         * Set  "Frame"
+                         */
+                        $j(document).on("click", ".option-reloaded .custom_options_images #custom_option_frame li", function(){
+                            var selected = $j(this).find(".frame_title").text();
+
+                            ShowSelectedOption(selected,"frame");
+                        });
+                        
+                        /*
+                         * Set  "Mat"
+                         */
+                        $j(document).on("click", "dd.mat ul.options-list li input[type=radio]", function(){
+                            var selected = $j(this)
+                                                .next()
+                                                .find("label:first")
+                                                .text();
+
+                            ShowSelectedOption(selected,"mat");
+                        });  
+                        
+                        /*
+                         * Set  "Borders"
+                         */
+                        $(document).on("click",".option-reloaded .borders ul.options-list li input[type=radio]",function(){
+                            
+                            var selected =  $j("dd.borders ul.options-list li input[type=radio]:checked")
+                                                .next()
+                                                .find("label:first")
+                                                .text();
+
+                            ShowSelectedOption(selected,"borders");
+                        });
+
 	});
 	
 	

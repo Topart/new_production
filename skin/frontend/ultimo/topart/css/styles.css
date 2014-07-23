@@ -3694,3 +3694,9 @@ form#create-art-upload{
 .feature-wrapper.top-border, .block_product_replace_related, .add-to-cart .qty-wrapper, .product-view .box-tabs{
     display:block !important;
 }
+/* JP Show specials features in product view */
+.short-description .specials-features{
+    color: rgb(170, 170, 170); 
+    font-style: italic;
+    font-size: 13px;
+}
