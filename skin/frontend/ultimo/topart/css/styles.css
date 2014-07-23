@@ -3661,3 +3661,36 @@ form#create-art-upload{
 	}
 }
 
+/*
+ * JP Fancybox fix
+ */
+.info_size_fancy{
+    text-align: left;
+    color:#444;
+}
+.info_size_fancy p{
+    margin: 0 0 9px;
+}
+#fancybox-content,#fancybox-outer {
+    -moz-border-radius:4px 4px 4px 4px;
+    border-radius:4px 4px 4px 4px;
+    -webkit-border-radius: 4px 4px 4px 4px;
+}
+#fancybox-overlay {
+    background-color: #000 !important;
+}
+#fancybox-overlay{
+    z-index:10999 !important;
+}
+#fancybox-wrap{
+    z-index:11000 !important;
+}
+#wish-list .add-to-links,#wish-list .add-to-links li{
+    display:block !important;
+}
+#wish-list .add-to-links li:first-child{
+    margin-top: 10px;
+}
+.feature-wrapper.top-border, .block_product_replace_related, .add-to-cart .qty-wrapper, .product-view .box-tabs{
+    display:block !important;
+}

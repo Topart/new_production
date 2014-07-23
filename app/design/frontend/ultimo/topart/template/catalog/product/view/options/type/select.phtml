@@ -231,33 +231,35 @@
 
         <!-- Informational lightboxes -->
         <div id="info_size" style="width:600px; display: none;">
-            <h3>Our Materials:</h3>
-            <p>
-            <div>
-                <span style="font-style:italic; font-weight:bold;">Posters</span>
-                <br /><br />
+            <div class="info_size_fancy">
+                <h3>Our Materials:</h3>
+                <p>
+                    <div>
+                        <span style="font-style:italic; font-weight:bold;">Posters</span>
+                        <br /><br />
 
-                Depending on the size of the poster we use between 180-270 gram satin paper, with a high quality 90 brightness and a satin finish.  Our posters are environmentally responsible made with 30% recycled post consumer pulp. Our poster paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.  Images printed as offset posters may, over time, fade when exposed to direct sunlight, interior lighting or florescent lighting
+                        Depending on the size of the poster we use between 180-270 gram satin paper, with a high quality 90 brightness and a satin finish.  Our posters are environmentally responsible made with 30% recycled post consumer pulp. Our poster paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.  Images printed as offset posters may, over time, fade when exposed to direct sunlight, interior lighting or florescent lighting
+                    </div>
+                </p>
+
+                <p>
+                <div>
+                    <span style="font-style:italic; font-weight:bold;">Paper</span>
+                    <br /><br />
+
+                    We use high quality 275 gram satin paper for our paper art prints . This bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting. Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.
+                </div>
+                </p>
+
+                <p>
+                <div>
+                    <span style="font-style:italic; font-weight:bold;">Canvas</span>
+                    <br /><br />
+
+                    We print on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting.
+                </div>
+                </p>
             </div>
-            </p>
-
-            <p>
-            <div>
-                <span style="font-style:italic; font-weight:bold;">Paper</span>
-                <br /><br />
-
-                We use high quality 275 gram satin paper for our paper art prints . This bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting. Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.
-            </div>
-            </p>
-
-            <p>
-            <div>
-                <span style="font-style:italic; font-weight:bold;">Canvas</span>
-                <br /><br />
-
-                We print on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting.
-            </div>
-            </p>
         </div>
 
         <!-- Informational lightboxes -->
@@ -344,7 +346,9 @@
             <?php
 
             // Information light box link
-            $information_lightbox = "<span class='fancybox info' rel=".$option_title." style='cursor: pointer'>(?)</span>";
+            $information_lightbox = "<span class='fancybox info' rel=".$option_title." style='cursor: pointer'>" .
+                                        "<a id=\"info_size_link\"class=\"fancybox\" href=\"#info_size\">(?)</a>" .
+                                    "</span>";
 
             echo $option_label . $information_lightbox;
             ?>
