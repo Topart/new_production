@@ -33,7 +33,13 @@
 <?php if($option_title !='size'):?>
     <div class="option-reloaded">
 <?php endif; ?>
-	<dt class='<?php echo $option_title; ?>'><script>console.log(<?php echo $option_title; ?>);</script><label<?php if ($_option->getIsRequire()) echo ' class="required"' ?>><?php if ($_option->getIsRequire()) echo '<em>*</em>' ?><span>Step 1 </span><?php echo  $this->htmlEscape($_option->getTitle()) ?></label>
+	<dt class='<?php echo $option_title; ?>'><script>console.log(<?php echo $option_title; ?>);</script><label<?php if ($_option->getIsRequire()) echo ' class="required"' ?>><?php if ($_option->getIsRequire()) echo '<em>*</em>' ?>
+            <?php if($option_title =='frame'):?>
+                <span>Step 2: </span>
+            <?php elseif($option_title =='mat'): ?>
+                <span>Step 3: </span>
+            <?php endif; ?>
+            <?php echo  $this->htmlEscape($_option->getTitle()) ?></label>
         <span class="step-selection">(Option selected)</span>
     </dt>
 	<dd class='<?php echo $option_title; ?>'<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>

@@ -2183,7 +2183,7 @@
 		select_framing_category("Blacks");	
 		show_mats_options(mats_color_code);
 
-		$j("dt.material label").html("Material & Size");	
+		$j("dt.material label").html('<em>*</em><span>Step 1: </span>Material & Size');	
 
 		// Display the whole custom options section, only when everything else has loaded
 		$j(".product-view").show();
