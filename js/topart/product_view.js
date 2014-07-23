@@ -2183,7 +2183,7 @@
 		select_framing_category("Blacks");	
 		show_mats_options(mats_color_code);
 
-		$j("dt.material label").html("Material & Size");	
+		$j("dt.material label").html('<em>*</em><span>Step 1: </span>Material & Size');	
 
 		// Display the whole custom options section, only when everything else has loaded
 		$j(".product-view").show();
@@ -2621,7 +2621,23 @@
 				$j(".product-options dl dt.mat label").trigger("click");
 			}
 		);
-
+        
+                /*
+                 * Init Fancys Product
+                 */
+                $j("#custom_size_link").fancybox({
+                    'content':$j("#info_custom_size").html()
+                });
+                
+                $j("#info_size_link").fancybox({
+                    'content':$j("#info_size").html(),
+                    'width':'55%',
+                    'height': '65%',
+                    'autoDimensions':false,
+                    'autoSize':false
+                });
+                
+                
 	});
 	
 	
