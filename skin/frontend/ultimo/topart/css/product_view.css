@@ -1646,6 +1646,7 @@ dd.material{
 	margin: 0;
 	width: 35px;
 }
+
 .canvas_stretching .step-selection {
 	display: none;
 }
@@ -1806,3 +1807,10 @@ dd.material{
         font-size: 14px;
         padding: 7px 0;
     }
+
+/*
+ *  JP Ugly fix to hide "(?)" near the "Custom size?" link in product view
+ */
+#cont_size span a[href='#info_size']{
+    display:none !important;
+}
