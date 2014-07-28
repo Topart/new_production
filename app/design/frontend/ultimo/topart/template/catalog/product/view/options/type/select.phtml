@@ -574,13 +574,13 @@
                     ?>
 
                     <li id="custom_option_<?php echo $option_sku; ?>_background" class="background_border">
-                        <div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport" style="background-image: url('<?php echo $thumbnail_image_file_url; ?>')" >
+                        <div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport <?php if ($option_sku == 'material_canvas'){ echo 'lvl1'; }?>" style="background-image: url('<?php echo $thumbnail_image_file_url; ?>'); <?php if ($option_sku == 'material_canvas'){ echo 'width: 98%; height:98%;'; }?> ">
                         </div>
 
                         <?php
                         if ($option_sku == "material_canvas"){
                             for($count=2;$count<=10;$count++){
-                                echo '<div id="custom_option_'. $option_sku .'" class="custom_option_viewport lvl'. $count .'" style="background-image: url('. $thumbnail_image_file_url .')"></div>';
+                                echo '<div id="custom_option_'. $option_sku .'" class="custom_option_viewport lvl'. $count .'" style="background-image: url('. $thumbnail_image_file_url .'); width: 98%; height:98%;"></div>';
                             } 
                         }
                         /*if ( $option_sku == "material_canvas" && $one_corner_flag == 0 ){

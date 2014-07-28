@@ -537,60 +537,77 @@ ul#custom_option_size li:nth-last-child(-n+4)
   background-size: 100%;
 }
 
+.custom_option_viewport.lvl1 {
+    right: 0px !important;
+    position: absolute !important;
+    top: 0px !important;
+}
+
 .custom_option_viewport.lvl2 {
     right: 0.5px !important;
     position: absolute !important;
-    top: -0.5px !important;
+    top: 0.5px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl3 {
-    right: 1px;
+    right: 1px !important;
     position: absolute !important;
-    top: -1px !important;
+    top: 1px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl4 {
-    right: 1.5px;
+    right: 1.5px !important;
     position: absolute !important;
-    top: -1.5px !important;
+    top: 1.5px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl5 {
-    right: 2px;
+    right: 2px !important;
     position: absolute !important;
-    top: -2px !important;
+    top: 2px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl6 {
-    right: 2.5px;
+    right: 2.5px !important;
     position: absolute !important;
-    top: -2.5px !important;
+    top: 2.5px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl7 {
-    right: 3px;
+    right: 3px !important;
     position: absolute !important;
-    top: -3px !important;
+    top: 3px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl8 {
-    right: 3.5px;
+    right: 3.5px !important;
     position: absolute !important;
-    top: -3.5px !important;
+    top: 3.5px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl9 {
-    right: 4px;
+    right: 4px !important;
     position: absolute !important;
-    top: -4px !important;
+    top: 4px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl10 {
-    right: 4.5px;
+    right: 4.5px !important;
     position: absolute !important;
-    top: -4.5px !important;
+    top: 4.5px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl11 {
-    right: 5px;
+    right: 5px !important;
     position: absolute !important;
-    top: -5px !important;
+    top: 5px !important;
+    opacity: 0.8;
 }
 .custom_option_viewport.lvl12 {
-    right: 5.5px;
+    right: 5.5px !important;
     position: absolute !important;
-    top: -5.5px !important;
+    top: 5.5px !important;
+    opacity: 0.8;
 }
 
 .custom_option_size_text
@@ -710,9 +727,10 @@ ul#custom_option_material li
 ul#custom_option_material #custom_option_material_canvas_background
 {
   width: 126px;
-  height: 118px;
+  height: 124px;
   overflow: visible;
   border: none;
+  margin-bottom: 2px;
 }
 
 #custom_option_material_canvas
