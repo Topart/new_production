@@ -537,6 +537,62 @@ ul#custom_option_size li:nth-last-child(-n+4)
   background-size: 100%;
 }
 
+.custom_option_viewport.lvl2 {
+    right: 0.5px !important;
+    position: absolute !important;
+    top: -0.5px !important;
+}
+.custom_option_viewport.lvl3 {
+    right: 1px;
+    position: absolute !important;
+    top: -1px !important;
+}
+.custom_option_viewport.lvl4 {
+    right: 1.5px;
+    position: absolute !important;
+    top: -1.5px !important;
+}
+.custom_option_viewport.lvl5 {
+    right: 2px;
+    position: absolute !important;
+    top: -2px !important;
+}
+.custom_option_viewport.lvl6 {
+    right: 2.5px;
+    position: absolute !important;
+    top: -2.5px !important;
+}
+.custom_option_viewport.lvl7 {
+    right: 3px;
+    position: absolute !important;
+    top: -3px !important;
+}
+.custom_option_viewport.lvl8 {
+    right: 3.5px;
+    position: absolute !important;
+    top: -3.5px !important;
+}
+.custom_option_viewport.lvl9 {
+    right: 4px;
+    position: absolute !important;
+    top: -4px !important;
+}
+.custom_option_viewport.lvl10 {
+    right: 4.5px;
+    position: absolute !important;
+    top: -4.5px !important;
+}
+.custom_option_viewport.lvl11 {
+    right: 5px;
+    position: absolute !important;
+    top: -5px !important;
+}
+.custom_option_viewport.lvl12 {
+    right: 5.5px;
+    position: absolute !important;
+    top: -5.5px !important;
+}
+
 .custom_option_size_text
 {
   position: relative;
@@ -653,11 +709,10 @@ ul#custom_option_material li
 
 ul#custom_option_material #custom_option_material_canvas_background
 {
-  width: 116px;
+  width: 126px;
   height: 118px;
-  border-top: 9px solid #000000;
-  border-right: 9px solid #000000;
   overflow: visible;
+  border: none;
 }
 
 #custom_option_material_canvas

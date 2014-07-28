@@ -578,11 +578,16 @@
                         </div>
 
                         <?php
-                        if ( $option_sku == "material_canvas" && $one_corner_flag == 0 ){
+                        if ($option_sku == "material_canvas"){
+                            for($count=2;$count<=10;$count++){
+                                echo '<div id="custom_option_'. $option_sku .'" class="custom_option_viewport lvl'. $count .'" style="background-image: url('. $thumbnail_image_file_url .')"></div>';
+                            } 
+                        }
+                        /*if ( $option_sku == "material_canvas" && $one_corner_flag == 0 ){
                             echo "<div id='canvas_top_border' class='arrow_right'></div>";
                             echo "<div id='canvas_right_border' class='arrow_left'></div>";
                             $one_corner_flag++;
-                        }
+                        }*/
                         ?>
                     </li>
                 <?php
