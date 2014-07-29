@@ -1,0 +1,666 @@
+<div class="orders_data">
+
+<?php
+
+   /* Export orders data */
+      $query_orders_header_data = "
+                            
+                                  SELECT DISTINCT A.increment_id as WebOrderId, A.customer_id as CustomerID, A.increment_id as CustomerPoNo, A.increment_id as SalesOrderNo, DATE_FORMAT( A.created_at,  '%Y%m%d') as OrderDate,  A.customer_email as EmailAddress, E.customer_group_code as ARDivisionNo, A.shipping_description as ShipVia, 'VISA' as PaymentType, '000' as WareHouseCode, 'NONTAX' as TaxSchedule, concat(A.customer_firstname, ' ', + A.customer_lastname) as BillToName, concat(A.customer_firstname, ' ', + A.customer_lastname) as ShipToName,
+                                    C.BillToAddress1, '' as BillToAddress2, '' as BillToAddress3, C.BillToCity, C.BillToState, C.BillToZipCode, C.BillToCountryCode,
+
+                                    S.ShipToAddress1, '' as ShipToAddress2, '' as ShipToAddress3, S.ShipToCity, S.ShipToState, S.ShipToZipCode, S.ShipToCountryCode
+
+
+                                    FROM sales_flat_order as A, sales_flat_order_payment as D, customer_group as E,
+
+                                    (
+                                    SELECT
+                                    B.street as BillToAddress1, B.city as BillToCity, B.region as BillToState, B.postcode as BillToZipCode, B.country_id as BillToCountryCode, parent_id as ParentId
+
+                                    FROM sales_flat_order as Z, sales_flat_order_address as B
+                                    WHERE B.parent_id = Z.entity_id and B.address_type='billing'
+                                    ) as C,
+
+                                    (
+                                    SELECT
+                                    B.street as ShipToAddress1, B.city as ShipToCity, B.region as ShipToState, B.postcode as ShipToZipCode, B.country_id as ShipToCountryCode, parent_id as ParentId
+
+                                    FROM sales_flat_order as Z, sales_flat_order_address as B
+                                    WHERE B.parent_id = Z.entity_id and B.address_type='shipping'
+                                    ) as S,
+
+                                    (
+                                    SELECT DISTINCT method as PaymentType, parent_id as ParentId
+                                    FROM sales_flat_order_payment
+                                    ) as D
+
+                                    WHERE A.entity_id = C.ParentId and C.ParentId = S.ParentId and S.ParentId = D.ParentId and E.customer_group_id = A.customer_group_id
+                            
+
+
+                            "; 
+
+
+      $query_orders_detail_data = "
+                                    SELECT A.increment_id as WebOrderId, A.increment_id as SalesOrderNo, A.entity_id as SequenceNo,
+                                    B.sku as ItemCode, B.name as ItemCodeDesc, '1' as ItemType, B.qty_ordered as QuantityOrderedOriginal,
+                                    B.price as OriginalUnitPrice
+                                    
+                                    FROM sales_flat_order as A, sales_flat_order_item as B
+                                    WHERE A.entity_id = B.order_id
+                                    ORDER BY SalesOrderNo
+                                    
+                                    ";
+
+      function my_substr_function($str, $start, $end)
+      {
+        return substr($str, $start, $end - $start);
+      }
+
+      function string_begins_with($haystack, $needle) 
+      {
+        return ( substr($haystack, 0, strlen($needle)) == $needle );
+      }
+
+
+      // Map a US state name to its code so that it can be saved into MAS
+      $us_states_list = array(
+            'AL'=>"Alabama",
+            'Alaska'=>"AK", 
+            'Arizona'=>"AZ", 
+            'Arkansas'=>"AR", 
+            'California'=>"CA", 
+            'Colorado'=>"CO", 
+            'Connecticut'=>"CT", 
+            'Delaware'=>"DE", 
+            'District Of Columbia'=>"DC", 
+            'Florida'=>"FL", 
+            'Georgia'=>"GA", 
+            'Hawaii'=>"HI", 
+            'Idaho'=>"ID", 
+            'Illinois'=>"IL", 
+            'Indiana'=>"IN", 
+            'Iowa'=>"IA", 
+            'Kansas'=>"KS", 
+            'Kentucky'=>"KY", 
+            'Louisiana'=>"LA", 
+            'Maine'=>"ME", 
+            'Maryland'=>"MD", 
+            'Massachusetts'=>"MA", 
+            'Michigan'=>"MI", 
+            'Minnesota'=>"MN", 
+            'Mississippi'=>"MS", 
+            'Missouri'=>"MO", 
+            'Montana'=>"MT",
+            'Nebraska'=>"NE",
+            'Nevada'=>"NV",
+            'New Hampshire'=>"NH",
+            'New Jersey'=>"NJ",
+            'New Mexico'=>"NM",
+            'New York'=>"NY",
+            'North Carolina'=>"NC",
+            'North Dakota'=>"ND",
+            'Ohio'=>"OH", 
+            'Oklahoma'=>"OK", 
+            'Oregon'=>"OR", 
+            'Pennsylvania'=>"PA", 
+            'Rhode Island'=>"RI", 
+            'South Carolina'=>"SC", 
+            'South Dakota'=>"SD",
+            'Tennessee'=>"TN", 
+            'Texas'=>"TX", 
+            'Utah'=>"UT", 
+            'Vermont'=>"VT", 
+            'Virginia'=>"VA", 
+            'Washington'=>"WA", 
+            'West Virginia'=>"WV", 
+            'Wisconsin'=>"WI", 
+            'Wyoming'=>"WY");
+
+
+      /* Get the resource model */
+      $resource = Mage::getSingleton('core/resource');
+       
+      /* Retrieve the read connection */
+      $readConnection = $resource->getConnection('core_read');
+
+      $results_orders_header = $readConnection->query($query_orders_header_data);
+
+      if (!$results_orders_header) die('Couldn\'t fetch records');
+
+      // Base directory
+      $base_path = Mage::getBaseDir('base');
+      $csv_file = $base_path . '/orders_export/ToMas_SO_SalesOrderHeader.csv';
+   
+      $mage_csv = new Varien_File_Csv();
+
+      $final_row = "";
+      $options_row = "";
+
+      while ($row = $results_orders_header->fetch()) 
+      {
+        $data = array();
+
+        $web_order_id = $row["WebOrderId"];
+        $row["WebOrderId"] = $web_order_id;
+
+        // BillToName converted to 2 letters code
+        $bill_to_state = $row["BillToState"];
+        $row["BillToState"] = $us_states_list[$bill_to_state];
+
+        // ShipToName converted to 2 letters code
+        $ship_to_state = $row["ShipToState"];
+        $row["ShipToState"] = $us_states_list[$ship_to_state];
+
+        // SalesOrderNO: last 7 digits of the order ID
+        $sales_order_no = substr($row["SalesOrderNo"], strlen($row["SalesOrderNo"]) - 7, 7);
+        $row["SalesOrderNo"] = $sales_order_no;
+
+        // Deal with cases where BillToAddress and ShipToAddress are longer than 30 or 60 chars
+        $bill_to_address = $row["BillToAddress1"];
+
+        if ( strlen($bill_to_address) > 0 && strlen($bill_to_address) <= 30 )
+        {
+          $row["BillToAddress1"] = substr($bill_to_address, 0, 29);
+        }
+        
+        if ( strlen($bill_to_address) > 30 && strlen($bill_to_address) <= 60 )
+        {
+          $row["BillToAddress1"] = substr($bill_to_address, 0, 29);
+          $row["BillToAddress2"] = substr($bill_to_address, 30, 30);
+        }
+
+        if ( strlen($bill_to_address) > 60 && strlen($bill_to_address) <= 90 )
+        {
+          $row["BillToAddress1"] = substr($bill_to_address, 0, 29);
+          $row["BillToAddress2"] = substr($bill_to_address, 30, 30);
+          $row["BillToAddress3"] = substr($bill_to_address, 60, 30);
+        }
+
+        // Shipping address
+        $ship_to_address = $row["ShipToAddress1"];
+
+        if ( strlen($ship_to_address) > 0 && strlen($ship_to_address) <= 30 )
+        {
+          $row["ShipToAddress1"] = substr($ship_to_address, 0, 29);
+        }
+        
+        if ( strlen($ship_to_address) > 30 && strlen($ship_to_address) <= 60 )
+        {
+          $row["ShipToAddress1"] = substr($ship_to_address, 0, 29);
+          $row["ShipToAddress2"] = substr($ship_to_address, 30, 30);
+        }
+
+        if ( strlen($ship_to_address) > 60 && strlen($ship_to_address) <= 90 )
+        {
+          $row["ShipToAddress1"] = substr($ship_to_address, 0, 29);
+          $row["ShipToAddress2"] = substr($ship_to_address, 30, 30);
+          $row["ShipToAddress3"] = substr($ship_to_address, 60, 30);
+        }
+        
+        $final_row[] = $row;
+      }
+
+      // Header
+      $header = "";
+
+      $header["WebOrderId"] = "WebOrderId";
+      $header["CustomerID"] = "CustomerID";
+      $header["CustomerPoNo"] = "CustomerPoNo";
+      $header["SalesOrderNo"] = "SalesOrderNo";
+      $header["OrderDate"] = "OrderDate";
+      $header["EmailAddress"] = "EmailAddress";
+      $header["ARDivisionNo"] = "ARDivisionNo";
+      $header["ShipVia"] = "ShipVia";
+      $header["PaymentType"] = "PaymentType";
+      $header["WareHouseCode"] = "WareHouseCode";
+      $header["TaxSchedule"] = "TaxSchedule";
+      $header["BillToName"] = "BillToName";
+      $header["ShipToName"] = "ShipToName";
+      
+      $header["BillToAddress1"] = "BillToAddress1";
+      $header["BillToAddress2"] = "BillToAddress2";
+      $header["BillToAddress3"] = "BillToAddress3";
+
+      $header["BillToCity"] = "BillToCity";
+      $header["BillToState"] = "BillToState";
+      $header["BillToZipCode"] = "BillToZipCode";
+      $header["BillToCountryCode"] = "BillToCountryCode";
+
+      $header["ShipToAddress1"] = "ShipToAddress1";
+      $header["ShipToAddress2"] = "ShipToAddress2";
+      $header["ShipToAddress3"] = "ShipToAddress3";
+
+      $header["ShipToCity"] = "ShipToCity";
+      $header["ShipToState"] = "ShipToState";
+      $header["ShipToZipCode"] = "ShipToZipCode";
+      $header["ShipToCountryCode"] = "ShipToCountryCode";
+
+      // Headers
+      $headers = "";
+      $headers[] = $header;
+      $csv_content = "";
+      $csv_content = array_merge($headers, $final_row);
+
+      // Write to csv file
+      $mage_csv->saveData($csv_file, $csv_content);
+
+      echo "HEADER OK";
+
+
+
+      /****************** Orders Detail *********************************/
+      $results_orders_detail = $readConnection->query($query_orders_detail_data);
+
+      if (!$results_orders_detail) die('Couldn\'t fetch records');
+
+      // Base directory
+      $base_path = Mage::getBaseDir('base');
+      $csv_file = $base_path . '/orders_export/ToMas_SO_SalesOrderDetail.csv';
+   
+      $mage_csv_orders_header = new Varien_File_Csv();
+      $mage_csv_orders_detail = new Varien_File_Csv();
+
+      $final_row = "";
+
+      // Substrate variable initialization
+      $substrate = "";
+
+      $previous_order_number = -1;
+      $sequence_number = 0;
+
+      while ($row = $results_orders_detail->fetch()) 
+      {
+        $data = array();
+
+        $web_order_id = $row["WebOrderId"];
+        $row["WebOrderId"] = $web_order_id;
+
+        // SalesOrderNO: last 7 digits of the order ID
+        $sales_order_no = substr($row["SalesOrderNo"], strlen($row["SalesOrderNo"]) - 7, 7);
+        $row["SalesOrderNo"] = $sales_order_no;
+
+        // The sequence number is reset to 0 for every distinct order, and incrementing the value until the order number is the same
+        if ($previous_order_number == -1 || $sales_order_no == $previous_order_number)
+            $sequence_number = $sequence_number + 1;
+
+        else
+            $sequence_number = 1;
+
+
+        $row["SequenceNo"] = $sequence_number;
+
+
+        // custom_product_sku
+        $item_code =  $row["ItemCode"];
+        $item_code_array = explode("-", $item_code);
+
+        $main_item_code = $item_code_array[0];
+
+        // sku
+        $sku = $main_item_code;
+
+        $material_type = $item_code_array[1];
+        $size_sku = $item_code_array[2];
+
+        $altsize_index = strpos($size_sku, "altsize");
+
+        if ($altsize_index > 0)
+        {
+        	$altsize_sku_index = $altsize_index + 8;
+        	$ui_index = strpos($size_sku, "ui") - 1;
+
+        	$sku = strtoupper(my_substr_function($size_sku, $altsize_sku_index, $ui_index));
+        }
+
+        if (strpos($material_type, "poster") === false)
+        	$sku = $sku . "DG";
+
+        $row["ItemCode"] = $sku;
+
+        
+
+
+        $substrate_start = strrpos($item_code, "material_") + 9;
+        $substrate_end = strpos($item_code, '-');
+        $substrate = my_substr_function($item_code, $substrate_start, $substrate_end);
+
+        // Substrate possible values
+        // Paper
+        if ( strpos( $item_code, "material_photopaper" ) !== false || strpos( $item_code, "material_posterpaper" ) !== false)
+            $substrate = "PR";
+        // Canvas
+        if ( strpos( $item_code, "material_canvas" ) !== false)
+            $substrate = "CV";
+
+        $row["Substrate"] = $substrate;
+
+
+        // Width and Height: for images only
+        $image_width_start = strrpos($item_code, "width_") + 6;
+        $image_width = my_substr_function($item_code, $image_width_start, $image_width_start+2);
+
+        $row["Width"] = $image_width;
+
+        $image_length_start = strrpos($item_code, "length_") + 7;
+        $image_length = my_substr_function($item_code, $image_length_start, $image_length_start+2);
+
+        $row["Length"] = $image_length;
+
+        $image_ui = $image_width + $image_length;
+
+        ////////////////////////////////////////
+
+
+        $border = "";
+
+        // Canvas border treatments identification
+        if (strpos($item_code, "border_treatment_3_inches_of_white") !== false)
+        {
+            $border = "WH";
+        }
+
+        if (strpos($item_code, "border_treatment_2_inches_of_black_and_1_inch_of_white") !== false)
+        {
+            $border = "BL";
+        }
+
+        if (strpos($item_code, "border_treatment_2_inches_mirrored_and_1_inch_of_white") !== false)
+        {
+            $border = "MR";
+        }
+
+        $row["Border"] = $border;
+
+        ////////////////////////////////////////////////////
+
+        $fs = "N";
+        // link: order number + sequence number. This should be for either framing/matting/stretching skus only.
+        $link = $sales_order_no . $sequence_number;
+
+        // Stretch, frame and mats cases: 1 separate row for each of them
+        $option_row_stretch = "";
+        $option_row_frame = "";
+        $option_row_mats = "";
+        
+        $stretch_ui_price = 1.08;
+
+        // fs: true only if either stretching, framing or matting are applied
+        if (strpos($item_code, "stretch") !== false || strpos($item_code, "frame_none") !== false || strpos($item_code, "mats_none") !== false)
+        {
+          $fs = "Y";  
+        }
+
+        $row["FS"] = $fs;
+
+        // Embellish (optional)
+        $embellish = " ";
+        $row["Embellish"] = $embellish;
+
+        // Stretch: sales order number, link, wrap
+        if (strpos($item_code, "stretch") !== false )
+        {
+          // Stretch: Wrap (optional)
+          $wrap = "GL";
+          $stretch_code = "stretch";
+
+          //echo "stretch";
+
+          // Set the right headers
+          $option_row_stretch["WebOrderId"] = $web_order_id;
+          $option_row_stretch["SalesOrderNo"] = $sales_order_no;
+
+          $sequence_number = $sequence_number + 1;
+          $option_row_stretch["SequenceNo"] = $sequence_number;
+          $option_row_stretch["ItemCode"] = $stretch_code;
+          $option_row_stretch["ItemCodeDesc"] = "1.5\" Canvas Gallery Stretching";
+          $option_row_stretch["ItemType"] = "1";
+          $option_row_stretch["QuantityOrderedOriginal"] = "1";
+          $option_row_stretch["OriginalUnitPrice"] = $stretch_ui_price * $image_ui;
+          $option_row_stretch["Substrate"] = " ";
+        
+          $option_row_stretch["Width"] = $image_width;
+          $option_row_stretch["Length"] = $image_length;
+          
+          $option_row_stretch["Border"] = " ";
+          $option_row_stretch["FS"] = " ";
+          $option_row_stretch["Embellish"] = " ";
+          $option_row_stretch["Wrap"] = $wrap;
+          $option_row_stretch["Link"] = $link;
+
+          $option_row_stretch["Covering"] = " ";
+          $option_row_stretch["Edge"] = " ";
+
+          // Add the row to the final set
+          $options_row[] = $option_row_stretch;
+        }
+
+        else
+        {
+          $row["Wrap"] = " ";
+          $row["Link"] = $link;
+        }
+
+
+
+        $product_id = Mage::getModel("catalog/product")->getIdBySku( $main_item_code );
+		$main_product = Mage::getModel('catalog/product')->load($product_id);
+
+		$size_price = 0;
+
+		foreach ($main_product->getOptions() as $o) 
+		{
+
+			$values = $o->getValues();
+	        foreach ($values as $v) 
+	        {
+	        	$option_sku = $v->getData('sku');
+
+	        	if ($option_sku == $size_sku)
+	        	{
+	        		$size_price = $v->getData('price');
+	        		break;
+	        	}
+
+			}
+		}
+
+		    $row["OriginalUnitPrice"] = $size_price;
+
+        $frame_item_code = strtoupper($item_code_array[count($item_code_array)-2]);
+        $mat_item_code = strtoupper($item_code_array[count($item_code_array)-1]);
+
+        if ($frame_item_code == -1)
+          $frame_item_code = "FRAME_NONE";
+
+        if ($mat_item_code == -1)
+          $mat_item_code = "MATS_NONE";
+        
+        $mats_size = 0;
+
+        //echo strtoupper($item_code_array[count($item_code_array)]-1);
+
+        // Mats: sales order number, link, width, height, edge
+        if ($mat_item_code != "MATS_NONE")
+        {
+
+          	$product_id = Mage::getModel("catalog/product")->getIdBySku( $mat_item_code );
+      			$mats_product = Mage::getModel('catalog/product')->load($product_id);
+
+      			$mats_description = $mats_product->getDescription();
+      			$mats_size = $mats_product->getUdfMouldingWidth();
+      			$mats_ui_price = 0;
+
+      			foreach ($main_product->getOptions() as $o) 
+      			{
+
+      				$values = $o->getValues();
+  		        foreach ($values as $v) 
+  		        {
+  		        	$option_sku = strtoupper($v->getData('sku'));
+
+  		        	if ($option_sku == $mat_item_code)
+  		        	{
+  		        		$mats_ui_price = $v->getData('price');
+  		        		break;
+  		        	}
+
+      				}
+  			    }
+
+      			$mats_width = $image_width + 2*$mats_size;
+      			$mats_length = $image_length + 2*$mats_size;
+            $mats_ui = $mats_width + $mats_length;
+
+            $mats_price = $mats_ui_price * $mats_ui;
+
+          	$mats_edge = "ST";
+          	$option_row_mats["WebOrderId"] = $web_order_id;
+          	$option_row_mats["SalesOrderNo"] = $sales_order_no;
+          
+          	$sequence_number = $sequence_number + 1;
+          	$option_row_mats["SequenceNo"] = $sequence_number;
+          	$option_row_mats["ItemCode"] = $mat_item_code;
+          	$option_row_mats["ItemCodeDesc"] = $mats_description;
+          	$option_row_mats["ItemType"] = "1";
+          	$option_row_mats["QuantityOrderedOriginal"] = "1";
+          	$option_row_mats["OriginalUnitPrice"] = $mats_price;
+          	$option_row_mats["Substrate"] = " ";
+
+          	$option_row_mats["Width"] = $mats_width;
+          	$option_row_mats["Length"] = $mats_length;
+          	$option_row_mats["Border"] = " ";
+          	$option_row_mats["FS"] = " ";
+          	$option_row_mats["Embellish"] = " ";
+
+   	       	$option_row_mats["Wrap"] = " ";
+      	    $option_row_mats["Link"] = $link;
+          	$option_row_mats["Covering"] = " ";
+          	$option_row_mats["Edge"] = $mats_edge;
+
+          	// Add the row to the final set
+          	$options_row[] = $option_row_mats;
+        }
+
+        // Frame: sales order number, link, width, height, covering
+        if ($frame_item_code != "FRAME_NONE" )
+        {
+
+          //echo $frame_item_code;
+
+        	$product_id = Mage::getModel("catalog/product")->getIdBySku( $frame_item_code );
+    			$frame_product = Mage::getModel('catalog/product')->load($product_id);
+
+    			$frame_description = $frame_product->getDescription();          
+        	$frame_width = $image_width + 2*$mats_size;
+        	$frame_length = $image_length + 2*$mats_size;
+
+          $frame_ui = $frame_width + $frame_length;
+
+    			$frame_ui_price = 0;
+
+    			foreach ($main_product->getOptions() as $o) 
+    			{
+
+    				$values = $o->getValues();
+    		        foreach ($values as $v) 
+    		        {
+    		        	$option_sku = strtoupper($v->getData('sku'));
+
+    		        	if ($option_sku == $frame_item_code)
+    		        	{
+    		        		$frame_ui_price = $v->getData('price');
+    		        		break;
+    		        	}
+
+    				}
+    			}
+
+          $frame_price = $frame_ui_price * $frame_ui;
+
+        	$frame_covering = "AR";
+        	$option_row_frame["WebOrderId"] = $web_order_id;
+ 	       	$option_row_frame["SalesOrderNo"] = $sales_order_no;
+
+        	$sequence_number = $sequence_number + 1;
+        	$option_row_frame["SequenceNo"] = $sequence_number;
+        	$option_row_frame["ItemCode"] = $frame_item_code;
+
+        	$option_row_frame["ItemCodeDesc"] = $frame_description;
+        	$option_row_frame["ItemType"] = "1";
+        	$option_row_frame["QuantityOrderedOriginal"] = "1";
+        	$option_row_frame["OriginalUnitPrice"] = $frame_price;
+        	$option_row_frame["Substrate"] = " ";
+        
+        	$option_row_frame["Width"] = $frame_width;
+        	$option_row_frame["Length"] = $frame_length;
+
+        	$option_row_frame["Border"] = " ";
+        	$option_row_frame["FS"] = " ";
+        	$option_row_frame["Embellish"] = " ";
+        	$option_row_frame["Wrap"] = " ";
+        	$option_row_frame["Link"] = $link;
+
+        	$option_row_frame["Covering"] = $frame_covering;
+        	$option_row_frame["Edge"] = " ";
+
+        	// Add the row to the final set
+        	$options_row[] = $option_row_frame;
+      }
+
+        
+
+        /////////////////////////////////////////////////////////////////
+
+        // Store the current order number
+        $previous_order_number = $sales_order_no;
+
+        $final_row[] = $row;
+      }
+
+
+
+      $header = "";
+
+      // Headers
+      $header["WebOrderId"] = "WebOrderId";
+      $header["SalesOrderNo"] = "SalesOrderNo";
+      $header["SequenceNo"] = "SequenceNo";
+      $header["ItemCode"] = "ItemCode";
+      $header["ItemCodeDesc"] = "ItemCodeDesc";
+      $header["ItemType"] = "ItemType";
+      $header["QuantityOrderedOriginal"] = "QuantityOrderedOriginal";
+      $header["OriginalUnitPrice"] = "OriginalUnitPrice";
+
+      $header["Substrate"] = "Substrate";
+
+      $header["Width"] = "Width";
+      $header["Length"] = "Length";
+
+      $header["Border"] = "Border";
+      $header["FS"] = "FS";
+      $header["Embellish"] = "Embellish";
+
+      $header["Wrap"] = "Wrap";
+      $header["Link"] = "Link";
+      $header["Covering"] = "Covering";
+      $header["Edge"] = "Edge";
+
+      $header["UnitCost"] = "UnitCost";
+
+      $headers = "";
+      $headers[] = $header;
+
+      $csv_content = "";
+      $csv_content = array_merge($headers, $final_row, $options_row);
+
+
+      // Write to csv file
+      $mage_csv_orders_header->saveData($csv_file, $csv_content);
+      $mage_csv_orders_detail->saveData($csv_file, $csv_content);
+
+      echo "DETAILS OK";
+
+  ?>
+
+</div>

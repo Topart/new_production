@@ -1,0 +1,67 @@
+<?php
+/**
+ * Category view template
+ *
+ * @see Mage_Catalog_Block_Category_View
+ */
+?>
+<?php
+    $_helper    = $this->helper('catalog/output');
+    $_category  = $this->getCurrentCategory();
+    $_imgHtml   = '';
+
+   //if($this->isSubcategoriesMode()):
+    if ($_imgUrl = $_category->getImageUrl()) {
+        $_imgHtml = '<p class="category-image"><img src="'.$_imgUrl.'" alt="'.$this->escapeHtml($_category->getName()).'" title="'.$this->escapeHtml($_category->getName()).'" /></p>';
+        $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+    }
+    //endif;
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php if(!empty($_imgUrl)): ?>
+<?php $parent = $_category->getParentCategory();?>
+    <div class="page-title category-title-top">
+        <h1>
+            <?php $parentName = $_helper->categoryAttribute($parent, $parent->getName(), 'name'); ?>
+            <?php echo $this->__('Shop our %s',$parentName)?>
+        </h1>
+    </div>
+<?php endif; ?>
+<div <?php echo (!empty($_imgUrl)?' class="category-top"':'')?>>
+    <div <?php echo (!empty($_imgUrl)?' class="category-info"':'')?>>
+    <?php if(!$this->isSubcategoriesMode()):?>
+        <?php if(!empty($_imgUrl)): ?>
+            <?php echo $_imgHtml ?>
+        <?php endif; ?>
+
+        <div class="page-title category-title <?php echo (!empty($_imgUrl)?' category-name':'')?>">
+            <?php if($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
+                <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
+            <?php endif; ?>
+            <?php echo (empty($_imgUrl)?'<h1>':'')?>
+            <?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?>
+            <?php echo (empty($_imgUrl)?'</h1>':'')?>
+        </div>
+    <?php endif; ?>
+
+    <?php if($_description=$this->getCurrentCategory()->getDescription()): ?>
+        <div class="category-description std <?php echo (!empty($_imgUrl)?' category-intro':'')?>">
+            <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+        </div>
+    <?php endif; ?>
+    </div>
+</div>
+<?php if($this->isContentMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+
+<?php elseif($this->isMixedMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php /*[START] add the new subcategory display mode.*/ ?>
+<?php elseif($this->isSubcategoriesMode()): ?>
+
+	<?php echo $this->getSubcategoriesHtml() ?>
+<?php /*[END]*/ ?>
+<?php else: ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php endif; ?>

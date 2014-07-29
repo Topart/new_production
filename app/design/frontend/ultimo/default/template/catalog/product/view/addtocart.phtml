@@ -27,6 +27,7 @@
 
 <?php $_product = $this->getProduct(); ?>
 <?php $buttonTitle = $this->__('Add to Cart'); ?>
+<?php $wishButtonTitle = $this->__('Add to Wishlist'); ?>
 <?php if ($_product->isSaleable()): ?>
 	<div class="add-to-cart v-centered-content">
     	<button type="button" title="<?php echo $buttonTitle ?>" class="button btn-cart v-center" onclick="productAddToCartForm.submit(this)"><span><span><?php echo $buttonTitle ?></span></span></button>
@@ -39,3 +40,18 @@
 	</div>
 	<div class="paypal-wrapper"><?php echo $this->getChildHtml('', true, true) ?></div>
 <?php endif; ?>
+<div id="wish-list">
+<?php $_wishlistSubmitUrl = $this->helper('wishlist')->getAddUrl($_product); ?>
+<ul class="add-to-links addto-gaps-right">
+<?php if ($this->helper('wishlist')->isAllow()) : ?>
+    <li>
+    <a class="feature feature-icon-hover first v-centered-content" href="<?php echo $_wishlistSubmitUrl ?>" onclick="productAddToCartForm.submitLight(this, this.href); return false;" title="<?php echo $this->__('Add to Wishlist') ?>">
+                    <span class="v-center">
+                            <span class="icon i-wishlist-bw icon-color-productview"></span>
+                    </span>
+        <span class="v-center"><?php echo $this->__('Add to Wishlist') ?></span>
+            </a>
+    </li>
+<?php endif; ?>
+</ul>
+</div>

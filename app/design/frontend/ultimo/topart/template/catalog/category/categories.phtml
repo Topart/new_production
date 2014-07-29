@@ -1,0 +1,81 @@
+<?php
+/**
+ * Onetree SubCategory Display Mode
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to support@onetree.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade SubCategory Display Mode to newer
+ * versions in the future.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2012 Onetree. (http://www.onetree.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+
+/**
+ * Onetree SubCategory Display Mode
+ *
+ * @see Onetree_Subcatmode_Block_Catalog_Category_View
+ */
+?>
+<div class="category-products">
+<?php
+	$_helper    = $this->helper('catalog/output');
+	if (!Mage::registry('current_category')) return ?>
+<?php $_categories = $this->getCurrentChildCategories();?>
+<?php $_count = is_array($_categories)?count($_categories):$_categories->count();?>
+
+<?php if($_count): ?>
+    <div class="create-art-list-container">
+        <ul class="create-art-list">
+
+    <?php $_columnCount = /*'4'*/ $this->getColumnCount(); $i=0;
+		foreach ($_categories as $k => $_category):
+
+            /*
+               $_imgHtml = null;
+               if($_category->getThumbnail()){
+
+                $_imgHtml = '<img src="'. Mage::getBaseUrl('media').'catalog/category/'.$_category->getThumbnail().'" alt="'.$this->htmlEscape($_category->getName()).'" title="'.$this->htmlEscape($_category->getName()).'"/>';
+                $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'thumbnail');
+            }*/
+            /*[START] All the images get from amazon, display as category img the img of the first product in the collection*/
+            $firstItemSku = $_category->getProductCollection()->getFirstItem()->getSku();
+            $categoryImg = $firstItemSku . '.jpg';
+            ?>
+            <li>
+                <a href="<?php echo $this->getCategoryUrl($_category) ?>" alt="<? echo $_category->getName(); ?>">
+                    <img src="<?php echo $_helper->getAmazonS3CategoryUrl() . $categoryImg; ?>" alt="" />
+                    <div><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></div>
+                </a>
+                <div class="clear"></div>
+            </li>
+		    <?php /*<div class="category-sub-option left">
+				<a href="<?php echo $this->getCategoryUrl($_category) ?>" alt="<? echo $_category->getName(); ?>">
+					<div class="category-sub-container">
+						<?php echo (!is_null($_imgHtml))?$_imgHtml:''; ?>
+						<div class="sub-option-title">
+							<div class="sub-option-title-bckg"></div>
+							<span><?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?></span>
+						</div>
+					</div>
+				</a>
+			</div>*/
+            ?>
+    <?php endforeach; ?>
+	    </ul>
+    </div>
+	<div class="clear"></div>
+<?php endif; ?>
+</div>

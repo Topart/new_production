@@ -360,6 +360,8 @@ ul.vertnav-top li > a > span > .cat-label {
 /* Top-level item */
 #nav > li > a
 {
+   /* border: 1px solid #fff !important;
+    border-bottom: none !important;*/
 	line-height:35px;
 }
 
@@ -369,4 +371,46 @@ ul.vertnav-top li > a > span > .cat-label {
 {
 	top:100%;
 	border: 1px solid #FFFFFF;
+}
+
+#nav > li:hover > a, 
+.vertnav-top li > a:hover {
+	background-color: #b19d68 !important;
+	color: #fff !important;
+   /*border: 1px solid #b19d68 !important;
+    border-bottom: none !important;*/
+}
+#nav .level0-wrapper, 
+#nav.classic ul {
+	background-color: #fff !important;
+    border: 1px solid #b19d68 !important;
+}
+#nav ul.level0 > li {
+	padding-bottom: 0px !important;
+}
+#nav ul.level0 > li > a {
+	color: #000 !important;
+text-transform: capitalize !important;
+margin: 0 !important;
+padding-bottom: 6px !important;
+padding-top: 6px !important;
+}
+#nav ul.level0 > li > a:hover {
+	color: #b19d68 !important;
+}
+#nav .level0-wrapper {
+	margin-top: 2px;
+	border: 0;
+}
+.vertnav-top ul.level0 > li > a {
+	text-transform: capitalize !important;
+}
+@media only screen and (min-width : 980px) {
+	#nav .level0 .level0-wrapper{
+		max-width: 345px;
+	}
+	#nav .level0.nav-5 .level0-wrapper{
+		left: 150px !important;
+        display:none;
+	}
 }
