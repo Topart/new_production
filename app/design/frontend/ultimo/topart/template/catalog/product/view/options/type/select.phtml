@@ -29,7 +29,6 @@
 <?php $_option = $this->getOption() ?>
 <?php $option_title = strtolower(str_replace(" ","_", $this->htmlEscape($_option->getTitle()) )); ?>
 
-
 <?php if($option_title !='size'):?>
     <div class="option-reloaded">
 <?php endif; ?>
@@ -85,11 +84,18 @@
     }
 
     $one_corner_flag = 0;
+    
     $thumbnail_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/thumbnail_images/";
+    
     $small_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/small_images/";
     $large_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/large_images/";
 
     $thumbnail_image_file_url = $thumbnail_image_base_url . $image_file_name;
+    
+    if(isset($_POST["s3file"])){
+        $thumbnail_image_file_url = $_POST["s3file"];
+    }
+    
     $small_image_file_url = $small_image_base_url . $image_file_name;
     $large_image_file_url = $large_image_base_url . $image_file_name;
 

@@ -3694,9 +3694,81 @@ form#create-art-upload{
 .feature-wrapper.top-border, .block_product_replace_related, .add-to-cart .qty-wrapper, .product-view .box-tabs{
     display:block !important;
 }
-/* JP Show specials features in product view */
-.short-description .specials-features{
-    color: rgb(170, 170, 170); 
-    font-style: italic;
-    font-size: 13px;
-}
+/* 
+ * JP 
+ */
+    /*
+     * Show specials features in product view 
+     */
+    .short-description .specials-features{
+        color: rgb(170, 170, 170); 
+        font-style: italic;
+        font-size: 13px;
+    }
+    /*
+     * Ticket 91
+     * Change upload photo button style in yours-photos-to-art
+     */
+    /*#s3_file_input {
+        cursor: pointer;
+        height: 52px;
+        left: 57px;
+        opacity: 0;
+        position: absolute;
+        top: 358px;
+        width: 320px;
+        z-index: 1;
+    }*/
+    #s3_file_input {
+        cursor: pointer;
+        height: 52px;
+        left: 119px;
+        opacity: 0;
+        position: absolute;
+        top: 550px;
+        width: 320px;
+        z-index: 1;
+    }
+    input[type="file"] {
+    }
+    select, input[type="file"] {
+        line-height: 28px;
+    }
+    input[type="file"] {
+        background-color: initial;
+        border: initial;
+        box-shadow: none;
+        padding: initial;
+    }
+    #s3_redirect_submit {
+        display: none;
+    }
+    #s3_image_submit {
+        display: none;
+    }
+    
+    #your_photos_to_art .upload .content .button {
+        top: 275px;
+    }
+    .custom-upload-button {
+        border: 2px solid #ffffff;
+        bottom: -115px;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: bold;
+        height: 39px;
+        padding-left: 10px;
+        padding-right: 5px;
+        padding-top: 9px;
+        text-align: center;
+        width: 300px;
+    }
+    .custom_art .upload div {
+        line-height: 30px;
+        margin-left: 15px;
+    }
+    
+    .gold_background {
+        background-color: #b19d68;
+    }
+    
