@@ -3,7 +3,8 @@ downloader/connect.cfg
 includes/stat
 tmp/
 var/*
-media/catalog/product/cache/*
+media/*
 sitemap.xml
 downloader/*
 .project
+
