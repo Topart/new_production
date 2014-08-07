@@ -10,3 +10,4 @@ downloader/*
 wordpress/wp-content/uploads/*
 skin/frontend/ultimo/default/css/_config/*
 /.idea/
+.DS_Store
