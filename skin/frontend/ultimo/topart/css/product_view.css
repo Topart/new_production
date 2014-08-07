@@ -1736,6 +1736,7 @@ dd.material{
 	margin: 0;
 	width: 35px;
 }
+
 .canvas_stretching .step-selection {
 	display: none;
 }
@@ -1874,12 +1875,32 @@ dd.material{
 /*
  * JP Product Add Wish and Quantity FIX
  */
-.product-options-bottom .add-to-cart{
-    width: 260px;
-}
-.product-options-bottom .btn-cart{
-    float: left;
-}
-.product-options-bottom .qty-wrapper{
-    margin-top: 10px;
+    /*
+     * Product Add Wish and Quantity FIX
+     */
+    .product-options-bottom .add-to-cart{
+        width: 260px;
+    }
+    .product-options-bottom .btn-cart{
+        float: left;
+    }
+    .product-options-bottom .qty-wrapper{
+        margin-top: 10px;
+    }
+    
+    /*
+     * Show Special Features in Product View
+     */
+    #special_features{
+        color: #aaaaaa;
+        display: block !important;
+        font-size: 14px;
+        padding: 7px 0;
+    }
+
+/*
+ *  JP Ugly fix to hide "(?)" near the "Custom size?" link in product view
+ */
+#cont_size span a[href='#info_size']{
+    display:none !important;
 }
