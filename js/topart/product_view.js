@@ -2675,20 +2675,20 @@
                     function ShowSelectedOption(selected,option_name){
                         if(selected !== null){
                             //jQuery(document).find(".option-reloaded span.step-selection").text("");
-                            if(option_name != "poster-size"){
+                            if(option_name !== "poster-size"){
                                 jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
                             }else{
                                 var txt = jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text();
                                 
-                                if(txt.indexOf("(Paper)") !== -1 ){
+                                if(txt.indexOf("Paper") !== -1 ){
                                     txt = "(Paper)" + selected;
                                 }
                                 
-                                if(txt.indexOf("(Poster)") !== -1 ){
+                                if(txt.indexOf("Poster") !== -1 ){
                                     txt = "(Poster)" + selected;
                                 }
                                 
-                                if(txt.indexOf("(Canvas)") !== -1 ){
+                                if(txt.indexOf("Canvas") !== -1 ){
                                     txt = "(Canvas)" + selected;
                                 }
                                 
@@ -2705,7 +2705,8 @@
                     (function(){
                         var selected_material,
                             selected_mat,
-                            selected_borders;
+                            selected_borders,
+                            selected_frame;
                             
                         selected_material = jQuery(document).find("dd.material ul.options-list li input[type=radio]:checked")
                                                         .next()
@@ -2722,15 +2723,16 @@
                                                         .find("label:first")
                                                         .text();
                                                 
-                        selected_frame = jQuery(document).find("dd.frame ul.options-list li input[type=radio]:first")
+                        /*selected_frame = jQuery(document).find("dd.frame ul.options-list li input[type=radio]:first")
                                                         .next()
                                                         .find("label:first")
-                                                        .text();
+                                                        .text();*/
                         
                         ShowSelectedOption(selected_material,"material");
                         ShowSelectedOption(selected_mat,"mat");
                         ShowSelectedOption(selected_borders,"borders");
-                        ShowSelectedOption(selected_frame,"frame");
+                        //ShowSelectedOption(selected_frame,"frame");
+                        jQuery(document).find("dt.frame .step-selection").text("(No Frame)");
                         
                     })();
 
