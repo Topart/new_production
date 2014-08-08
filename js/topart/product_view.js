@@ -2633,13 +2633,38 @@
                     'content':jQuery("#info_custom_size").html()
                 });
                 
-                jQuery("#info_size_link").fancybox({
+                jQuery(".fancy-material").fancybox({
                     'content':jQuery("#info_size").html(),
                     'width':'55%',
                     'height': '65%',
                     'autoDimensions':false,
                     'autoSize':false
                 });
+                
+                jQuery(".fancy-frame").fancybox({
+                    'content':jQuery("#info_frame").html(),
+                    'width':'55%',
+                    'height': '15%',
+                    'autoDimensions':false,
+                    'autoSize':false
+                });
+                
+                jQuery(".fancy-mat").fancybox({
+                    'content':jQuery("#info_mats").html(),
+                    'width':'55%',
+                    'height': '15%',
+                    'autoDimensions':false,
+                    'autoSize':false
+                });
+                
+                jQuery(".fancy-borders").fancybox({
+                    'content':jQuery("#info_borders").html(),
+                    'width':'55%',
+                    'height': '65%',
+                    'autoDimensions':false,
+                    'autoSize':false
+                });
+                
                 
                 /* Agregados para el ticket 107 */
                 

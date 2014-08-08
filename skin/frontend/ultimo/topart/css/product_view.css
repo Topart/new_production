@@ -1904,3 +1904,6 @@ dd.material{
 #cont_size #info_size_link{
     display:none !important;
 }
+
+/* JP: ticket 105 - Muestra centradas las imagenes dentro del fancy de borders*/
+#canvas_white_borders{margin: 0 auto 20px !important;}
