@@ -17,7 +17,7 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 		$cloudFontBaseUrl = 'http://d3odr912zwpuhm.cloudfront.net';
 
 		if($product instanceof Mage_Catalog_Model_Product){
-			$sku = $product->getSku();
+			$sku = $product->getData('sku');
 		}else{
 			$sku = $product;
 		}

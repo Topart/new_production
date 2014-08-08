@@ -29,7 +29,7 @@ $item = $this->getItem();
 $product = $item->getProduct();
 $helpImg = $this->helper('infortis/image');
 ?>
-<a class="product-image" href="<?php echo $this->getProductUrl($item) ?>" title="<?php echo $this->escapeHtml($product->getName()) ?>">
+<a class="product-image" href="<?php echo $this->getProductUrl($item) ?>" title="<?php echo $this->escapeHtml($product->getName()) ?>" style="margin: auto">
     <?php /*<img src="<?php echo $this->helper('catalog/image')->init($product, 'small_image')->constrainOnly(true)->keepAspectRatio(true)->keepFrame(false)->resize(168); ?>" alt="<?php echo $this->escapeHtml($product->getName()) ?>" />*/?>
-    <img src="<?php echo $helpImg->getImg($product) ?>" alt="<?php echo $this->escapeHtml($product->getName()) ?>" />
+    <img src="<?php echo $helpImg->getImg($product,'','','small_image') ?>" alt="<?php echo $this->escapeHtml($product->getName()) ?>" />
 </a>
