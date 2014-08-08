@@ -463,11 +463,61 @@
                 <div class="std"><?php echo "By " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" ?></div>
             </div>
         <?php endif;?>
+        
+        
+        <?php
+
+         $udf_serigraph = $_product->getAttributeText('udf_serigraph');
+         $udf_embossed = $_product->getAttributeText('udf_embossed');
+         $udf_specpaper = $_product->getAttributeText('udf_specpaper');
+         $udf_foil = $_product->getAttributeText('udf_foil');
+         $udf_metallic_ink = $_product->getAttributeText('udf_metallic_ink');
+         $udf_embellished = $_product->getAttributeText('udf_embellished');
+         $udf_limited = $_product->getAttributeText('udf_limited');
+
+         $special_features = "";
+
+         if ($udf_serigraph == "Yes"){
+            $special_features = $special_features . "Serigraph Print ";
+         }
+
+         if ($udf_embossed == "Yes"){
+            $special_features = $special_features . "Embossed Image, ";
+         }
+
+         if ($udf_specpaper == "Yes"){
+            $special_features = $special_features . "Special Paper, ";
+         }
+
+         if ($udf_foil == "Yes"){
+            $special_features = $special_features . "Foil Details, ";
+         }
+
+         if ($udf_metallic_ink == "Yes"){
+            $special_features = $special_features . "Metallic Inks, ";
+         }
+
+         if ($udf_embellished == "Yes"){
+            $special_features = $special_features . "Hand Embellished, ";
+         }
+
+         if ($udf_limited == "Yes"){
+            $special_features = $special_features . "S/N Limited Edition of 950 on Fine Art Paper, ";
+         }
+
+        ?>
+        <div id="special_features">
+            <?php 
+                if($special_features){ 
+                    echo trim($special_features,", "); 
+                }
+            ?>
+        </div>
         <!-- End of new short description -->
 
         <div class="product-shop <?php echo $primaryColGridClass; ?>">
-            
-            <?php echo $this->getReviewsSummaryHtml($_product, false, true); //reviews ?>
+            <?php //hidden the review points ?>
+            <?php //echo $this->getReviewsSummaryHtml($_product, false, true); //reviews ?>
 
 
             <!-- New special features -->
@@ -1154,12 +1204,12 @@
     //<![CDATA[
 
         jQuery(document).ready(function(){
-            jQuery('.info').magnificPopup({
+            /*jQuery('.info').magnificPopup({
                 items: {
                     src: '<div class="white-popup">Dynamically created popup</div>',
                     type: 'inline'
                 }
-            });
+            });*/
         });
 
         var productAddToCartForm = new VarienForm('product_addtocart_form');
@@ -1221,13 +1271,15 @@
     
     
     
-    <?php if (isset($p['collatSecondaryCol'])): ?>
+    <?php /*if (isset($p['collatSecondaryCol'])): */?>
+    <?php if (false): ?>
 		<div class="box-additional box-sidebar custom-sidebar-right <?php echo $collatSecondaryColGridClass; ?>">
 			<div class="inner"><?php echo $p['collatSecondaryCol']; ?></div>
 		</div>
 	<?php endif; ?>
          
-    <?php if (isset($section['upsell'])): ?>
+    <?php /*if (isset($section['upsell'])): */?>
+    <?php if (false): ?>
     	<div class="box-additional box-up-sell <?php echo $collatPrimaryColGridClass; ?>"><?php echo $section['upsell']; ?></div>
     <?php endif; ?>
     

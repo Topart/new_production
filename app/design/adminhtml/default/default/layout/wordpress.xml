@@ -38,7 +38,7 @@
 					<action method="setMedium"><medium>System Configuration</medium></action>
 					<action method="setLimit"><limit>2</limit></action>
 					<action method="setPreferred">
-						<pref><Fishpig_Wordpress_Addon_Facebook /><Fishpig_Wordpress_Addon_Root /><Fishpig_Wordpress_Addon_IntegratedSearch/></pref>
+						<pref><Fishpig_Wordpress_Addon_Root /><Fishpig_Wordpress_Addon_CS /><Fishpig_Wordpress_Addon_IntegratedSearch/><Fishpig_Wordpress_Addon_Facebook /></pref>
 					</action>
 				</block>
 			</block>
