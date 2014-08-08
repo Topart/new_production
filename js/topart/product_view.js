@@ -2626,6 +2626,16 @@
 			}
 		);
         
+           actual_size = jQuery("#size_data").html();  
+
+           actual_size = actual_size.replace('"', "-");
+           actual_size = actual_size.replace('"', "-");
+		   actual_size_label_id = "#cbx_" +  actual_size;
+
+			jQuery(actual_size_label_id).attr('checked', 'checked');
+
+		   
+
                 /*
                  * Init Fancys Product
                  */

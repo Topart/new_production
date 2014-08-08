@@ -422,47 +422,30 @@
                         $custom_size_label = "";
 
                         // Size initials out of the sku name
-                        $size_initial = "";
-
 
                         $size_value_array = explode( "_" , $option_sku );
-                        $product_size = $size_value_array[6] ."&#34; x " . $size_value_array[8] . "&#34;";
+                        
+                        $width = array_search("width", $size_value_array) + 1;
+                        $length = array_search("length", $size_value_array) + 1;
+
+                        $product_size = $size_value_array[$width] ."&#34;X" . $size_value_array[$length] . "&#34;";
+                        /*echo $size_initial . " " . $product_size . "<br>";*/
                         $size_initial = $product_size;
 
-                        /*if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
-                            $size_initial = "xs";
-
-                        else if (strpos($option_sku, "small") !== false || strpos($option_sku, "size_posterpaper_s_") !== false)
-                            $size_initial = "s";
-
-                        else if (strpos($option_sku, "medium") !== false || strpos($option_sku, "size_posterpaper_m_") !== false)
-                            $size_initial = "m";
-
-                        else if (strpos($option_sku, "large") !== false || strpos($option_sku, "size_posterpaper_l_") !== false)
-                            $size_initial = "l";
-
-                        else if (strpos($option_sku, "oversize") !== false || strpos($option_sku, "size_posterpaper_xl_") !== false)
-                            $size_initial = "xl";
-
-                        else
-                        {
-
-                        }
-                        */
-
-                        
 
                         $colon_position = strpos($option_name, ':', 1);
                         $option_name = substr($option_name, 0, $colon_position);
 
+                        $cbx_id = $size_value_array[$width] . "-x" . $size_value_array[$length] . "-";
+
                         ?>
+
+
 
                         <li id="custom_option_<?php echo $option_sku; ?>" class="background_border_size <?php echo $material_name; ?>">
 
-                            <input name="size" type="radio" class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text" />
+                            <input id="cbx_<?php echo $cbx_id; ?>" name="size" type="radio" class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text"/>
                                 <label for="size"><?php echo $size_initial;?></label>
-                            
-
                         </li>
 
                     <?php
