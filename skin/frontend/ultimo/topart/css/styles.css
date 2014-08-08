@@ -3772,3 +3772,13 @@ form#create-art-upload{
         background-color: #b19d68;
     }
     
+    /* JP: For Ticket 125 Start*/
+    .blog-search input[type=text] {
+        float: left;
+        margin-right: 4px;
+        width: 150px;
+    }
+    .blog-search .button{height: 35px; float: left; width: 55px;}
+    .blog-search span{height: 35px; width: 55px;}
+    .blog-search span span{width: 55px !important; line-height: 33px !important; height: 36px !important; padding: 0px !important; margin-left: 0px;}
+    /* JP: For Ticket 125 End*/
