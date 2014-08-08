@@ -2331,7 +2331,7 @@
 				selected_length = temp;
 			}
 
-            alert(furniture_image_gap);
+            //alert(furniture_image_gap);
 
             real_width = selected_width * size_scale_factor;
 			real_height = selected_length * size_scale_factor;
@@ -2670,13 +2670,31 @@
                 
                     /*
                      * Actualiza la opcion seleccionada en cualqueira 
-                     * de los step (Material & size,Frame,Mat)
+                     * de los step (Material & size,Frame,Mat,border)
                      */
                     function ShowSelectedOption(selected,option_name){
                         if(selected !== null){
                             //jQuery(document).find(".option-reloaded span.step-selection").text("");
-
-                            jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
+                            if(option_name != "poster-size"){
+                                jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
+                            }else{
+                                var txt = jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text();
+                                
+                                if(txt.indexOf("(Paper)") !== -1 ){
+                                    txt = "(Paper)" + selected;
+                                }
+                                
+                                if(txt.indexOf("(Poster)") !== -1 ){
+                                    txt = "(Poster)" + selected;
+                                }
+                                
+                                if(txt.indexOf("(Canvas)") !== -1 ){
+                                    txt = "(Canvas)" + selected;
+                                }
+                                
+                                jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+txt+")");
+                            }
+                                
                        }
                     }   
 
@@ -2726,6 +2744,18 @@
 
                             ShowSelectedOption(selected,"material");
                         });  
+                        
+                        /* Agregado: Actualiza/Muestra el tamaño en Material & Size*/
+                        jQuery(document).on("click", ".custom_option_size_poster_paper", function(){
+                            var selected = jQuery(this)
+                                                .next()
+                                                .text();
+                                                //.find("label:first")
+                                                
+
+                            ShowSelectedOption(selected,"poster-size");
+                        });  
+                        
                         
                         /*
                          * Set  "Frame"
