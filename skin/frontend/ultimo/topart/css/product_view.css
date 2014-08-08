@@ -1901,6 +1901,6 @@ dd.material{
 /*
  *  JP Ugly fix to hide "(?)" near the "Custom size?" link in product view
  */
-#cont_size span a[href='#info_size']{
+#cont_size #info_size_link{
     display:none !important;
 }

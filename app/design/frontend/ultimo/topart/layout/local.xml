@@ -19,7 +19,17 @@
 			<!-- obsolete: flexslider -->
 			<!--<action method="addJs"><script>infortis/jquery/plugins/jquery.flexslider.min.js</script></action>-->
 			
-		<!-- CSS: -->
+                        <!--JP:-->
+                            <!--Fancybox:-->
+                            <action method="addJs"><script>fancybox/jquery.fancybox-1.3.4.pack.js</script></action>
+                            
+                            <!-- Fix upload button in cms page "your-photos-to-art" -->
+                            <action method="addJs"><script>topart/jcanvas.min.js</script></action>
+                            <action method="addJs"><script>topart/jquery.prettyPhoto.js</script></action>
+                            <action method="addJs"><script>topart/purl.js</script></action>
+                            <action method="addJs"><script>topart/product_view.js</script></action>-->
+                        
+                        <!-- CSS: -->
 			
 			<!-- CSS base -->
 			<action method="addItem"><type>skin_css</type><name>css/styles-infortis.css</name><params/></action>
@@ -29,6 +39,10 @@
 			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/accordion.css</name><params/></action>
 			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/dropdown.css</name><params/></action>
 			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/itemslider.css</name><params/></action>
+                        
+                        <!-- Fancybox css -->
+                        <action method="addItem"><type>skin_css</type><name>css/fancybox/jquery.fancybox-1.3.4.css</name><params/></action>
+                        
 			<!-- obsolete: flexslider -->
 			<!--<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/itemslider-old.css</name><params/></action>-->
 			<action method="addItem"><type>skin_css</type><name>css/infortis/_shared/generic-nav.css</name><params/></action>
@@ -483,8 +497,6 @@
 			<action method="addJs"><script>topart/jquery.prettyPhoto.js</script></action>
 			<action method="addJs"><script>topart/purl.js</script></action>
 			<action method="addJs"><script>topart/product_view.js</script></action>
-
-			
 			
 		</reference>
 
@@ -684,10 +696,10 @@
 				<action method="setElementClass"><value>block_cms_page_top std</value></action>
 				<block type="cms/block" name="block_cms_page_top">
 					<action method="setBlockId"><block_id>block_cms_page_top</block_id></action>
+                                        <action method="addCss"><stylesheet>css/prettyPhoto.css</stylesheet></action>
 				</block>
 			</block>
 		</reference>
-		
 	</cms_page>
 	
 	<!-- Remove static blocks displayed on CMS pages from these pages: home page, 404 no route 
