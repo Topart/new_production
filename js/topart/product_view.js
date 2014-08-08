@@ -2721,10 +2721,16 @@
                                                         .next()
                                                         .find("label:first")
                                                         .text();
+                                                
+                        selected_frame = jQuery(document).find("dd.frame ul.options-list li input[type=radio]:first")
+                                                        .next()
+                                                        .find("label:first")
+                                                        .text();
                         
                         ShowSelectedOption(selected_material,"material");
                         ShowSelectedOption(selected_mat,"mat");
                         ShowSelectedOption(selected_borders,"borders");
+                        ShowSelectedOption(selected_frame,"frame");
                         
                     })();
 
@@ -2789,6 +2795,39 @@
                                                 .text();
 
                             ShowSelectedOption(selected,"borders");
+                        });
+                        
+                        /*
+                         * Agrega el size de las imagenes
+                         */
+                        
+                        jQuery(document).on("click","input[name=size]",function(){
+                            
+                            var txt = jQuery(this).next().text(),
+                                opt,
+                                tit = jQuery(".material .step-selection").text();
+                            
+                            console.log("txt: "+txt);
+                            console.log("tit: "+tit);
+                            
+                            if(tit.indexOf("Paper") !== -1){
+                                console.log("a");
+                                opt = "(Paper)";
+                            }
+
+                            if(tit.indexOf("Canvas") !== -1){
+                                console.log("b");
+                                opt = "(Canvas)";
+                            }
+
+                            if(tit.indexOf("Poster") !== -1){
+                                console.log("c");
+                                opt = "(Poster)";
+                            }
+                            
+                            console.log("opt: "+opt);
+                                
+                            jQuery(".material .step-selection").text(opt+" "+txt)	
                         });
                         
             var img_uploaded = jQuery("input[name=image-uploaded]").val();
