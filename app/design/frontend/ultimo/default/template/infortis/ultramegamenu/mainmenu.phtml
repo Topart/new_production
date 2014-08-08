@@ -143,8 +143,74 @@
     <?php if ($mode <= 0): //Mode: mobile or both ?>
 
         <script type="text/javascript">
-        //<![CDATA[
+            var trigger_remove_map = false,
+                main_image_product = {};
+            
+            jQuery(document).ready(function(){
+                jQuery(".color").click(function(){
+                    main_image_product.opt_visible = "#color_switch";
+                });
 
+                jQuery(".room_thumbnail").click(function(){
+                    main_image_product.opt_visible = "#room_switch";
+                });
+
+                jQuery("#reset").click(function(){
+
+                    jQuery("#final_product_image")
+                        .css("width","100%")
+                        .css("height","100%")
+                        .css("left","50%")
+                        .css("top","50%");
+                
+                    main_image_product.width = "100%";
+                    main_image_product.height = "100%";
+                    main_image_product.left = "50%";
+                    main_image_product.top = "50%";
+                    
+                    hideMarcos();
+                    
+                    main_image_product.opt_visible = null;
+                });
+            });
+            
+            function hideMarcos(){
+                if(main_image_product.opt_visible === "#color_switch"){
+                    jQuery("#color_switch").slideUp("fast");
+                    jQuery("#hide_button").slideUp("fast");
+                }else{
+                    if(main_image_product.opt_visible === "#room_switch"){
+                        jQuery("#room_switch").slideUp("fast");
+                        jQuery("#hide_button").slideUp("fast");
+                    }
+                }
+            }
+            
+            function showMarcos(){
+                if(main_image_product.opt_visible === "#color_switch"){
+                    jQuery("#color_switch").slideDown("fast");
+                    jQuery("#hide_button").slideDown("fast");
+                }else{
+                    if(main_image_product.opt_visible === "#room_switch"){
+                        jQuery("#room_switch").slideDown("fast");
+                        jQuery("#hide_button").slideDown("fast");
+                    }
+                }
+            }
+            
+            function resizeMainImageProduct(){
+                if( main_image_product.width !== undefined && main_image_product.width !== "undefined"){
+                    jQuery("#final_product_image").css("width",main_image_product.width);
+                    jQuery("#final_product_image").css("height",main_image_product.height);
+                    jQuery("#final_product_image").css("left",main_image_product.left);
+                    jQuery("#final_product_image").css("top",main_image_product.top);
+                    
+                    hideMarcos();
+                    
+                }
+            }
+            //<![CDATA[
+            
                 <?php if ($mode == 0): //Mode: both ?>
         
                     <?php $threshold = intval($helper->getCfg('mobilemenu/threshold')); ?>
@@ -155,12 +221,53 @@
                             jQuery('#mobnav').show();
                             jQuery('.vertnav-top').addClass('mobile');
                             jQuery('#nav').addClass('mobile');
+                            
                         }
                         else
                         {
                             jQuery('#nav').removeClass('mobile');
                             jQuery('.vertnav-top').removeClass('mobile');
                             jQuery('#mobnav').hide();
+                            
+                        }
+                        
+                        if ((jQuery(window).width() <= 480) )
+                        {
+                            if(main_image_product.opt_visible === "#color_switch" || 
+                               main_image_product.opt_visible === "#room_switch"){
+                           
+                                main_image_product.width = jQuery("#final_product_image").css("width");
+                                main_image_product.height = jQuery("#final_product_image").css("height");
+                                main_image_product.left = jQuery("#final_product_image").css("left");
+                                main_image_product.top = jQuery("#final_product_image").css("top");
+
+                                hideMarcos();
+
+                                jQuery("#final_product_image")
+                                    .css("width","100%")
+                                    .css("height","100%")
+                                    .css("left","0")
+                                    .css("top","0");
+                                
+                            }
+                            
+                        }else{
+                            
+                            if(main_image_product.opt_visible === "#color_switch" || 
+                               main_image_product.opt_visible === "#room_switch"){
+                               
+                               
+                               showMarcos();
+
+                                jQuery("#final_product_image")
+                                    .css("width","16.6667%")
+                                    .css("height","16.6667%")
+                                    .css("left","42.5%")
+                                    .css("top","44.5%");
+                            }else{
+                                resizeMainImageProduct();
+                            }
+
                         }
                     }
                     activateMobileMenu();

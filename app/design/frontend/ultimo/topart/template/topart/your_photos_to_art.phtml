@@ -1,0 +1,254 @@
+
+<?php
+
+	//Amazon S3 library file
+
+	// Bucket Name
+	$bucket="topart_user_images";
+	$folder="user_images";
+
+	if (!class_exists('S3'))
+		require_once('S3/S3.php');
+
+	//AWS access info
+	if (!defined('awsAccessKey')) define('awsAccessKey', 'AKIAJFHQLRZSWLZGESHA');
+	if (!defined('awsSecretKey')) define('awsSecretKey', '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');
+
+	$s3 = new S3(awsAccessKey, awsSecretKey);
+	$s3->putBucket($bucket, S3::ACL_PUBLIC_READ);
+
+?>
+
+<?php
+	function getExtension($str) 
+	{
+	$i = strrpos($str,".");
+	if (!$i) { return ""; }
+	$l = strlen($str) - $i;
+	$ext = substr($str,$i+1,$l);
+	return $ext;
+	}
+	//Here you can add valid file extensions. 
+	$valid_formats = array("jpg", "png", "gif", "bmp","jpeg","PNG","JPG","JPEG","GIF","BMP");
+?>
+
+<?php
+
+	//include('image_check.php'); // getExtension Method
+	$msg= '';
+	$s3file = '';
+	
+	if($_SERVER['REQUEST_METHOD'] == "POST")
+	{
+		$name = $_FILES['file']['name'];
+		$size = $_FILES['file']['size'];
+		$tmp = $_FILES['file']['tmp_name'];
+		$ext = getExtension($name);
+
+		if(strlen($name) > 0)
+		{
+			// File format validation
+			if(in_array($ext,$valid_formats))
+			{
+				// File size validation
+				if($size<(10240*1024))
+				{
+					$actual_image_name = time().".".$ext;
+
+					if($s3->putObjectFile($tmp, $bucket , $actual_image_name, S3::ACL_PUBLIC_READ) )
+					{
+						$msg = "Your Upload Was Successful. <br />Please Wait While We Take You To Our Customization Page."; 
+						
+						$s3file = 'https://' . $bucket . '.s3.amazonaws.com/' . $actual_image_name;
+						list($width, $height, $type, $attr) = getimagesize($s3file);
+						$min_side = 0;
+						$max_side = 0;
+
+						if ($width < $max_side)
+						{
+							$min_side = $width;
+							$max_side = $height;
+						}
+						else
+						{
+							$min_side = $height;
+							$max_side = $width;
+						}
+
+						$ratio = number_format((float)($min_side / $max_side), 2, '.', '');
+
+						$custom_url_suffix = $ratio * 100;
+
+						echo "<img id='s3_image' src='$s3file' style='display:none;' />";
+					}
+					else
+					{
+						$msg = "The Upload Failed. Please Try Again.";
+					}
+				}
+				else
+					$msg = "The Maximum Image Size Is 10MB.";
+
+			}
+			else
+				$msg = "The File Is Not Valid. Please Upload An Image File.";
+
+		}
+		else
+			$msg = "Please Select An Image File.";
+
+	}
+
+?>
+
+<?php
+	$s3_images_base_url = "http://s3.amazonaws.com/topart_images/";
+?>
+<form id="s3_image_upload" action="" method='post' enctype="multipart/form-data">
+
+        <input type="file" name="file" id="s3_file_input" size="10" multiple="false" />
+
+
+        <div id="user_image_preview">
+
+        </div>
+
+        <input type="checkbox" id="accept_checkbox" />
+        <div id="disclaimer">
+            Check this box, to confirm that you have read and agree to our <a class="fancybox" href="#terms_and_conditions" title="Terms and conditions">terms and conditions</a>.
+        </div>
+
+        <div id="terms_and_conditions" style="width:600px; display: none;">
+            <h3>Terms and conditions</h3>
+            <p>
+                <div>
+                    All Photographic and digital images are subject to copyright law. In compliance with federal copyright law, Topart.com will not reproduce a copyrighted photograph taken by a professional photographer without a signed release from the original photographer/artists and or studio. The release must be signed by both you and the professional or studio who shot the photograph. You can obtain a pdf version of this form here: <a href="/documents/photographers_release.doc">Topart.com Copyright release form</a>. If you do not have permission or the right to order prints, canvas etc please terminate this order.
+                </div>
+
+                <br />
+
+                <div class="bold">
+                    By uploading and ordering photo products from Topart.com, I acknowledge that I own the copyright to the images in my order or that I have obtained the written permission of the copyright owner and forwarded the Topart.com Copyright release form to Topart.com.
+                </div>
+            </p>
+        </div>
+
+        <input type='submit' name='submit' id="s3_image_submit" value='Upload Image' />
+
+        <a id="s3_result_light_box" class="fancybox" href="#s3_message"></a>
+        <div id="s3_message" style="width:400px; display: none;">
+            <?php echo $msg; ?>
+        </div>
+
+    </form>
+
+    <form id="s3_redirect" action="<?php echo $site_base_url . "/your-photos-to-art-" . $custom_url_suffix; ?>" method='post'>
+
+        <input type='hidden' name='s3file' value="<?php echo $s3file; ?>" />
+        <input type='submit' name='redirect' id="s3_redirect_submit" value='Continue'/>
+
+    </form>
+
+    <div class="button gold_background">Upload Your Image</div>
+
+	<div class="drag section" style="background-image: url('<?php echo $s3_images_base_url . 'your_photos_to_art/your_photos_to_art-grey_box_image.jpg' ?>');">
+	</div>
+
+		
+	<ul class="thumbnails section" id="process_details">
+
+		<li class="span4">
+			<div class="caption_background_custom_art">
+				<a href="#" class="thumbnail_name">PHOTOS ON CANVAS MADE EASY</a>
+			</div>
+			<a href="#">
+				<img style="background-image: url('<?php echo $s3_images_base_url . 'your_photos_to_art/your_photos_to_art-1.jpg' ?>');" class="products_collections" class="featured_collections" />
+			</a>
+			<div class="bottom_comment">Upload, customize and order in minutes. It is just that easy.</div>
+		</li>
+
+		<li class="span4">
+			<div class="caption_background_custom_art">
+				<a href="#" class="thumbnail_name">SUPERIOR GRADE QUALITY</a>
+			</div>
+			<a href="#">
+				<img style="background-image: url('<?php echo $s3_images_base_url . 'your_photos_to_art/your_photos_to_art-2.jpg' ?>');" class="products_collections" class="featured_collections" />
+			</a>
+
+			<div class="bottom_comment">We use solvent free inks with color precion for the best quality prints.</div>
+		</li>
+						
+		<li class="span4">
+			<div class="caption_background_custom_art">
+				<a href="#" class="thumbnail_name">READY TO HANG</a>
+			</div>
+			<a href="#">
+				<img style="background-image: url('<?php echo $s3_images_base_url . 'your_photos_to_art/your_photos_to_art-3.jpg' ?>');" class="products_collections" class="featured_collections" />
+			</a>
+			<div class="bottom_comment">Our canvas comes ready to hange with a solid 1.5" stretcher bar.</div>
+		</li>
+
+	</ul>
+			
+
+</div>
+
+<div id="your_photos_to_art_bottom_divider_line" class="continuous_divider_line"></div>
+
+<ul id="your_photos_to_art_bottom_section" class="bottom_section span10">
+	<li class="bottom_comment span10">
+		We know how important your photos are. That's why we use the highest quality materials and all our products are handcrafted by real people.
+	</li>
+	<li class="bottom_comment span10">
+		We combine a tradition of superior craftsmanship with the latest in print technology. With Topart you are guaranteed to love your photos even more.
+	</li>
+</ul>
+
+
+
+<script type="text/javascript">
+
+		document.getElementById('s3_file_input').onchange = function (event) 
+		{
+  			var files = this.files;
+  			document.getElementById('s3_image_submit').click();
+		};
+
+
+</script>
+
+<!-- Load Feather code -->
+<script type="text/javascript" src="http://feather.aviary.com/js/feather.js"></script>
+
+<!-- Instantiate Feather -->
+<script type='text/javascript'>
+   var featherEditor = new Aviary.Feather({
+       apiKey: 'kq2ngl5kd16a73gf',
+       apiVersion: 3,
+       theme: 'dark', // Check out our new 'light' and 'dark' themes!
+       tools: 'all',
+       appendTo: '',
+       onSave: function(imageID, newURL) {
+           var img = document.getElementById(imageID);
+           img.src = newURL;
+       },
+       onError: function(errorObj) {
+           alert(errorObj.message);
+       }
+   });
+   function launchEditor(id, src) {
+       featherEditor.launch({
+           image: id,
+           url: src
+       });
+      return false;
+   }
+</script>
+
+<div id='injection_site'></div>
+
+<img id='demo_image' src='http://images.aviary.com/imagesv5/feather_default.jpg'/>
+
+<!-- Add an edit button, passing the HTML id of the image and the public URL of the image -->
+<p><input type='image' id="demo_input" src='http://images.aviary.com/images/edit-photo.png' value='Edit photo' onclick="return launchEditor('image1', 'http://images.aviary.com/imagesv5/feather_default.jpg');" /></p>
+

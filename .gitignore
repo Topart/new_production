@@ -3,9 +3,11 @@ downloader/connect.cfg
 includes/stat
 tmp/
 var/*
-media/catalog/product/cache/*
+media/*
 sitemap.xml
 downloader/*
 .project
 wordpress/wp-content/uploads/*
 skin/frontend/ultimo/default/css/_config/*
+/.idea/
+.DS_Store

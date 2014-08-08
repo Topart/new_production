@@ -1,23 +1,38 @@
 
-	var $j = jQuery.noConflict(); 
+
+
+	var jQuery = jQuery.noConflict(); 
 	
-	$j(document).ready(function() {
+	jQuery(document).ready(function() {
 	
 		// Get the document height for each page
-		document_height = $j(document).height();
+		document_height = jQuery(document).height();
 
 		// *************** CUSTOM OPTIONS ***************
 	
 		// When the product view loads, only the first tab is displayed, all the others are not.
-		$j(".product-options dd:not(.material)").hide();
+		jQuery(".product-options dd:not(.material)").hide();
 
 		// Hide the corresponding labels
-		$j(".custom_option_label").hide();
-		$j("#custom_option_material").prev(".custom_option_label").show();
+		jQuery(".custom_option_label").hide();
+		jQuery("#custom_option_material").prev(".custom_option_label").show();
 
 		// Only the active tab has a black background, all the others are grey.
-		$j(".product-options dt:not(.material) label.required").css("background-color", "#b19d68");
+		jQuery(".product-options dt:not(.material) label.required").css("background-color", "#b19d68");
 
+		var viewportWidth = jQuery(window).width();
+		jQuery(window).resize(function() {
+                    viewportWidth = jQuery(window).width();
+                    if (! jQuery("#room_switch").is(":hidden") ) {
+                        if(viewportWidth > 640){
+                                jQuery("#hide_button").css("bottom", 116);
+                        }else if(viewportWidth > 480){
+                                jQuery("#hide_button").css("bottom", 132);
+                        }else{
+                                jQuery("#hide_button").css("bottom", 215);
+                        }
+                    }
+		});
 		// Tracks if the canvas option has been selected or not
 		var canvas_active = 0;
 		var paper_active = 0;
@@ -70,6 +85,9 @@
 		var selected_mats = "";
 		// End of product configuration variables
 
+		var height_color = 330;
+		var height_rooms = 0;
+
 		var active_option = "";
 		oversize_flag = false;
 		oversize_list = new Array();
@@ -92,14 +110,14 @@
 		number_of_shown_mats = 0;
 		var custom_url = "";
 
-		$j("ul#custom_option_mat li").siblings().each(
+		jQuery("ul#custom_option_mat li").siblings().each(
 
 			function() 
 			{
-				mats_sku = $j(this).data("mats_sku");
-				mat_category = $j(this).data("mat_category");
-				mats_size = $j(this).data("mats_size");
-				mats_color = $j(this).css("background-color");
+				mats_sku = jQuery(this).data("mats_sku");
+				mat_category = jQuery(this).data("mat_category");
+				mats_size = jQuery(this).data("mats_size");
+				mats_color = jQuery(this).css("background-color");
 
 				if (mat_category == "MatsColorOS" || mat_category == "MatsWhiteOS" || mat_category == "MatsNeutralOS" || mat_category == "MatsBlackOS")
 				{
@@ -111,40 +129,40 @@
 
 				// By the time this loop ends, we know what sku corresponds to what color, for every mat option
 			}
-		);
-
-
-
-		// Parametrically show specific custom options images
+		); 
+                                   
+                // Parametrically show specific custom options images
 		function show_options_images(option_name)
 		{
 			// Hide every image first
-			$j("#custom_options_images ul").hide();
-
+			jQuery(".custom_options_images ul").hide();
+                        
+                        //show_option_selected();
+                        
 			// Show the option node
-			$j("#custom_options_images #custom_option_" + option_name ).show();
+			jQuery(".custom_options_images #custom_option_" + option_name ).show();
 			// Show every descendant node for that option
-			$j("#custom_options_images #custom_option_" + option_name  + "*" ).show();
+			jQuery(".custom_options_images #custom_option_" + option_name  + "*" ).show();
 
 			// Show the option label
-			$j("#custom_options_images #custom_option_" + option_name).prev(".custom_option_label").show();
+			jQuery(".custom_options_images #custom_option_" + option_name).prev(".custom_option_label").show();
 
 			if (option_name == "material")
 			{
 				// Show the option node
-				$j("#custom_options_images #custom_option_" + "size" ).show();
+				jQuery(".custom_options_images #custom_option_" + "size" ).show();
 				// Show every descendant node for that option
-				$j("#custom_options_images #custom_option_" + "size"  + "*" ).show();
+				jQuery(".custom_options_images #custom_option_" + "size"  + "*" ).show();
 
 				// Show the option label
-				$j("#custom_options_images #custom_option_" + "size").prev(".custom_option_label").show();
+				jQuery(".custom_options_images #custom_option_" + "size").prev(".custom_option_label").show();
 
-				$j("#size_info").show();
+				jQuery("#size_info").show();
 			}
 
 			else
 			{
-				$j("#size_info").hide();
+				jQuery("#size_info").hide();
 			}
 		}
 
@@ -152,23 +170,23 @@
 		function hide_options_images(option_name)
 		{
 			// Hide the option node
-			$j("#custom_options_images #custom_option_" + option_name ).hide();
+			jQuery(".custom_options_images #custom_option_" + option_name ).hide();
 			// Hide every descendant node for that option
-			$j("#custom_options_images #custom_option_material" + option_name  + "*" ).hide();
+			jQuery(".custom_options_images #custom_option_material" + option_name  + "*" ).hide();
 		}
 
 		// Parametrically activate a tab
 		function activate_option_tab(option_name)
 		{
 			// Activate the input buttons
-			$j(".product-options dt." + option_name ).show();
+			jQuery(".product-options dt." + option_name ).show();
 		}
 
 		// Parametrically deactivate a tab
 		function deactivate_option_tab(option_name)
 		{
 			// Activate the input buttons
-			$j(".product-options dt." + option_name ).hide();
+			jQuery(".product-options dt." + option_name ).hide();
 		}
 
 		// Parametrically enable an option
@@ -176,7 +194,7 @@
 		{
 			// Activate the corresponding tab
 			activate_option_tab(option_name);
-			$j(".product-options dd." + option_name ).show();
+			jQuery(".product-options dd." + option_name ).show();
 
 			active_option = option_name;
 
@@ -189,7 +207,7 @@
 		{
 			// Deactivate the corresponding tab
 			deactivate_option_tab(option_name);
-			$j(".product-options dd." + option_name ).hide();
+			jQuery(".product-options dd." + option_name ).hide();
 
 			// Hide the corresponding images
 			hide_options_images(option_name);
@@ -200,12 +218,12 @@
 		{
 			// Load paper-related sizes only
 			// Handle input types
-			$j("dd.size li").hide();
-			$j("dd.size li[class*='size_posterpaper']").show();
+			jQuery("dd.size li").hide();
+			jQuery("dd.size li[class*='size_posterpaper']").show();
 
 			// Handle options images
-			$j("#custom_options_images #custom_option_size li").hide();
-			$j("#custom_options_images #custom_option_size li[id*='size_posterpaper']").show();
+			jQuery(".custom_options_images #custom_option_size li").hide();
+			jQuery(".custom_options_images #custom_option_size li[id*='size_posterpaper']").show();
 		}
 
 		// Show specific material related sizes
@@ -213,12 +231,12 @@
 		{
 			// Load paper-related sizes only
 			// Handle input types
-			$j("dd.size li").hide();
-			$j("dd.size li[class*='size_photopaper']").show();
+			jQuery("dd.size li").hide();
+			jQuery("dd.size li[class*='size_photopaper']").show();
 
 			// Handle options images
-			$j("#custom_options_images #custom_option_size li").hide();
-			$j("#custom_options_images #custom_option_size li[id*='size_photopaper']").show();
+			jQuery(".custom_options_images #custom_option_size li").hide();
+			jQuery(".custom_options_images #custom_option_size li[id*='size_photopaper']").show();
 		}
 
 		// Show specific material related sizes
@@ -229,90 +247,90 @@
 			{
 				// Load paper-related sizes only
 				// Handle input types
-				$j("dd.size li").hide();
-				$j("dd.size li[class*='treatment_" + treatment_index + "']").show();
+				jQuery("dd.size li").hide();
+				jQuery("dd.size li[class*='treatment_" + treatment_index + "']").show();
 
 				// Handle options images
-				$j("#custom_options_images #custom_option_size li").hide();
-				$j("#custom_options_images #custom_option_size li[id*='treatment_"+ treatment_index +"']").show();
+				jQuery(".custom_options_images #custom_option_size li").hide();
+				jQuery(".custom_options_images #custom_option_size li[id*='treatment_"+ treatment_index +"']").show();
 			}
 		}
 
 		function elements_exists(element)
 		{
-			return $j(element).length != 0;
+			return jQuery(element).length != 0;
 		}
 
 		function size_exists(size_name)
 		{
-			return $j("ul#custom_option_size li[id*='" + size_name + "']:eq(0)").length != 0;
+			return jQuery("ul#custom_option_size li[id*='" + size_name + "']:eq(0)").length != 0;
 		}
 
 		function click_option(option_name, index, material_name)
 		{
 			if ( option_name == "material" )
 			{
-				$j("dd." + option_name + " li[class*='" + material_name + "']:eq(0) input").attr('checked','checked');
-				$j("dd." + option_name + " li[class*='" + material_name + "']:eq(0) input").trigger('click');
+				jQuery("dd." + option_name + " li[class*='" + material_name + "']:eq(0) input").attr('checked','checked');
+				jQuery("dd." + option_name + " li[class*='" + material_name + "']:eq(0) input").trigger('click');
 			}
 
 			else if ( option_name == "size" )
 			{
 				if ( material_name == "canvas" )
 				{
-					$j("dd.size li[class*='" + size_name + "_treatment_" + index + "']:eq(0) input").attr('checked','checked');
-					$j("dd.size li[class*='" + size_name + "_treatment_" + index + "']:eq(0) input").trigger('click');
+					jQuery("dd.size li[class*='" + size_name + "_treatment_" + index + "']:eq(0) input").attr('checked','checked');
+					jQuery("dd.size li[class*='" + size_name + "_treatment_" + index + "']:eq(0) input").trigger('click');
 
-					selected_canvas_size = $j("ul#custom_option_size li[id*='" + size_name + "_treatment_" + index + "']:eq(0)");
+					selected_canvas_size = jQuery("ul#custom_option_size li[id*='" + size_name + "_treatment_" + index + "']:eq(0)");
 
 					if (elements_exists(selected_canvas_size))
 						selected_canvas_size.css("background-color", selected_size_background_color);
 					//else
-						//$j("ul#custom_option_size li[id*='canvas']:eq(0)").css("background-color", selected_size_background_color);
+						//jQuery("ul#custom_option_size li[id*='canvas']:eq(0)").css("background-color", selected_size_background_color);
 				}
 
 				else
 				{
-					$j("dd.size li[class*='" + material_name + "']:eq(0) input").attr('checked','checked');
-					$j("dd.size li[class*='" + material_name + "']:eq(0) input").trigger('click');
+					jQuery("dd.size li[class*='" + material_name + "']:eq(0) input").attr('checked','checked');
+					jQuery("dd.size li[class*='" + material_name + "']:eq(0) input").trigger('click');
 
-					$j("ul#custom_option_size li[id*='" + material_name + "']:eq(0)").css("background-color", selected_size_background_color);
+					jQuery("ul#custom_option_size li[id*='" + material_name + "']:eq(0)").css("background-color", selected_size_background_color);
 				}
 			}
 
 			else if (option_name == "mat")
 			{
-				$j("dd.mat li:last input").attr('checked', 'checked');
-				$j("dd.mat li:last input").trigger('click');	
+				jQuery("dd.mat li:last input").attr('checked', 'checked');
+				jQuery("dd.mat li:last input").trigger('click');	
 			}
 
 			else
 			{
-				$j("dd." + option_name + " li:nth-of-type(" + index + ") input").attr('checked','checked');
-				$j("dd." + option_name + " li:nth-of-type(" + index + ") input").trigger('click');
+				jQuery("dd." + option_name + " li:nth-of-type(" + index + ") input").attr('checked','checked');
+				jQuery("dd." + option_name + " li:nth-of-type(" + index + ") input").trigger('click');
 			}
 
 			// Update the current option information
-			$j(".current_" + option_name).html($j(this).parent().attr('class'));
+			jQuery(".current_" + option_name).html(jQuery(this).parent().attr('class'));
 		}
 
 		function set_size(size_sku)
 		{
-			$j("dd.size li[class='" + size_sku + "'] input").attr('checked','checked');
-			$j("dd.size li[class='" + size_sku + "'] input").trigger('click');
-			$j("ul#custom_option_size li[id*='" + size_sku + "']:eq(0)").css("background-color", selected_size_background_color);
+			jQuery("dd.size li[class='" + size_sku + "'] input").attr('checked','checked');
+			jQuery("dd.size li[class='" + size_sku + "'] input").trigger('click');
+			jQuery("ul#custom_option_size li[id*='" + size_sku + "']:eq(0)").css("background-color", selected_size_background_color);
 		}
 
 		function reset_matting()
 		{
-			$j("dd.mat li.mats_none input").trigger("click");
+			jQuery("dd.mat li.mats_none input").trigger("click");
 			opConfig.reloadPrice();
-			//$j("#customize_substrate_link").trigger("click");
+			//jQuery("#customize_substrate_link").trigger("click");
 		}
 
 		function reset_framing_matting()
 		{
-			$j("ul#custom_option_frame li#frame_none").trigger("click");
+			jQuery("ul#custom_option_frame li#frame_none").trigger("click");
 			reset_matting();
 		}		
 
@@ -320,11 +338,11 @@
 		{
 			frame_sku_selector = "ul#custom_option_frame li[id='" + frame_sku + "']";
 
-			frame_maximum_long_side = $j(frame_sku_selector).data("frame_maximum_long_side");
-			frame_maximum_short_side = $j(frame_sku_selector).data("frame_maximum_short_side");
+			frame_maximum_long_side = jQuery(frame_sku_selector).data("frame_maximum_long_side");
+			frame_maximum_short_side = jQuery(frame_sku_selector).data("frame_maximum_short_side");
 			
-			frame_available_4_paper = $j(frame_sku_selector).data("frame_available_4_paper");
-			frame_available_4_canvas = $j(frame_sku_selector).data("frame_available_4_canvas");
+			frame_available_4_paper = jQuery(frame_sku_selector).data("frame_available_4_paper");
+			frame_available_4_canvas = jQuery(frame_sku_selector).data("frame_available_4_canvas");
 
 			if ( image_long_side <= frame_maximum_long_side && image_short_side <= frame_maximum_short_side )
 			{
@@ -340,7 +358,7 @@
 		function select_framing_category(category_name)
 		{
 			// Display the selected category in the list as the active one
-			$j("select#frame_categories option[value*='" + category_name + "']").attr("selected", "selected");
+			jQuery("select#frame_categories option[value*='" + category_name + "']").attr("selected", "selected");
 			last_selected_frame_category = category_name;
 
 			// Show the corresponding framing images
@@ -353,19 +371,19 @@
 			// Show the corresponding framing options images, based on the UI
 			if (category_name != null)
 			{
-				$j("ul#custom_option_frame li").hide();
+				jQuery("ul#custom_option_frame li").hide();
 
-				frame_options = $j("ul#custom_option_frame li:not('#frame_none')").siblings();
-				$j( frame_options ).each(
+				frame_options = jQuery("ul#custom_option_frame li:not('#frame_none')").siblings();
+				jQuery( frame_options ).each(
 
 					function() 
 					{
-						frame_sku = $j(this).attr("id");
-						frame_category = $j(this).data("frame_category");
+						frame_sku = jQuery(this).attr("id");
+						frame_category = jQuery(this).data("frame_category");
 
 						if (frame_category == category_name && is_frame_available(frame_sku))
 						{
-							$j(this).show();
+							jQuery(this).show();
 						}
 					}
 				);
@@ -377,17 +395,17 @@
 			shown_mats_skus = new Object;
 			number_of_shown_mats = 0;
 
-			var available_mats = $j("li.mats_color").siblings();
-			$j( available_mats ).each(
+			var available_mats = jQuery("li.mats_color").siblings();
+			jQuery( available_mats ).each(
 
 				function() 
 				{
-					mats_sku = $j(this).data("mats_sku");
-					mats_color = $j(this).css("background-color");
+					mats_sku = jQuery(this).data("mats_sku");
+					mats_color = jQuery(this).css("background-color");
 
-					mat_maximum_long_side = $j(this).data("mat_maximum_long_side");
-					mat_maximum_short_side = $j(this).data("mat_maximum_short_side");
-					this_mats_size = parseFloat($j(this).data("mats_size"));
+					mat_maximum_long_side = jQuery(this).data("mat_maximum_long_side");
+					mat_maximum_short_side = jQuery(this).data("mat_maximum_short_side");
+					this_mats_size = parseFloat(jQuery(this).data("mats_size"));
 
 					matted_long_side = parseFloat(image_long_side) + 2*this_mats_size;
 					matted_short_side = parseFloat(image_short_side) + 2*this_mats_size;					
@@ -396,7 +414,7 @@
 					//if (!is_mat_available(mats_sku))
 					if ( (image_long_side > mat_maximum_long_side || image_short_side > mat_maximum_short_side) || (matted_long_side > selected_frame_maximum_long_side || matted_short_side > selected_frame_maximum_short_side) )
 					{
-						$j(this).hide();
+						jQuery(this).hide();
 					}
 
 					// Else, it's valid, but further checks are required to show it
@@ -405,7 +423,7 @@
 						// If we have seen this color before, hide it
 						if (shown_mats_skus[mats_color])
 						{
-							$j(this).hide();
+							jQuery(this).hide();
 						}
 
 						// Else, add it to the list of the shown mats colors, and then show it
@@ -422,29 +440,26 @@
 			);
 		}
 
-
-
 		function show_mats_colors_grid()
 		{
-			$j("li.mats_color").show();
+			jQuery("li.mats_color").show();
 			check_mats_visibility();
 
 			if (last_selected_mat_sku == "mats_none")
 			{
-				$j("li.mats_color:eq(0)").trigger("click");
+				jQuery("li.mats_color:eq(0)").trigger("click");
 			}
 			
 		}
 
-
 		function is_mat_available(mats_sku)
 		{
-			mat_selector = $j("ul#custom_option_mat li[id='" + mats_sku + "']");
-			mats_color = $j(mat_selector).css("background-color");
+			mat_selector = jQuery("ul#custom_option_mat li[id='" + mats_sku + "']");
+			mats_color = jQuery(mat_selector).css("background-color");
 
-			mat_maximum_long_side = $j(mat_selector).data("mat_maximum_long_side");
-			mat_maximum_short_side = $j(mat_selector).data("mat_maximum_short_side");
-			this_mats_size = parseFloat($j(mat_selector).data("mats_size"));
+			mat_maximum_long_side = jQuery(mat_selector).data("mat_maximum_long_side");
+			mat_maximum_short_side = jQuery(mat_selector).data("mat_maximum_short_side");
+			this_mats_size = parseFloat(jQuery(mat_selector).data("mats_size"));
 			matted_long_side = parseFloat(image_long_side) + 2*this_mats_size;
 			matted_short_side = parseFloat(image_short_side) + 2*this_mats_size;
 
@@ -487,19 +502,18 @@
 
 		}
 
-
 		// When you select a mat color, show the corresponding valid skus (compatible with the given size)
 		function show_mats_options(mats_color)
 		{
 			// Hide every matting option first
-			$j("dd.mat li").hide();
-			$j("dd.mat li.mats_none").show();
+			jQuery("dd.mat li").hide();
+			jQuery("dd.mat li.mats_none").show();
 
-			$j("dd.mat li").siblings().each(
+			jQuery("dd.mat li").siblings().each(
 
 				function() 
 				{
-					mats_sku = String($j(this).attr("class"));
+					mats_sku = String(jQuery(this).attr("class"));
 
 					// If there is a sku for the selected color
 					if (shown_mats_skus[mats_color] && shown_mats_skus[mats_color].indexOf(mats_sku) >= 0)
@@ -508,15 +522,15 @@
 						// Now check if it is valid for the selected image size and frame size
 						if (is_mat_available(mats_sku))
 						{
-							$j(this).show();
+							jQuery(this).show();
 
-							visible_mat_option_class = $j(this).attr("class");
+							visible_mat_option_class = jQuery(this).attr("class");
 							visible_mat_size = visible_mat_option_class.charAt(visible_mat_option_class.length-1);
 
 							// Now automatically select the mat option with the same size as the previous user mat selection
 							if (visible_mat_size == selected_mats_size)
 							{
-								$j(this).find("input").trigger("click");
+								jQuery(this).find("input").trigger("click");
 							}
 						}
 					}
@@ -525,24 +539,23 @@
 
 		}
 
-
 		old_size_ui = 1;
 
 		// Refresh the framing, matting and stretching prices to reflect the selected size UI
 		function update_ui_prices(size_ui, matted_size)
 		{
 			// Dynamically update the displayed prices for the framing options
-			var frame_options = $j("ul#custom_option_frame li").siblings();
+			var frame_options = jQuery("ul#custom_option_frame li").siblings();
 			var mounting_flat_price = 12.00;
 
-			$j( frame_options ).each(
+			jQuery( frame_options ).each(
 
 				function() 
 				{
-					frame_ui_node = $j(this).find(".frame_ui_price");
+					frame_ui_node = jQuery(this).find(".frame_ui_price");
 					frame_ui_price = frame_ui_node.html();				
 
-					frame_real_node = $j(this).find(".frame_real_price");
+					frame_real_node = jQuery(this).find(".frame_real_price");
 					frame_real_price = ( matted_size * frame_ui_price + mounting_flat_price ).toFixed(2);
 					frame_real_node.html(frame_real_price);
 					
@@ -550,18 +563,18 @@
 			);
 
 			// Dynamically update the displayed prices for the matting options
-			var mats_options = $j("dd.mat li:not('.mats_none')").siblings();
-			$j( mats_options ).each(
+			var mats_options = jQuery("dd.mat li:not('.mats_none')").siblings();
+			jQuery( mats_options ).each(
 
 				function() 
 				{
 					// Get the specific node
-					mats_real_node = $j(this);
+					mats_real_node = jQuery(this);
 					current_node_mats_sku = mats_real_node.attr("class");
 					current_node_mats_size = parseInt(mats_sizes_list[current_node_mats_sku]);
 					
-					selected_mats_index = $j(this).index();
-					mats_ui_node = $j("ul#custom_option_mat li:eq(" + selected_mats_index + ")");
+					selected_mats_index = jQuery(this).index();
+					mats_ui_node = jQuery("ul#custom_option_mat li:eq(" + selected_mats_index + ")");
 					mats_ui_price = mats_ui_node.find(".mats_ui_price").html();
 
 					// Compute the real price and round it to the first two decimal digits
@@ -575,10 +588,10 @@
 
 			
 			// Dynamically update the displayed price for stretching
-			canvas_stretching_node = $j("dd.canvas_stretching").find("span.price");
+			canvas_stretching_node = jQuery("dd.canvas_stretching").find("span.price");
 
 			// If the update is done for the first time, this is the ui price
-			if ( $j(".canvas_available").html() == "1" )
+			if ( jQuery(".canvas_available").html() == "1" )
 			{
 				if ( setup == 1)
 				{
@@ -602,17 +615,17 @@
 
 
 		// Select an available matting option, by clicking on the color
-		$j(".mats_color").click(
+		jQuery(".mats_color").click(
 
 			function()
 			{
 				// Currently selected available mats color
-				id_name = $j(this).attr("id");
+				id_name = jQuery(this).attr("id");
 
-				selected_size_name = $j("dd.size li input:checked").parent().attr('class');
-				mats_sku = $j(this).data("mats_sku").toLowerCase();
-				mats_color_code = $j(this).css("background-color");	
-				mat_category = $j(this).data("mat_category");
+				selected_size_name = jQuery("dd.size li input:checked").parent().attr('class');
+				mats_sku = jQuery(this).data("mats_sku").toLowerCase();
+				mats_color_code = jQuery(this).css("background-color");	
+				mat_category = jQuery(this).data("mat_category");
 
 				oversize_flag = false;
 
@@ -620,20 +633,20 @@
 					oversize_flag = true;
 
 				// Apply the selected color to the background of the corresponding preview
-				$j("#mats_2_inches").css("background-color", mats_color_code);
-				$j("#mats_3_inches").css("background-color", mats_color_code);
+				jQuery("#mats_2_inches").css("background-color", mats_color_code);
+				jQuery("#mats_3_inches").css("background-color", mats_color_code);
 				
 				// Reset every mats color border to the original value
 				original_border_color = "#cccccc";
-				$j(".mats_color").css("border-color", original_border_color);
+				jQuery(".mats_color").css("border-color", original_border_color);
 
 				// Highlight the clicked color image
-				$j(this).css("border-color", "#0000ff");
+				jQuery(this).css("border-color", "#0000ff");
 
 				if ( matting_enabled == 1 && id_name == "mats_none" )
 				{
-					$j("dd.mat li.mats_none input").attr("checked", "checked");
-					$j("dd.mat li.mats_none input").trigger("click");
+					jQuery("dd.mat li.mats_none input").attr("checked", "checked");
+					jQuery("dd.mat li.mats_none input").trigger("click");
 
 					matting_enabled = 0;
 				}
@@ -646,8 +659,8 @@
 					background_width = background_container_width - 2 * frame_width - 2*mats_size*dpi;
 					background_height = background_container_height  - 2 * frame_height - 2*mats_size*dpi;
 
-					width = parseInt($j("#final_product_image").css("width").replace("px", ""));
-					height = parseInt($j("#final_product_image").css("height").replace("px", ""));
+					width = parseInt(jQuery("#final_product_image").css("width").replace("px", ""));
+					height = parseInt(jQuery("#final_product_image").css("height").replace("px", ""));
 
 					// In Percentage
 					top_percentage = 50;
@@ -688,20 +701,20 @@
 
 		);
 
-		$j("dd.mat li input").click(
+		jQuery("dd.mat li input").click(
 			
 			function()
 			{
 				// Update che current mats information
-				mats_sku = $j(this).parent().attr("class");
+				mats_sku = jQuery(this).parent().attr("class");
 				last_selected_mat_sku = mats_sku;
 				
-				$j(".current_mats").html(mats_sku);
+				jQuery(".current_mats").html(mats_sku);
 				mats_size = mats_sizes_list[mats_sku];
 				selected_mats_size = parseFloat(mats_size);
 
 				// Update the size UI accordingly
-				$j(".selected_mats_size").html(selected_mats_size);
+				jQuery(".selected_mats_size").html(selected_mats_size);
 
 				opConfig.reloadPrice();
 
@@ -712,26 +725,26 @@
 
 					// Reset every mats color border to the original value
 					original_border_color = "#cccccc";
-					$j(".mats_color").css("border-color", original_border_color);
+					jQuery(".mats_color").css("border-color", original_border_color);
 				}
 
 
 				if (mats_size == 2)
 				{
-					$j("#mats_2_inches").addClass("active_option");
-					$j("#mats_2_inches .mats_l_shape").addClass("active_mats_l_shape");
+					jQuery("#mats_2_inches").addClass("active_option");
+					jQuery("#mats_2_inches .mats_l_shape").addClass("active_mats_l_shape");
 
-					$j("#mats_3_inches").removeClass("active_option");
-					$j("#mats_3_inches .mats_l_shape").removeClass("active_mats_l_shape");
+					jQuery("#mats_3_inches").removeClass("active_option");
+					jQuery("#mats_3_inches .mats_l_shape").removeClass("active_mats_l_shape");
 				}
 
 				else if (mats_size == 3)
 				{
-					$j("#mats_3_inches").addClass("active_option");
-					$j("#mats_3_inches .mats_l_shape").addClass("active_mats_l_shape");
+					jQuery("#mats_3_inches").addClass("active_option");
+					jQuery("#mats_3_inches .mats_l_shape").addClass("active_mats_l_shape");
 
-					$j("#mats_2_inches").removeClass("active_option");
-					$j("#mats_2_inches .mats_l_shape").removeClass("active_mats_l_shape");
+					jQuery("#mats_2_inches").removeClass("active_option");
+					jQuery("#mats_2_inches .mats_l_shape").removeClass("active_mats_l_shape");
 				}
 
 				else
@@ -746,124 +759,124 @@
 
 		);
 
-		var site_base_url = $j(".site_base_url").html();
+		var site_base_url = jQuery(".site_base_url").html();
 
 		// Activate a specific option tab on click
-		$j(".product-options label.required").click(
+		jQuery(".product-options label.required").click(
 			
 			function()
 			{
 				// Hide all the other tabs options
-				var clicked_option = $j(this).parent().attr('class');
-				$j(".product-options dd").not(clicked_option).hide();
+				var clicked_option = jQuery(this).parent().attr('class');
+				jQuery(".product-options dd").not(clicked_option).hide();
 				// Show the clicked tab options
-				$j(".product-options dd." + clicked_option).show();
+				jQuery(".product-options dd." + clicked_option).show();
 
 				// Make the all the other tabs grey
-				$j(".product-options label.required:not(this)").css("background-color", "#b19d68");
+				jQuery(".product-options label.required:not(this)").css("background-color", "#b19d68");
 				// Make the clicked tab black
-				$j(this).css("background-color", "#000000");
+				jQuery(this).css("background-color", "#000000");
 
 				// Hide the option label
-				$j("#custom_options_images .custom_option_label").hide();
+				jQuery(".custom_options_images .custom_option_label").hide();
 
 				// Show the corresponding options images
 				show_options_images(clicked_option);
 
 				if ( clicked_option == "material" )
 				{
-					$j("#canvas_top_border").show();
-					$j("#canvas_right_border").show();
+					jQuery("#canvas_top_border").show();
+					jQuery("#canvas_right_border").show();
 
 					// Show the custom size button
-					$j("#custom_size_link").show();
+					jQuery("#custom_size_link").show();
 				}
 
 				else
 				{
-					$j("#canvas_top_border").hide();
-					$j("#canvas_right_border").hide();
+					jQuery("#canvas_top_border").hide();
+					jQuery("#canvas_right_border").hide();
 
 					// Hide the custom size button
-					$j("#custom_size_link").hide();
+					jQuery("#custom_size_link").hide();
 				}
 
 				if ( clicked_option == "borders" && canvas_active )
 				{
-					//$j("dd.canvas_stretching").show();
+					//jQuery("dd.canvas_stretching").show();
 
 					// Show the borders
-					$j("#three_inches_white_top_border").show();
-					$j("#three_inches_white_right_border").show();
+					jQuery("#three_inches_white_top_border").show();
+					jQuery("#three_inches_white_right_border").show();
 
-					$j("#two_inches_black_one_inch_white_top_border").show();
-					$j("#two_inches_black_one_inch_white_right_border").show();
+					jQuery("#two_inches_black_one_inch_white_top_border").show();
+					jQuery("#two_inches_black_one_inch_white_right_border").show();
 				}
 				else
 				{
 					// Show the borders
-					$j("#three_inches_white_top_border").hide();
-					$j("#three_inches_white_right_border").hide();
+					jQuery("#three_inches_white_top_border").hide();
+					jQuery("#three_inches_white_right_border").hide();
 
-					$j("#two_inches_black_one_inch_white_top_border").hide();
-					$j("#two_inches_black_one_inch_white_right_border").hide();
+					jQuery("#two_inches_black_one_inch_white_top_border").hide();
+					jQuery("#two_inches_black_one_inch_white_right_border").hide();
 				}
 
 				if ( clicked_option == "size" )
 				{
 
-					$j("dd.size .input-box ul li:visible:gt(3)").each(
+					jQuery("dd.size .input-box ul li:visible:gt(3)").each(
 
 						function(index) 
 						{
 						    // Correct options input positioning
-							$j(this).css("top", "5px");
+							jQuery(this).css("top", "5px");
 						}
 					);
 
-					$j("dd.size .input-box ul li:visible:lt(4)").each(
+					jQuery("dd.size .input-box ul li:visible:lt(4)").each(
 
 						function(index) 
 						{
 						    // Correct options input positioning
-							$j(this).css("top", "-120px");
+							jQuery(this).css("top", "-120px");
 						}
 					);
 
 					// Activate the room view, selecting the couch as the background
-					if ( $j("#final_product_image_background").css("background-image") == "none" || 
-						$j("#final_product_image_background").css("background-image") == ("url(" + site_base_url + "/undefined)") )
+					if ( jQuery("#final_product_image_background").css("background-image") == "none" || 
+						jQuery("#final_product_image_background").css("background-image") == ("url(" + site_base_url + "/undefined)") )
 					{
-						$j("#room_switch .room_thumbnail:nth-child(2)").trigger("click");
+						jQuery("#room_switch .room_thumbnail:nth-child(2)").trigger("click");
 					}
 
 					// Hide the custom size image for now
-					$j("ul#custom_option_size li[id*='custom_ui']").hide();
-					//$j("dd.size li[class*='custom_ui']").css("top", "-100px");
-					//$j("dd.size li[class*='custom_ui']").hide();
-					$j("dd.size li[class*='custom_treatment']").hide();
-					$j("ul#custom_option_size li[class*='custom_ui']").hide();
-					$j("ul#custom_option_size li[id*='custom_treatment']").hide();
+					jQuery("ul#custom_option_size li[id*='custom_ui']").hide();
+					//jQuery("dd.size li[class*='custom_ui']").css("top", "-100px");
+					//jQuery("dd.size li[class*='custom_ui']").hide();
+					jQuery("dd.size li[class*='custom_treatment']").hide();
+					jQuery("ul#custom_option_size li[class*='custom_ui']").hide();
+					jQuery("ul#custom_option_size li[id*='custom_treatment']").hide();
 
 				}
 
 				if ( clicked_option == "frame" )
 				{
-					$j(".category_framing").show();
-					$j("select#frame_categories").show();
+					jQuery(".category_framing").show();
+					jQuery("select#frame_categories").show();
 				}
 
 				else
 				{
-					$j(".category_framing").hide();
-					$j("select#frame_categories").hide();
+					jQuery(".category_framing").hide();
+					jQuery("select#frame_categories").hide();
 				}
 
 				if ( clicked_option == "mat" )
 				{
-					$j("#mats_previews").show();
-					$j("#available_mats").show();
-					$j("#mats_line").show();
+					jQuery("#mats_previews").show();
+					jQuery("#available_mats").show();
+					jQuery("#mats_line").show();
 
 					// Show the mats colors grid
 					show_mats_colors_grid();					
@@ -871,14 +884,14 @@
 
 				else
 				{
-					$j("#mats_previews").hide();
-					$j("#available_mats").hide();
-					$j("#mats_line").hide();
+					jQuery("#mats_previews").hide();
+					jQuery("#available_mats").hide();
+					jQuery("#mats_line").hide();
 
-					$j("#mats_left_arrow").hide();
-					$j("#more_mats").hide();
-					$j("#mats_right_arrow").hide();
-					$j("ul#custom_option_mat").hide();
+					jQuery("#mats_left_arrow").hide();
+					jQuery("#more_mats").hide();
+					jQuery("#mats_right_arrow").hide();
+					jQuery("ul#custom_option_mat").hide();
 				}
 			}
 		);
@@ -886,14 +899,14 @@
 
 
 		// When the user clicks on an option
-		$j(".product-options input").click(
+		jQuery(".product-options input").click(
 			
 			function()
 			{
 
 				// Business logic cases
 				// If Canvas is selected, show the related options
-				if ( $j(this).parent().attr('class') == 'material_canvas' )
+				if ( jQuery(this).parent().attr('class') == 'material_canvas' )
 				{
 
 					if (paper_active == 1)
@@ -906,53 +919,53 @@
 
 					click_option("borders", 2, "canvas");
 					activate_option_tab("borders");
-					$j("li.treatments_none").hide();
+					jQuery("li.treatments_none").hide();
 
 					// Hide the framing from the configuration panel
-					$j("#selected_frame").parent().hide();
+					jQuery("#selected_frame").parent().hide();
 
 					// Show canvas related sizes
 					show_canvas(1);
 
 					// Update the current product configuration
-					selected_substrate = $j(this).next("span.label").find("label").html();
+					selected_substrate = jQuery(this).next("span.label").find("label").html();
 
 					// Slide the frame and mats tabs right
-					$j("dt.frame").css("left", "645px");
-					$j("dt.mat").css("left", "691px");
+					jQuery("dt.frame").css("left", "645px");
+					jQuery("dt.mat").css("left", "691px");
 
 					// Matting is not available, and any matting selection is reset
-					$j("dt.mat").hide();
-					$j("dd.mat select option:eq(1)").attr("selected","selected");
-					$j("dd.mat select option:eq(1)").trigger("click");
+					jQuery("dt.mat").hide();
+					jQuery("dd.mat select option:eq(1)").attr("selected","selected");
+					jQuery("dd.mat select option:eq(1)").trigger("click");
 
 					// Show the "Canvas" framing category ONLY
-					$j("select#frame_categories option").hide();
-					$j("select#frame_categories option[value*='no_frame']").show();
-					$j("select#frame_categories option[value*='Canvas']").show();
+					jQuery("select#frame_categories option").hide();
+					jQuery("select#frame_categories option[value*='no_frame']").show();
+					jQuery("select#frame_categories option[value*='Canvas']").show();
 					
 					// Currently disabled, until canvas framing becomes available again
 					deactivate_option_tab("frame");
 
 					// Canvas stretching is active by default
-					$j("dd.canvas_stretching ul li input").trigger("click");
+					jQuery("dd.canvas_stretching ul li input").trigger("click");
 
 					// Update the current material information
-					$j(".current_material").html($j(this).parent().attr('class'));
-					$j("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
+					jQuery(".current_material").html(jQuery(this).parent().attr('class'));
+					jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
 
 					reset_matting();
 
 					// Hide the matting option from the product configuration
-					$j("#product_configuration #mats_status_label").hide();
-		   			$j("#product_configuration #selected_mats").hide();
-		   			$j("#product_configuration #selected_mats").next("a").hide();
+					jQuery("#product_configuration #mats_status_label").hide();
+		   			jQuery("#product_configuration #selected_mats").hide();
+		   			jQuery("#product_configuration #selected_mats").next("a").hide();
 
 		   			// Hide the special features for digital paper and canvas
-		   			$j("#special_features").hide();
+		   			jQuery("#special_features").hide();
 				}
 				
-				if ( $j(this).parent().attr('class') == 'material_photopaper' || $j(this).parent().attr('class') == 'material_posterpaper' )
+				if ( jQuery(this).parent().attr('class') == 'material_photopaper' || jQuery(this).parent().attr('class') == 'material_posterpaper' )
 				{
 
 					if (canvas_active == 1)
@@ -968,84 +981,84 @@
 					click_option("borders", 1, "canvas");
 
 					// Uncheck canvas stretching if already checked
-					if ( $j("dd.canvas_stretching ul li input").attr('checked') == "checked" )
+					if ( jQuery("dd.canvas_stretching ul li input").attr('checked') == "checked" )
 					{
 						click_option("canvas_stretching", 1, "canvas");
 					}
 
 					deactivate_option_tab("borders");
-					$j("li.treatments_none").hide();
+					jQuery("li.treatments_none").hide();
 
 					// Show the framing in the configuration panel
-					$j("#selected_frame").parent().show();
+					jQuery("#selected_frame").parent().show();
 
 					// Hide the borders
-					$j("#three_inches_white_top_border").hide();
-					$j("#three_inches_white_right_border").hide();
+					jQuery("#three_inches_white_top_border").hide();
+					jQuery("#three_inches_white_right_border").hide();
 
 					// Update the current product configuration
-					selected_substrate = $j(this).next("span.label").find("label").html();
+					selected_substrate = jQuery(this).next("span.label").find("label").html();
 
 					// Poster size
-					poster_size = $j(".poster_size").html();
+					poster_size = jQuery(".poster_size").html();
 
 
-					if ( $j(this).parent().attr('class') == 'material_posterpaper' )
+					if ( jQuery(this).parent().attr('class') == 'material_posterpaper' )
 					{
 						click_option("size", 0, "posterpaper");
 						show_poster_paper();
 
 						// Show the special features for poster only, if present
-		   				$j("#special_features").show();
+		   				jQuery("#special_features").show();
 
 		   				// Show the exact poster size
-		   				$j("#product_configuration #selected_substrate").html(selected_substrate + " (" + poster_size + ") ");
+		   				jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + poster_size + ") ");
 					}					
 					
-					if ( $j(this).parent().attr('class') == 'material_photopaper' )
+					if ( jQuery(this).parent().attr('class') == 'material_photopaper' )
 					{
 						click_option("size", 0, "photopaper");
 						show_photo_paper();
 
 						// Hide the special features for digital paper
-		   				$j("#special_features").hide();
+		   				jQuery("#special_features").hide();
 
-		   				$j("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
+		   				jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
 					}
 
 
 
 					activate_option_tab("frame");
-					$j("select#frame_categories option").show();
-					$j("select#frame_categories option[value*='Canvas']").hide();
+					jQuery("select#frame_categories option").show();
+					jQuery("select#frame_categories option[value*='Canvas']").hide();
 
 					// Slide the frame and mats tabs left
-					$j("dt.frame").css("left", "496px");
-					$j("dt.mat").css("left", "645px");
+					jQuery("dt.frame").css("left", "496px");
+					jQuery("dt.mat").css("left", "645px");
 
 					// Matting becomes available
-					$j("dt.mat").show();
+					jQuery("dt.mat").show();
 
 					// Update the current material information
-					$j(".current_material").html($j(this).parent().attr('class'));
+					jQuery(".current_material").html(jQuery(this).parent().attr('class'));
 
 					
 
 
 					// Hide the matting option from the product configuration
-		   			$j("#product_configuration #selected_wrap").hide();
-		   			$j("#product_configuration #selected_wrap").next("a").hide();
+		   			jQuery("#product_configuration #selected_wrap").hide();
+		   			jQuery("#product_configuration #selected_wrap").next("a").hide();
 				}
 
-				if ( $j(this).parent().parent().parent().parent().attr('class') == 'size' )
+				if ( jQuery(this).parent().parent().parent().parent().attr('class') == 'size' )
 				{
 					// Compute the selected size UI
-					class_name = $j(this).parent().attr("class");
+					class_name = jQuery(this).parent().attr("class");
 
 					// Make the currently selected size background dark green and deselect all the others
-					clicked_size_index = $j(this).index()+1;
-					$j("#custom_options_images ul .background_border_size").css("background-color", "");
-					$j("#custom_options_images ul .background_border_size:nth-child(" + clicked_size_index +")").css("background-color", selected_size_background_color);
+					clicked_size_index = jQuery(this).index()+1;
+					jQuery(".custom_options_images ul .background_border_size").css("background-color", "");
+					jQuery(".custom_options_images ul .background_border_size:nth-child(" + clicked_size_index +")").css("background-color", selected_size_background_color);
 
 					oversize_flag = false;
 
@@ -1097,42 +1110,42 @@
 
 
 					// Store the visible standard sizes
-					standard_sizes = $j("ul#custom_option_size li:visible").siblings();
+					standard_sizes = jQuery("ul#custom_option_size li:visible").siblings();
 
 					// Compute the selected size class name
-					selected_size_name = $j("dd.size li input:checked").parent().attr('class');
+					selected_size_name = jQuery("dd.size li input:checked").parent().attr('class');
 					size_ui = selected_size_name.replace(/.*ui_/, '');
 					end_index = size_ui.indexOf("_width");
 
 					size_ui = size_ui.substr(0, end_index);
 
 					// Add the size UI to the DOM in order to retrieve it later in reloadPrice()
-					$j(".selected_size_ui").html(size_ui);
+					jQuery(".selected_size_ui").html(size_ui);
 
 					// Update the current size information
-					$j(".current_size").html($j(this).parent().attr('class'));
+					jQuery(".current_size").html(jQuery(this).parent().attr('class'));
 
 
 
 					// Display the selected width and height
-					selected_width_index = $j(".current_size").html().indexOf("width_");
-					selected_width = $j(".current_size").html().substr(selected_width_index + 6, 2);
+					selected_width_index = jQuery(".current_size").html().indexOf("width_");
+					selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 2);
 
 					if (selected_width.indexOf("_") >= 0)
-						selected_width = $j(".current_size").html().substr(selected_width_index + 6, 1);
+						selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 1);
 
-					selected_length_index = $j(".current_size").html().indexOf("length_");
-					selected_length = $j(".current_size").html().substr(selected_length_index + 7, 4);
+					selected_length_index = jQuery(".current_size").html().indexOf("length_");
+					selected_length = jQuery(".current_size").html().substr(selected_length_index + 7, 4);
 
 					selected_size = selected_width + "\"" + "x" + selected_length + "\"";
 					
 					// If the the current substrate selection is Poster, show the corresponding dimension
 					if (selected_substrate == "Poster ")
-						$j("#size_data").html(poster_size);
+						jQuery("#size_data").html(poster_size);
 					else
-						$j("#size_data").html(selected_size);
+						jQuery("#size_data").html(selected_size);
 					
-					$j("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
+					jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
 
 					// Compute the short and long sides of the image
 					if (selected_width <= selected_length)
@@ -1181,53 +1194,53 @@
 				}
 
 				// Select a treatment
-				if ( $j(this).parent().parent().parent().parent().attr('class') == "borders" )
+				if ( jQuery(this).parent().parent().parent().parent().attr('class') == "borders" )
 				{
 					// Compute the treatment index
-					checked_treatment_index = $j(this).parent().index();
+					checked_treatment_index = jQuery(this).parent().index();
 					
 					// Show the corresponding sizes
 					show_canvas(checked_treatment_index);
 
 					// Matting is not available, and any matting selection is reset
-					$j("dt.mat").hide();
-					$j("dd.mat select option:eq(1)").attr("selected","selected");
-					$j("dd.mat select option:eq(1)").trigger("click");
+					jQuery("dt.mat").hide();
+					jQuery("dd.mat select option:eq(1)").attr("selected","selected");
+					jQuery("dd.mat select option:eq(1)").trigger("click");
 
 					// Automatically check the first option available
 					//alert(checked_treatment_index);
 					click_option("size", checked_treatment_index, "canvas");
 
 					// Update the current product configuration
-					selected_borders = $j(this).next("span.label").find("label").html();
-					$j("#product_configuration #selected_borders").html(selected_borders);
+					selected_borders = jQuery(this).next("span.label").find("label").html();
+					jQuery("#product_configuration #selected_borders").html(selected_borders);
 
 					// Show the framing option from the product configuration
-	   				$j("#product_configuration #selected_borders").show();
-	   				$j("#product_configuration #selected_borders").next("a").show();
+	   				jQuery("#product_configuration #selected_borders").show();
+	   				jQuery("#product_configuration #selected_borders").next("a").show();
 				}
 
-				if ( $j(this).parent().parent().parent().parent().attr('class') != "borders" && $j(this).parent().parent().parent().parent().attr('class') != "canvas_stretching")
+				if ( jQuery(this).parent().parent().parent().parent().attr('class') != "borders" && jQuery(this).parent().parent().parent().parent().attr('class') != "canvas_stretching")
 				{
 					// Hide the framing option from the product configuration
-	   				$j("#product_configuration #selected_borders").hide();
-	   				$j("#product_configuration #selected_borders").next("a").hide();
+	   				jQuery("#product_configuration #selected_borders").hide();
+	   				jQuery("#product_configuration #selected_borders").next("a").hide();
 				}
 
-				if ( $j(this).parent().parent().parent().parent().attr('class') == "canvas_stretching" )
+				if ( jQuery(this).parent().parent().parent().parent().attr('class') == "canvas_stretching" )
 				{
-					selected_wrap = $j(this).next("span.label").find("label").html();
-					$j("#product_configuration #selected_wrap").html(selected_wrap);
+					selected_wrap = jQuery(this).next("span.label").find("label").html();
+					jQuery("#product_configuration #selected_wrap").html(selected_wrap);
 				}
 
 				// Select a matting option
 				// Update the selected size dynamically, based on the matting selection:
 				// e.g. 3" matting ==> selected_size_ui += 3*2. Pricing is automatically recalculated
-				if ( $j(this).parent().parent().parent().parent().attr('class') == "mat" )
+				if ( jQuery(this).parent().parent().parent().parent().attr('class') == "mat" )
 				{
 
-					mats_class = $j(this).parent().attr('class');
-					currently_selected_size_ui = $j(".selected_size_ui").html();			
+					mats_class = jQuery(this).parent().attr('class');
+					currently_selected_size_ui = jQuery(".selected_size_ui").html();			
 
 					if (mats_class != "mats_none")
 					{
@@ -1235,13 +1248,13 @@
 						matted_size = parseFloat(currently_selected_size_ui) + 4 * parseFloat(mats_size);
 
 						// Update the current product configuration
-						selected_mats = $j(this).next("span.label").find("label").html();
-						$j("#product_configuration #selected_mats").html(selected_mats);
+						selected_mats = jQuery(this).next("span.label").find("label").html();
+						jQuery("#product_configuration #selected_mats").html(selected_mats);
 
 						// Show the matting option from the product configuration
-						$j("#product_configuration #mats_status_label").show();
-			   			$j("#product_configuration #selected_mats").show();
-			   			$j("#product_configuration #selected_mats").next("a").show();
+						jQuery("#product_configuration #mats_status_label").show();
+			   			jQuery("#product_configuration #selected_mats").show();
+			   			jQuery("#product_configuration #selected_mats").next("a").show();
 					}
 
 					else
@@ -1249,13 +1262,13 @@
 						matted_size = parseFloat(currently_selected_size_ui);
 
 						// Hide the matting option from the product configuration
-						$j("#product_configuration #mats_status_label").hide();
-		   				$j("#product_configuration #selected_mats").hide();
-		   				$j("#product_configuration #selected_mats").next("a").hide();
+						jQuery("#product_configuration #mats_status_label").hide();
+		   				jQuery("#product_configuration #selected_mats").hide();
+		   				jQuery("#product_configuration #selected_mats").next("a").hide();
 					}
 
 					// Update the current mats information
-					$j(".current_mats").html($j(this).parent().attr('class'));
+					jQuery(".current_mats").html(jQuery(this).parent().attr('class'));
 
 					// Update the frame and mats prices
 					update_ui_prices(currently_selected_size_ui, matted_size);
@@ -1265,44 +1278,44 @@
 			}
 		);
 
-		$j("li.canvas_stretching input").click(
+		jQuery("li.canvas_stretching input").click(
 
 			function()
 			{
 				// Update the current product configuration
-				if ($j(this).is(":checked"))
-					$j("#product_configuration #selected_wrap").show();
+				if (jQuery(this).is(":checked"))
+					jQuery("#product_configuration #selected_wrap").show();
 				else
-					$j("#product_configuration #selected_wrap").hide();
+					jQuery("#product_configuration #selected_wrap").hide();
 			}
 
 		);
 
 
-		$j("select#frame_categories").change(
+		jQuery("select#frame_categories").change(
 
 			function()
 			{
-				selected_category_node = $j(this).children(":selected");
+				selected_category_node = jQuery(this).children(":selected");
 				if (selected_category_node.length > 0)
 				{
 					category_name = selected_category_node.val().replace(/category_/,'');
-					category_name = $j.trim(category_name);
+					category_name = jQuery.trim(category_name);
 				
-					selected_size = $j("dd.size li input:checked");
+					selected_size = jQuery("dd.size li input:checked");
    
 	   				// If "No Frame" is selected, click the corresponding image, then disable the mats tab and reset any selected mats options to no mats
 	   				if ( selected_category_node.val() == "no_frame" )
 	   				{
-	   					$j("li#frame_none").trigger("click");
-	   					$j("dt.mat").hide();
-	   					$j("dd.mat li.mats_none input").attr("checked", "checked");
-	   					$j("dd.mat li.mats_none input").trigger("click");
+	   					jQuery("li#frame_none").trigger("click");
+	   					jQuery("dt.mat").hide();
+	   					jQuery("dd.mat li.mats_none input").attr("checked", "checked");
+	   					jQuery("dd.mat li.mats_none input").trigger("click");
 
 	   					// Hide the framing option from the product configuration
-	   					$j("#product_configuration #frame_status_label").hide();
-	   					$j("#product_configuration #selected_frame").hide();
-	   					$j("#product_configuration #selected_frame").next("a").hide();
+	   					jQuery("#product_configuration #frame_status_label").hide();
+	   					jQuery("#product_configuration #selected_frame").hide();
+	   					jQuery("#product_configuration #selected_frame").next("a").hide();
 	   				}
 
 	   				select_framing_category(category_name);
@@ -1324,20 +1337,20 @@
 			if (frame_image_url.indexOf("/.png") != -1)
 			{
 			
-				$j("#corner_bottom_right").clearCanvas({});
-				$j("#corner_bottom_left").clearCanvas({});
-				$j("#corner_top_right").clearCanvas({});
-				$j("#corner_top_left").clearCanvas({});
+				jQuery("#corner_bottom_right").clearCanvas({});
+				jQuery("#corner_bottom_left").clearCanvas({});
+				jQuery("#corner_top_right").clearCanvas({});
+				jQuery("#corner_top_left").clearCanvas({});
 
 				setTimeout(
 
 					function()
 					{
 					
-						$j("#edge_top").clearCanvas({});
-						$j("#edge_bottom").clearCanvas({});
-						$j("#edge_left").clearCanvas({});
-						$j("#edge_right").clearCanvas({});
+						jQuery("#edge_top").clearCanvas({});
+						jQuery("#edge_bottom").clearCanvas({});
+						jQuery("#edge_left").clearCanvas({});
+						jQuery("#edge_right").clearCanvas({});
 
 					}, 
 				
@@ -1347,11 +1360,11 @@
 			}
 
 
-			var image_width = parseInt($j("#final_product_image").css("width").replace("px", ""));
-			var image_height = parseInt($j("#final_product_image").css("height").replace("px", ""));
+			var image_width = parseInt(jQuery("#final_product_image").css("width").replace("px", ""));
+			var image_height = parseInt(jQuery("#final_product_image").css("height").replace("px", ""));
 
-			var x = parseInt($j("#final_product_image").css("left").replace("px", ""));
-			var y = parseInt($j("#final_product_image").css("top").replace("px", ""));
+			var x = parseInt(jQuery("#final_product_image").css("left").replace("px", ""));
+			var y = parseInt(jQuery("#final_product_image").css("top").replace("px", ""));
 
 			// Corner data
 			corner_x = 20*frame_scale_factor;
@@ -1407,23 +1420,23 @@
 				//edge_height += dpi;
 
 				// Update the mats coordinates and size
-				$j("#jcanvas_mats").css("top", y);
-				$j("#jcanvas_mats").css("left", x);
+				jQuery("#jcanvas_mats").css("top", y);
+				jQuery("#jcanvas_mats").css("left", x);
 
-				$j("#jcanvas_mats").css("width", image_width);
-				$j("#jcanvas_mats").css("height", image_height);
+				jQuery("#jcanvas_mats").css("width", image_width);
+				jQuery("#jcanvas_mats").css("height", image_height);
 
 				// Set the mats color
-				$j("#jcanvas_mats").css("background-color", mats_color_code);
+				jQuery("#jcanvas_mats").css("background-color", mats_color_code);
 
 				// Display the mats color in the background
-				$j("#jcanvas_mats").show();
+				jQuery("#jcanvas_mats").show();
 			}
 
 			// Else, hide the mats color in the background
 			if (mats_size == 0)
 			{
-				$j("#jcanvas_mats").hide();
+				jQuery("#jcanvas_mats").hide();
 			}
 
 
@@ -1445,12 +1458,12 @@
 			new_top = y + image_height;
 			new_left = x + image_width;
 
-			$j("#corner_bottom_right").clearCanvas({});
+			jQuery("#corner_bottom_right").clearCanvas({});
 
-			$j("#corner_bottom_right").css("top", new_top);
-			$j("#corner_bottom_right").css("left", new_left);
+			jQuery("#corner_bottom_right").css("top", new_top);
+			jQuery("#corner_bottom_right").css("left", new_left);
 
-			$j("#corner_bottom_right").drawImage({
+			jQuery("#corner_bottom_right").drawImage({
 			  source: frame_image_source,
 			  x: corner_x, y: corner_y,
 			  sWidth: corner_s_width,
@@ -1465,12 +1478,12 @@
 			new_top = y - shift_top;
 			new_left = x - shift_left;
 
-			$j("#corner_top_left").clearCanvas({});
+			jQuery("#corner_top_left").clearCanvas({});
 
-			$j("#corner_top_left").css("top", new_top);
-			$j("#corner_top_left").css("left", new_left);
+			jQuery("#corner_top_left").css("top", new_top);
+			jQuery("#corner_top_left").css("left", new_left);
 
-			$j("#corner_top_left").drawImage({
+			jQuery("#corner_top_left").drawImage({
 			  source: frame_image_source,
 			  x: corner_x, y: corner_y,
 			  sWidth: corner_s_width,
@@ -1486,12 +1499,12 @@
 			new_top = y + image_height;
 			new_left = x - shift_left;
 
-			$j("#corner_bottom_left").clearCanvas({});
+			jQuery("#corner_bottom_left").clearCanvas({});
 
-			$j("#corner_bottom_left").css("top", new_top);
-			$j("#corner_bottom_left").css("left", new_left);
+			jQuery("#corner_bottom_left").css("top", new_top);
+			jQuery("#corner_bottom_left").css("left", new_left);
 
-			$j("#corner_bottom_left").drawImage({
+			jQuery("#corner_bottom_left").drawImage({
 			  source: frame_image_source,
 			  x: corner_x, y: corner_y,
 			  sWidth: corner_s_width,
@@ -1507,12 +1520,12 @@
 			new_top = y - shift_left;
 			new_left = x + image_width;
 
-			$j("#corner_top_right").clearCanvas({});
+			jQuery("#corner_top_right").clearCanvas({});
 
-			$j("#corner_top_right").css("top", new_top);
-			$j("#corner_top_right").css("left", new_left);
+			jQuery("#corner_top_right").css("top", new_top);
+			jQuery("#corner_top_right").css("left", new_left);
 
-			$j("#corner_top_right").drawImage({
+			jQuery("#corner_top_right").drawImage({
 			  source: frame_image_source,
 			  x: corner_x, y: corner_y,
 			  sWidth: corner_s_width,
@@ -1537,19 +1550,19 @@
 					new_top = y + image_height;
 					new_left = x - edge_width;
 
-					$j("#edge_bottom").css("top", new_top);
-					$j("#edge_bottom").css("left", new_left);
+					jQuery("#edge_bottom").css("top", new_top);
+					jQuery("#edge_bottom").css("left", new_left);
 
-					$j("#edge_bottom").clearCanvas({});
+					jQuery("#edge_bottom").clearCanvas({});
 
 					for (var i = 0; i < alpha_horizontal; i++)
 					{ 
-						$j("#edge_bottom").translateCanvas({
+						jQuery("#edge_bottom").translateCanvas({
 							translateX: edge_width, translateY: 0,
 							autosave: false
 						});
 
-						$j("#edge_bottom").drawImage({
+						jQuery("#edge_bottom").drawImage({
 						  	source: frame_image_source,
 						  	x: edge_x, y: edge_y,
 						  	sWidth: edge_s_width,
@@ -1564,19 +1577,19 @@
 					new_top = y - shift_top;
 					new_left = x - shift_left;
 
-					$j("#edge_top").css("top", new_top);
-					$j("#edge_top").css("left", new_left);
+					jQuery("#edge_top").css("top", new_top);
+					jQuery("#edge_top").css("left", new_left);
 
-					$j("#edge_top").clearCanvas({});
+					jQuery("#edge_top").clearCanvas({});
 
 					for (var i = 0; i < alpha_horizontal; i++)
 					{ 
-						$j("#edge_top").translateCanvas({
+						jQuery("#edge_top").translateCanvas({
 							translateX: edge_width, translateY: 0,
 							autosave: false
 						});
 
-						$j("#edge_top").drawImage({
+						jQuery("#edge_top").drawImage({
 						  	source: frame_image_source,
 						  	x: edge_x, y: edge_y,
 						  	sWidth: edge_s_width,
@@ -1592,19 +1605,19 @@
 					new_top = y - shift_top;
 					new_left = x - shift_left;
 
-					$j("#edge_left").css("top", new_top);
-					$j("#edge_left").css("left", new_left);
+					jQuery("#edge_left").css("top", new_top);
+					jQuery("#edge_left").css("left", new_left);
 
-					$j("#edge_left").clearCanvas({});
+					jQuery("#edge_left").clearCanvas({});
 
 					for (var i = 0; i < alpha_vertical; i++)
 					{ 
-						$j("#edge_left").translateCanvas({
+						jQuery("#edge_left").translateCanvas({
 							translateX: 0, translateY: edge_height,
 							autosave: false
 						});
 
-						$j("#edge_left").drawImage({
+						jQuery("#edge_left").drawImage({
 						  	source: frame_image_source,
 						  	x: edge_x, y: edge_y,
 						  	sWidth: edge_s_width,
@@ -1619,19 +1632,19 @@
 					new_top = y - shift_top;
 					new_left = x + image_width;
 
-					$j("#edge_right").css("top", new_top);
-					$j("#edge_right").css("left", new_left);
+					jQuery("#edge_right").css("top", new_top);
+					jQuery("#edge_right").css("left", new_left);
 
-					$j("#edge_right").clearCanvas({});
+					jQuery("#edge_right").clearCanvas({});
 
 					for (var i = 0; i < alpha_vertical; i++)
 					{ 
-						$j("#edge_right").translateCanvas({
+						jQuery("#edge_right").translateCanvas({
 							translateX: 0, translateY: edge_height,
 							autosave: false
 						});
 
-						$j("#edge_right").drawImage({
+						jQuery("#edge_right").drawImage({
 						  	source: frame_image_source,
 						  	x: edge_x, y: edge_y,
 						  	sWidth: edge_s_width,
@@ -1648,15 +1661,15 @@
 
 			/* End of code execution delay */
 
-			image_margin_top = parseInt($j("#final_product_image").css("margin-top").replace("px",""));
-			image_margin_left = parseInt($j("#final_product_image").css("margin-left").replace("px",""));
+			image_margin_top = parseInt(jQuery("#final_product_image").css("margin-top").replace("px",""));
+			image_margin_left = parseInt(jQuery("#final_product_image").css("margin-left").replace("px",""));
 
-			$j("#jcanvas_frame").css("position", "relative");
-			$j("#jcanvas_frame").css("margin-top", image_margin_top);
-			$j("#jcanvas_frame").css("margin-left", image_margin_left);
+			jQuery("#jcanvas_frame").css("position", "relative");
+			jQuery("#jcanvas_frame").css("margin-top", image_margin_top);
+			jQuery("#jcanvas_frame").css("margin-left", image_margin_left);
 
-			$j("#jcanvas_mats").css("margin-top", image_margin_top);
-			$j("#jcanvas_mats").css("margin-left", image_margin_left);
+			jQuery("#jcanvas_mats").css("margin-top", image_margin_top);
+			jQuery("#jcanvas_mats").css("margin-left", image_margin_left);
 
 			
 		}
@@ -1670,36 +1683,36 @@
 
 
 		// Highlight an image when clicked
-		$j("ul#custom_option_frame li").click(
+		jQuery("ul#custom_option_frame li").click(
 			
 			function()
 			{
-				frame_sku = $j(this).attr('id');
+				frame_sku = jQuery(this).attr('id');
 				// Update the current frame information
-				$j(".current_frame").html(frame_sku);
+				jQuery(".current_frame").html(frame_sku);
 				last_selected_frame_sku = frame_sku;
 
-				selected_frame_maximum_long_side = $j(this).data("frame_maximum_long_side");
-				selected_frame_maximum_short_side = $j(this).data("frame_maximum_short_side");
+				selected_frame_maximum_long_side = jQuery(this).data("frame_maximum_long_side");
+				selected_frame_maximum_short_side = jQuery(this).data("frame_maximum_short_side");
 
-				frame_available_4_canvas = $j(this).data("frame_available_4_canvas");
+				frame_available_4_canvas = jQuery(this).data("frame_available_4_canvas");
 
 
 				highlighted_border = "1px solid #04A6E4";
 				original_border = "1px solid #cccccc";
 
-				frame_size = $j(this).data("frame_size");
+				frame_size = jQuery(this).data("frame_size");
 				frame_scale_factor = frame_size * viewport_scale_factor;
 
 				// Remove the highlighting border from every other framing choice
-				$j("ul#custom_option_frame li").css("border", original_border);
+				jQuery("ul#custom_option_frame li").css("border", original_border);
 				// Highlight the selected image
-				$j(this).css("border", highlighted_border);
+				jQuery(this).css("border", highlighted_border);
 
 				// Select the corresponding dropdown value from the framing list
-				clicked_image_index = $j(this).index()+1;
-				$j("dd.frame select option:eq(" + clicked_image_index + ")").attr("selected", "selected");
-				$j("dd.frame select").change();
+				clicked_image_index = jQuery(this).index()+1;
+				jQuery("dd.frame select option:eq(" + clicked_image_index + ")").attr("selected", "selected");
+				jQuery("dd.frame select").change();
 
 				// If the previously selected mat is not available anymore with the new size selection, then reset the matting
 				if (!is_mat_available(last_selected_mat_sku))
@@ -1719,7 +1732,7 @@
 					deactivate_option_tab("mat");
 				}
 
-				frame_image_url = $j(this).find(".frame_corner_image").css("background-image").replace("url(", "").replace(".png)", ".png").replace("small_images", "large_images");
+				frame_image_url = jQuery(this).find(".frame_corner_image").css("background-image").replace("url(", "").replace(".png)", ".png").replace("small_images", "large_images");
 
 				if (framing_enabled == 0 && frame_image_url.indexOf("/.png") == -1 && rooms_view_enabled == 0)
 				{
@@ -1729,8 +1742,8 @@
 					background_width = background_container_width - 2 * frame_width;
 					background_height = background_container_height  - 2 * frame_height;
 
-					width = parseInt($j("#final_product_image").css("width").replace("px", ""));
-					height = parseInt($j("#final_product_image").css("height").replace("px", ""));
+					width = parseInt(jQuery("#final_product_image").css("width").replace("px", ""));
+					height = parseInt(jQuery("#final_product_image").css("height").replace("px", ""));
 
 					// In Percentage
 					top_percentage = 50;
@@ -1784,25 +1797,25 @@
 				}
 				
 				// Update the current product configuration
-				selected_frame = $j(this).find(".frame_title").html();
-				$j("#product_configuration #selected_frame").html(selected_frame);
+				selected_frame = jQuery(this).find(".frame_title").html();
+				jQuery("#product_configuration #selected_frame").html(selected_frame);
 
 				// Show the framing option from the product configuration
-				$j("#product_configuration #frame_status_label").show();
-				$j("#product_configuration #selected_frame").show();
-				$j("#product_configuration #selected_frame").next("a").show();
+				jQuery("#product_configuration #frame_status_label").show();
+				jQuery("#product_configuration #selected_frame").show();
+				jQuery("#product_configuration #selected_frame").next("a").show();
 			}
 
 		);
 
 
 		// Frame category sliding: left
-		$j("#category_frames_left_arrow_2").click(
+		jQuery("#category_frames_left_arrow_2").click(
 
 			function()
 			{
 				// Compute the currently selected node
-				selected_category_node = $j("select#frame_categories").children(":selected");
+				selected_category_node = jQuery("select#frame_categories").children(":selected");
 				
 				// Compute the previous node
 				previous_node = selected_category_node.prev();
@@ -1811,37 +1824,37 @@
 				if ( previous_node.css("display").indexOf("none") < 0 )
 				{
 					// Compute the currently selecte size UI
-					selected_size_name = $j("dd.size li input:checked").parent().attr('class');
+					selected_size_name = jQuery("dd.size li input:checked").parent().attr('class');
 					
 					// Select the new element
-					$j(previous_node).attr("selected", "selected");
-					$j(previous_node).trigger("click");
+					jQuery(previous_node).attr("selected", "selected");
+					jQuery(previous_node).trigger("click");
 
 					// Show the corresponding images
-					show_framing_images($j(previous_node).html());
+					show_framing_images(jQuery(previous_node).html());
 				}
 
 				// If no frame is scrolled to in the list, hide the mats tab and reset the mats options to no mats
 				if ( previous_node.attr("value") == "no_frame" )
 				{
-					$j("dt.mat").hide();
-					$j("dd.mat li.mats_none input").attr("checked", "checked");
-   					$j("dd.mat li.mats_none input").trigger("click");
+					jQuery("dt.mat").hide();
+					jQuery("dd.mat li.mats_none input").attr("checked", "checked");
+   					jQuery("dd.mat li.mats_none input").trigger("click");
 
    					// Trigger the change event to reset the framing price
-					$j("select#frame_categories option[value='no_frame']").attr("selected", "selected");
-					$j("select#frame_categories option[value='no_frame']").trigger("change");
+					jQuery("select#frame_categories option[value='no_frame']").attr("selected", "selected");
+					jQuery("select#frame_categories option[value='no_frame']").trigger("change");
 				}
 			}
 		);
 
 		// Frame category sliding: right
-		$j("#category_frames_right_arrow_2").click(
+		jQuery("#category_frames_right_arrow_2").click(
 
 			function()
 			{
 				// Compute the currently selected node
-				selected_category_node = $j("select#frame_categories").children(":selected");
+				selected_category_node = jQuery("select#frame_categories").children(":selected");
 				
 				// Compute the previous node
 				next_node = selected_category_node.next();
@@ -1850,14 +1863,14 @@
 				if ( next_node.css("display").indexOf("none") < 0 )
 				{
 					// Compute the currently selecte size UI
-					selected_size_name = $j("dd.size li input:checked").parent().attr('class');
+					selected_size_name = jQuery("dd.size li input:checked").parent().attr('class');
 					
 					// Select the new element
-					$j(next_node).attr("selected", "selected");
-					$j(next_node).trigger("click");
+					jQuery(next_node).attr("selected", "selected");
+					jQuery(next_node).trigger("click");
 
 					// Show the corresponding images
-					show_framing_images($j(next_node).html());
+					show_framing_images(jQuery(next_node).html());
 				}
 			}
 		);
@@ -1869,6 +1882,13 @@
 		var original_image_left = 1;
 		var original_image_margin_top = 1;
 		var original_image_margin_left = 1;
+        //in%
+        var original_image_widthPoc = 1;
+        var original_image_heightPoc = 1;
+        var original_image_topPoc = 1;
+        var original_image_leftPoc = 1;
+        var original_image_margin_topPoc = 1;
+        var original_image_margin_leftPoc = 1;
 
 
 		function load_product_image()
@@ -1876,14 +1896,14 @@
 
 			// Get the final product image size
 			img = new Image;
-			product_background_image = $j("#final_product_image");
+			product_background_image = jQuery("#final_product_image");
 
 			if (product_background_image.length > 0)
-				img.src = $j(".image_url").html();
+				img.src = jQuery(".image_url").html();
 			else
 				return;
 
-			$j(img).load(function() {    
+			jQuery(img).load(function() {    
 			          
 				width = img.width;
 				height = img.height;
@@ -1917,13 +1937,30 @@
 				margin_top = background_height * (margin_top_percentage/100);
 				margin_left = background_width * (margin_left_percentage/100);
 
+                var widthPoc = '';
+                var heightPoc = '';
+                if(width > height){
+                    widthPoc = "100%";
+                    heightPoc = height * 100 / 450;
+                    heightPoc = heightPoc + "%";
+                }else{
+                    widthPoc = width * 100 / 450;
+                    widthPoc = widthPoc + "%";
+                    heightPoc = "100%";
+                }
+
+
+                //new top and left distance
+                var topPoc = ((top_distance * 100) /  background_height ) + "%";
+                var leftPoc = ((left_distance * 100) /  background_width ) + "%";
+
 				// Set the final product image coordinates
-				$j("#final_product_image").css("width", width);
-				$j("#final_product_image").css("height", height);
-				$j("#final_product_image").css("top", top_distance);
-				$j("#final_product_image").css("left", left_distance);
-				$j("#final_product_image").css("margin-top", margin_top);
-				$j("#final_product_image").css("margin-left", margin_left);
+				jQuery("#final_product_image").css("width", width_percentage + "%");
+				jQuery("#final_product_image").css("height", height_percentage + "%");
+				jQuery("#final_product_image").css("top", topPoc);
+				jQuery("#final_product_image").css("left", leftPoc);
+				jQuery("#final_product_image").css("margin-top", margin_top_percentage + "%");
+				jQuery("#final_product_image").css("margin-left", margin_left_percentage + "%");
 
 				original_image_width = width;
 				original_image_height = height;
@@ -1932,8 +1969,16 @@
 				original_image_margin_top = margin_top;
 				original_image_margin_left = margin_left;
 
+                //in %
+                original_image_widthPoc = width_percentage + "%";
+                original_image_heightPoc = height_percentage + "%";
+                original_image_topPoc = topPoc;
+                original_image_leftPoc = leftPoc;
+                original_image_margin_topPoc = margin_top_percentage + "%";
+                original_image_margin_leftPoc = margin_left_percentage + "%";
 
-				$j("#final_product_image").show();
+
+				jQuery("#final_product_image").show();
 			});
 		}		
 
@@ -1950,11 +1995,11 @@
 		disable_option("borders");
 
 		// Show the default paper related sizes only
-		poster_available = $j(".poster_available").html();
-		paper_available = $j(".paper_available").html();
+		poster_available = jQuery(".poster_available").html();
+		paper_available = jQuery(".paper_available").html();
 
 		// Image orientation
-		orientation = $j(".orientation").html();
+		orientation = jQuery(".orientation").html();
 
 		function compute_borders_index(size_sku)
 		{
@@ -2010,14 +2055,14 @@
 			if (typeof custom_stretching !== "undefined")
 			{
 				//alert("stretching " + custom_stretching);
-				$j("dd.canvas_stretching ul li[class*='" + custom_stretching + "']:eq(0) input").trigger("click");
+				jQuery("dd.canvas_stretching ul li[class*='" + custom_stretching + "']:eq(0) input").trigger("click");
 			}
 
 			// Frame
 			if (typeof custom_frame !== "undefined")
 			{
 				//alert("frame " + custom_frame);
-				$j("ul#custom_option_frame li[id='" + custom_frame + "']").trigger("click");
+				jQuery("ul#custom_option_frame li[id='" + custom_frame + "']").trigger("click");
 			}
 
 			else
@@ -2029,7 +2074,7 @@
 			if (typeof custom_mat !== "undefined")
 			{
 				//alert("mat " + custom_mat);
-				$j("ul#custom_option_mat li[id*='" + custom_mat + "']").trigger("click");
+				jQuery("ul#custom_option_mat li[id*='" + custom_mat + "']").trigger("click");
 			}
 
 			else
@@ -2041,7 +2086,7 @@
 
 
 		// Parse the URL and automatically select a specific customization of an image
-		custom_url = $j.url();
+		custom_url = jQuery.url();
 		if (custom_url.param('material'))
 		{
 			set_current_customization();
@@ -2082,56 +2127,56 @@
 
 
 		// If the borders tab is not active yet, slide the others on its right towards the left
-		if ( $j("dt.borders").is(":visible") == false )
+		if ( jQuery("dt.borders").is(":visible") == false )
 		{
-			$j("dt.frame").css("left", "496px");
-			$j("dt.mat").css("left", "645px");
+			jQuery("dt.frame").css("left", "496px");
+			jQuery("dt.mat").css("left", "645px");
 		}
 
 
 		if (custom_url.length == 0)
 		{
 			// Select the No Frame category
-			$j('dd.frame option:eq(1)').attr('selected','selected');
+			jQuery('dd.frame option:eq(1)').attr('selected','selected');
 
 			/** MATTING**/
 			// Select No Mats
-			$j('dd.mat option:eq(1)').attr('selected','selected');
+			jQuery('dd.mat option:eq(1)').attr('selected','selected');
 
 			// Default matting option is none
-			$j("ul#custom_option_mat li#mats_none").trigger("click");
+			jQuery("ul#custom_option_mat li#mats_none").trigger("click");
 		}
 
 		// Compute the selected size class name
-		selected_size_name = $j("dd.size li input:checked").parent().attr('class');
+		selected_size_name = jQuery("dd.size li input:checked").parent().attr('class');
 		if ( selected_size_name )
 			size_ui = selected_size_name.replace(/.*ui_/, '');
 
 		// Clicking a custom option image should automatically select the corresponding button
-		$j("#custom_options_images ul .custom_option_viewport").click(
+		jQuery(".custom_options_images ul .custom_option_viewport").click(
 
 			function()
 			{
-				clicked_image_index = $j(this).parent().index();
-				$j("dd:visible ul li:eq(" + clicked_image_index + ") input").attr("checked", "checked");
-				$j("dd:visible ul li:eq(" + clicked_image_index + ") input").trigger("click");
+				clicked_image_index = jQuery(this).parent().index();
+				jQuery("dd:visible ul li:eq(" + clicked_image_index + ") input").attr("checked", "checked");
+				jQuery("dd:visible ul li:eq(" + clicked_image_index + ") input").trigger("click");
 			}
 		);
 
 		// Clicking a custom option image should automatically select the corresponding button: SPECIFIC FOR THE SIZE OPTIONS
-		$j(".background_border_size").click(
+		jQuery(".background_border_size").click(
 
 			function()
 			{
-				clicked_image_index = $j(this).index();
-				$j("dd.size ul li:eq(" + clicked_image_index + ") input").attr("checked", "checked");
-				$j("dd.size ul li:eq(" + clicked_image_index + ") input").trigger("click");
+				clicked_image_index = jQuery(this).index();
+				jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").attr("checked", "checked");
+				jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").trigger("click");
 
 				// Make the currently selected size background dark green and deselect all the others
-				if ( $j(this).attr("id") != "custom_size_button_background" )
+				if ( jQuery(this).attr("id") != "custom_size_button_background" )
 				{
-					$j(".background_border_size").css("background-color", "");
-					$j(this).css("background-color", selected_size_background_color);
+					jQuery(".background_border_size").css("background-color", "");
+					jQuery(this).css("background-color", selected_size_background_color);
 				}
 			}
 		);
@@ -2140,10 +2185,10 @@
 		select_framing_category("Blacks");	
 		show_mats_options(mats_color_code);
 
-		$j("dt.material label").html("Material & Size");	
+		jQuery("dt.material label").html('<em>*</em><span>Step 1: </span>Material & Size');	
 
 		// Display the whole custom options section, only when everything else has loaded
-		$j(".product-view").show();
+		jQuery(".product-view").show();
 		
 
 		/********************* End of defaults ******************/
@@ -2152,36 +2197,36 @@
 		// *************** END OF CUSTOM OPTIONS ***************
 		
 		
-		$j(".category-products .category_product_image, .products_collections").hover(
+		jQuery(".category-products .category_product_image, .products_collections").hover(
 		
 			function () {
-				$j(this).parent().nextAll(".social_bar").stop(true).animate({ opacity: 1 });
+				jQuery(this).parent().nextAll(".social_bar").stop(true).animate({ opacity: 1 });
 			}, 
 			
 			function () {
-				$j(this).parent().nextAll(".social_bar").animate({ opacity: 0 });
+				jQuery(this).parent().nextAll(".social_bar").animate({ opacity: 0 });
 			}
 			
 		);
 		
-		$j(".social_bar:not('.product-view .social_bar')").hover(
+		jQuery(".social_bar:not('.product-view .social_bar')").hover(
 		
 			function () {
-				$j(this).stop(true).animate({ opacity: 1 });
+				jQuery(this).stop(true).animate({ opacity: 1 });
 			}, 
 			
 			function () {
-				$j(this).animate({ opacity: 0 });
+				jQuery(this).animate({ opacity: 0 });
 			}
 			
 		);
 		
 		
-		$j("a[rel^='prettyPhoto']").prettyPhoto();
+		jQuery("a[rel^='prettyPhoto']").prettyPhoto();
 		
-		$j("#full_screen, #full_screen_text").click(function() {
+		jQuery("#full_screen, #full_screen_text").click(function() {
 		
-			$j("a[rel^='prettyPhoto']").trigger("click");
+			jQuery("a[rel^='prettyPhoto']").trigger("click");
 		
 		});
 
@@ -2190,8 +2235,21 @@
 		// Automatic image resizing based on the image ratio
 		function resize_image(width, height, top, left, margin_top, margin_left)
 		{
-			// Animate the automatic image resizing to make it fit nicely into the room			
-			$j("#final_product_image").animate({ width: width, height: height, top: top, left: left, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
+			/*if(width > height){
+                width = "100%";
+                height = height * 100 / 450;
+                height = height + "%";
+
+
+            }else{
+                width = width * 100 / 450;
+                width = width + "%";
+                height = "100%";
+            }*/
+
+            // Animate the automatic image resizing to make it fit nicely into the room
+            jQuery("#final_product_image").animate({ width: width, height: height, top: top, left: left, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
+            //jQuery("#final_product_image").animate({ width: width, height: height, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
 				activate_dynamic_framing_matting(frame_image_url, mats_color_code, mats_size)
 			});
 		}
@@ -2201,7 +2259,7 @@
 			rooms_view_enabled = 0;
 
 			// Reset the final image background
-			$j("#final_product_image_background").css("background", "");
+			jQuery("#final_product_image_background").css("background", "");
 
 			width_percentage = 100/100;
 			height_percentage = 100/100;
@@ -2221,7 +2279,7 @@
 			width = original_image_width;
 			height = original_image_height;
 
-			reset_framing_matting();
+            reset_framing_matting();
 
 			// In Percentage
 			top_percentage = 50;
@@ -2249,10 +2307,17 @@
 			top = background_height * (top_percentage/100) + frame_height;
 			left = background_width * (left_percentage/100) + frame_width;
 
+
 			margin_top = background_height * (margin_top_percentage/100);
 			margin_left = background_width * (margin_left_percentage/100);
 
-			resize_image(width, height, image_top, image_left, margin_top, margin_left);
+            //in %
+            margin_top_percentage = original_image_margin_topPoc;
+            margin_left_percentage = original_image_margin_leftPoc;
+            image_top = original_image_topPoc;
+            image_left = original_image_leftPoc;
+
+			resize_image(width_percentage + "%", height_percentage + "%", image_top, image_left, margin_top_percentage, margin_left_percentage);
 		}
 
 		function display_rooms_view(room_index, rooms_view_state)
@@ -2266,7 +2331,9 @@
 				selected_length = temp;
 			}
 
-			real_width = selected_width * size_scale_factor;
+            alert(furniture_image_gap);
+
+            real_width = selected_width * size_scale_factor;
 			real_height = selected_length * size_scale_factor;
 
 			real_top = furniture_image_gap - real_height;
@@ -2286,152 +2353,169 @@
 				background_height -= 2 * mats_size*dpi;
 			}
 
-			resize_image(real_width, real_height, real_top, real_left, 0, 0);
+            // caluculate % with and height
+            var widthAux = original_image_widthPoc.replace("%","");
+            var heightAux = original_image_heightPoc.replace("%","");
+
+            var withPoc = ((real_width * widthAux) / original_image_width);
+            var heightPoc = ((real_height * heightAux) / original_image_height);
+
+			resize_image(withPoc + "%", heightPoc + "%", real_top, real_left, 0, 0);
 		}
 		
 		// Wall Color
-		$j("#wall_color").click(function () {
-		
-			var original_background_color = $j("#final_product_image_background").css("background-color");
+		jQuery("#wall_color").click(function () {
+
+
+			var original_background_color = jQuery("#final_product_image_background").css("background-color");
 
 			// Hide the rooms view first if it is visible or if the image background has been altered in the meantime
-			if ( $j("#room_switch").is(":visible") || $j("#final_product_image_background").attr("background") != "none") 
+			if ( jQuery("#room_switch").is(":visible") || jQuery("#final_product_image_background").attr("background") != "none") 
 			{
 				// Hide the rooms view
-				$j("#room_switch").slideUp("fast");
+				jQuery("#room_switch").slideUp("fast");
 				// Reset the room wall to a white background
-				$j("#final_product_image_background").css("background", "none");
+				jQuery("#final_product_image_background").css("background", "none");
 				// Restore the background color
-				$j("#final_product_image_background").css("background-color", original_background_color);
+				jQuery("#final_product_image_background").css("background-color", original_background_color);
 			}
 			
 			// Hide the rooms view first if it is visible or if the image background has been altered in the meantime
-			if ( $j("#details_switch").is(":visible") ) 
+			if ( jQuery("#details_switch").is(":visible") ) 
 			{
 				// Hide the details view
-				$j("#details_switch").slideUp("fast");
+				jQuery("#details_switch").slideUp("fast");
 				// Reset the room wall to a white background
-				$j("#final_product_image_background").css("background", "none");
+				jQuery("#final_product_image_background").css("background", "none");
 			}
 		
-			//$j("#color_switch").css("visibility", "visible");
-			if ( $j("#color_switch").is(":hidden") ) 
+			//jQuery("#color_switch").css("visibility", "visible");
+			if ( jQuery("#color_switch").is(":hidden") ) 
 			{
 				// Show the color switch tab
-				$j("#color_switch").slideDown("slow");
-				$j("#hide_button").css("top", "360px");
-				$j("#hide_button").slideDown("slow");
+				jQuery("#color_switch").slideDown("slow");
+				jQuery("#hide_button").css("top", "inherit");
+				jQuery("#hide_button").css("bottom", 115);
+				jQuery("#hide_button").slideDown("slow");
 			}
 			
 			else
 			{
 				// Hide the color switch tab
-				$j("#color_switch").slideUp("fast");
-				$j("#hide_button").slideUp("fast");
+				jQuery("#color_switch").slideUp("fast");
+				jQuery("#hide_button").slideUp("fast");
 			}
 		});
 		
 		// Select a color
-		$j(".color").click(function () {
+		jQuery(".color").click(function () {
 			
 			// Automatic image resizing
 			display_rooms_view(1, 1);
 			
 			// Change the product image background color
-			$j("#final_product_image_background").css("background-color", $j(this).css("background-color"));
+			jQuery("#final_product_image_background").css("background-color", jQuery(this).css("background-color"));
 
 			
 		});
 		
-		$j("#hide_button").click(function () {
+		jQuery("#hide_button").click(function () {
 		
 			// Hide the color switch tab
-			$j("#color_switch").slideUp("fast");
-			$j("#room_switch").slideUp("fast");
-			$j("#details_switch").slideUp("fast");
-			$j("#hide_button").slideUp("fast");
+			jQuery("#color_switch").slideUp("fast");
+			jQuery("#room_switch").slideUp("fast");
+			jQuery("#details_switch").slideUp("fast");
+			jQuery("#hide_button").slideUp("fast");
 		});
 		
 		
 		// Rooms
-		$j("#rooms").click(function () {
+		jQuery("#rooms").click(function () {
 		
 			// Hide the color switch first if it is visible
-			if ( $j("#color_switch").is(":visible") ) 
+			if ( jQuery("#color_switch").is(":visible") ) 
 			{
-				$j("#color_switch").slideUp("fast");
+				jQuery("#color_switch").slideUp("fast");
 			}
 			
 			// Hide the details switch first if it is visible
-			if ( $j("#details_switch").is(":visible") ) 
+			if ( jQuery("#details_switch").is(":visible") ) 
 			{
-				$j("#details_switch").slideUp("fast");
+				jQuery("#details_switch").slideUp("fast");
 			}
 		
-			if ( $j("#room_switch").is(":hidden") ) 
+			if ( jQuery("#room_switch").is(":hidden") ) 
 			{
 				// Show the room switch tab
-				$j("#room_switch").slideDown("slow");
-				$j("#hide_button").css("top", "345px");
-				$j("#hide_button").slideDown("slow");
+				jQuery("#room_switch").slideDown("slow");
+				jQuery("#hide_button").css("top", "inherit");
+
+				if(viewportWidth > 640){
+					jQuery("#hide_button").css("bottom", 124);
+				}else if(viewportWidth > 480){
+					jQuery("#hide_button").css("bottom", 132);
+				}else{
+					jQuery("#hide_button").css("bottom", 215);
+				}
+				jQuery("#hide_button").slideDown("slow");
 			}
 			
 			else
 			{
 				// Hide the room switch tab
-				$j("#room_switch").slideUp("fast");
-				$j("#hide_button").slideUp("fast");
+				jQuery("#room_switch").slideUp("fast");
+				jQuery("#hide_button").slideUp("fast");
 			}
 		});
 
 		
 		// Select a room
-		$j(".room_thumbnail").click(function () {
+		jQuery(".room_thumbnail").click(function () {
 		
 			// Change the product image background
-			background_value = "url('" + $j(this).attr("src") + "')";
-			$j("#final_product_image_background").css("background", background_value);
+			background_value = "url('" + jQuery(this).attr("src") + "')";
+			jQuery("#final_product_image_background").css("background", background_value);
 			
-			room_index = $j(this).index();
+			room_index = jQuery(this).index();
 			display_rooms_view(room_index, 1);
 		});
 
 
 		// Reset image
-		$j("#reset").click(function () {
+		jQuery("#reset").click(function () {
 		
 			display_design_view();	
 		});
 		
 		
 		// Details
-		$j("#details").click(function () {
+		jQuery("#details").click(function () {
 		
 			// Hide the room switch first if it is visible
-			if ( $j("#room_switch").is(":visible") ) 
+			if ( jQuery("#room_switch").is(":visible") ) 
 			{
-				$j("#room_switch").slideUp("fast");
+				jQuery("#room_switch").slideUp("fast");
 			}
 			
 			// Hide the color switch first if it is visible
-			if ( $j("#color_switch").is(":visible") ) 
+			if ( jQuery("#color_switch").is(":visible") ) 
 			{
-				$j("#color_switch").slideUp("fast");
+				jQuery("#color_switch").slideUp("fast");
 			}
 		
-			if ( $j("#details_switch").is(":hidden") ) 
+			if ( jQuery("#details_switch").is(":hidden") ) 
 			{
 				// Show the details switch tab
-				$j("#details_switch").slideDown("slow");
-				$j("#hide_button").css("top", "345px");
-				$j("#hide_button").slideDown("slow");
+				jQuery("#details_switch").slideDown("slow");
+				jQuery("#hide_button").css("top", "345px");
+				jQuery("#hide_button").slideDown("slow");
 			}
 			
 			else
 			{
 				// Hide the details switch tab
-				$j("#details_switch").slideUp("fast");
-				$j("#hide_button").slideUp("fast");
+				jQuery("#details_switch").slideUp("fast");
+				jQuery("#hide_button").slideUp("fast");
 			}
 		});
 		
@@ -2439,106 +2523,232 @@
 
 		/* S3 code */
 
-		$j("#s3_image").load(function() 
+		jQuery("#s3_image").load(function() 
 		{
-			$j("#s3_result_light_box").trigger("click");
-		   $j("#s3_redirect").submit();
+			jQuery("#s3_result_light_box").trigger("click");
+		   jQuery("#s3_redirect").submit();
 		});
 
-		$j(".custom_art #accept_checkbox").trigger("click");
+		jQuery(".custom_art #accept_checkbox").trigger("click");
 
 		// Check if the disclaimer checkbox on the "Create your Art" page is checked
 		// If it is, enable the upload button, otherwise disable it
-		$j(".custom_art #accept_checkbox").click(
+		jQuery(".custom_art #accept_checkbox").click(
 
 			function()
 			{
-				if ( $j(this).is(":checked") )
+				if ( jQuery(this).is(":checked") )
 				{
-					$j("#s3_image_submit").attr("disabled", false);
+					jQuery("#s3_image_submit").attr("disabled", false);
 				}
 
 				else
 				{
-					$j("#s3_image_submit").attr("disabled", true);
+					jQuery("#s3_image_submit").attr("disabled", true);
 				}
 			}
 		);
+                
+                
 
-		$j("#s3_file_input").change(
-			function()
-			{
-				$j("#s3_image_submit").trigger("click");
-			}
+		jQuery("#s3_file_input").change(
+                    function()
+                    {
+                        jQuery("#s3_image_submit").trigger("click");
+                    }
 		);
 
 		/* End of S3 code */
 
 
 		// Hide the canvas material option if its corresponding attribute is either N o blank
-		if ($j(".canvas_available").html() == "0" || $j(".canvas_available").html() == "")
+		if (jQuery(".canvas_available").html() == "0" || jQuery(".canvas_available").html() == "")
 		{
-			$j("#custom_option_material_canvas_background").hide();
-			$j("dd li.material_canvas").hide();
+			jQuery("#custom_option_material_canvas_background").hide();
+			jQuery("dd li.material_canvas").hide();
 		}
 
 		else
 		{
-			$j("#custom_option_material_canvas_background").show();
-			$j("dd li.material_canvas").show();
+			jQuery("#custom_option_material_canvas_background").show();
+			jQuery("dd li.material_canvas").show();
 		}
 
 		// Display the out of stock message when the product is out of stock
-		if ( $j(".is_in_stock").html() == "0" )
+		if ( jQuery(".is_in_stock").html() == "0" )
 		{
-			$j(".out_of_stock_message").show();
-			$j(".price-box span.regular-price span.price").hide();
+			jQuery(".out_of_stock_message").show();
+			jQuery(".price-box span.regular-price span.price").hide();
 		}
 
 
 		/*
 		if (browser.indexOf("Safari") != -1)
 		{
-			final_product_image_margin_top_safari = parseInt($j("#final_product_image").css("margin-top")) + 220;
-			$j("#final_product_image").css("margin-top", final_product_image_margin_top_safari + "px");
+			final_product_image_margin_top_safari = parseInt(jQuery("#final_product_image").css("margin-top")) + 220;
+			jQuery("#final_product_image").css("margin-top", final_product_image_margin_top_safari + "px");
 		}
 		*/
 
 
-		$j("#customize_substrate_link").click(
+		jQuery("#customize_substrate_link").click(
 			function()
 			{
-				$j(".product-options dl dt.material label").trigger("click");
+				jQuery(".product-options dl dt.material label").trigger("click");
 			}
 		);
 
-		$j("#customize_borders_link").click(
+		jQuery("#customize_borders_link").click(
 			function()
 			{
-				$j(".product-options dl dt.borders label").trigger("click");
+				jQuery(".product-options dl dt.borders label").trigger("click");
 			}
 		);
 
-		$j("#customize_wrap_link").click(
+		jQuery("#customize_wrap_link").click(
 			function()
 			{
-				$j(".product-options dl dt.borders label").trigger("click");
+				jQuery(".product-options dl dt.borders label").trigger("click");
 			}
 		);
 
-		$j("#customize_frame_link").click(
+		jQuery("#customize_frame_link").click(
 			function()
 			{
-				$j(".product-options dl dt.frame label").trigger("click");
+				jQuery(".product-options dl dt.frame label").trigger("click");
 			}
 		);
 
-		$j("#customize_mats_link").click(
+		jQuery("#customize_mats_link").click(
 			function()
 			{
-				$j(".product-options dl dt.mat label").trigger("click");
+				jQuery(".product-options dl dt.mat label").trigger("click");
 			}
 		);
+        
+                /*
+                 * Init Fancys Product
+                 */
+                jQuery("#custom_size_link").fancybox({
+                    'content':jQuery("#info_custom_size").html()
+                });
+                
+                jQuery("#info_size_link").fancybox({
+                    'content':jQuery("#info_size").html(),
+                    'width':'55%',
+                    'height': '65%',
+                    'autoDimensions':false,
+                    'autoSize':false
+                });
+                
+                /* Agregados para el ticket 107 */
+                
+                    /*
+                     * Actualiza la opcion seleccionada en cualqueira 
+                     * de los step (Material & size,Frame,Mat)
+                     */
+                    function ShowSelectedOption(selected,option_name){
+                        if(selected !== null){
+                            //jQuery(document).find(".option-reloaded span.step-selection").text("");
+
+                            jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
+                       }
+                    }   
+
+                    /*
+                     * Muestra la opcion seleccionada por defecto en el paso Materials & Size, Mat y Borders
+                     * apenas carga la pagina
+                     */
+                    (function(){
+                        var selected_material,
+                            selected_mat,
+                            selected_borders;
+                            
+                        selected_material = jQuery(document).find("dd.material ul.options-list li input[type=radio]:checked")
+                                                        .next()
+                                                        .find("label:first")
+                                                        .text();
+                        
+                        selected_mat =  selected_borders = jQuery(document).find("dd.mat ul.options-list li input[type=radio]:checked")
+                                                        .next()
+                                                        .find("label:first")
+                                                        .text();        
+                                
+                        selected_borders = jQuery(document).find("dd.borders ul.options-list li input[type=radio]:first")
+                                                        .next()
+                                                        .find("label:first")
+                                                        .text();
+                        
+                        ShowSelectedOption(selected_material,"material");
+                        ShowSelectedOption(selected_mat,"mat");
+                        ShowSelectedOption(selected_borders,"borders");
+                        
+                    })();
+
+                    /*
+                     * Actualizan la "opcion seleccionada" al seleccionar 
+                     * una opcion de las disponibles para su step
+                     */
+                        
+                        /*
+                         * Set  "Material & Size"
+                         */
+                        jQuery(document).on("click", "dd.material ul.options-list li input[type=radio]", function(){
+                            var selected = jQuery(this)
+                                                .next()
+                                                .find("label:first")
+                                                .text();
+
+                            ShowSelectedOption(selected,"material");
+                        });  
+                        
+                        /*
+                         * Set  "Frame"
+                         */
+                        jQuery(document).on("click", ".option-reloaded .custom_options_images #custom_option_frame li", function(){
+                            var selected = jQuery(this).find(".frame_title").text();
+
+                            ShowSelectedOption(selected,"frame");
+                        });
+                        
+                        /*
+                         * Set  "Mat"
+                         */
+                        jQuery(document).on("click", "dd.mat ul.options-list li input[type=radio]", function(){
+                            var selected = jQuery(this)
+                                                .next()
+                                                .find("label:first")
+                                                .text();
+
+                            ShowSelectedOption(selected,"mat");
+                        });  
+                        
+                        /*
+                         * Set  "Borders"
+                         */
+                        jQuery(document).on("click",".option-reloaded .borders ul.options-list li input[type=radio]",function(){
+                            
+                            var selected =  jQuery("dd.borders ul.options-list li input[type=radio]:checked")
+                                                .next()
+                                                .find("label:first")
+                                                .text();
+
+                            ShowSelectedOption(selected,"borders");
+                        });
+                        
+            var img_uploaded = jQuery("input[name=image-uploaded]").val();
+            
+            if(img_uploaded !== ""){
+                
+                console.log("img_uploaded: "+img_uploaded);
+                
+                setTimeout(function(){
+                    //window.location = "your-photos-to-art-63";
+                },5000);
+                
+            }else{
+                console.log("no uploaded ");
+            }
 
 	});
 	

@@ -18,16 +18,20 @@
  * General post (view and list)
  *
  */
-.post-date { font-style: italic; font-size: 98%; margin-bottom: 10px; }
+.post-date {  color:#aaa;font-size: 98%; margin-bottom: 10px; }
 .post-meta { font-style: italic; }
 .post-entry { font-size: 110%; height: 1%; margin-bottom: 1.5em; overflow: hidden; }
 .post-entry-with-image { height: 1%; overflow: hidden; }
 .post-entry p { margin-bottom: 1em; }
 
 .featured-image {
-	border: 1px solid #ddd;
+	/*border: 1px solid #ddd;
 	margin: 4px 10px 2px 0;
-	padding: 1px;
+	padding: 1px;*/
+}
+.featured-image img{
+    margin: 0 16px 16px 0;
+    max-width: 400px;
 }
 
 .featured-image.right {
@@ -56,7 +60,10 @@
  * Post view page
  *
  */
-.page-title.post-title { margin-bottom: 4px; }
+.page-title.post-title { display: inline-block; margin-bottom: 4px;}
+.page-title.post-title h1{font-family:arial;font-weight:bold;font-size:32px;letter-spacing:0;margin-bottom:0 !important;text-transform: none; }
+.post-view .blog-title{color: #000;font-family: "baskervilleoldfacscdregular", bentonsansregular,Arial,"Helvetica Neue",Helvetica,sans-serif; font-size: 16px;text-transform: uppercase;}
+.post-view #lipsum{color:#aaa;}
 .post-view .post-meta { margin-bottom: 20px; }
 .post-view .post-skips { display: block; margin-top: 20px; width: 100%; }
 .post-view .post-skips .post-skip-previous { margin-right: 10px; }
@@ -288,15 +295,16 @@ dl.gallery-item { float: left; }
 }
 
 .blog-cust-category{
-	width: calc(50% - 20px);
-	margin-right: 20px;
-	margin-bottom: 40px;
-	display: inline-block;
+	width: calc(50% - 2%);
+	margin-right: 2%;
+	margin-bottom: 20px;
+    margin-top: 20px;
+	float: left;
 	position: relative;
 	cursor: pointer;
 }
 .blog-cust-category:nth-child(even){
-	margin-left: 20px;
+	margin-left: 2%;
 	margin-right: 0;
 }
 .blog-cust-category img{
@@ -323,15 +331,19 @@ dl.gallery-item { float: left; }
 	display: block;
 }
 .blog-cust-more{
+    background: url(../images/more.png) 0 0 no-repeat;
 	display: block;
-	margin-top: 45%;
-	font-size: 240px;
-	color: white;
+    height: 120px;
+	margin:40% auto 0;
+    text-indent:-10000px;
+    width: 120px;
+	/*font-size: 240px;
+	color: white;*/
 }
 .blog-cust-text{
 	display: block;
 	color: white;
-	margin-top: 60px;
+	margin-top: 20px;
 }
 
 

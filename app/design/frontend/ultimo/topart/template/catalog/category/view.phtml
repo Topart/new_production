@@ -1,0 +1,222 @@
+<?php
+//Amazon S3 library file
+// Bucket Name
+error_reporting(1);
+
+$bucket = "topart_user_images";
+$folder = "user_images";
+
+if (!class_exists('S3')){
+    require_once('S3/S3.php');
+}
+    
+
+//AWS access info
+if (!defined('awsAccessKey'))
+    define('awsAccessKey', 'AKIAJFHQLRZSWLZGESHA');
+if (!defined('awsSecretKey'))
+    define('awsSecretKey', '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');
+
+$s3 = new S3(awsAccessKey, awsSecretKey);
+$s3->putBucket($bucket, S3::ACL_PUBLIC_READ);
+?>
+
+<?php
+
+function getExtension($str) {
+    $i = strrpos($str, ".");
+    if (!$i) {
+        return "";
+    }
+    $l = strlen($str) - $i;
+    $ext = substr($str, $i + 1, $l);
+    return $ext;
+}
+
+//Here you can add valid file extensions. 
+$valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP");
+?>
+
+<?php
+//include('image_check.php'); // getExtension Method
+$msg = '';
+$s3file = '';
+
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $name = $_FILES['file']['name'];
+    $size = $_FILES['file']['size'];
+    $tmp = $_FILES['file']['tmp_name'];
+    $ext = getExtension($name);
+
+    if (strlen($name) > 0) {
+        // File format validation
+        if (in_array($ext, $valid_formats)) {
+            // File size validation
+            if ($size < (10240 * 1024)) {
+                $actual_image_name = time() . "." . $ext;
+
+                if ($s3->putObjectFile($tmp, $bucket, $actual_image_name, S3::ACL_PUBLIC_READ)) {
+                    $msg = "Your Upload Was Successful. <br />Please Wait While We Take You To Our Customization Page.";
+
+                    $s3file = 'https://' . $bucket . '.s3.amazonaws.com/' . $actual_image_name;
+                    list($width, $height, $type, $attr) = getimagesize($s3file);
+                    $min_side = 0;
+                    $max_side = 0;
+
+                    if ($width < $max_side) {
+                        $min_side = $width;
+                        $max_side = $height;
+                    } else {
+                        $min_side = $height;
+                        $max_side = $width;
+                    }
+
+                    $ratio = number_format((float) ($min_side / $max_side), 2, '.', '');
+
+                    $custom_url_suffix = $ratio * 100;
+
+                    echo "<img id='s3_image' src='$s3file' style='display:none;' />";
+                } else {
+                    $msg = "The Upload Failed. Please Try Again.";
+                }
+            } else
+                $msg = "The Maximum Image Size Is 10MB.";
+        } else
+            $msg = "The File Is Not Valid. Please Upload An Image File.";
+    } else
+        $msg = "Please Select An Image File.";
+}
+
+$s3_images_base_url = "http://s3.amazonaws.com/topart_images/";
+?>
+
+
+<form id="s3_redirect" action="<?php echo $site_base_url . "/your-photos-to-art-" . $custom_url_suffix; ?>" method='post'>
+    <input type='hidden' name='s3file' value="<?php echo $s3file; ?>" />
+    <input type='submit' name='redirect' id="s3_redirect_submit" value='Continue'/>
+</form>
+
+<a id="s3_result_light_box" class="fancybox" href="#s3_message"></a>
+<div id="s3_message" style="width:400px; display: none;">
+        <?php echo $msg; ?>
+</div>
+
+<?php if($msg != ""): ?>
+<script>
+    var jQuery = jQuery.noConflict();
+    
+    jQuery(document).ready(function(){
+        
+        jQuery("#s3_result_light_box").fancybox({
+            'content':jQuery("#s3_message").html()
+        });
+
+        jQuery("#s3_result_light_box").trigger("click");
+        
+    });
+</script>
+<?php endif; ?>
+<?php
+/***************************************************************************************************************************************/
+/***************************************************************************************************************************************/
+/***************************************************************************************************************************************/
+/**
+ * Category view template
+ *
+ * @see Mage_Catalog_Block_Category_View
+ */
+?>
+<?php
+/* $img_uploaded_name = "";
+  if(isset($_FILES)){
+  if(count($_FILES)>0){
+  $img_uploaded_name = $_FILES["file"]['name'];
+  }
+  }
+  echo "<input type='hidden' name='image-uploaded' value='".$img_uploaded_name."'>"; */
+?>
+
+<?php
+$_helper = $this->helper('catalog/output');
+$_category = $this->getCurrentCategory();
+$_imgHtml = '';
+
+//if($this->isSubcategoriesMode()):
+if ($_imgUrl = $_category->getImageUrl()) {
+    $_imgHtml = '<p class="category-image"><img src="' . $_imgUrl . '" alt="' . $this->escapeHtml($_category->getName()) . '" title="' . $this->escapeHtml($_category->getName()) . '" /></p>';
+    $_imgHtml = $_helper->categoryAttribute($_category, $_imgHtml, 'image');
+}
+//endif;
+?>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php if (!empty($_imgUrl)): ?>
+    <?php $parent = $_category->getParentCategory(); ?>
+    <div class="page-title category-title-top">
+        <h1>
+    <?php $parentName = $_helper->categoryAttribute($parent, $parent->getName(), 'name'); ?>
+    <?php echo $this->__('Shop our %s', $parentName) ?>
+        </h1>
+    </div>
+<?php endif; ?>
+<div <?php echo (!empty($_imgUrl) ? ' class="category-top"' : '') ?>>
+    <div <?php echo (!empty($_imgUrl) ? ' class="category-info"' : '') ?>>
+<?php if (!$this->isSubcategoriesMode()): ?>
+    <?php if (!empty($_imgUrl)): ?>
+        <?php echo $_imgHtml ?>
+    <?php endif; ?>
+
+            <div class="page-title category-title <?php echo (!empty($_imgUrl) ? ' category-name' : '') ?>">
+    <?php if ($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
+                    <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
+            <?php endif; ?>
+            <?php echo (empty($_imgUrl) ? '<h1>' : '') ?>
+            <?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?>
+    <?php echo (empty($_imgUrl) ? '</h1>' : '') ?>
+            </div>
+<?php endif; ?>
+
+        <?php if ($_description = $this->getCurrentCategory()->getDescription()): ?>
+            <div class="category-description std <?php echo (!empty($_imgUrl) ? ' category-intro' : '') ?>">
+            <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+            <?php if ($this->isContentMode()): ?>
+                <?php echo $this->getCmsBlockHtml() ?>
+
+            <?php elseif ($this->isMixedMode()): ?>
+                <?php echo $this->getCmsBlockHtml() ?>
+                <?php echo $this->getProductListHtml() ?>
+            <?php /* [START] add the new subcategory display mode. */ ?>
+        <?php elseif ($this->isSubcategoriesMode()): ?>
+
+            <?php echo $this->getSubcategoriesHtml() ?>
+                <?php /* [END] */ ?>
+            <?php else: ?>
+            <?php echo $this->getProductListHtml() ?>
+        <?php endif; ?>
+
+<script type='text/javascript'>
+   var featherEditor = new Aviary.Feather({
+       apiKey: 'kq2ngl5kd16a73gf',
+       apiVersion: 3,
+       theme: 'dark', // Check out our new 'light' and 'dark' themes!
+       tools: 'all',
+       appendTo: '',
+       onSave: function(imageID, newURL) {
+           var img = document.getElementById(imageID);
+           img.src = newURL;
+       },
+       onError: function(errorObj) {
+           alert(errorObj.message);
+       }
+   });
+   function launchEditor(id, src) {
+       featherEditor.launch({
+           image: id,
+           url: src
+       });
+      return false;
+   }
+</script>

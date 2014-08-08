@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Onetree_Catalog>
+            <version>0.0.1</version>
+		</Onetree_Catalog>
+    </modules>
+    <global>
+		<blocks>
+            <otcatalog>
+                <class>Onetree_Catalog_Block</class>
+            </otcatalog>
+            <catalog>
+                <rewrite>
+                    <product_list>Onetree_Catalog_Block_Product_List</product_list>
+                </rewrite>
+            </catalog>
+		</blocks>
+        <helpers>
+            <otcatalog>
+                <class>Onetree_Catalog_Helper</class>
+            </otcatalog>
+            <catalog>
+                <rewrite>
+                    <output>Onetree_Catalog_Helper_Output</output>
+                </rewrite>
+            </catalog>
+        </helpers>
+   </global>
+</config>

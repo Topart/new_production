@@ -140,7 +140,7 @@
 		<!-- Left ====================================================================== -->
 		<reference name="left">
 			
-			<block  type="catalog/navigation" name="catalog.leftnav"  before="-" template="catalog/navigation/left.phtml"/>	
+			<!--block  type="catalog/navigation" name="catalog.leftnav"  before="-" template="catalog/navigation/left.phtml"/-->
 			<remove name="left.newsletter"/> <!-- Moved newsletter to the footer -->
 			<action method="unsetChild"><name>tags_popular</name></action>
 
@@ -368,7 +368,10 @@
 
 	<!-- PRODUCT VIEW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 	<catalog_product_view>
-	
+	    <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/jquery.magnific-popup.min.js</name></action>
+            <action method="addItem"><type>skin_css</type><name>css/magnific-popup.css</name></action>
+	    </reference>
 		<!-- Change default template for product view. IMPORTANT: the same as in 'review_product_list'. -->
 		<reference name="root">
 			<action method="setTemplate"><template>page/1column.phtml</template></action>
@@ -402,12 +405,16 @@
 			<!-- Add tabs -->
 			<block type="catalog/product_view_tabs" name="product.info.tabs" as="info_tabs" template="catalog/product/view/tabs.phtml" >
 				<action method="addTab" translate="title" module="catalog"><alias>description</alias><title>Product Description</title><block>catalog/product_view_description</block><template>catalog/product/view/description.phtml</template></action>
-				<action method="addTab" translate="title" module="payment"><alias>product.info.additional.recurring.schedule</alias><title>Recurring Profile</title><block>payment/catalog_product_view_profile</block><template>payment/catalog/product/view/profile/schedule.phtml</template></action>
-				<action method="addTab" translate="title" module="catalog"><alias>additional</alias><title>Additional Information</title><block>catalog/product_view_attributes</block><template>catalog/product/view/attributes.phtml</template></action>
+
+				<action method="addTab" translate="title" module="catalog"><alias>tabreviews</alias><title>Reviews</title><block>review/product_view_list</block><template>review/product/view/list.phtml</template></action>
+
+				<!-- <action method="addTab" translate="title" module="payment"><alias>product.info.additional.recurring.schedule</alias><title>Recurring Profile</title><block>payment/catalog_product_view_profile</block><template>payment/catalog/product/view/profile/schedule.phtml</template></action> -->
+				
+				<!-- <action method="addTab" translate="title" module="catalog"><alias>additional</alias><title>Additional Information</title><block>catalog/product_view_attributes</block><template>catalog/product/view/attributes.phtml</template></action> -->
 				<!-- Add reviews (first part). IMPORTANT: see the second part: reference name="tabreviews" -->
 				<!-- IMPORTANT: Do not change 'tabreviews' alias. It is needed in JS script in catalog/product/view.phtml -->
-				<action method="addTab" translate="title" module="catalog"><alias>tabreviews</alias><title>Reviews</title><block>review/product_view_list</block><template>review/product/view/list.phtml</template></action>
-				<action method="addTab" translate="title" module="tag"><alias>product.tags</alias><title>Product Tags</title><block>tag/product_list</block><template>tag/list.phtml</template></action>
+
+				<!-- <action method="addTab" translate="title" module="tag"><alias>product.tags</alias><title>Product Tags</title><block>tag/product_list</block><template>tag/list.phtml</template></action>  -->
 				
 				<!-- Add custom tabs -->				
 				<block type="cms/block" name="block_product_tab1">
@@ -541,6 +548,7 @@
 		<reference name="left">
 			<action method="unsetChild"><name>currency</name></action>			
 		</reference>
+
 		
 	</catalog_category_layered>
 	
@@ -782,5 +790,9 @@
 		</reference>
 	
 	</cms_index_index>
-
+    <contacts_index_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+    </contacts_index_index>
 </layout>
