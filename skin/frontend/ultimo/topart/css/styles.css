@@ -3034,7 +3034,7 @@ body.cms-index-index .breadcrumbs { display:none; }
 .header-top-container .header-top .top-text span{color: #B19D68!important;}
 
 #nav{margin-left: 0;}
-#nav li#nav-home, #nav li.nav-custom-link, #nav li:last-child{display: none;}
+/*#nav li#nav-home, #nav li.nav-custom-link, #nav li:last-child{display: none;}*/
 #nav a.level-top .caret{
 	border-bottom: 8px solid #2F2F2F!important;
     border-left: 8px solid rgba(0, 0, 0, 0)!important;
