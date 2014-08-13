@@ -2666,7 +2666,7 @@
                 });
                 
                 
-                /* Agregados para el ticket 107 */
+                /* Jp: Ticket 107 y otros Start*/
                 
                     /*
                      * Actualiza la opcion seleccionada en cualqueira 
@@ -2675,6 +2675,10 @@
                     function ShowSelectedOption(selected,option_name){
                         if(selected !== null){
                             //jQuery(document).find(".option-reloaded span.step-selection").text("");
+                            var opt = jQuery("input[name=size]:checked").next().text()
+                            
+                            selected += " "+ opt;
+                            
                             if(option_name !== "poster-size"){
                                 jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
                             }else{
@@ -2831,6 +2835,54 @@
                                 
                             jQuery(".material .step-selection").text(opt+" "+txt)	
                         });
+                /* Jp: Ticket 107 y otros End*/
+                
+                /* Jp: Ticket 129 Start*/
+                jQuery("li.material_photopaper input[type=radio]").click(function(){
+                    var isFirstPhotoPaper = true;
+                    
+                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_photopaper']")
+                        .each(function(){
+                            if(jQuery(this).is(":visible")){
+                                if(isFirstPhotoPaper){
+                                    jQuery(this).find("input:first").click();
+                                    isFirstPhotoPaper = false;
+                                }
+                            }
+                    });
+                })
+                
+                jQuery("li.material_posterpaper input[type=radio]").click(function(){
+                    var isFirstPhotoPoster = true;
+                    
+                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_posterpaper']")
+                    .each(function(){
+                        if(jQuery(this).is(":visible")){
+                            if(isFirstPhotoPoster){
+                                jQuery(this).find("input:first").click();
+                                isFirstPhotoPoster = false;
+                            }
+                        }
+                    });
+                })
+                
+                jQuery("li.material_canvas input[type=radio]").click(function(){
+                    var isFirstCanvas = true;
+                    
+                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_canvas']")
+                    .each(function(){
+                        if(jQuery(this).is(":visible")){
+                            if(isFirstCanvas){
+                                jQuery(this).find("input:first").click();
+                                isFirstCanvas = false;
+                            }
+                        }
+                    });
+                });
+
+                jQuery("li.material_photopaper input[type=radio]").trigger("click");
+                
+                /* Jp: Ticket 129 End*/
                         
             var img_uploaded = jQuery("input[name=image-uploaded]").val();
             

@@ -9,6 +9,13 @@
 <?php
 	$_helper = $this->helper('catalog/output');
 	$_product = $this->getProduct();
+        
+        $product_type = "just_a_product";
+        
+        if(isset($_POST["s3file"])){
+            $product_type = "myself";
+        }
+        
 	$theme = $this->helper('ultimo');
 
 	//CSS classes based on product type
@@ -458,10 +465,12 @@
 
         <!-- New short description -->
         <?php if ($_product->getShortDescription()):?>
-            <div class="short-description">
-                <h2><?php echo $this->__('Quick Overview') ?></h2>
-                <div class="std"><?php echo "By " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" ?></div>
-            </div>
+            <?php if($product_type !== "myself"): ?>
+                <div class="short-description">
+                    <h2><?php echo $this->__('Quick Overview') ?></h2>
+                    <div class="std"><?php echo "By " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" ?></div>
+                </div>
+            <?php endif;?>
         <?php endif;?>
         
         

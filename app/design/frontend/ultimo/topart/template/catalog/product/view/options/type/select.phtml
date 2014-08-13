@@ -379,9 +379,15 @@
             $mats_counter = 0;
 
             $values = $o->getValues();
+            $test = array();
+            $test2 = array();
+            
             foreach ($values as $v)
             {
                 $option_sku = $v->getData('sku');
+                
+                $test2[] = $option_sku;
+                
                 $option_choice = $v->getData('title');
                 $option_price = $v->getData('price');
                 $i++;
@@ -426,8 +432,20 @@
 
 
                         $size_value_array = explode( "_" , $option_sku );
+                        $test[] = $size_value_array;
+                        
+                        $is_a_number= false;
+                        
+                        if(is_numeric($size_value_array[6])){
+                            $is_a_number = true;
+                        }
+                        
                         $product_size = $size_value_array[6] ."&#34; x " . $size_value_array[8] . "&#34;";
                         $size_initial = $product_size;
+                        
+                        /*if($size_initial == "width\" x length\""){
+                            die("option_sku: ".$option_sku);
+                        }*/
 
                         /*if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
                             $size_initial = "xs";
@@ -456,15 +474,13 @@
                         $option_name = substr($option_name, 0, $colon_position);
 
                         ?>
-
+                        <?php if($is_a_number):?>
                         <li id="custom_option_<?php echo $option_sku; ?>" class="background_border_size <?php echo $material_name; ?>">
 
                             <input name="size" type="radio" class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text" />
                                 <label for="size"><?php echo $size_initial;?></label>
-                            
-
                         </li>
-
+                        <?php endif; ?>
                     <?php
                     }
 
@@ -604,6 +620,8 @@
                 <?php
                 }
             }
+            //var_dump($test);
+            //var_dump($test2);
             ?>
         </ul>
     </div>
