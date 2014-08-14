@@ -1409,10 +1409,9 @@ h3.product-name {
 .products-list .product-image img,
 .category-products-grid .product-image img /* Grid only in category view */
 {
-	/*height: 235px;*/
+	height: 235px;
 	width: auto;
 	-moz-transform: translateZ(0);
-        vertical-align: middle;
 }
 
 /* View Type: List
@@ -1478,7 +1477,7 @@ h3.product-name {
 	position:relative; /* For hover effect */
 }
 .products-grid .product-name { margin:15px 0 0; }
-.products-grid .product-image-wrapper { margin:0 auto; position:relative; line-height: 280px;}
+.products-grid .product-image-wrapper { margin:0 auto; position:relative; }
 .products-grid .product-image { display:block; }
 .products-grid .price-box { margin:5px 0 10px; font-size:1em; }
 .products-grid .ratings { margin:10px 0; }
@@ -1486,11 +1485,6 @@ h3.product-name {
 .products-grid .availability { float:none; margin:5px 0; }
 .products-grid .add-to-links { margin:10px 0 0; }
 
-/* JP: Ticket 134  Start*/
-/* Cambiado el ancho de 23% a 31% para permitir 3 columnas en lugar de 4*/
-.itemgrid-adaptive.itemgrid-3col .item { width:31% !important; clear:none !important; }
-.itemgrid-adaptive.itemgrid-3col .item:nth-child(4n+1) { clear:none !important; }
-/* JP: Ticket 134  End*/
 /* Price: old/special */
 /*.products-grid .old-price,
 .products-grid .special-price { display: inline-block; }
