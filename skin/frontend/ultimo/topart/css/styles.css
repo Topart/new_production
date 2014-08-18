@@ -3818,7 +3818,7 @@ form#create-art-upload{
         margin-top: 0px;
     }
     .product-options dl dd {
-        position: relative;
+        position: relative !important;
     }
 
     dd.borders .input-box ul.options-list {
