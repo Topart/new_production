@@ -45,17 +45,7 @@
             <?php endif; ?>
             <?php echo $lbl; ?>
     </dt>
-	<dd class='<?php echo $option_title; ?>'<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
-	    <div class="input-box">
-	        <?php echo $this->getValuesHtml() ?>
-	        <?php if ($_option->getIsRequire()): ?>
-	            <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX): ?>
-	                <span id="options-<?php echo $_option->getId() ?>-container"></span>
-	            <?php endif; ?>
-	        <?php endif;?>
-	    </div>
-	</dd>
-    <div class="custom_options_images">
+        <div class="custom_options_images">
         <?php if($option_title =='mat'):?>
             <ul id="mats_previews">
                 <li id='mats_2_inches' class='mats_style'>
@@ -597,19 +587,30 @@
 
                 else
                 {
+                    
 
                     ?>
 
                     <li id="custom_option_<?php echo $option_sku; ?>_background" class="background_border">
-                        <div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport <?php if ($option_sku == 'material_canvas'){ echo 'lvl1'; }?>" style="background-image: url('<?php echo $thumbnail_image_file_url; ?>'); <?php if ($option_sku == 'material_canvas'){ echo 'width: 98%; height:98%;'; }?> ">
+                        <div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport">
+                            <img src="<?php echo $thumbnail_image_file_url; ?>" />
                         </div>
-
+                        
+                        <?php if($option_sku == "border_treatment_2_inches_mirrored_and_1_inch_of_white"): ?>
+                            <?php for($count = 7;$count >= 1; $count--): ?>
+                                <div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport" style="position: absolute; right: -<?php echo $count  ?>px; top: -<?php echo $count ?>px;">
+                                    <img src="<?php echo $thumbnail_image_file_url; ?>" />
+                                </div>
+                            <?php endfor; ?>
+                        <?php endif; ?>
                         <?php
-                        if ($option_sku == "material_canvas"){
-                            for($count=2;$count<=10;$count++){
-                                echo '<div id="custom_option_'. $option_sku .'" class="custom_option_viewport lvl'. $count .'" style="background-image: url('. $thumbnail_image_file_url .'); width: 98%; height:98%;"></div>';
+                            /*if ($option_sku == "material_canvas"){
+                                for($count=2;$count<=10;$count++){
+                                    echo '<div id="custom_option_'. $option_sku .'" class="custom_option_viewport lvl'. $count .'" style="width: 98%; height:98%;">'
+                                            . '<img src="' . $thumbnail_image_file_url . '" />'
+                                        . '</div>';
                             } 
-                        }
+                        }*/
                         /*if ( $option_sku == "material_canvas" && $one_corner_flag == 0 ){
                             echo "<div id='canvas_top_border' class='arrow_right'></div>";
                             echo "<div id='canvas_right_border' class='arrow_left'></div>";
@@ -625,6 +626,17 @@
             ?>
         </ul>
     </div>
+	<dd class='<?php echo $option_title; ?>'<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
+	    <div class="input-box">
+	        <?php echo $this->getValuesHtml() ?>
+	        <?php if ($_option->getIsRequire()): ?>
+	            <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX): ?>
+	                <span id="options-<?php echo $_option->getId() ?>-container"></span>
+	            <?php endif; ?>
+	        <?php endif;?>
+	    </div>
+	</dd>
+    
 <?php if($option_title !='size'):?>
 </div>
 <?php endif; ?>
