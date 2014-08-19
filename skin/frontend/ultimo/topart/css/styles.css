@@ -3794,8 +3794,8 @@ form#create-art-upload{
     /* JP: For ticket 146 Start*/
     #custom_option_material_posterpaper, #custom_option_material_photopaper {
         height: 100% !important;
-        left: 0px;
-        top: 0px;
+        left: 0 !important;
+        top: 0 !important;
         width: 100% !important;
     }
     ul#custom_option_material li {
@@ -3818,9 +3818,8 @@ form#create-art-upload{
         margin-top: 0px;
     }
     .product-options dl dd {
-        position: relative;
+        position: relative !important;
     }
-
     dd.borders .input-box ul.options-list {
         position: relative;
         height: 30px;
@@ -3830,6 +3829,7 @@ form#create-art-upload{
         margin-bottom: 0px;
     }
     /* JP: For ticket 146 End*/
+    
     /* JP: For ticket 139 Start*/
     .main-page-blog-title{
         padding-top: 50px !important;
