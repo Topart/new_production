@@ -226,6 +226,9 @@
                 <div class="product-image-wrapper" style="max-width:<?php echo $imgWidth; ?>px;">
                 
                     <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" class="product-image">
+                        <?php
+                            $img_1 = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image',null,true);
+                        ?>
                         <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
 
                         <?php if ($theme->getCfg('category/alt_image')): ?>
@@ -246,53 +249,54 @@
                     ?>
                 
                 </div> <!-- end: product-image-wrapper -->
-                
-                <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
-                
-                <?php if($_product->getRatingSummary()): ?>
-                    <?php if ($gc['display_rating'] == 1): //Display on hover ?>
-                        <div class="display-onhover"><?php echo $this->getReviewsSummaryHtml($_product, 'short') ?></div>
-                    <?php elseif ($gc['display_rating'] == 2): //Always display ?>
-                        <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
-                    <?php endif; ?>
-                <?php endif; ?>
-                
-                <?php if ($gc['display_price'] == 1) echo '<div class="display-onhover">'; ?>
-                    <?php /*echo $this->getPriceHtml($_product, true); */?>
-                    <?php echo $this->getTopArtPrice($_product);?>
-                <?php if ($gc['display_price'] == 1) echo '</div>'; ?>
+                <div class="image-info-container">
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
 
-                <?php
-                    //If at least one element was set as "Display on hover" but no element was set as "Display":
-                    //aggregate classes from those elements and apply them to the "actions" container.
-                    $actionsClasses = '';
-                    if ($gc['display_addtocart'] == 1 || ($gc['display_addtolinks'] == 1 && !$gc['addtolinks_simple']))
-                    {
-                        $actionsClasses = ' display-onhover';
-                    }
-                    if ($gc['display_addtocart'] == 2 || ($gc['display_addtolinks'] == 2 && !$gc['addtolinks_simple']))
-                    {
-                        $actionsClasses = '';
-                    }
-                ?>
-                
-                <div class="actions clearer<?php echo $actionsClasses; ?>">
-                    <?php //Cart button ?>
-                    <?php if ($gc['display_addtocart'] != 0): ?>
-                        <?php if ($_product->isSaleable()): ?>
-                            <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
-                        <?php else: ?>
-                            <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                    <?php if($_product->getRatingSummary()): ?>
+                        <?php if ($gc['display_rating'] == 1): //Display on hover ?>
+                            <div class="display-onhover"><?php echo $this->getReviewsSummaryHtml($_product, 'short') ?></div>
+                        <?php elseif ($gc['display_rating'] == 2): //Always display ?>
+                            <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
                         <?php endif; ?>
                     <?php endif; ?>
-                    
-                    <?php //Add-to links
-                        if ($gc['display_addtolinks'] != 0 && !$gc['addtolinks_simple'])
+
+                    <?php if ($gc['display_price'] == 1) echo '<div class="display-onhover">'; ?>
+                        <?php /*echo $this->getPriceHtml($_product, true); */?>
+                        <?php echo $this->getTopArtPrice($_product);?>
+                    <?php if ($gc['display_price'] == 1) echo '</div>'; ?>
+
+                    <?php
+                        //If at least one element was set as "Display on hover" but no element was set as "Display":
+                        //aggregate classes from those elements and apply them to the "actions" container.
+                        $actionsClasses = '';
+                        if ($gc['display_addtocart'] == 1 || ($gc['display_addtolinks'] == 1 && !$gc['addtolinks_simple']))
                         {
-                            echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right addto-texticons');
+                            $actionsClasses = ' display-onhover';
+                        }
+                        if ($gc['display_addtocart'] == 2 || ($gc['display_addtolinks'] == 2 && !$gc['addtolinks_simple']))
+                        {
+                            $actionsClasses = '';
                         }
                     ?>
-                </div> <!-- end: actions -->
+
+                    <div class="actions clearer<?php echo $actionsClasses; ?>">
+                        <?php //Cart button ?>
+                        <?php if ($gc['display_addtocart'] != 0): ?>
+                            <?php if ($_product->isSaleable()): ?>
+                                <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                            <?php else: ?>
+                                <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                            <?php endif; ?>
+                        <?php endif; ?>
+
+                        <?php //Add-to links
+                            if ($gc['display_addtolinks'] != 0 && !$gc['addtolinks_simple'])
+                            {
+                                echo $helpTemplate->getCategoryAddtoLinks($_product, $this->getAddToCompareUrl($_product), 'addto-gaps-right addto-texticons');
+                            }
+                        ?>
+                    </div> <!-- end: actions -->
+                </div>
             </li>
         <?php endforeach; ?>    
     </ul>
@@ -309,3 +313,38 @@
 <?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_below_collection')): ?>
     <div class="block_category_below_collection std"><?php echo $tmpHtml; ?></div>
 <?php endif; ?>
+<style>
+.image-info-container {
+    bottom: 0;
+    display: block;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    left: 0;
+}
+.products-grid .product-image-wrapper {
+    display: table-cell;
+    margin: 0 auto;
+    position: relative;
+    vertical-align: middle;
+    max-width: 284px !important;
+}
+.itemgrid-adaptive.itemgrid-3col .item {
+    display: table;
+    width: 31%;
+    padding-bottom: 60px;
+}
+.products-list .product-image img, .category-products-grid .product-image img{
+    height: auto !important;
+}
+.item:nth-child(4n+1) {
+    clear:none !important;
+}
+.itemgrid-3col .item:nth-child(3n+1) {
+    clear: left !important;
+}
+.itemgrid-adaptive.itemgrid-3col .item:nth-child(4n+1){
+    clear: none !important;
+}
+</style>

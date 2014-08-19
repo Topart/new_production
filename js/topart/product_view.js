@@ -2813,25 +2813,25 @@
                                 opt,
                                 tit = jQuery(".material .step-selection").text();
                             
-                            console.log("txt: "+txt);
-                            console.log("tit: "+tit);
+                            //console.log("txt: "+txt);
+                            //console.log("tit: "+tit);
                             
                             if(tit.indexOf("Paper") !== -1){
-                                console.log("a");
+                                //console.log("a");
                                 opt = "(Paper)";
                             }
 
                             if(tit.indexOf("Canvas") !== -1){
-                                console.log("b");
+                                //console.log("b");
                                 opt = "(Canvas)";
                             }
 
                             if(tit.indexOf("Poster") !== -1){
-                                console.log("c");
+                                //console.log("c");
                                 opt = "(Poster)";
                             }
                             
-                            console.log("opt: "+opt);
+                            //console.log("opt: "+opt);
                                 
                             jQuery(".material .step-selection").text(opt+" "+txt)	
                         });
@@ -2888,14 +2888,14 @@
             
             if(img_uploaded !== ""){
                 
-                console.log("img_uploaded: "+img_uploaded);
+                //console.log("img_uploaded: "+img_uploaded);
                 
                 setTimeout(function(){
                     //window.location = "your-photos-to-art-63";
                 },5000);
                 
             }else{
-                console.log("no uploaded ");
+                //console.log("no uploaded ");
             }
 
 	});
