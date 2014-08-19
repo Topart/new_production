@@ -172,9 +172,73 @@
                     
                     main_image_product.opt_visible = null;
                 });
+                
+                /* Jp: Ticket 129 Start*/
+                jQuery("li.material_photopaper input[type=radio]").click(function(){
+                    var isFirstPhotoPaper = true;
+                    
+                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_photopaper']")
+                        .each(function(){
+                            if(jQuery(this).is(":visible")){
+                                if(isFirstPhotoPaper){
+                                    jQuery(this).find("input:first").click();
+                                    isFirstPhotoPaper = false;
+                                }
+                            }
+                    });
+                })
+                
+                jQuery("li.material_posterpaper input[type=radio]").click(function(){
+                    var isFirstPhotoPoster = true;
+                    
+                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_posterpaper']")
+                    .each(function(){
+                        if(jQuery(this).is(":visible")){
+                            if(isFirstPhotoPoster){
+                                jQuery(this).find("input:first").click();
+                                isFirstPhotoPoster = false;
+                            }
+                        }
+                    });
+                })
+                
+                jQuery("li.material_canvas input[type=radio]").click(function(){
+                    var isFirstCanvas = true;
+                    
+                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_canvas']")
+                    .each(function(){
+                        if(jQuery(this).is(":visible")){
+                            if(isFirstCanvas){
+                                jQuery(this).find("input:first").click();
+                                isFirstCanvas = false;
+                            }
+                        }
+                    });
+                });
+
+                jQuery("li.material_photopaper input[type=radio]").trigger("click");
+                
+                /* Jp: Ticket 129 End*/
             });
             
+            function hideFrame(){
+                var frame_selected = jQuery(document).find("dt.frame .step-selection").text();
+                
+                if(frame_selected.indexOf("No Frame") === -1){
+                    jQuery("select#frame_categories option[value='no_frame']").trigger("change");
+                }
+            }
+            
+            function hideMaterial(){
+                var mat_selected = jQuery(document).find("dt.mat .step-selection").text();
+                
+                if(mat_selected.indexOf("No Mat") === -1){
+                    jQuery(".mats_none").find("input[type=radio]").trigger("click");
+                }
+            }
+            
             function hideMarcos(){
+                console.log("hideMarcos");
                 if(main_image_product.opt_visible === "#color_switch"){
                     jQuery("#color_switch").slideUp("fast");
                     jQuery("#hide_button").slideUp("fast");
@@ -206,7 +270,6 @@
                     jQuery("#final_product_image").css("top",main_image_product.top);
                     
                     hideMarcos();
-                    
                 }
             }
             //<![CDATA[
@@ -231,10 +294,15 @@
                             
                         }
                         
+                        var mat_selected = jQuery(document).find("dt.mat .step-selection").text();
+                        var frame_selected = jQuery(document).find("dt.frame .step-selection").text();
+                        
                         if ((jQuery(window).width() <= 480) )
                         {
                             if(main_image_product.opt_visible === "#color_switch" || 
-                               main_image_product.opt_visible === "#room_switch"){
+                               main_image_product.opt_visible === "#room_switch"|| 
+                               frame_selected.indexOf("No Frame") === -1 || 
+                               mat_selected.indexOf("No Mat") === -1){
                            
                                 main_image_product.width = jQuery("#final_product_image").css("width");
                                 main_image_product.height = jQuery("#final_product_image").css("height");
@@ -242,7 +310,9 @@
                                 main_image_product.top = jQuery("#final_product_image").css("top");
 
                                 hideMarcos();
-
+                                hideFrame();
+                                hideMaterial();
+                                
                                 jQuery("#final_product_image")
                                     .css("width","100%")
                                     .css("height","100%")
@@ -250,9 +320,9 @@
                                     .css("top","0");
                                 
                             }
-                            
+                            jQuery("#product_image_functions").hide();
                         }else{
-                            
+                            jQuery("#product_image_functions").show();
                             if(main_image_product.opt_visible === "#color_switch" || 
                                main_image_product.opt_visible === "#room_switch"){
                                
