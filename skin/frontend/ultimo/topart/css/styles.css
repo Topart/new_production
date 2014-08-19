@@ -3829,3 +3829,9 @@ form#create-art-upload{
         margin-bottom: 0px;
     }
     /* JP: For ticket 146 End*/
+    
+    /* JP: For ticket 139 Start*/
+    .main-page-blog-title{
+        padding-top: 50px !important;
+    }
+    /* JP: For ticket 139 End*/
