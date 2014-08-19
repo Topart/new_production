@@ -31,17 +31,99 @@
  * @see Mage_Catalog_Block_Layer_Filter
  */
 ?>
-
-<ol>
-<?php foreach ($this->getItems() as $_item): ?>
-    <li>
+<?php if($this->getName() === "Filter by Artist") :?>
+    <ol>
+    <?php $count = 0; ?>
+    <?php $start = true; ?>
+    <?php $countTotal = 0; ?>
+    <?php $totalItems = count($this->getItems()); ?>
+        <!--airbnb tahiti facebook.com/tresalavuelta-->
+    <?php foreach ($this->getItems() as $_item): ?>
         <?php if ($_item->getCount() > 0): ?>
-        <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
-        <?php else: echo $_item->getLabel() ?>
-        <?php endif; ?>
-        <?php if ($this->shouldDisplayProductCount()): ?>
-        (<?php echo $_item->getCount() ?>)
-        <?php endif; ?>
-    </li>
-<?php endforeach ?>
-</ol>
+        <?php if($count === 0): ?>
+            <div class="filter-by-artist-group" 
+                 style="display:<?php echo ($start) ? "block":"none"; ?>">
+                <?php $start = false ?>
+                <li>
+                    <?php if ($_item->getCount() > 0): ?>
+                    <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+                    <?php else: echo $_item->getLabel() ?>
+                    <?php endif; ?>
+                    <?php if ($this->shouldDisplayProductCount()): ?>
+                    (<?php echo $_item->getCount() ?>)
+                    <?php endif; ?>
+                </li>
+        <?php elseif(($count === 9) || ($countTotal == ($totalItems-1)) ): ?>
+                <li>
+                    <?php if ($_item->getCount() > 0): ?>
+                    <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+                    <?php else: echo $_item->getLabel() ?>
+                    <?php endif; ?>
+                    <?php if ($this->shouldDisplayProductCount()): ?>
+                    (<?php echo $_item->getCount() ?>)
+                    <?php endif; ?>
+                </li>
+                <span class="more-by-artist">-More-</span>
+            </div>
+        <?php else: ?>
+                <li>
+                    <?php if ($_item->getCount() > 0): ?>
+                    <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+                    <?php else: echo $_item->getLabel() ?>
+                    <?php endif; ?>
+                    <?php if ($this->shouldDisplayProductCount()): ?>
+                    (<?php echo $_item->getCount() ?>)
+                    <?php endif; ?>
+                </li>
+        <?php endif; ?>    
+        <?php $count++; ?>
+        <?php 
+            if($count === 10) 
+                $count=0; 
+        ?>
+        <?php $countTotal++; ?>
+        <?php endif; ?>    
+    <?php endforeach; ?>
+    </ol>
+<?php else: ?>
+    <ol>
+    <?php foreach ($this->getItems() as $_item): ?>
+        <li>
+            <?php if ($_item->getCount() > 0): ?>
+            <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+            <?php else: echo $_item->getLabel() ?>
+            <?php endif; ?>
+            <?php if ($this->shouldDisplayProductCount()): ?>
+            (<?php echo $_item->getCount() ?>)
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+    </ol>
+<?php endif;?>
+<script>
+    jQuery(document).ready(function(){
+        
+        jQuery(document).on("click", ".more-by-artist", function(){
+            var next_div = jQuery(this).parent().next();
+            
+            jQuery(this).attr("class","less-by-artist");
+            jQuery(this).text("-Less-");
+            
+            next_div.show();
+        });
+        
+        jQuery(document).on("click", ".less-by-artist", function(){
+            var next_div = jQuery(this).parent().next();
+                
+            jQuery(this).attr("class","more-by-artist");
+            jQuery(this).text("-More-");
+            
+            next_div.hide();
+        });
+    });
+</script>
+<style>
+    .more-by-artist,.less-by-artist{
+        cursor:pointer;
+    }
+</style>

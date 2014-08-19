@@ -3726,7 +3726,7 @@ form#create-art-upload{
         opacity: 0;
         position: absolute;
         top: 550px;
-        width: 320px;
+        width: 320px !important;
         z-index: 1;
     }
     input[type="file"] {
@@ -3782,3 +3782,51 @@ form#create-art-upload{
     .blog-search span{height: 35px; width: 55px;}
     .blog-search span span{width: 55px !important; line-height: 33px !important; height: 36px !important; padding: 0px !important; margin-left: 0px;}
     /* JP: For Ticket 125 End*/
+    
+    /* JP: For ticket 91 Start*/
+    #accept_checkbox{
+        float: left;
+        margin-right: 3px;
+        margin-top: 1px;
+    }
+    /* JP: For ticket 91 End*/
+    
+    /* JP: For ticket 146 Start*/
+    #custom_option_material_posterpaper, #custom_option_material_photopaper {
+        height: 100% !important;
+        left: 0px;
+        top: 0px;
+        width: 100% !important;
+    }
+    ul#custom_option_material li {
+        height: auto !important;
+    }
+    #custom_option_borders li:nth-of-type(3){
+        height: auto !important;
+    }
+    #custom_option_borders li{
+        height: auto !important;
+    }
+    ul#custom_option_material #custom_option_material_canvas_background {
+        overflow: hidden !important;
+    }
+    dd.material {
+        bottom: 0 !important;
+        top:auto !important;
+    }
+    #size_info {
+        margin-top: 0px;
+    }
+    .product-options dl dd {
+        position: relative !important;
+    }
+
+    dd.borders .input-box ul.options-list {
+        position: relative;
+        height: 30px;
+        top:auto;
+    }
+    ul#custom_option_borders{
+        margin-bottom: 0px;
+    }
+    /* JP: For ticket 146 End*/
