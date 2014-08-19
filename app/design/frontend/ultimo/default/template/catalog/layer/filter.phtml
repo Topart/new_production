@@ -1,0 +1,129 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for filter items block
+ *
+ * @see Mage_Catalog_Block_Layer_Filter
+ */
+?>
+<?php if($this->getName() === "Filter by Artist") :?>
+    <ol>
+    <?php $count = 0; ?>
+    <?php $start = true; ?>
+    <?php $countTotal = 0; ?>
+    <?php $totalItems = count($this->getItems()); ?>
+        <!--airbnb tahiti facebook.com/tresalavuelta-->
+    <?php foreach ($this->getItems() as $_item): ?>
+        <?php if ($_item->getCount() > 0): ?>
+        <?php if($count === 0): ?>
+            <div class="filter-by-artist-group" 
+                 style="display:<?php echo ($start) ? "block":"none"; ?>">
+                <?php $start = false ?>
+                <li>
+                    <?php if ($_item->getCount() > 0): ?>
+                    <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+                    <?php else: echo $_item->getLabel() ?>
+                    <?php endif; ?>
+                    <?php if ($this->shouldDisplayProductCount()): ?>
+                    (<?php echo $_item->getCount() ?>)
+                    <?php endif; ?>
+                </li>
+        <?php elseif(($count === 9) || ($countTotal == ($totalItems-1)) ): ?>
+                <li>
+                    <?php if ($_item->getCount() > 0): ?>
+                    <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+                    <?php else: echo $_item->getLabel() ?>
+                    <?php endif; ?>
+                    <?php if ($this->shouldDisplayProductCount()): ?>
+                    (<?php echo $_item->getCount() ?>)
+                    <?php endif; ?>
+                </li>
+                <span class="more-by-artist">-More-</span>
+            </div>
+        <?php else: ?>
+                <li>
+                    <?php if ($_item->getCount() > 0): ?>
+                    <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+                    <?php else: echo $_item->getLabel() ?>
+                    <?php endif; ?>
+                    <?php if ($this->shouldDisplayProductCount()): ?>
+                    (<?php echo $_item->getCount() ?>)
+                    <?php endif; ?>
+                </li>
+        <?php endif; ?>    
+        <?php $count++; ?>
+        <?php 
+            if($count === 10) 
+                $count=0; 
+        ?>
+        <?php $countTotal++; ?>
+        <?php endif; ?>    
+    <?php endforeach; ?>
+    </ol>
+<?php else: ?>
+    <ol>
+    <?php foreach ($this->getItems() as $_item): ?>
+        <li>
+            <?php if ($_item->getCount() > 0): ?>
+            <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?></a>
+            <?php else: echo $_item->getLabel() ?>
+            <?php endif; ?>
+            <?php if ($this->shouldDisplayProductCount()): ?>
+            (<?php echo $_item->getCount() ?>)
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+    </ol>
+<?php endif;?>
+<script>
+    jQuery(document).ready(function(){
+        
+        jQuery(document).on("click", ".more-by-artist", function(){
+            var next_div = jQuery(this).parent().next();
+            
+            jQuery(this).attr("class","less-by-artist");
+            jQuery(this).text("-Less-");
+            
+            next_div.show();
+        });
+        
+        jQuery(document).on("click", ".less-by-artist", function(){
+            var next_div = jQuery(this).parent().next();
+                
+            jQuery(this).attr("class","more-by-artist");
+            jQuery(this).text("-More-");
+            
+            next_div.hide();
+        });
+    });
+</script>
+<style>
+    .more-by-artist,.less-by-artist{
+        cursor:pointer;
+    }
+</style>
