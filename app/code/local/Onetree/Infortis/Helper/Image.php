@@ -35,8 +35,8 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 				$version = 'large_images';
 			break;
 		}
-
-		$imgSku = $this->cleanSkuImg($sku,'DG');
+                $cpath = $cloudFontBaseUrl .DS. $version . DS;
+		$imgSku = $this->cleanSkuImg($sku,'DG',$cpath);
 		$url = $cloudFontBaseUrl .DS. $version . DS. $imgSku;
 
 		return $url;
@@ -58,7 +58,7 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 		}
 		return $url;
 	}
-	public function cleanSkuImg($sku,$endSku){
+	public function cleanSkuImg($sku,$endSku,$cpath=""){
 		$imgSku = '';
 		if ( substr( $sku, strlen( $sku ) - strlen( $endSku ) ) === $endSku )
 		{
@@ -69,6 +69,15 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 		{
 			$imgSku = $sku . ".jpg";
 		}
+                
+                $cpath .= $imgSku;
+                
+                $imgSize = getimagesize($cpath);
+                
+                if ($imgSize === false) {
+                    $imgSku = $sku . ".jpg";
+                }
+                
 		return $imgSku;
 	}
 }
