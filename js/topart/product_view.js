@@ -2897,7 +2897,16 @@
             }else{
                 //console.log("no uploaded ");
             }
+            
+            var imgSize = 0;
+            jQuery("#custom_option_material li img").each(function(){
+                imgSize = jQuery(this).css("width");
+            });
 
+            jQuery(".product-options ul.options-list li").each(function(){
+                jQuery(this).attr("style","margin-right:23px;width:"+imgSize+" !important");
+            });
+            
 	});
 	
 	

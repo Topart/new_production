@@ -32,19 +32,29 @@
 <?php if($option_title !='size'):?>
     <div class="option-reloaded">
 <?php endif; ?>
-	<dt class='<?php echo $option_title; ?>'><script>console.log(<?php echo $option_title; ?>);</script><label<?php if ($_option->getIsRequire()) echo ' class="required"' ?>><?php if ($_option->getIsRequire()) echo '<em>*</em>' ?>
-            <?php $lbl =  $this->htmlEscape($_option->getTitle()) . "</label>" ?>
-            <?php if($option_title =='frame'):?>
-                <span>Step 2: </span>
-                <?php $lbl.=  '<span class="step-selection"></span>'; ?>
-            <?php elseif($option_title =='mat'): ?>
-                <span>Step 3: </span>
-                <?php $lbl.=  '<span class="step-selection"></span>'; ?>
-            <?php else:?>
-                <?php $lbl.=  '<span class="step-selection">(Option selected)</span>'; ?>
-            <?php endif; ?>
-            <?php echo $lbl; ?>
-    </dt>
+	<dt class='<?php echo $option_title; ?>'><label<?php if ($_option->getIsRequire()) echo ' class="required"' ?>><?php if ($_option->getIsRequire()) echo '<em>*</em>' ?>
+                <?php $lbl =  $this->htmlEscape($_option->getTitle()) . "</label>" ?>
+                <?php if($option_title =='frame'):?>
+                    <span>Step 2: </span>
+                    <?php $lbl.=  '<span class="step-selection"></span>'; ?>
+                <?php elseif($option_title =='mat'): ?>
+                    <span>Step 3: </span>
+                    <?php $lbl.=  '<span class="step-selection"></span>'; ?>
+                <?php else:?>
+                    <?php $lbl.=  '<span class="step-selection">(Option selected)</span>'; ?>
+                <?php endif; ?>
+                <?php echo $lbl; ?>
+        </dt>
+        <dd class='<?php echo $option_title; ?>'<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
+	    <div class="input-box">
+	        <?php echo $this->getValuesHtml() ?>
+	        <?php if ($_option->getIsRequire()): ?>
+	            <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX): ?>
+	                <span id="options-<?php echo $_option->getId() ?>-container"></span>
+	            <?php endif; ?>
+	        <?php endif;?>
+	    </div>
+	</dd>
         <div class="custom_options_images">
         <?php if($option_title =='mat'):?>
             <ul id="mats_previews">
@@ -626,16 +636,7 @@
             ?>
         </ul>
     </div>
-	<dd class='<?php echo $option_title; ?>'<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
-	    <div class="input-box">
-	        <?php echo $this->getValuesHtml() ?>
-	        <?php if ($_option->getIsRequire()): ?>
-	            <?php if ($_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_RADIO || $_option->getType() == Mage_Catalog_Model_Product_Option::OPTION_TYPE_CHECKBOX): ?>
-	                <span id="options-<?php echo $_option->getId() ?>-container"></span>
-	            <?php endif; ?>
-	        <?php endif;?>
-	    </div>
-	</dd>
+	
     
 <?php if($option_title !='size'):?>
 </div>

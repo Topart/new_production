@@ -3818,7 +3818,7 @@ form#create-art-upload{
         margin-top: 0px;
     }
     .product-options dl dd {
-        position: relative !important;
+        position: absolute !important;
     }
     dd.borders .input-box ul.options-list {
         position: relative;
@@ -3827,6 +3827,18 @@ form#create-art-upload{
     }
     ul#custom_option_borders{
         margin-bottom: 0px;
+    }
+    #custom_option_material .background_border .custom_option_viewport img{
+        max-height:128px
+    }
+    ul#custom_option_material li{
+        width:auto !important;
+    }
+    dd.material {
+        top: 202px !important;
+    }
+    dd.borders {
+        top: 0px !important;
     }
     /* JP: For ticket 146 End*/
     
