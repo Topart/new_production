@@ -1,5 +1,5 @@
-
-
+var globals = {};
+    globals.init = false;
 
 	var jQuery = jQuery.noConflict(); 
 	
@@ -2899,14 +2899,106 @@
             }
             
             var imgSize = 0;
-            jQuery("#custom_option_material li img").each(function(){
-                imgSize = jQuery(this).css("width");
-            });
 
-            jQuery(".product-options ul.options-list li").each(function(){
-                jQuery(this).attr("style","margin-right:23px;width:"+imgSize+" !important");
+            jQuery("#custom_option_material li").each(function(){
+                jQuery(this).find("img").load(function() {
+                    imgSize = jQuery(this).css("width");
+                    jQuery("dd.material .product-options ul.options-list li").each(function(){
+                        jQuery(this).attr("style","margin-right:23px;width:"+imgSize+" !important");
+                    });
+                    return;
+                });
             });
-            
+            /*
+             * Ugly Fix
+             * Force delay to resize images in firefox
+             */
+            setTimeout(
+                function(){
+                    setLiPosition('#custom_option_material_posterpaper img:first',"dd.material .options-list li");
+                },
+            5000);
+            jQuery(document).on("click", 'dt.borders label', function(){
+                if(globals.init === false){
+                    /*
+                     * Set the position of li in "Borders" step
+                     */
+                    setLiPosition('#custom_option_border_treatment_3_inches_of_white img',"dd.borders .options-list li",1,1,18);
+                    
+                    /*
+                     * Set the top of ul options-list when select "canvas" option and then the step "borders"
+                     */
+                    jQuery("#custom_option_border_treatment_3_inches_of_white").find("img").ready(function(){
+                            jQuery("dd.borders .input-box ul.options-list")
+                                .attr("style","top: "
+                                    +(jQuery('#custom_option_border_treatment_3_inches_of_white img').height()+85)
+                                    +"px"
+                                    +" !important");
+                        });
+
+                    /*
+                     * Set the position for the corners to simulate 3d effect
+                     * to white border and blanck border in the step "borders"
+                     */
+                    var leftGrey = jQuery('#custom_option_border_treatment_3_inches_of_white img').width(),
+                        leftBlack = leftGrey*2,
+                        topBlack = jQuery('#custom_option_border_treatment_3_inches_of_white img').height(),
+                        topGrey = topBlack;
+
+                        console.log("leftGrey: "+leftGrey);
+                        console.log("leftBlack: "+leftBlack);
+                        console.log("topBlack: "+topBlack);
+                        console.log("topGrey: "+topGrey);
+
+                    jQuery("#two_inches_black_one_inch_white_top_border")
+                        .css("left",leftGrey+14+"px");
+
+                    jQuery("#three_inches_white_right_border")
+                        .css("top",topGrey+26+"px")
+                        .css("left",leftGrey+"px");
+
+
+                    jQuery("#two_inches_black_one_inch_white_right_border")
+                        .css("left",leftBlack+14+"px")
+                        .css("top",topBlack+26+"px");
+                    globals.init = true;
+                }
+            });
 	});
-	
-	
+        
+function setLiPosition(image,li,listart,margin){
+    listart = listart || 0;
+    margin = margin || 18;
+    var w = jQuery(image).width(),
+        wtemp = 0,
+        liwidth = w-(w/10);//li width = image width - 10%
+        
+        jQuery(li).each(function(i){
+            if(i>=listart){
+                if(i==listart){
+                  wtemp = 0;
+                }else{
+                  wtemp = wtemp+=(w+margin);
+                }
+
+                /*
+                 * fix the position in the 3er li
+                 */
+                if(i==2){
+                    wtemp += 10;
+                }
+                
+                /*
+                 * fix the position in the 4th li in borders step
+                 */
+                if(i==3){
+                    wtemp += 18;
+                }
+
+                jQuery(this)
+                .css("position","absolute")
+                .css("left",wtemp+"px")
+                .css("width",liwidth+"px");
+            }
+        });
+}
