@@ -2813,25 +2813,17 @@ var globals = {};
                                 opt,
                                 tit = jQuery(".material .step-selection").text();
                             
-                            //console.log("txt: "+txt);
-                            //console.log("tit: "+tit);
-                            
                             if(tit.indexOf("Paper") !== -1){
-                                //console.log("a");
                                 opt = "(Paper)";
                             }
 
                             if(tit.indexOf("Canvas") !== -1){
-                                //console.log("b");
                                 opt = "(Canvas)";
                             }
 
                             if(tit.indexOf("Poster") !== -1){
-                                //console.log("c");
                                 opt = "(Poster)";
                             }
-                            
-                            //console.log("opt: "+opt);
                                 
                             jQuery(".material .step-selection").text(opt+" "+txt)	
                         });
@@ -2888,7 +2880,6 @@ var globals = {};
             
             if(img_uploaded !== ""){
                 
-                //console.log("img_uploaded: "+img_uploaded);
                 
                 setTimeout(function(){
                     //window.location = "your-photos-to-art-63";
@@ -2944,11 +2935,6 @@ var globals = {};
                         leftBlack = leftGrey*2,
                         topBlack = jQuery('#custom_option_border_treatment_3_inches_of_white img').height(),
                         topGrey = topBlack;
-
-                        console.log("leftGrey: "+leftGrey);
-                        console.log("leftBlack: "+leftBlack);
-                        console.log("topBlack: "+topBlack);
-                        console.log("topGrey: "+topGrey);
 
                     jQuery("#two_inches_black_one_inch_white_top_border")
                         .css("left",leftGrey+14+"px");
