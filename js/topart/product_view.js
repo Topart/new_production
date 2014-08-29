@@ -1,5 +1,6 @@
 var globals = {};
     globals.init = false;
+    globals.initClickMat = false;
 
 	var jQuery = jQuery.noConflict(); 
 	
@@ -1768,7 +1769,11 @@ var globals = {};
 					
 
 					// In Pixels
-					top = background_height * (top_percentage/100) + frame_height;
+                                        /*
+                                         * JP: Before the script use the var "top" but for some reason i can't set a value
+                                         * new rename the var to tempTop and work fine
+                                         */
+                                        var tempTop = 221;//top = background_height * (top_percentage/100) + frame_height;
 					left = background_width * (left_percentage/100) + frame_width;
 
 					margin_top = background_height * (margin_top_percentage/100);
@@ -1777,7 +1782,7 @@ var globals = {};
 					//alert("test 1");
 					
 					// Resize the image
-					resize_image(width, height, top, left, margin_top, margin_left);
+					resize_image(width, height, tempTop, left, margin_top, margin_left);
 				}
 
 				else if (framing_enabled == 1 && frame_image_url.indexOf("/.png") != -1)
@@ -2677,7 +2682,19 @@ var globals = {};
                             //jQuery(document).find(".option-reloaded span.step-selection").text("");
                             var opt = jQuery("input[name=size]:checked").next().text()
                             
-                            selected += " "+ opt;
+                            //console.log("selected: "+selected+" and option_name: "+option_name);
+                            
+                            
+                            if(selected.indexOf("Paper") !==-1){
+                                selected += " "+ opt;
+                            }
+                            
+                            if(option_name == "frame" && selected.indexOf("No Frame") === -1){
+                                
+                                val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
+                                selected += " + $"+val;
+                                
+                            }
                             
                             if(option_name !== "poster-size"){
                                 jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
@@ -2880,7 +2897,6 @@ var globals = {};
             
             if(img_uploaded !== ""){
                 
-                
                 setTimeout(function(){
                     //window.location = "your-photos-to-art-63";
                 },5000);
@@ -2950,6 +2966,21 @@ var globals = {};
                     globals.init = true;
                 }
             });
+            
+            jQuery(document).on("click", "dt.mat label", function(){
+                if(globals.initClickMat === false){
+                    jQuery("dd.mat .options-list li").each(function(){
+                      if(jQuery(this).is(":visible")){
+                        txt = jQuery(this).find(".label .price-notice").text();
+                        if(txt.indexOf("+")!==-1){
+                          txt = "+ $"+txt.substring(1,txt.lenght);
+                          jQuery(this).find(".label .price-notice").text(txt);
+                        }
+                      }
+                    });
+                    globals.initClickMat = true;
+                }
+              });
 	});
         
 function setLiPosition(image,li,listart,margin){
