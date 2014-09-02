@@ -1,0 +1,16 @@
+<?php
+?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td style="<?php echo $this->getHeaderWidth() ?>"><?php echo $this->getHeaderHtml() ?></td>
+            <td class="form-buttons"><?php echo $this->getButtonsHtml() ?></td>
+        </tr>
+    </table>
+</div>
+<div>
+	<?php echo $this->getChildHtml('bmbleb.jobs.status', true, true); ?>
+</div>
+<div>
+    <?php echo $this->getGridHtml(true, true); ?>
+</div>

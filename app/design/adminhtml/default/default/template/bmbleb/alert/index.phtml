@@ -1,0 +1,32 @@
+<div class="j-content">
+<h3 class="alert-head"><span class="head">Alerts</span></h3>
+
+<?php 
+$stats = Mage::getModel('bmbleb/alert')->getStatusCounts();
+$countTotal = intval($stats['total']);
+$countNew = intval($stats['new']);
+$countDone = intval($stats['completed']);
+
+ ?>
+
+<div class="headline orng"><span><?php echo $countNew; ?> New Alert<?php if ($countNew != 1){ print 's'; } ?>!</span></div>
+
+<div class="j-box-left">
+	<div class="upgrade-box" style="margin-bottom:20px;">
+<?php if ($countNew > 0): ?>	
+		<a class="upg-btn jbtn" href="<?php echo $this->getUrl('*/*/respond'); ?>">See your New Alerts</a> 
+		<span>or <a href="<?php echo $this->getUrl('*/*/sync'); ?>">check for new ones now</a></span>
+<?php else: ?>
+		<a class="upg-btn jbtn" href="<?php echo $this->getUrl('*/*/sync'); ?>">Check for New Alerts</a> 
+<?php endif; ?>		
+	</div>
+	
+<?php if ($countTotal > 0) : ?>
+	<p><a href="<?php echo $this->getUrl('*/*/grid'); ?>">view all as a list</a></p>
+<?php endif; ?>
+</div>	
+
+<?php if ($countDone > 5) : ?>
+<div class="headline"><span><?php echo $countDone; ?> completed so far!
+<?php endif; ?>
+</div>

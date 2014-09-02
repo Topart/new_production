@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<layout>
+	<bmbleb_index_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+	</bmbleb_index_index>
+	<bmbleb_adminhtml_index_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+            <block type="bmbleb/adminhtml_index" name="bmbleb.index"></block>
+        </reference>
+		<reference name="left">
+            <block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+        </reference>
+	</bmbleb_adminhtml_index_index>
+	<bmbleb_adminhtml_index_auth>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+            <block type="bmbleb/adminhtml_auth" name="bmbleb.auth">
+            	<block type="bmbleb/adminhtml_bmbleb_login" as="login_form" name="bmbleb.auth.loginform" />
+            </block>
+        </reference>
+		<reference name="left">
+            <block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+        </reference>
+	</bmbleb_adminhtml_index_auth>
+    <bmbleb_adminhtml_index_status>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+           <block type="bmbleb/adminhtml_status" name="bmbleb.status"></block>
+        </reference>
+		<reference name="left">
+            <block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+        </reference>
+	</bmbleb_adminhtml_index_status>
+    <bmbleb_adminhtml_connectedtospringbot>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+           <block type="bmbleb/adminhtml_status" name="bmbleb.status"></block>
+        </reference>
+		<reference name="left">
+            <block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+        </reference>
+	</bmbleb_adminhtml_connectedtospringbot>		
+    <bmbleb_adminhtml_help_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+            <block type="bmbleb/adminhtml_help" name="bmbleb.help" />
+        </reference>
+		<reference name="left">
+            <block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+        </reference>
+	</bmbleb_adminhtml_help_index>
+    <bmbleb_account_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+	</bmbleb_account_index>
+    <bmbleb_adminhtml_settings_index>
+        <reference name="head">
+            <action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+        </reference>
+        <reference name="content">
+            <block type="bmbleb/adminhtml_settings" name="bmbleb.settings" />
+        </reference>
+        <reference name="left">
+            <block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+        </reference>
+    </bmbleb_adminhtml_settings_index>
+</layout>

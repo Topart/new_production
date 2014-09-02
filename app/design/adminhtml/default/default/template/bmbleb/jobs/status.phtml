@@ -1,0 +1,34 @@
+<?php
+?>
+<div class="box-left">
+	<div class="entry-edit">
+		<div class="entry-edit-head">
+			<h4><?php echo $this->__('Job Worker Status') ?></h4>
+		</div>
+		<div class="fieldset">
+			<?php $manager = $this->getManager() ?>
+			<div class="bmbleb-mgr-status">
+				<?php $buttonText = $this->getButtonLabelText() ?>
+				<label for="bmbleb-mgr-button" id="bmbleb-mgr-status"><?php echo $this->getLabelText() ?></label>
+				<button id="bmbleb-mgr-button" id="bmbleb-mgr-button" title="<?php echo $buttonText ?>" class="scalable" onclick="javascript:bmblebToggleMgr(); return false;" ><?php echo $buttonText ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type='text/javascript'>
+//<![CDATA[
+function bmblebToggleMgr() {
+	new Ajax.Request('<?php echo $this->getAjaxToggleUrl() ?>', {
+		method: 'get',
+			onSuccess: function(transport){
+				if (res = transport.responseJSON){
+					document.getElementById('bmbleb-mgr-status').innerHTML = res.label_text;
+					var button = document.getElementById('bmbleb-mgr-button');
+					button.innerHTML = res.button_text;
+					button.title = res.button_text;
+				}
+			}
+	});
+}
+//]]>
+</script>
