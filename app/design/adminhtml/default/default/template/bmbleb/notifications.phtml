@@ -1,0 +1,7 @@
+<?php if ($message = $this->getMessage()) : ?>
+	<?php if ($message['type'] == 'success'): ?>
+		<div class="notification-global" style="background-color: #eff5ea; background-image: none"><?php echo $message['message'] ?></div>
+	<?php else: ?>
+		<div class="notification-global"><?php echo $message['message'] ?></div>
+	<?php endif ?>
+<?php endif; ?>

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category   springbot
+ * @package    springbot_Shadow
+ * @author     springbot integration team
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ -->
+<config>
+    <frontend>
+
+        <models>
+            <Springbot_Shadow>
+                <class>Springbot_Shadow_Model</class>
+            </Springbot_Shadow>
+        </models>
+
+        <routers>
+            <shadow>
+                <use>standard</use>
+                <args>
+                    <module>Springbot_Shadow</module>
+                    <frontName>springbot_update</frontName>
+                </args>
+            </shadow>
+        </routers>
+
+
+        <layout>
+            <updates>
+                <shadow>
+                    <file>shadow.xml</file>
+                </shadow>
+            </updates>
+        </layout>
+
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <springbot_shadow_observer>
+                        <type>singleton</type>
+                        <class>Springbot_Shadow_Model_Listeners_Observer</class>
+                        <method>escort</method>
+                    </springbot_shadow_observer>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+        <events>
+            <controller_action_postdispatch>
+                <observers>
+                    <springbot_shadow_observer>
+                        <type>singleton</type>
+                        <class>Springbot_Shadow_Model_Listeners_Observer</class>
+                        <method>post</method>
+                    </springbot_shadow_observer>
+                </observers>
+            </controller_action_postdispatch>
+        </events>
+
+
+    </frontend>
+
+    <global>
+        <helpers>
+            <shadow>
+                <class>Springbot_Shadow_Helper</class>
+            </shadow>
+        </helpers>
+    </global>
+
+
+
+</config>

@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<layout>
+	<bmbleb_index_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+	</bmbleb_index_index>
+	<bmbleb_adminhtml_index_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_index" name="bmbleb.index"></block>
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_index_index>
+	<bmbleb_adminhtml_index_auth>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_auth" name="bmbleb.auth">
+				<block type="bmbleb/adminhtml_bmbleb_login" as="login_form" name="bmbleb.auth.loginform" />
+			</block>
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_index_auth>
+	<bmbleb_adminhtml_index_status>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_status" name="bmbleb.status"></block>
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_index_status>
+	<bmbleb_adminhtml_connectedtospringbot>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_status" name="bmbleb.status"></block>
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_connectedtospringbot>
+	<bmbleb_adminhtml_help_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_help" name="bmbleb.help" />
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_help_index>
+	<bmbleb_adminhtml_jobs_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_jobs" template="bmbleb/jobs.phtml" name="bmbleb.jobs">
+				<block type="bmbleb/adminhtml_jobs_status" name="bmbleb.jobs.status"></block>
+			</block>
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_jobs_index>
+    <bmbleb_adminhtml_logs_index>
+        <reference name="head">
+            <action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+        </reference>
+        <reference name="content">
+            <block type="bmbleb/adminhtml_logs" name="bmbleb.logs"></block>
+        </reference>
+        <reference name="left">
+            <block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+        </reference>
+    </bmbleb_adminhtml_logs_index>
+	<bmbleb_adminhtml_problems_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_problems" name="bmbleb.problems" />
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_problems_index>
+	<bmbleb_account_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+	</bmbleb_account_index>
+	<bmbleb_adminhtml_settings_index>
+		<reference name="head">
+			<action method="addCss"><stylesheet>bmbleb/bmbleb.css</stylesheet></action>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_settings" name="bmbleb.settings" />
+		</reference>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+	</bmbleb_adminhtml_settings_index>
+	<bmbleb_logout_logout>
+		<reference name="left">
+			<block type="bmbleb/adminhtml_tabs" name="bmbleb.tabs"></block>
+		</reference>
+		<reference name="content">
+			<block type="bmbleb/adminhtml_logout" name="bmbleb.logout" template="bmbleb/logout.phtml" />
+		</reference>
+	</bmbleb_logout_logout>
+
+	<default>
+		<reference name="notifications">
+			<block type="bmbleb/adminhtml_notifications" name="bmbleb_notifications" template="bmbleb/notifications.phtml"/>
+		</reference>
+	</default>
+
+</layout>

@@ -1,0 +1,36 @@
+<?php
+/**
+ * Template for Springbot_Bmbleb_Block_Adminhtml_Logout
+ */
+?>
+<style>
+.sb-alert {
+	margin: 8px 0 8px;
+}
+.sb-accept {
+	margin: 8px 0 8px;
+}
+</style>
+
+<h2 class="sb-header">Unplugging Springbot Services</h2>
+
+<div class="sb-alert">
+	<p>This will disconnect you from Springbot's services.</p>
+	<p>Your account will still be accessible through the Springbot web application, however you will need to re-enter your credentials here on in the Magento admin panel in order for the Springbots to get back to work harvesting your data.</p>
+	<p>Please click the button below to finish disconnecting.</p>
+</div>
+
+<div class="sb-accept">
+	<form action="<?php echo $this->getUrl('*/*/remoteDisconnect') ?>">
+		<input type="hidden" name="form_key" value="<?php echo $this->getFormKey() ?>" />
+		<p>
+			<button class="sb-button" type="submit" id="logout-button">Logout</button>
+		</p>
+		<p>
+			<span id="sb-checkbox">
+				<input type="checkbox" id="confirm-logout" required />
+			</span>
+			<label for="confirm-logout">I understand the risks but I wish to disconnect anyway.</label>
+		</p>	
+	</form>
+</div>
