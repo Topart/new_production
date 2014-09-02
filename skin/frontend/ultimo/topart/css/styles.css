@@ -3877,3 +3877,8 @@ form#create-art-upload{
         max-height: 200px !important;
     }
     /* JP: For ticket 134 End*/
+    /* JP: For ticket 189 Start*/
+    #product_view_container{
+        min-height: 939px;
+    }
+    /* JP: For ticket 189 End*/
