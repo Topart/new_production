@@ -3011,7 +3011,13 @@ function setLiPosition(image,li,listart,margin){
                 if(i==3){
                     wtemp += 18;
                 }
-
+                
+                /*JP: Fix ticket 138 Start*/
+                if(liwidth<72){
+                    liwidth = 72;
+                }
+                /*JP: Fix ticket 138 End*/
+                
                 jQuery(this)
                 .css("position","absolute")
                 .css("left",wtemp+"px")
