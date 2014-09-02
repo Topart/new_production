@@ -3818,7 +3818,7 @@ form#create-art-upload{
         margin-top: 0px;
     }
     .product-options dl dd {
-        position: relative !important;
+        position: absolute !important;
     }
     dd.borders .input-box ul.options-list {
         position: relative;
@@ -3828,10 +3828,52 @@ form#create-art-upload{
     ul#custom_option_borders{
         margin-bottom: 0px;
     }
+    #custom_option_material .background_border .custom_option_viewport img{
+        max-height:128px
+    }
+    ul#custom_option_material li{
+        width:auto !important;
+    }
+    dd.material {
+        top: 202px !important;
+    }
+    dd.borders {
+        top: 0px !important;
+    }
     /* JP: For ticket 146 End*/
-    
+
     /* JP: For ticket 139 Start*/
     .main-page-blog-title{
         padding-top: 50px !important;
     }
     /* JP: For ticket 139 End*/
+
+    /* JP: For ticket 144 Start*/
+    #custom_option_material .background_border .custom_option_viewport img {
+        max-width: 240px;
+    }
+    /*dd.borders .input-box ul.options-list {
+        top: 150px !important;
+    }*/
+    ul#custom_option_borders li img{
+        /*max-height: 70px !important;*/
+    }
+    #custom_option_borders li:nth-of-type(2),#custom_option_borders li:nth-of-type(3), #custom_option_borders li:nth-of-type(4) {
+        width: auto !important;
+    }
+    #custom_option_borders li {
+        margin-right: 0 !important;
+        max-width: 200px !important;
+    }
+    #three_inches_white_right_border ,#two_inches_black_one_inch_white_right_border{
+        /*display:none !important;*/
+    }
+    /* JP: For ticket 144 End*/
+    
+    /* JP: For ticket 134 
+        Fix: Images too large
+    Start*/
+    .products-list .product-image img, .category-products-grid .product-image img {
+        max-height: 200px !important;
+    }
+    /* JP: For ticket 134 End*/

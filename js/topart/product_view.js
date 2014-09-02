@@ -1,5 +1,6 @@
-
-
+var globals = {};
+    globals.init = false;
+    globals.initClickMat = false;
 
 	var jQuery = jQuery.noConflict(); 
 	
@@ -1768,7 +1769,11 @@
 					
 
 					// In Pixels
-					top = background_height * (top_percentage/100) + frame_height;
+                                        /*
+                                         * JP: Before the script use the var "top" but for some reason i can't set a value
+                                         * new rename the var to tempTop and work fine
+                                         */
+                                        var tempTop = 221;//top = background_height * (top_percentage/100) + frame_height;
 					left = background_width * (left_percentage/100) + frame_width;
 
 					margin_top = background_height * (margin_top_percentage/100);
@@ -1777,7 +1782,7 @@
 					//alert("test 1");
 					
 					// Resize the image
-					resize_image(width, height, top, left, margin_top, margin_left);
+					resize_image(width, height, tempTop, left, margin_top, margin_left);
 				}
 
 				else if (framing_enabled == 1 && frame_image_url.indexOf("/.png") != -1)
@@ -2677,7 +2682,19 @@
                             //jQuery(document).find(".option-reloaded span.step-selection").text("");
                             var opt = jQuery("input[name=size]:checked").next().text()
                             
-                            selected += " "+ opt;
+                            //console.log("selected: "+selected+" and option_name: "+option_name);
+                            
+                            
+                            if(selected.indexOf("Paper") !==-1){
+                                selected += " "+ opt;
+                            }
+                            
+                            if(option_name == "frame" && selected.indexOf("No Frame") === -1){
+                                
+                                val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
+                                selected += " + $"+val;
+                                
+                            }
                             
                             if(option_name !== "poster-size"){
                                 jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
@@ -2813,25 +2830,17 @@
                                 opt,
                                 tit = jQuery(".material .step-selection").text();
                             
-                            //console.log("txt: "+txt);
-                            //console.log("tit: "+tit);
-                            
                             if(tit.indexOf("Paper") !== -1){
-                                //console.log("a");
                                 opt = "(Paper)";
                             }
 
                             if(tit.indexOf("Canvas") !== -1){
-                                //console.log("b");
                                 opt = "(Canvas)";
                             }
 
                             if(tit.indexOf("Poster") !== -1){
-                                //console.log("c");
                                 opt = "(Poster)";
                             }
-                            
-                            //console.log("opt: "+opt);
                                 
                             jQuery(".material .step-selection").text(opt+" "+txt)	
                         });
@@ -2888,8 +2897,6 @@
             
             if(img_uploaded !== ""){
                 
-                //console.log("img_uploaded: "+img_uploaded);
-                
                 setTimeout(function(){
                     //window.location = "your-photos-to-art-63";
                 },5000);
@@ -2897,7 +2904,118 @@
             }else{
                 //console.log("no uploaded ");
             }
+            
+            var imgSize = 0;
 
+            jQuery("#custom_option_material li").each(function(){
+                jQuery(this).find("img").load(function() {
+                    imgSize = jQuery(this).css("width");
+                    jQuery("dd.material .product-options ul.options-list li").each(function(){
+                        jQuery(this).attr("style","margin-right:23px;width:"+imgSize+" !important");
+                    });
+                    return;
+                });
+            });
+            /*
+             * Ugly Fix
+             * Force delay to resize images in firefox
+             */
+            setTimeout(
+                function(){
+                    setLiPosition('#custom_option_material_posterpaper img:first',"dd.material .options-list li");
+                },
+            5000);
+            jQuery(document).on("click", 'dt.borders label', function(){
+                if(globals.init === false){
+                    /*
+                     * Set the position of li in "Borders" step
+                     */
+                    setLiPosition('#custom_option_border_treatment_3_inches_of_white img',"dd.borders .options-list li",1,1,18);
+                    
+                    /*
+                     * Set the top of ul options-list when select "canvas" option and then the step "borders"
+                     */
+                    jQuery("#custom_option_border_treatment_3_inches_of_white").find("img").ready(function(){
+                            jQuery("dd.borders .input-box ul.options-list")
+                                .attr("style","top: "
+                                    +(jQuery('#custom_option_border_treatment_3_inches_of_white img').height()+85)
+                                    +"px"
+                                    +" !important");
+                        });
+
+                    /*
+                     * Set the position for the corners to simulate 3d effect
+                     * to white border and blanck border in the step "borders"
+                     */
+                    var leftGrey = jQuery('#custom_option_border_treatment_3_inches_of_white img').width(),
+                        leftBlack = leftGrey*2,
+                        topBlack = jQuery('#custom_option_border_treatment_3_inches_of_white img').height(),
+                        topGrey = topBlack;
+
+                    jQuery("#two_inches_black_one_inch_white_top_border")
+                        .css("left",leftGrey+14+"px");
+
+                    jQuery("#three_inches_white_right_border")
+                        .css("top",topGrey+26+"px")
+                        .css("left",leftGrey+"px");
+
+
+                    jQuery("#two_inches_black_one_inch_white_right_border")
+                        .css("left",leftBlack+14+"px")
+                        .css("top",topBlack+26+"px");
+                    globals.init = true;
+                }
+            });
+            
+            jQuery(document).on("click", "dt.mat label", function(){
+                if(globals.initClickMat === false){
+                    jQuery("dd.mat .options-list li").each(function(){
+                      if(jQuery(this).is(":visible")){
+                        txt = jQuery(this).find(".label .price-notice").text();
+                        if(txt.indexOf("+")!==-1){
+                          txt = "+ $"+txt.substring(1,txt.lenght);
+                          jQuery(this).find(".label .price-notice").text(txt);
+                        }
+                      }
+                    });
+                    globals.initClickMat = true;
+                }
+              });
 	});
-	
-	
+        
+function setLiPosition(image,li,listart,margin){
+    listart = listart || 0;
+    margin = margin || 18;
+    var w = jQuery(image).width(),
+        wtemp = 0,
+        liwidth = w-(w/10);//li width = image width - 10%
+        
+        jQuery(li).each(function(i){
+            if(i>=listart){
+                if(i==listart){
+                  wtemp = 0;
+                }else{
+                  wtemp = wtemp+=(w+margin);
+                }
+
+                /*
+                 * fix the position in the 3er li
+                 */
+                if(i==2){
+                    wtemp += 10;
+                }
+                
+                /*
+                 * fix the position in the 4th li in borders step
+                 */
+                if(i==3){
+                    wtemp += 18;
+                }
+
+                jQuery(this)
+                .css("position","absolute")
+                .css("left",wtemp+"px")
+                .css("width",liwidth+"px");
+            }
+        });
+}
