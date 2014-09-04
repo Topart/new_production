@@ -2968,6 +2968,7 @@ var globals = {};
             });
             
             jQuery(document).on("click", "dt.mat label", function(){
+                fixMatRender();
                 if(globals.initClickMat === false){
                     jQuery("dd.mat .options-list li").each(function(){
                       if(jQuery(this).is(":visible")){
@@ -2983,6 +2984,36 @@ var globals = {};
               });
 	});
         
+/* JP: For ticket 137 Start*/
+function fixMatRender(){
+    var show3in = false,
+        show2in = false;
+
+    jQuery("dd.mat div.input-box ul.options-list li")
+    .each(function(){
+      if(jQuery(this).is(":visible")){
+            if(jQuery(this).text().indexOf("2in")!==-1){
+              show2in = true;
+            }
+            if(jQuery(this).text().indexOf("3in")!==-1){
+              show3in = true;
+            }
+      }
+    });
+
+    if(show2in){
+            jQuery("#mats_2_inches").show();
+    }else{
+            jQuery("#mats_2_inches").hide();
+    }
+    if(show3in){
+            jQuery("#mats_3_inches").show();
+    }else{
+            jQuery("#mats_3_inches").hide();
+    }
+}
+/* JP: For ticket 137 End*/
+
 function setLiPosition(image,li,listart,margin){
     listart = listart || 0;
     margin = margin || 18;
