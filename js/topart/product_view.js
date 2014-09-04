@@ -2831,18 +2831,18 @@ var globals = {};
                                 tit = jQuery(".material .step-selection").text();
                             
                             if(tit.indexOf("Paper") !== -1){
-                                opt = "(Paper)";
+                                opt = "(Paper";
                             }
 
                             if(tit.indexOf("Canvas") !== -1){
-                                opt = "(Canvas)";
+                                opt = "(Canvas";
                             }
 
                             if(tit.indexOf("Poster") !== -1){
-                                opt = "(Poster)";
+                                opt = "(Poster";
                             }
                                 
-                            jQuery(".material .step-selection").text(opt+" "+txt)	
+                            jQuery(".material .step-selection").text(opt+" "+txt+")")	
                         });
                 /* Jp: Ticket 107 y otros End*/
                 
