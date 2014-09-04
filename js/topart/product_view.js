@@ -2983,7 +2983,8 @@ var globals = {};
                 }
               });
               /*JP: For ticket 109 Start*/
-                jQuery("#tab-description").hide()
+                jQuery("#tab-description").hide();
+                setTimeout(function(){jQuery("#tab-tabreviews a").click();},5000)
               /*JP: For ticket 109 End*/
 	});
         
