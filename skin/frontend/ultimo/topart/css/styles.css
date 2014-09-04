@@ -3892,4 +3892,9 @@ form#create-art-upload{
         margin-top: 10px !important;
     }
     /* JP: For ticket 135 End*/
-    //134,145,191
+    /* JP: For ticket 189 Start*/
+    #product_view_container{
+        min-height: 939px;
+    }
+    /* JP: For ticket 189 End*/
+    

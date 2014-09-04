@@ -2982,6 +2982,9 @@ var globals = {};
                     globals.initClickMat = true;
                 }
               });
+              /*JP: For ticket 109 Start*/
+                jQuery("#tab-description").hide()
+              /*JP: For ticket 109 End*/
 	});
         
 /* JP: For ticket 137 Start*/
