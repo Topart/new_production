@@ -3877,3 +3877,19 @@ form#create-art-upload{
         max-height: 200px !important;
     }
     /* JP: For ticket 134 End*/
+    /* JP: For ticket 132 Start*/
+    .account-login .page-title{
+        margin-bottom:50px;
+    }
+    /* JP: For ticket 132 End*/
+    /* JP: For ticket 135 Start*/
+    #size_info {
+        font-size: 12px !important;
+        line-height: 12px;
+        margin-top: 50px !important;
+    }
+    ul#custom_option_size {
+        margin-top: 10px !important;
+    }
+    /* JP: For ticket 135 End*/
+    //134,145,191
