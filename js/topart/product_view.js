@@ -2831,18 +2831,18 @@ var globals = {};
                                 tit = jQuery(".material .step-selection").text();
                             
                             if(tit.indexOf("Paper") !== -1){
-                                opt = "(Paper)";
+                                opt = "(Paper";
                             }
 
                             if(tit.indexOf("Canvas") !== -1){
-                                opt = "(Canvas)";
+                                opt = "(Canvas";
                             }
 
                             if(tit.indexOf("Poster") !== -1){
-                                opt = "(Poster)";
+                                opt = "(Poster";
                             }
                                 
-                            jQuery(".material .step-selection").text(opt+" "+txt)	
+                            jQuery(".material .step-selection").text(opt+" "+txt+")")	
                         });
                 /* Jp: Ticket 107 y otros End*/
                 
@@ -2982,6 +2982,10 @@ var globals = {};
                     globals.initClickMat = true;
                 }
               });
+              /*JP: For ticket 109 Start*/
+                jQuery("#tab-description").hide();
+                setTimeout(function(){jQuery("#tab-tabreviews a").click();},5000)
+              /*JP: For ticket 109 End*/
 	});
         
 /* JP: For ticket 137 Start*/
@@ -3042,6 +3046,12 @@ function setLiPosition(image,li,listart,margin){
                 if(i==3){
                     wtemp += 18;
                 }
+                
+                /*JP: Fix ticket 138 Start*/
+                if(liwidth<72){
+                    liwidth = 72;
+                }
+                /*JP: Fix ticket 138 End*/
 
                 jQuery(this)
                 .css("position","absolute")
