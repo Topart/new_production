@@ -1,0 +1,11 @@
+<?php $messages = $this->getSystemMessages(); ?>
+<?php if (count($messages) > 0): ?>
+<div class="upgrade-box">
+	<h4>Notice</h4>
+	<ul>
+	<?php foreach ($this->getSystemMessages() as $mess): ?>
+		<li><p><?php echo $mess; ?></p></li>
+	<?php endforeach; ?>
+	</ul>
+</div>
+<?php endif; ?>

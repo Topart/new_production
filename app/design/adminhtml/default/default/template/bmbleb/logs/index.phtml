@@ -1,0 +1,40 @@
+
+<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4 class="icon-head head-edit-form fieldset-legend">Springbot Logs</h4>
+		<div class="form-buttons"></div>
+	</div>
+	<div class="fieldset fieldset-wide" id="base_fieldset">
+		<div class="hor-scroll">
+			<table cellspacing="0" class="form-list">
+				<tbody>
+				<tr>
+					<td class="label">
+						<label for="log1">Springbot.log</label>
+					</td>
+					<td class="value">
+						<textarea class="textarea monospace-textarea" id="springbot-log-textarea"><?php echo $this->getLogContent(Springbot_Log::LOGFILE) ?></textarea>
+						<a href="<?php echo $this->getUrl('bmbleb/adminhtml_logs/download/name/' . Springbot_Log::LOGFILE); ?>">Download Springbot.log</a>
+					</td>
+				</tr>
+				<tr>
+					<td class="label">
+						<label for="log1">Springbot-Http.log</label>
+					</td>
+					<td class="value">
+						<textarea class="textarea monospace-textarea" id="springbothttp-log-textarea"><?php echo $this->getLogContent(Springbot_Log::HTTPFILE) ?></textarea>
+						<a href="<?php echo $this->getUrl('bmbleb/adminhtml_logs/download/name/' . Springbot_Log::HTTPFILE); ?>">Download Springbot-Http.log</a>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var springbottextarea = document.getElementById('springbot-log-textarea');
+	springbottextarea.scrollTop = springbottextarea.scrollHeight;
+	var springbothttptextarea = document.getElementById('springbothttp-log-textarea');
+	springbothttptextarea.scrollTop = springbothttptextarea.scrollHeight;
+</script>

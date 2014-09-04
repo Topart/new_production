@@ -1,0 +1,17 @@
+<div class="j-content">
+	<div class="j-box-left box2">
+		<a href="http://app.springbot.com/dashboard">
+		<img align=left  src="<?php echo $this->getSkinUrl('bmbleb/images/plugin_dashboard_syncing.jpg'); ?>" alt="springbot logo" />&nbsp;</a>
+	<?php
+		try {
+			Springbot_Boss::launchHarvest();
+		} catch (Exception $e) {
+			Mage::logException($e);
+		}
+	?>
+	</div>
+</div>
+<div class="tc-info">
+	<p class="tc-link"><a href="http://www.springbot.com/content/terms_of_use" target="_blank" title="Terms &amp; Conditions">View our Terms &amp; Conditions</a></p>
+</div>
+
