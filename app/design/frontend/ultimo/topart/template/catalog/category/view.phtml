@@ -154,7 +154,7 @@ if ($_imgUrl = $_category->getImageUrl()) {
         <h1>
     <?php $parentName = $_helper->categoryAttribute($parent, $parent->getName(), 'name'); ?>
     <?php //echo $this->__('Shop our %s', $parentName) ?>
-    <?php echo $this->escapeHtml($_category->getName()) . '" title="' . $this->escapeHtml($_category->getName()) ?>
+    <?php echo $this->escapeHtml($_category->getName()) ?>
         </h1>
     </div>
 <?php endif; ?>
