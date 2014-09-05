@@ -3878,8 +3878,8 @@ form#create-art-upload{
     }
     /* JP: For ticket 134 End*/
     /* JP: For ticket 132 Start*/
-    .account-login .page-title{
-        margin-bottom:50px;
+    .account-login .page-title, .account-create .page-title{
+        margin-bottom:50px !important;
     }
     /* JP: For ticket 132 End*/
     /* JP: For ticket 135 Start*/
