@@ -3030,7 +3030,18 @@ function setLiPosition(image,li,listart,margin){
                 if(i==listart){
                   wtemp = 0;
                 }else{
-                  wtemp = wtemp+=(w+margin);
+                    /*JP: Fix ticket 204 Start*/
+                    if(liwidth > 200){
+                        if(wtemp == 0){
+                            wtemp += 225;
+                        }else{
+                            wtemp += 213;
+                        }
+                    }
+                    /*JP: Fix ticket 204 End*/
+                    else{
+                        wtemp = wtemp+=(w+margin);
+                    }
                 }
 
                 /*
