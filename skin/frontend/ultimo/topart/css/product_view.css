@@ -1913,3 +1913,16 @@ ul#custom_option_material li {
     max-width: 200px !important;
 }
 /* JP: For ticket 204 End*/
+/* JP: For ticket 205 Start*/
+    #size_info{
+        display:inline-block;
+        width: auto;
+        margin-right: 10px;
+    }
+    #custom_size_link{
+        display:inline-block;
+        position: relative;
+        left: auto;
+        top: auto;
+    }
+/* JP: For ticket 205 End*/
