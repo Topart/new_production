@@ -371,9 +371,20 @@ dl.gallery-item { float: left; }
     .blog-cust-category {
         margin-top: 0;
         width: calc(96% / 3);
+        
     }
+        /* JP: Fix For ticket 141 End*/
+        .blog-cust-category {
+            text-align: center;
+        }
+        .blog-cust-category img{
+            max-height: 375px;
+            max-width: 375px;
+        }
+        /* JP: Fix For ticket 141 End*/
     .blog-cust-category:nth-child(3n) {
         margin-left: 0%;
         margin-right: 0%;
     }
     /* JP: For ticket 141 End*/
+    
