@@ -813,4 +813,9 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
     </contacts_index_index>
+    <customer_first_time>
+        <reference name="header">
+            <action method="setTemplate"><template>customer/popup.phtml</template></action>
+        </reference>
+    </customer_first_time>
 </layout>
