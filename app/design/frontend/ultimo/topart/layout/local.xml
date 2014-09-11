@@ -814,7 +814,7 @@
         </reference>
     </contacts_index_index>
     <customer_first_time>
-        <reference name="header">
+        <reference name="footer">
             <action method="setTemplate"><template>customer/popup.phtml</template></action>
         </reference>
     </customer_first_time>
