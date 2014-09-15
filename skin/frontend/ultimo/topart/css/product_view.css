@@ -1926,3 +1926,9 @@ ul#custom_option_material li {
         top: auto;
     }
 /* JP: For ticket 205 End*/
+
+/* JP: For ticket 211 Start*/
+.grid12-12, .grid-full{
+    width:100%;
+}
+/* JP: For ticket 211 End*/

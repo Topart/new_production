@@ -1,0 +1,25 @@
+<style>
+#welcome-message{
+    padding: 15px;
+}
+</style>
+<a id="s3_result_light_box" class="fancybox" href="#s3_message"></a>
+
+<div id="s3_message" style="width:400px; display: none;">
+    <div id="welcome-message">
+        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('customer_first_login_popup')->toHtml(); ?>
+    </div>
+</div>
+<script>
+    var jQuery = jQuery.noConflict();
+    
+    jQuery(document).ready(function(){
+        
+        jQuery("#s3_result_light_box").fancybox({
+            'content':jQuery("#s3_message").html()
+        });
+
+        jQuery("#s3_result_light_box").trigger("click");
+        
+    });
+</script>
