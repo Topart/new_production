@@ -1932,3 +1932,9 @@ ul#custom_option_material li {
     width:100%;
 }
 /* JP: For ticket 211 End*/
+
+/*JP: for ticket 208 Start*/
+.short-description{
+    font-size: 16px;
+}
+/*JP: for ticket 208 End*/

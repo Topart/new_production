@@ -20,11 +20,11 @@
 <div class="business-account-create">
 
     <?php echo $this->getChildHtml('form_fields_before') ?>
-    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php //echo $this->getMessagesBlock()->getGroupedHtml() ?>
 
     <h2><?php echo $this->__('Create A Business Account') ?></h2>
     <div class="continuous_divider_line"></div>
-    <form action="<?php echo $this->getPostActionUrl() ?>" method="post" id="form-validate" class="form well">
+    <form action="<?php echo $this->getProPostActionUrl() ?>" method="post" id="form-validate" class="form well">
 
         <fieldset id="personal_information" class="control-group">
 
@@ -51,7 +51,7 @@
                     <label id="customer_twitter_account" for="twitter_account"><?php echo $this->__('Twitter Account') ?>
                     </label>
                     <div class="input-box">
-                    <input class="input-text validate-email required-entry" placeholder="<?php echo $this->__('Twitter Account') ?>" type="text" name="twitter_account" id="twitter_account" value="" title="" />
+                    <input class="input-text" placeholder="<?php echo $this->__('Twitter Account') ?>" type="text" name="twitter_account" id="twitter_account" value="" title="" />
                     </div>
                 </li>
                 <li class="fields">
