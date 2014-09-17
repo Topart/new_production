@@ -3903,3 +3903,11 @@ form#create-art-upload{
     p.t-left{
         text-align: left;
     }
+    
+    /*JP: for ticket 211 Start*/
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        #custom_option_borders li { 
+            margin-right: 4px !important;
+        }
+    }
+    /*JP: for ticket 211 End*/

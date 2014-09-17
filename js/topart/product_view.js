@@ -2922,7 +2922,7 @@ var globals = {};
              */
             setTimeout(
                 function(){
-                    setLiPosition('#custom_option_material_posterpaper img:first',"dd.material .options-list li");
+                    setLiPosition('#custom_option_material li img:first',"dd.material .options-list li");
                 },
             5000);
             jQuery(document).on("click", 'dt.borders label', function(){
