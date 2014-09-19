@@ -20,7 +20,6 @@
             
             <customer>
                 <rewrite>
-                    <!--<data>Onetree_Customer_Block_Form_Register</data>-->
                     <form_register>Onetree_Customer_Block_Form_Register</form_register>
                 </rewrite>
             </customer>

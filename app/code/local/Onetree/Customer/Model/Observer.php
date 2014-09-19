@@ -8,7 +8,6 @@ class Onetree_Customer_Model_Observer {
     }
 
     public function IsFirstLogin($observer) {
-        
         if (Mage::getSingleton('customer/session')->getFirstTime()) {
             $observer->getEvent()->getLayout()->getUpdate()->addHandle('customer_first_time');
             Mage::getSingleton('customer/session')->setFirstTime(false);
