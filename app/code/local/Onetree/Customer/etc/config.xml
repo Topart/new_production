@@ -20,7 +20,6 @@
             
             <customer>
                 <rewrite>
-                    <!--<data>Onetree_Customer_Block_Form_Register</data>-->
                     <form_register>Onetree_Customer_Block_Form_Register</form_register>
                 </rewrite>
             </customer>
@@ -29,11 +28,6 @@
             <otcustomer>
                 <class>Onetree_Customer_Model</class>
             </otcustomer>
-            <!--customer>
-                <rewrite>
-                    <customer>Onetree_Customer_Model_Customer</customer>
-                </rewrite>
-            </customer-->
         </models>
     </global>
     <frontend>

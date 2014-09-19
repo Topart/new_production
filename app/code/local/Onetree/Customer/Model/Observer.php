@@ -3,15 +3,15 @@
 class Onetree_Customer_Model_Observer {
 
     public function setFirstLogin($observer) {
-        Mage::getSingleton('customer/session')->setFirstTime(true);
+        Mage::getSingleton('customer/session')->setFirstTime(1);
         return $this;
     }
 
     public function IsFirstLogin($observer) {
-        
+        //if (!is_null(Mage::registry('customer_pro'))) {
         if (Mage::getSingleton('customer/session')->getFirstTime()) {
             $observer->getEvent()->getLayout()->getUpdate()->addHandle('customer_first_time');
-            Mage::getSingleton('customer/session')->setFirstTime(false);
+            Mage::getSingleton('customer/session')->setData('first_time',0);
         }
     }
 
