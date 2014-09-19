@@ -35,7 +35,12 @@
             <ul class="form-list">
                 <li class="fields">
                     <div class="fields">
-                        <?php echo $this->getLayout()->createBlock('customer/widget_name')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml() ?>
+                        <?php echo $this->getLayout()->createBlock('customer/widget_name')->setTemplate('customer/widget/registerpro/first-name.phtml')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml(); ?>
+                    </div>
+                </li>
+                <li class="fields">
+                    <div class="fields">
+                        <?php echo $this->getLayout()->createBlock('customer/widget_name')->setTemplate('customer/widget/registerpro/last-name.phtml')->setObject($this->getFormData())->setForceUseCustomerAttributes(true)->toHtml(); ?>
                     </div>
                 </li>
                 <li class="fields">
@@ -48,42 +53,30 @@
                     </div>
                 </li>
                 <li class="fields">
-                    <label id="customer_twitter_account" for="twitter_account"><?php echo $this->__('Twitter Account') ?>
+                    <label id="customer_twitter_account" for="twitter_account"><?php echo $this->__('Twitter Account') ?></label>
+                    <div class="input-box">
+                        <input class="input-text" placeholder="<?php echo $this->__('Twitter Account') ?>" type="text" name="twitter_account" id="twitter_account" value="" title="" />
+                    </div>
+                </li>
+                <li class="fields">
+                    <label id="customer_twitter_account" for="pinterest_account"><?php echo $this->__('Pinterest Account') ?></label>
+                    <div class="input-box">
+                        <input class="input-text" placeholder="<?php echo $this->__('Pinterest Account') ?>" type="text" name="pinterest_account" id="pinterest_account" value="" title="" />
+                    </div>
+                </li>
+                <li class="fields">
+                    <label id="customer_twitter_account" for="password"><?php echo $this->__('Password') ?>
                     </label>
                     <div class="input-box">
-                    <input class="input-text" placeholder="<?php echo $this->__('Twitter Account') ?>" type="text" name="twitter_account" id="twitter_account" value="" title="" />
+                        <input class="input-text" placeholder="<?php echo $this->__('Password') ?>" value="Password" type="password" name="password" id="password" title="<?php echo $this->__('Password') ?>" class="input-text required-entry validate-password" />
                     </div>
                 </li>
                 <li class="fields">
-                    <?php if ($this->isNewsletterEnabled()): ?>
-
-                        <div class="control-group" id="newsletter_control_group">
-                            <div class="controls">
-                                <label for="is_subscribed" class="checkbox">
-                                    <input type="checkbox" name="is_subscribed" title="<?php echo $this->__('Sign Up for Newsletter') ?>" value="1" id="is_subscribed"<?php if ($this->getFormData()->getIsSubscribed()): ?> checked="checked"<?php endif; ?> class="checkbox" />
-                                    <?php echo $this->__('Sign Up for Newsletter') ?>
-                                </label>
-                            </div>
-                        </div>
-
-                    <?php endif ?>
-                </li>
-                <li class="fields">
-
-                    <div class="control-group error">
-                        <div class="button">
-                            <input placeholder="<?php echo $this->__('Password') ?>" value="Password" type="password" name="password" id="password" title="<?php echo $this->__('Password') ?>" class="input-text required-entry validate-password" />
-                        </div>
+                    <label id="customer_twitter_account" for="confirmation"><?php echo $this->__('Confirm Password') ?>
+                    </label>
+                    <div class="input-box">
+                        <input placeholder="<?php echo $this->__('Confirm Password') ?>" value="Confirm Password" type="password" name="confirmation" title="<?php echo $this->__('Confirm Password') ?>" id="confirmation" class="input-text required-entry validate-cpassword" />
                     </div>
-
-                </li>
-                <li class="fields">
-                    <div class="control-group error">
-                        <div class="button">
-                            <input placeholder="<?php echo $this->__('Confirm Password') ?>" value="Confirm Password" type="password" name="confirmation" title="<?php echo $this->__('Confirm Password') ?>" id="confirmation" class="input-text required-entry validate-cpassword" />
-                        </div>
-                    </div>
-
                     <?php echo $this->getChildHtml('persistent.remember.me'); ?>
                 </li>
             </ul>

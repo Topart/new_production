@@ -3911,3 +3911,9 @@ form#create-art-upload{
         }
     }
     /*JP: for ticket 211 End*/
+    
+    /*JP: for ticket 212 Fix Start*/
+    :root .products-grid .product-image-wrapper a img { 
+        width: 284px \0/IE9; 
+    }
+    /*JP: for ticket 212 Fix End*/

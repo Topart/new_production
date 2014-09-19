@@ -224,3 +224,6 @@ if ($_imgUrl = $_category->getImageUrl()) {
       return false;
    }
 </script>
+<?php
+echo Mage::getModel('cms/page')->load('submit-your-art')->getContent();
+?>
