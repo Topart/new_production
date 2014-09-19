@@ -29,11 +29,6 @@
             <otcustomer>
                 <class>Onetree_Customer_Model</class>
             </otcustomer>
-            <!--customer>
-                <rewrite>
-                    <customer>Onetree_Customer_Model_Customer</customer>
-                </rewrite>
-            </customer-->
         </models>
     </global>
     <frontend>
