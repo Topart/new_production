@@ -4,8 +4,10 @@ class Springbot_Imageoverride_Combine_Helper_Parser extends Springbot_Combine_He
 
 	public function getImageUrl($product) {
 		if($product instanceof Mage_Catalog_Model_Product) {
+
+            $topProduct = $this->getTopLevelSku($product);
             $image_path = 'http://d3odr912zwpuhm.cloudfront.net/small_images/';
-			$skuImg = $this->cleanSkuImg(strtoupper($product->getSku()),'DG',$image_path);
+			$skuImg = $this->cleanSkuImg(strtoupper($topProduct),'DG',$image_path);
 			$image_path .= $skuImg;
 			return $image_path;
 		}
