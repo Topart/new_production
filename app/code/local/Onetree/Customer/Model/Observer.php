@@ -8,7 +8,7 @@ class Onetree_Customer_Model_Observer {
         Mage::getSingleton('customer/session')->setFirstTime(1);
         return $this;
     }
-
+    
     public function IsFirstLogin($observer) {
         
         $roleId = Mage::getSingleton('customer/session')->getCustomerGroupId();
