@@ -188,7 +188,10 @@ if ($_imgUrl = $_category->getImageUrl()) {
 </div>
             <?php if ($this->isContentMode()): ?>
                 <?php echo $this->getCmsBlockHtml() ?>
-
+                <?php
+                "submit-your-art";
+                echo Mage::getModel('cms/page')->load('submit-your-art')->getContent();
+                ?>
             <?php elseif ($this->isMixedMode()): ?>
                 <?php echo $this->getCmsBlockHtml() ?>
                 <?php echo $this->getProductListHtml() ?>
@@ -225,5 +228,5 @@ if ($_imgUrl = $_category->getImageUrl()) {
    }
 </script>
 <?php
-echo Mage::getModel('cms/page')->load('submit-your-art')->getContent();
+//var_dump($this->getRequest()->getModuleName());
 ?>
