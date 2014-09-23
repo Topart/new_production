@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Springbot_Imageoverride>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+	            <Springbot_Combine />
+            </depends>
+        </Springbot_Imageoverride>
+    </modules>
+</config>
+
