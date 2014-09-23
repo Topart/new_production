@@ -1,5 +1,7 @@
 <?php
-
+/*
+ * Check the Pro group correspond with de id = 5 in your db
+ */
 class Onetree_Customer_Model_Observer {
 
     public function setFirstLogin($observer) {
@@ -8,10 +10,13 @@ class Onetree_Customer_Model_Observer {
     }
 
     public function IsFirstLogin($observer) {
-        //if (!is_null(Mage::registry('customer_pro'))) {
+        
+        $roleId = Mage::getSingleton('customer/session')->getCustomerGroupId();
         if (Mage::getSingleton('customer/session')->getFirstTime()) {
-            $observer->getEvent()->getLayout()->getUpdate()->addHandle('customer_first_time');
-            Mage::getSingleton('customer/session')->setData('first_time',0);
+            if($roleId == 5){
+                $observer->getEvent()->getLayout()->getUpdate()->addHandle('customer_first_time');
+                Mage::getSingleton('customer/session')->setData('first_time',0);
+            }
         }
     }
 
