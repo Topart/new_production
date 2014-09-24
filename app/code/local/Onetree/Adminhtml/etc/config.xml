@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Onetree_Customer>
+            <version>0.0.1</version>
+        </Onetree_Customer>
+    </modules>
+    <global>
+        <blocks>
+            <otadminhtml>
+                <class>Onetree_Adminhtml_Block</class>
+            </otadminhtml>
+            <adminhtml>
+                <rewrite>
+                    <customer_edit_tab_account>Onetree_Adminhtml_Block_Customer_Edit_Tab_Account</customer_edit_tab_account>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+    </global>
+</config>
+    
