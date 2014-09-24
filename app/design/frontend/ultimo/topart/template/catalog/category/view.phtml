@@ -189,7 +189,6 @@ if ($_imgUrl = $_category->getImageUrl()) {
             <?php if ($this->isContentMode()): ?>
                 <?php echo $this->getCmsBlockHtml() ?>
                 <?php
-                "submit-your-art";
                 echo Mage::getModel('cms/page')->load('submit-your-art')->getContent();
                 ?>
             <?php elseif ($this->isMixedMode()): ?>
