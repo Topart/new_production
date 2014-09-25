@@ -2986,6 +2986,35 @@ var globals = {};
                 jQuery("#tab-description").hide();
                 setTimeout(function(){jQuery("#tab-tabreviews a").click();},5000)
               /*JP: For ticket 109 End*/
+              
+              /*JP: For ticket 198 Start*/
+                //Custom Order, Our Materials, Canvas Borders,Frames
+                //Our Materials
+                jQuery("a.fancy-material").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("our_materials_popup");
+                });
+                //Custom Order
+                jQuery("#custom_size_link").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("custom_order_popup");
+                });
+                //Frames
+                jQuery("a.fancy-frame").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("frames_popup");
+                });
+                //Canvas Borders
+                jQuery("a.fancy-borders").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("canvas_borders_popup");
+                });
+                //Mat design??
+                jQuery("a.fancy-mat").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("mat_popup");
+                });
+              /*JP: For ticket 198 End*/
 	});
         
 /* JP: For ticket 137 Start*/

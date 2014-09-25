@@ -2007,3 +2007,88 @@ ul#custom_option_material li {
 .tab-easy-return p .golden-letters{
     color: #8f752a;
 }
+/* JP: For ticket 198 Start*/
+#fancybox-content h3,#fancybox-content h4{
+    font-family: 'Libre Baskerville', serif;
+}
+#fancybox-content h3{
+    color: #b4a063;
+    border-bottom: 1px solid #b4a063;
+    font-size: 30px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+#fancybox-content > div:first-child {
+    text-align: left;
+}
+#fancybox-content h4{
+    font-size: 20px;
+}
+#fancybox-content, #fancybox-outer{
+    border-radius: 0;
+}
+#fancybox-close{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 33px;
+    right: -35px;
+    top: 6px;
+}
+#fancybox-close:before {
+    content: "X";
+}
+#fancybox-outer{
+    padding: 30px;
+}
+#fancybox-content {
+    font-family: "Libre Baskerville",serif;
+}
+.info_size_fancy ol{
+    padding-left: 20px;
+}
+.info_size_fancy ol li {
+    color: #b4a063;
+    list-style: square outside none;
+    font-size: 15px;
+}
+.info_size_fancy ol li p{
+    color:#444;
+    font-size: 14px;
+}
+#fancybox-content a{
+    color: #888;
+    font-weight: bold;
+    text-decoration: underline;
+}
+//Our Materials
+.our_materials_popup{
+    height: 623px;
+}
+.our_materials_popup #fancybox-content > div:first-child{
+    height: 623px !important;
+}
+.our_materials_popup #fancybox-outer {
+    height: 623px;
+}
+.our_materials_popup #fancybox-content {
+    height: 623px !important;
+}
+//Custom Order
+.custom_order_popup{
+    height: 122px;
+}
+.custom_order_popup #fancybox-content > div:first-child{
+    height: 122px !important;
+}
+.custom_order_popup #fancybox-outer {
+    height: 122px;
+}
+.custom_order_popup #fancybox-content {
+    height: 122px !important;
+}
+//Frames
+
+//Canvas Borders
+
+//Mat design??
+/* JP: For ticket 198 End*/
