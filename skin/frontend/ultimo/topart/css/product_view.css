@@ -1939,3 +1939,71 @@ ul#custom_option_material li {
 }
 /*JP: for ticket 208 End*/
 
+.tab-free-shipping{
+    display:table;
+    padding-top: 15px;
+}
+.tab-free-shipping li{
+    background-repeat: no-repeat;
+    padding-left: 60px;
+    color: #888;
+    display:table-row;
+}
+.tab-free-shipping li p {
+    display: table-cell;
+    height: 49px;
+    padding-bottom: 34px;
+    padding-left: 69px;
+    vertical-align: middle;
+}
+.tab-free-shipping li a,.tab-easy-return .right-column a{
+    color: #888;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.tab-free-shipping li span{
+    color: #8f752a;
+    font-weight: bold;
+}
+.tab-free-shipping .truck{
+    background-image: url(../images/truck.png);
+}
+.tab-free-shipping .plane{
+    background-image: url(../images/plane.png);
+}
+.tab-free-shipping .hand{
+    background-image: url(../images/hand.png);
+}
+.tab-free-shipping .gift{
+    background-image: url(../images/gift.png);
+}
+.tab-free-shipping .information{
+    background-image: url(../images/information.png);
+}
+
+.tab-easy-return .left-column{
+    border-right: 1px solid #8f752a;
+    color: #8f752a;
+    float: left;
+    font-size: 26px;
+    padding: 0 20px 20px;
+    width: 19%;
+    height: 170px;
+}
+.tab-easy-return .right-column{
+    float: left;
+    padding: 0 20px 20px;
+    width: 74%;
+    color: #888;
+}
+.tab-easy-return .left-column span{
+    font-weight: bold;
+    font: bold 138%/150% bentonsansregular,Arial,Helvetica,sans-serif;
+}
+.tab-easy-return .right-column span {
+    color: #333;
+    font-weight: bold;
+}
+.tab-easy-return p .golden-letters{
+    color: #8f752a;
+}
