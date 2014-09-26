@@ -6,7 +6,25 @@
         </Onetree_Customer>
     </modules>
     <global>
+        <models>
+            <otcustomer>
+                <class>Onetree_Customer_Model</class>
+            </otcustomer>
+        </models>
+        <resources>
+            <otcustomer_setup>
+                <setup>
+                    <module>Onetree_Customer</module>
+                    <class>Mage_Customer_Model_Resource_Setup</class>
+                </setup>
+            </otcustomer_setup>
+        </resources>
+        
         <helpers>
+            <otcustomer>
+                <class>Onetree_Customer_Helper</class>
+            </otcustomer>
+            
             <customer>
                 <rewrite>
                     <data>Onetree_Customer_Helper_Data</data>
@@ -24,11 +42,6 @@
                 </rewrite>
             </customer>
         </blocks>
-        <models>
-            <otcustomer>
-                <class>Onetree_Customer_Model</class>
-            </otcustomer>
-        </models>
     </global>
     <frontend>
         <events>
