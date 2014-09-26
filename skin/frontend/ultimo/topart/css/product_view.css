@@ -2072,16 +2072,16 @@ ul#custom_option_material li {
 /* define sizes for each popup START*/
 //Our Materials
 .our_materials_popup{
-    height: 650px;
+    height: 675px;
 }
 .our_materials_popup #fancybox-content > div:first-child{
-    height: 650px !important;
+    height: 675px !important;
 }
 .our_materials_popup #fancybox-outer {
-    height: 650px;
+    height: 675px;
 }
 .our_materials_popup #fancybox-content {
-    height: 650px !important;
+    height: 675px !important;
 }
 //Custom Order
 .custom_order_popup{
