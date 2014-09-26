@@ -1,0 +1,5 @@
+<?php
+
+class Springbot_Combine_Model_Mysql4_Trackable_Collection extends Springbot_Combine_Model_Resource_Trackable_Collection
+{
+}

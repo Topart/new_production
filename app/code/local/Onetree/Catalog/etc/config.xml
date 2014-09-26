@@ -4,10 +4,10 @@
     <modules>
         <Onetree_Catalog>
             <version>0.0.1</version>
-		</Onetree_Catalog>
+        </Onetree_Catalog>
     </modules>
     <global>
-		<blocks>
+        <blocks>
             <otcatalog>
                 <class>Onetree_Catalog_Block</class>
             </otcatalog>
@@ -16,7 +16,7 @@
                     <product_list>Onetree_Catalog_Block_Product_List</product_list>
                 </rewrite>
             </catalog>
-		</blocks>
+        </blocks>
         <helpers>
             <otcatalog>
                 <class>Onetree_Catalog_Helper</class>
@@ -26,6 +26,11 @@
                     <output>Onetree_Catalog_Helper_Output</output>
                 </rewrite>
             </catalog>
+            <customer>
+                <rewrite>
+                    <data>Onetree_Customer_Helper_Data</data>
+                </rewrite>
+            </customer>
         </helpers>
-   </global>
+    </global>
 </config>

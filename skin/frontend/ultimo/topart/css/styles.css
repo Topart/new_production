@@ -3877,3 +3877,43 @@ form#create-art-upload{
         max-height: 200px !important;
     }
     /* JP: For ticket 134 End*/
+    /* JP: For ticket 132 Start*/
+    .account-login .page-title, .account-create .page-title{
+        margin-bottom:50px !important;
+    }
+    /* JP: For ticket 132 End*/
+    /* JP: For ticket 135 Start*/
+    #size_info {
+        font-size: 12px !important;
+        line-height: 12px;
+        margin-top: 50px !important;
+    }
+    ul#custom_option_size {
+        margin-top: 10px !important;
+    }
+    /* JP: For ticket 135 End*/
+    /* JP: For ticket 189 Start*/
+    #product_view_container{
+        min-height: 950px;
+    }
+    /* JP: For ticket 189 End*/
+    #custom_option_material li div img{
+        max-width:140px;
+    }
+    p.t-left{
+        text-align: left;
+    }
+    
+    /*JP: for ticket 211 Start*/
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        #custom_option_borders li { 
+            margin-right: 4px !important;
+        }
+    }
+    /*JP: for ticket 211 End*/
+    
+    /*JP: for ticket 212 Fix Start*/
+    :root .products-grid .product-image-wrapper a img { 
+        width: 284px \0/IE9; 
+    }
+    /*JP: for ticket 212 Fix End*/

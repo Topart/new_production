@@ -2831,18 +2831,18 @@ var globals = {};
                                 tit = jQuery(".material .step-selection").text();
                             
                             if(tit.indexOf("Paper") !== -1){
-                                opt = "(Paper)";
+                                opt = "(Paper";
                             }
 
                             if(tit.indexOf("Canvas") !== -1){
-                                opt = "(Canvas)";
+                                opt = "(Canvas";
                             }
 
                             if(tit.indexOf("Poster") !== -1){
-                                opt = "(Poster)";
+                                opt = "(Poster";
                             }
                                 
-                            jQuery(".material .step-selection").text(opt+" "+txt)	
+                            jQuery(".material .step-selection").text(opt+" "+txt+")")	
                         });
                 /* Jp: Ticket 107 y otros End*/
                 
@@ -2922,7 +2922,7 @@ var globals = {};
              */
             setTimeout(
                 function(){
-                    setLiPosition('#custom_option_material_posterpaper img:first',"dd.material .options-list li");
+                    setLiPosition('#custom_option_material li img:first',"dd.material .options-list li");
                 },
             5000);
             jQuery(document).on("click", 'dt.borders label', function(){
@@ -2968,6 +2968,7 @@ var globals = {};
             });
             
             jQuery(document).on("click", "dt.mat label", function(){
+                fixMatRender();
                 if(globals.initClickMat === false){
                     jQuery("dd.mat .options-list li").each(function(){
                       if(jQuery(this).is(":visible")){
@@ -2981,8 +2982,71 @@ var globals = {};
                     globals.initClickMat = true;
                 }
               });
+              /*JP: For ticket 109 Start*/
+                jQuery("#tab-description").hide();
+                setTimeout(function(){jQuery("#tab-tabreviews a").click();},5000)
+              /*JP: For ticket 109 End*/
+              
+              /*JP: For ticket 198 Start*/
+                //Custom Order, Our Materials, Canvas Borders,Frames
+                //Our Materials
+                jQuery("a.fancy-material").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("our_materials_popup");
+                });
+                //Custom Order
+                jQuery("#custom_size_link").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("custom_order_popup");
+                });
+                //Frames
+                jQuery("a.fancy-frame").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("frames_popup");
+                });
+                //Canvas Borders
+                jQuery("a.fancy-borders").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("canvas_borders_popup");
+                });
+                //Mat design??
+                jQuery("a.fancy-mat").click(function(){
+                    jQuery("#fancybox-wrap").attr("class","");
+                    jQuery("#fancybox-wrap").addClass("mat_popup");
+                });
+              /*JP: For ticket 198 End*/
 	});
         
+/* JP: For ticket 137 Start*/
+function fixMatRender(){
+    var show3in = false,
+        show2in = false;
+
+    jQuery("dd.mat div.input-box ul.options-list li")
+    .each(function(){
+      if(jQuery(this).is(":visible")){
+            if(jQuery(this).text().indexOf("2in")!==-1){
+              show2in = true;
+            }
+            if(jQuery(this).text().indexOf("3in")!==-1){
+              show3in = true;
+            }
+      }
+    });
+
+    if(show2in){
+            jQuery("#mats_2_inches").show();
+    }else{
+            jQuery("#mats_2_inches").hide();
+    }
+    if(show3in){
+            jQuery("#mats_3_inches").show();
+    }else{
+            jQuery("#mats_3_inches").hide();
+    }
+}
+/* JP: For ticket 137 End*/
+
 function setLiPosition(image,li,listart,margin){
     listart = listart || 0;
     margin = margin || 18;
@@ -2995,7 +3059,18 @@ function setLiPosition(image,li,listart,margin){
                 if(i==listart){
                   wtemp = 0;
                 }else{
-                  wtemp = wtemp+=(w+margin);
+                    /*JP: Fix ticket 204 Start*/
+                    if(liwidth > 200){
+                        if(wtemp == 0){
+                            wtemp += 225;
+                        }else{
+                            wtemp += 213;
+                        }
+                    }
+                    /*JP: Fix ticket 204 End*/
+                    else{
+                        wtemp = wtemp+=(w+margin);
+                    }
                 }
 
                 /*
@@ -3011,6 +3086,12 @@ function setLiPosition(image,li,listart,margin){
                 if(i==3){
                     wtemp += 18;
                 }
+                
+                /*JP: Fix ticket 138 Start*/
+                if(liwidth<72){
+                    liwidth = 72;
+                }
+                /*JP: Fix ticket 138 End*/
 
                 jQuery(this)
                 .css("position","absolute")

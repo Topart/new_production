@@ -1334,17 +1334,20 @@ a#details .product_function_text
 
 #canvas_white_borders
 {
-  background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/canvas_white_borders.png');
+  
+  background-image: url(../images/white-border.png);
 }
 
 #canvas_black_borders
 {
-  background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/canvas_black_borders.png');
+  
+  background-image: url(../images/mirror-border.png);
 }
 
 #canvas_mirrored
 {
-  background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/canvas_mirrored.png');
+  
+  background-image: url(../images/black-border.png);
 }
 
 
@@ -1906,4 +1909,273 @@ dd.material{
 }
 
 /* JP: ticket 105 - Muestra centradas las imagenes dentro del fancy de borders*/
-#canvas_white_borders{margin: 0 auto 20px !important;}
+/*#canvas_white_borders{margin: 0 auto 20px !important;}*/
+
+/* JP: For ticket 204 Start*/
+ul#custom_option_material li {
+    max-width: 200px !important;
+}
+/* JP: For ticket 204 End*/
+/* JP: For ticket 205 Start*/
+    #size_info{
+        display:inline-block;
+        width: auto;
+        margin-right: 10px;
+    }
+    #custom_size_link{
+        display:inline-block;
+        position: relative;
+        left: auto;
+        top: auto;
+    }
+/* JP: For ticket 205 End*/
+
+/* JP: For ticket 211 Start*/
+.grid12-12, .grid-full{
+    width:100%;
+}
+/* JP: For ticket 211 End*/
+
+/*JP: for ticket 208 Start*/
+.short-description{
+    font-size: 16px;
+}
+/*JP: for ticket 208 End*/
+<<<<<<< HEAD
+=======
+
+.tab-free-shipping{
+    display:table;
+    padding-top: 15px;
+}
+.tab-free-shipping li{
+    background-repeat: no-repeat;
+    padding-left: 60px;
+    color: #888;
+    display:table-row;
+}
+.tab-free-shipping li p {
+    display: table-cell;
+    height: 49px;
+    padding-bottom: 34px;
+    padding-left: 69px;
+    vertical-align: middle;
+}
+.tab-free-shipping li a,.tab-easy-return .right-column a{
+    color: #888;
+    font-weight: bold;
+    text-decoration: underline;
+}
+.tab-free-shipping li span{
+    color: #8f752a;
+    font-weight: bold;
+}
+.tab-free-shipping .truck{
+    background-image: url(../images/truck.png);
+}
+.tab-free-shipping .plane{
+    background-image: url(../images/plane.png);
+}
+.tab-free-shipping .hand{
+    background-image: url(../images/hand.png);
+}
+.tab-free-shipping .gift{
+    background-image: url(../images/gift.png);
+}
+.tab-free-shipping .information{
+    background-image: url(../images/information.png);
+}
+
+.tab-easy-return .left-column{
+    border-right: 1px solid #8f752a;
+    color: #8f752a;
+    float: left;
+    font-size: 26px;
+    padding: 0 20px 20px;
+    width: 19%;
+    height: 170px;
+}
+.tab-easy-return .right-column{
+    float: left;
+    padding: 0 20px 20px;
+    width: 74%;
+    color: #888;
+}
+.tab-easy-return .left-column span{
+    font-weight: bold;
+    font: bold 138%/150% bentonsansregular,Arial,Helvetica,sans-serif;
+}
+.tab-easy-return .right-column span {
+    color: #333;
+    font-weight: bold;
+}
+.tab-easy-return p .golden-letters{
+    color: #8f752a;
+}
+/* JP: For ticket 198 Start*/
+#fancybox-content h3,#fancybox-content h4{
+    font-family: 'Libre Baskerville', serif;
+}
+#fancybox-content span{
+    font-weight: bold;
+}
+#fancybox-content h3{
+    color: #b4a063;
+    border-bottom: 1px solid #b4a063;
+    font-size: 30px;
+    margin-bottom: 25px;
+    text-align: left;
+}
+#fancybox-content > div:first-child {
+    text-align: left;
+}
+#fancybox-content h4{
+    font-size: 20px;
+}
+#fancybox-content, #fancybox-outer{
+    border-radius: 0;
+}
+#fancybox-close{
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    color: white;
+    font-size: 33px;
+    right: -35px;
+    top: 6px;
+}
+#fancybox-close:before {
+    content: "X";
+}
+#fancybox-outer{
+    padding: 30px;
+}
+#fancybox-content {
+    font:75%/150% bentonsansregular,Arial,Helvetica,sans-serif;
+    font-size: 14px;
+}
+.info_size_fancy ol{
+    padding-left: 20px;
+}
+.info_size_fancy ol li {
+    color: #b4a063;
+    list-style: square outside none;
+    font-size: 15px;
+}
+.info_size_fancy ol li p{
+    color:#444;
+    font-size: 14px;
+}
+#fancybox-content a{
+    color: #888;
+    font-weight: bold;
+    text-decoration: underline;
+}
+/* define sizes for each popup START*/
+//Our Materials
+.our_materials_popup{
+    height: 650px;
+}
+.our_materials_popup #fancybox-content > div:first-child{
+    height: 650px !important;
+}
+.our_materials_popup #fancybox-outer {
+    height: 650px;
+}
+.our_materials_popup #fancybox-content {
+    height: 650px !important;
+}
+//Custom Order
+.custom_order_popup{
+    height: 140px;
+}
+.custom_order_popup #fancybox-content > div:first-child{
+    height: 140px !important;
+}
+.custom_order_popup #fancybox-outer {
+    height: 140px;
+}
+.custom_order_popup #fancybox-content {
+    height: 140px !important;
+}
+//Frames
+.frames_popup{
+    height: 200px;
+}
+.frames_popup #fancybox-content > div:first-child{
+    height: 200px !important;
+}
+.frames_popup #fancybox-outer {
+    height: 200px;
+}
+.frames_popup #fancybox-content {
+    height: 200px !important;
+}
+//Canvas Borders
+.canvas_borders_popup{
+    height: 850px;
+}
+.canvas_borders_popup #fancybox-content > div:first-child{
+    height: 850px !important;
+}
+.canvas_borders_popup #fancybox-outer {
+    height: 850px;
+}
+.canvas_borders_popup #fancybox-content {
+    height: 850px !important;
+}
+//Mat design??
+
+/* define sizes for each popup END*/
+
+
+div.select-frame-colors {
+    margin-top: 30px;
+}
+.select_frame_colors div,.select_frame_colors p{
+    float:left;
+    margin-right:10px;
+}
+.select_frame_colors label{
+    line-height: 24px;
+    margin-left: 5px;
+    line-height: 25px;
+}
+.square {
+    border: 1px solid #888;
+    float: left;
+    height: 20px;
+    width: 20px;
+    border-radius: 3px;
+}
+.square-black{
+    background-color:black;
+}
+.square-metallic{
+    background-color:#666666;
+}
+.square-wood{
+    background-color:#734e0a;
+}
+.square-white{
+    background-color:white;
+}
+.select_frame_colors{
+    margin-top:30px;
+}
+.canvas_borders_popup p{
+    margin-bottom:30px;
+}
+.canvas_borders_preview{
+    border-radius: 50%;
+    float: left;
+    margin-top: -20px !important;
+}
+.clear_popup{
+    clear:both;
+    height: 180px;
+}
+.canvas_borders_popup .clear_popup p{
+    padding-left: 120px;
+    padding-top: 20px;
+}
+/* JP: For ticket 198 End*/
+>>>>>>> origin/#198-Design_the_help_info_for_the_custom_pages

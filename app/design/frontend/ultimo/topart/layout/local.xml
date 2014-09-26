@@ -813,4 +813,9 @@
             <action method="setTemplate"><template>page/1column.phtml</template></action>
         </reference>
     </contacts_index_index>
+    <customer_first_time>
+        <reference name="footer">
+            <block type="core/template" name="customer.first.time" template="customer/popup.phtml" output="toHtml" />
+        </reference>
+    </customer_first_time>
 </layout>

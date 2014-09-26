@@ -338,13 +338,17 @@
 .products-list .product-image img, .category-products-grid .product-image img{
     height: auto !important;
 }
-.item:nth-child(4n+1) {
-    clear:none !important;
-}
 .itemgrid-3col .item:nth-child(3n+1) {
     clear: left !important;
 }
-.itemgrid-adaptive.itemgrid-3col .item:nth-child(4n+1){
+
+.home-content .category-products .itemgrid-3col .item:nth-child(4n+1){ clear:left !important; }
+.home-content .category-products .itemgrid-adaptive.itemgrid-3col .item {
+    display: table;
+    padding-bottom: 60px;
+    width: 22%;
+}
+.home-content .category-products .itemgrid-3col .item:nth-child(3n+1) {
     clear: none !important;
 }
 </style>

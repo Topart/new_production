@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config>
+	<tabs>
+		<springbot translate="label">
+			<label>Springbot</label>
+			<sort_order>88888</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>0</show_in_website>
+			<show_in_store>0</show_in_store>
+		</springbot>
+	</tabs>
+	<sections>
+		<springbot translate="label" module="combine">
+			<label>Harvest</label>
+			<tab>springbot</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>1000</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>0</show_in_website>
+			<show_in_store>0</show_in_store>
+			<groups>
+				<config translate="label">
+					<label>System Configuration</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>150</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<php_exec translate="label">
+							<label>PHP Executable</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Use this to define the PHP executable (including any runtime options) that you wish Springbot to use. If you don't know what this means, leave it blank!</comment>
+						</php_exec>
+						<segment_size translate="label">
+							<label>Segment Size</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>12</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Defines the maximum segment inspected during harvest</comment>
+						</segment_size>
+						<ignore_store_list translate="label">
+							<label>Ignore Store List</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Comma-separated list of stores to ignore.  Leave blank to harvest all stores.</comment>
+						</ignore_store_list>
+						<define_store_list translate="label">
+							<label>Explicitly Define Stores to Harvest</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>Comma-separated list of stores to harvest.  Leave blank to harvest all stores.  Ignores will supercede the values in this list.</comment>
+						</define_store_list>
+						<account_email translate="label">
+							<label>Springbot Username</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+						</account_email>
+						<account_password translate="label">
+							<label>Springbot Password</label>
+							<frontend_type>obscure</frontend_type>
+							<backend_model>adminhtml/system_config_backend_encrypted</backend_model>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+						</account_password>
+						<remote_update translate="label">
+							<label>Allow Remote Update</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</remote_update>
+						<stability translate="label">
+							<label>Minimum Acceptable Stability</label>
+							<frontend_type>select</frontend_type>
+							<source_model>combine/system_config_source_stability</source_model>
+							<sort_order>70</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<size>2</size>
+						</stability>
+						<show_notifications translate="label">
+							<label>Show Notifications</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>80</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</show_notifications>
+						<email_selector translate="label">
+							<label>Email Javascript Selector</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>90</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<comment>Comma separated list of IDs for the frontend field where a user enters their email address.</comment>
+						</email_selector>
+						<email_selector translate="label">
+							<label>Email Javascript Selector Classes</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>100</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<comment>Comma separated list of Classes for the frontend field where a user enters their email address.</comment>
+						</email_selector>
+						<security_token translate="label">
+						    <label>Security Token</label>
+						    <frontend_type>text</frontend_type>
+						    <sort_order>110</sort_order>
+						    <show_in_default>1</show_in_default>
+						    <show_in_website>0</show_in_website>
+						    <comment>Springbot supplied security token.</comment>
+						</security_token>
+
+					</fields>
+				</config>
+				<images translate="label">
+					<label>Images</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>250</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<use_cached_images translate="label">
+							<label>Use Cached Images</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<comment>Selecting yes will generate a cached image on your server.  Clearing image cache will require a full reharvest.  If you do not know what this means, this should be left off.</comment>
+						</use_cached_images>
+						<!--<pixel_width translate="label">
+							<label>Image Pixel Width</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<can_be_empty>1</can_be_empty>
+							<depends>
+								<use_cached_images>1</use_cached_images>
+							</depends>
+							<comment>This sets pixel width for cached images.</comment>
+						</pixel_width>-->
+					</fields>
+				</images>
+				<debug translate="label">
+					<label>Debug</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>350</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<log_http translate="label">
+							<label>Log HTTP Requests</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>&lt;strong style="color:red"&gt;Warning!&lt;/strong&gt; Please monitor disk space if setting to Debug level, filesize may grow rapidly.</comment>
+						</log_http>
+						<log_level translate="label">
+							<label>Log Level</label>
+							<frontend_type>select</frontend_type>
+							<source_model>combine/system_config_source_logLevel</source_model>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<comment>&lt;strong style="color:red"&gt;Warning!&lt;/strong&gt; For debugging purposes only! It will create very large log files quickly on a busy site.</comment>
+						</log_level>
+						<log_format translate="label">
+							<label>Log Format</label>
+							<frontend_type>select</frontend_type>
+							<source_model>combine/system_config_source_logFormat</source_model>
+							<sort_order>25</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</log_format>
+						<expire_time_days translate="label">
+							<label>Delete Log Files after X Days</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+						</expire_time_days>
+						<filesize_limit translate="label">
+							<label>Filesize Limit</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<comment>Filesize limit in bytes for when to roll log files over</comment>
+						</filesize_limit>
+					</fields>
+				</debug>
+				<cron translate="label">
+					<label>Cron</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>450</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<enabled translate="label">
+							<label>Run in Cron Mode</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</enabled>
+						<max_jobs translate="label">
+							<label>Max jobs to run per instance</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<comment>This is the maximum number of jobs the cron worker will attempt to run each time it is called. Leave blank for unlimited.</comment>
+						</max_jobs>
+					</fields>
+				</cron>
+				<advanced translate="label">
+					<label>Advanced Config</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>550</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<nohup translate="label">
+							<label>Nohup</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>70</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</nohup>
+						<nice translate="label">
+							<label>Nice</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>80</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</nice>
+                        <worker_count translate="label">
+                            <label>Worker Count</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </worker_count>
+						<sleep_interval translate="label">
+							<label>Sleep Interval</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>100</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</sleep_interval>
+						<extended_config translate="label">
+							<label>Extended Configuration</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>110</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</extended_config>
+						<product_url_type translate="label">
+							<label>Product Url Type</label>
+							<frontend_type>select</frontend_type>
+							<source_model>combine/system_config_source_urlType</source_model>
+							<sort_order>120</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</product_url_type>
+					</fields>
+				</advanced>
+				<cart_restore>
+					<label>Restore Carts</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>560</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>0</show_in_website>
+					<show_in_store>0</show_in_store>
+					<fields>
+						<do_restore translate="label">
+							<label>Restore Carts</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>90</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</do_restore>
+						<retain_coupon translate="label">
+							<label>Restore Coupons</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>110</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</retain_coupon>
+					</fields>
+				</cart_restore>
+			</groups>
+		</springbot>
+	</sections>
+</config>
+
