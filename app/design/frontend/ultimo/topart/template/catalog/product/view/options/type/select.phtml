@@ -28,7 +28,6 @@
 <?php /* @var $this Mage_Catalog_Block_Product_View_Options_Type_Select */ ?>
 <?php $_option = $this->getOption() ?>
 <?php $option_title = strtolower(str_replace(" ","_", $this->htmlEscape($_option->getTitle()) )); ?>
-
 <?php if($option_title !='size'):?>
     <div class="option-reloaded">
 <?php endif; ?>
@@ -413,7 +412,7 @@
             $values = $o->getValues();
             $test = array();
             $test2 = array();
-            
+            //size_photopaper_oversize_ui_84_width_48_length_36
             foreach ($values as $v)
             {
                 $option_sku = $v->getData('sku');
@@ -462,7 +461,6 @@
                         // Size initials out of the sku name
                         $size_initial = "";
 
-
                         $size_value_array = explode( "_" , $option_sku );
                         $test[] = $size_value_array;
                         
@@ -473,7 +471,16 @@
                         }
                         
                         $product_size = $size_value_array[6] ."&#34; x " . $size_value_array[8] . "&#34;";
-                        $size_initial = $product_size;
+                        
+                        $product_size = $this->getSize($option_sku);
+                        //47&#34; x 35&#34;
+                        if(is_array($product_size)){
+                            if(isset($product_size["width"],$product_size["length"])){
+                                $product_size = $product_size["width"] ."&#34; x " . $product_size["length"] . "&#34;";
+                                //47&#34; x 35&#34;
+                                $size_initial = $product_size;
+                            }
+                        }
                         
                         /*if($size_initial == "width\" x length\""){
                             die("option_sku: ".$option_sku);
