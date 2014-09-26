@@ -1334,17 +1334,20 @@ a#details .product_function_text
 
 #canvas_white_borders
 {
-  background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/canvas_white_borders.png');
+  
+  background-image: url(../images/white-border.png);
 }
 
 #canvas_black_borders
 {
-  background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/canvas_black_borders.png');
+  
+  background-image: url(../images/mirror-border.png);
 }
 
 #canvas_mirrored
 {
-  background-image: url('https://d3odr912zwpuhm.cloudfront.net/icons/canvas_mirrored.png');
+  
+  background-image: url(../images/black-border.png);
 }
 
 
@@ -2011,6 +2014,9 @@ ul#custom_option_material li {
 #fancybox-content h3,#fancybox-content h4{
     font-family: 'Libre Baskerville', serif;
 }
+#fancybox-content span{
+    font-weight: bold;
+}
 #fancybox-content h3{
     color: #b4a063;
     border-bottom: 1px solid #b4a063;
@@ -2041,7 +2047,8 @@ ul#custom_option_material li {
     padding: 30px;
 }
 #fancybox-content {
-    font-family: "Libre Baskerville",serif;
+    font:75%/150% bentonsansregular,Arial,Helvetica,sans-serif;
+    font-size: 14px;
 }
 .info_size_fancy ol{
     padding-left: 20px;
@@ -2060,35 +2067,112 @@ ul#custom_option_material li {
     font-weight: bold;
     text-decoration: underline;
 }
+/* define sizes for each popup START*/
 //Our Materials
 .our_materials_popup{
-    height: 623px;
+    height: 650px;
 }
 .our_materials_popup #fancybox-content > div:first-child{
-    height: 623px !important;
+    height: 650px !important;
 }
 .our_materials_popup #fancybox-outer {
-    height: 623px;
+    height: 650px;
 }
 .our_materials_popup #fancybox-content {
-    height: 623px !important;
+    height: 650px !important;
 }
 //Custom Order
 .custom_order_popup{
-    height: 122px;
+    height: 140px;
 }
 .custom_order_popup #fancybox-content > div:first-child{
-    height: 122px !important;
+    height: 140px !important;
 }
 .custom_order_popup #fancybox-outer {
-    height: 122px;
+    height: 140px;
 }
 .custom_order_popup #fancybox-content {
-    height: 122px !important;
+    height: 140px !important;
 }
 //Frames
-
+.frames_popup{
+    height: 200px;
+}
+.frames_popup #fancybox-content > div:first-child{
+    height: 200px !important;
+}
+.frames_popup #fancybox-outer {
+    height: 200px;
+}
+.frames_popup #fancybox-content {
+    height: 200px !important;
+}
 //Canvas Borders
-
+.canvas_borders_popup{
+    height: 850px;
+}
+.canvas_borders_popup #fancybox-content > div:first-child{
+    height: 850px !important;
+}
+.canvas_borders_popup #fancybox-outer {
+    height: 850px;
+}
+.canvas_borders_popup #fancybox-content {
+    height: 850px !important;
+}
 //Mat design??
+
+/* define sizes for each popup END*/
+
+
+div.select-frame-colors {
+    margin-top: 30px;
+}
+.select_frame_colors div,.select_frame_colors p{
+    float:left;
+    margin-right:10px;
+}
+.select_frame_colors label{
+    line-height: 24px;
+    margin-left: 5px;
+    line-height: 25px;
+}
+.square {
+    border: 1px solid #888;
+    float: left;
+    height: 20px;
+    width: 20px;
+    border-radius: 3px;
+}
+.square-black{
+    background-color:black;
+}
+.square-metallic{
+    background-color:#666666;
+}
+.square-wood{
+    background-color:#734e0a;
+}
+.square-white{
+    background-color:white;
+}
+.select_frame_colors{
+    margin-top:30px;
+}
+.canvas_borders_popup p{
+    margin-bottom:30px;
+}
+.canvas_borders_preview{
+    border-radius: 50%;
+    float: left;
+    margin-top: -20px !important;
+}
+.clear_popup{
+    clear:both;
+    height: 180px;
+}
+.canvas_borders_popup .clear_popup p{
+    padding-left: 120px;
+    padding-top: 20px;
+}
 /* JP: For ticket 198 End*/
