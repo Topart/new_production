@@ -1334,20 +1334,17 @@ a#details .product_function_text
 
 #canvas_white_borders
 {
-  
   background-image: url(../images/white-border.png);
 }
 
 #canvas_black_borders
 {
-  
-  background-image: url(../images/mirror-border.png);
+  background-image: url(../images/black-border.png);
 }
 
 #canvas_mirrored
 {
-  
-  background-image: url(../images/black-border.png);
+  background-image: url(../images/mirror-border.png);
 }
 
 
