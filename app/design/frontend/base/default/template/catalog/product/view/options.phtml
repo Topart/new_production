@@ -29,6 +29,12 @@
 <?php $_options = Mage::helper('core')->decorateArray($this->getOptions()) ?>
 <?php if (count($_options)):?>
     <script type="text/javascript">
+        setTimeout(function(){
+            jQuery("#cboxOverlay").show();
+            jQuery("#fancybox-loading").show();
+            jQuery("#cboxOverlay").css("opacity","0.5");
+        },100);
+        
     //<![CDATA[
     var optionFileUpload = {
         productForm : $('product_addtocart_form'),
@@ -110,6 +116,7 @@
             document.observe("dom:loaded", this.reloadPrice.bind(this));
         },
         reloadPrice : function() {
+            
             var config = this.config;
             var skipIds = [];
             $$('body .product-custom-option').each(function(element){
@@ -166,10 +173,14 @@
                         });
                     } else {
                         optionsPrice.addCustomPrices(element.id || optionId, curConfig);
+                        optionsPrice = optionsPrice;
                         optionsPrice.reload();
                     }
                 }
             });
+            
+            jQuery("#cboxOverlay").hide();
+            jQuery("#fancybox-loading").hide();
         }
     }
     function validateOptionsCallback(elmId, result) {
@@ -191,3 +202,27 @@
     <?php endforeach; ?>
     </dl>
 <?php endif; ?>
+<script>
+    jQuery(document).ready(function(){
+        
+        setTimeout(function(){
+            jQuery("#cboxOverlay").hide();
+            jQuery("#fancybox-loading").hide();
+        },2000);
+        
+        jQuery(document).on("mousedown", ".product-custom-option", function(){
+            
+            var $this = jQuery(this);
+            
+            jQuery("#cboxOverlay").show();
+            
+            jQuery("#fancybox-loading").show();
+            
+            jQuery("#cboxOverlay").css("opacity","0.5");
+            
+            setTimeout(function(){
+                jQuery($this).click();
+            },100);
+        });
+    });
+</script>
