@@ -1712,7 +1712,23 @@ var globals = {};
 
 				// Select the corresponding dropdown value from the framing list
 				clicked_image_index = jQuery(this).index()+1;
-				jQuery("dd.frame select option:eq(" + clicked_image_index + ")").attr("selected", "selected");
+                                
+                                var id_li = jQuery(this).attr("id");
+                                
+                                var pos_li = false;
+                                
+                                jQuery(this).parent().find("li").each(function(i){
+                                    if(jQuery(this).attr("id") ==id_li){
+                                        pos_li = i;
+                                    }
+                                })
+                                
+                                if(pos_li){
+                                    jQuery("dd.frame select option:eq(" + (pos_li+1) + ")").attr("selected", "selected");
+                                }else{
+                                    jQuery("dd.frame select option:eq(" + clicked_image_index + ")").attr("selected", "selected");
+                                }
+				
 				jQuery("dd.frame select").change();
 
 				// If the previously selected mat is not available anymore with the new size selection, then reset the matting

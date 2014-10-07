@@ -22,6 +22,12 @@
  * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
+var global = {};
+
+global.primera_pasada = true;
+global.count = 0;
+global.count_each = 0;
+
 if(typeof Product=='undefined') {
     var Product = {};
 }
@@ -639,13 +645,16 @@ Product.OptionsPrice.prototype = {
         var optionOldPrice = optionPrices[2];
         var priceInclTax = optionPrices[3];
         optionPrices = optionPrices[0];
-
+        
         $H(this.containers).each(function(pair) {
             var _productPrice;
             var _plusDisposition;
             var _minusDisposition;
             var _priceInclTax;
             if ($(pair.value)) {
+                if(global.count == 1040){
+                    stop = 0;
+                }
                 if (pair.value == 'old-price-'+this.productId && this.productOldPrice != this.productPrice) {
                     _productPrice = this.productOldPrice;
                     _plusDisposition = this.oldPlusDisposition;
@@ -682,29 +691,67 @@ Product.OptionsPrice.prototype = {
                 }
 
                 var subPrice = 0;
+                global.count_each = 0;
                 var subPriceincludeTax = 0;
                 Object.values(this.customPrices).each(function(el){
+                    global.count_each++;
+                    
                     if (el.excludeTax && el.includeTax) {
+                        
+                        if(global.count == 26395){
+                            if(global.count_each == 28){
+                                stop = 3;
+                            }
+                        }
 
                         // Framing and Stretching
                         if ( parseFloat(el.excludeTax) < 5.0 && parseFloat(el.excludeTax) > 1.0 )
                         {
-                            if ( !isNaN(parseFloat(this.selected_mats_size)) )
-                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui) + 4.0 * parseFloat(this.selected_mats_size) );
-                            else
+                            if(el.excludeTax==2.18){
+                                retorno = 0;
+                            }
+                            
+                            if ( !isNaN(parseFloat(this.selected_mats_size)) ){
+                                a = parseFloat(el.excludeTax);
+                                b = parseFloat(this.size_ui);
+                                c = 4.0;
+                                d = 3;//parseFloat(this.selected_mats_size);
+                                res = a * b + c * d;
+                                
+                                tmp = subPrice;
+                                
+                                tmp += res;
+                                
+                                mult = 3 * (parseFloat(this.selected_mats_size)+2);
+                                
+                                subPrice = tmp;
+                                //subPrice -= el.excludeTax;
+                                
+                                subPrice +=  mult;
+                            }
+                            else{
                                 subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui));
+                                //subPrice -= el.excludeTax;
+                            }
+                                
                             
                             // Canvas stretching does not have the additional mounting price: change this whenever the canvas stretching retail price is updated
                             if (parseFloat(el.excludeTax) != 1.08)
                                 subPrice += parseFloat(12.00);
                         }
+                        
+                        if(subPrice == 134.72){
+                            global.count_each;
+                        }
                         // Matting
                         else if ( parseFloat(el.excludeTax) < 1.0 )
                         {
-                            subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui) + 4.0 * parseFloat(this.selected_mats_size) );
+                            if(subPrice == 0){
+                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui) + 4.0 * parseFloat(this.selected_mats_size) );
+                            }
                         }
-                        else
-                            subPrice += parseFloat(el.excludeTax);
+                        /*else
+                            subPrice += parseFloat(el.excludeTax);*/
                         
                         subPriceincludeTax += parseFloat(el.includeTax);
                     } else {
@@ -745,6 +792,14 @@ Product.OptionsPrice.prototype = {
                     }
                 }
 
+                if(price != 0){
+                    if(global.primera_pasada){
+                        global.primera_pasada = false;
+                        global.count;
+                    }
+                    
+                }
+
                 if (price < 0) price = 0;
 
                 if (price > 0 || this.displayZeroPrice) {
@@ -765,6 +820,7 @@ Product.OptionsPrice.prototype = {
                     }
                 }
             };
+            global.count++;
         }.bind(this));
 
 		// The product price is not correctly updated with the below commented original... 
