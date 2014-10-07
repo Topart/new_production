@@ -1334,7 +1334,9 @@ var globals = {};
 		// Dynamic framing/matting effect
 		function activate_dynamic_framing_matting(frame_image_url, mats_color_code, mats_size)
 		{
-
+                        
+                        frame_scale_factor = 0.3;
+                        
 			if (frame_image_url.indexOf("/.png") != -1)
 			{
 			
