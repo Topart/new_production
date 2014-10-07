@@ -750,8 +750,11 @@ Product.OptionsPrice.prototype = {
                                 subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui) + 4.0 * parseFloat(this.selected_mats_size) );
                             }
                         }
-                        /*else
-                            subPrice += parseFloat(el.excludeTax);*/
+                        else{
+                            if(subPrice == 0){
+                                subPrice += parseFloat(el.excludeTax);
+                            }
+                        }
                         
                         subPriceincludeTax += parseFloat(el.includeTax);
                     } else {
