@@ -3413,9 +3413,6 @@ form#create-art-upload{
 	text-align: center;
 	background-color: white;
 }
-.create-art-list-container > ul > li:nth-child(3) {
-    width: 31.4%;	
-}
 .create-art-list-container > ul > li > a > img{
 	/*width: 100%;*/
 	max-height: 354px;
@@ -3940,9 +3937,6 @@ ul.create-art-list li div:nth-child(3){
     /*JP: for ticket 212 Fix End*/
     
     /*JP: for ticket 203 Fix fix Start*/
-    ul.create-art-list li:nth-child(3) {
-	width: 31.4%;	
-    }
     ul.create-art-list li:nth-child(3) img{
         width: 370px;
     }
