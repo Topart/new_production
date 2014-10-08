@@ -3413,9 +3413,12 @@ form#create-art-upload{
 	text-align: center;
 	background-color: white;
 }
+.create-art-list-container > ul > li:nth-child(3) {
+    width: 31.4%;	
+}
 .create-art-list-container > ul > li > a > img{
 	/*width: 100%;*/
-	max-height: 272px;
+	max-height: 354px;
 }
 .create-art-list-container > ul > li.middle-li{
 	margin: 0em 5% 2em 5%;
@@ -3440,7 +3443,25 @@ form#create-art-upload{
 	margin-top: 4px;
 }
 .create-art-list li > div{
-	margin: 10px 0px;
+    margin: 25px 0px;
+}
+.create-art-list li > div{
+    margin-bottom:0px;
+}
+ul.create-art-list li div:nth-child(2){
+    line-height: 1.25em;
+    margin-bottom: 0.625em;
+    padding-bottom: 0px;
+    padding-right: 35px;
+    padding-top: 8px;
+    color: black !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    margin-top: 5px;
+}
+ul.create-art-list li div:nth-child(3){
+    margin-top:0px;
 }
 #create-accept-checkbox {
 	vertical-align: top;
@@ -3917,3 +3938,12 @@ form#create-art-upload{
         width: 284px \0/IE9; 
     }
     /*JP: for ticket 212 Fix End*/
+    
+    /*JP: for ticket 203 Fix fix Start*/
+    ul.create-art-list li:nth-child(3) {
+	width: 31.4%;	
+    }
+    ul.create-art-list li:nth-child(3) img{
+        width: 370px;
+    }
+    /*JP: for ticket 203 Fix fix End*/
