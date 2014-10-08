@@ -712,7 +712,7 @@ Product.OptionsPrice.prototype = {
                             }
                             
                             if ( !isNaN(parseFloat(this.selected_mats_size)) ){
-                                a = parseFloat(el.excludeTax);
+                                /*a = parseFloat(el.excludeTax);
                                 b = parseFloat(this.size_ui);
                                 c = 4.0;
                                 d = 3;//parseFloat(this.selected_mats_size);
@@ -727,7 +727,8 @@ Product.OptionsPrice.prototype = {
                                 subPrice = tmp;
                                 //subPrice -= el.excludeTax;
                                 
-                                subPrice +=  mult;
+                                subPrice +=  mult;*/
+                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui));
                             }
                             else{
                                 subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui));

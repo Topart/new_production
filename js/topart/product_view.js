@@ -3033,6 +3033,33 @@ var globals = {};
                     jQuery("#fancybox-wrap").addClass("mat_popup");
                 });
               /*JP: For ticket 198 End*/
+              /**/
+                jQuery(document).on("change","dd.mat input.product-custom-option",function(){
+                    console.log("entre");
+                    var current_price = jQuery(".regular-price .price").text();
+                        current_price = current_price.trim();
+                        
+                    var cpos = current_price.indexOf("$");
+                    
+                    if(cpos!==-1){
+                      current_price = parseFloat(current_price.substring(cpos+1,current_price.length));
+                    }
+
+                    var rprice = jQuery("dd.mat .product-custom-option:checked").next().find("span").text();
+                    var pos = rprice.indexOf("$");
+
+                    if(pos!==-1){
+                      rprice = parseFloat(rprice.substring(pos+1,rprice.length));
+                    }
+                    
+                    if((rprice != "" && rprice != NaN) && (current_price != NaN && current_price != "")){
+                        ttotal = rprice + current_price;
+                        jQuery(".regular-price .price").text("$"+ttotal);
+                    }
+                    //product-custom-optio
+                    
+                });
+              /**/
 	});
         
 /* JP: For ticket 137 Start*/
