@@ -3942,20 +3942,19 @@ ul.create-art-list li div:nth-child(3){
     }
     /*JP: for ticket 203 Fix fix End*/
     /*JP 203 Start*/
-#welcome-message h2{
-    border-bottom: 1px solid #b4a063;
-    color: #b4a063;
-    font-size: 30px;
-    margin-bottom: 25px;
-    text-align: left;
-    font-family: "Libre Baskerville",serif;
-}
-
-#welcome-message p{
-    color: #444;
-    font-size: 14px;
-}
-#welcome-message {
-    text-align: left;
-}
-/*JP 203 End*/
+    #welcome-message h2{
+        border-bottom: 1px solid #b4a063;
+        color: #b4a063;
+        font-size: 30px;
+        margin-bottom: 25px;
+        text-align: left;
+        font-family: "Libre Baskerville",serif;
+    }
+    #welcome-message p{
+        color: #444;
+        font-size: 14px;
+    }
+    #welcome-message {
+        text-align: left;
+    }
+    /*JP 203 End*/
