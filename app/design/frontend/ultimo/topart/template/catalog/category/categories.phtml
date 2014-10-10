@@ -2,6 +2,37 @@
     .create-art-list{
         /*width: 615px !important;*/
     }
+    .img-collection-text {
+        background-color: black;
+        color: white;
+        font-size: 18px;
+        left: 5px;
+        opacity: 0.5;
+        padding-bottom: 5px;
+        padding-left: 20px !important;
+        padding-right: 5px;
+        padding-top: 20px !important;
+        top: 5px;
+        width: 92.1%;
+    }
+    .item-isotope-6{
+        left: 677px !important;
+        top: 922px !important;
+    }
+    
+    .item-isotope-7{
+        left: 0 !important;
+        top: 1018px !important;
+    }
+    .item-isotope-8{
+        left: 240px !important;
+        top: 1018px !important;
+    }
+    .item-isotope-9{
+        left: 445px !important;
+        top: 1208px !important;
+        height: 238.75px !important;
+    }
 </style>
 <div class="category-products">
 <?php
@@ -16,7 +47,7 @@
 
     <?php 
         $_columnCount = $this->getColumnCount();/*'4'*/  
-        $i=0;
+        $count = 0;
         foreach ($_categories as $k => $_category):
             $firstItemSku = $_category->getProductCollection()->getFirstItem()->getSku();
             $categoryImg = $_helper->getAmazonS3CategoryUrl() .$firstItemSku . '.jpg';
@@ -25,15 +56,16 @@
             $categoryImg = Mage::getModel('catalog/category')->load($k)->getImageUrl(); 
             $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name'); 
             if(getimagesize($categoryImg)): ?>
-            <div class="item-isotope">
+            <div class="item-isotope item-isotope-<?php echo $count ." "; if($count>9){echo "item-isotope-sp";} ?> ">
                 <a href="<?php echo $anchor ?>">
                     <img src="<?php echo $categoryImg; ?>" alt="<?php echo $categoryName; ?>" />
-                    <!--<div>
-                        <?php //echo $catVar ?>
-                    </div>-->
+                    <div class="img-collection-text" style="position:absolute">
+                        <?php echo $catVar ?>
+                    </div>
                 </a>
-            </div>
+            </div>            
             <?php endif; ?>
+    <?php $count++; ?>
     <?php endforeach; ?>
         </div>
     </div>
@@ -41,17 +73,40 @@
 <?php endif; ?>
 <script>
 jQuery(document).ready(function(){
+    
     jQuery(".item-isotope").each(function(){
         img = jQuery(this).find("img");
         w = img.width();
+        w = w * 0.75;
         h = img.height();
-        jQuery(this).attr("style","height:"+/*(parseFloat(*/h/*)+18)*/+"px;width:"+w+"px;")
+        h = h * 0.75;
+        
+        if(w<250){
+            width_background = w-25;
+           jQuery(this).find(".img-collection-text").css("width",width_background);
+        }
+        
+        jQuery(this).attr("style","height:"+/*(parseFloat(*/h/*)+18)*/+"px;width:"+w+"px;padding:5px;");
     });
+    
     $container = jQuery(".create-art-list");
+    
     $container.isotope({
       itemSelector: '.item-isotope',
       layoutMode: 'masonry'
     });
+    
+    /*jQuery(".item-isotope-sp").each(function(){
+        top = (parseFloat(jQuery(this).css("top"))-285);
+        jQuery(this).css("top",top); 
+    });*/
+        jQuery(".item-isotope-sp").each(function(){
+            t = jQuery(this).css("top")
+            t = parseFloat(t);
+            t = t-285;
+            jQuery(this).css("top",t); 
+        })
+    
 });
 </script>
 </div>
