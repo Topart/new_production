@@ -17,47 +17,18 @@
         padding-top: 7px !important;
         padding-bottom: 10px;
         top: 5px;
-        width: 92.1%;
+        width: 92.0%;
     }
-    .item-isotope-6{
-        left: 677px !important;
-        top: 1029px !important;
-    }
-    
-    .item-isotope-7{
-        left: 0 !important;
-        top: 1104px !important;
-    }
-    .item-isotope-8{
-        left: 240px !important;
-        top: 1104px !important;
-    }
-    .item-isotope-9{
-        left: 445px !important;
-        top: 1318px !important;
-        height: 221.75px !important;
-    }
-    .item-isotope-11{
-        top: 1579px !important;
-    }
-    .item-isotope-14{
-        top: 2188px !important;
-    }
-    .item-isotope-17{
-        top: 2810px !important;
-    }
-    .item-isotope-18{
-        top: 3036px !important;
-    }
-    .item-isotope-20{
-        top: 3308px !important;
-    }
-    
+
 </style>
 <div class="category-products">
 <?php
 	$_helper    = $this->helper('catalog/output');
-	if (!Mage::registry('current_category')) return ?>
+        
+        if (!Mage::registry('current_category')) {
+            return;
+        }
+?>
 <?php $_categories = $this->getCurrentChildCategories();?>
 <?php $_count = is_array($_categories)?count($_categories):$_categories->count();?>
 
@@ -76,6 +47,7 @@
             $categoryImg = Mage::getModel('catalog/category')->load($k)->getImageUrl(); 
             $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name'); 
             if(getimagesize($categoryImg)): ?>
+            
             <div class="item-isotope item-isotope-<?php echo $count ." "; if($count>9){echo "item-isotope-sp";} ?> ">
                 <a href="<?php echo $anchor ?>">
                     <img src="<?php echo $categoryImg; ?>" alt="<?php echo $categoryName; ?>" />
@@ -84,6 +56,7 @@
                     </div>
                 </a>
             </div>            
+            
             <?php endif; ?>
     <?php $count++; ?>
     <?php endforeach; ?>
@@ -101,31 +74,54 @@ jQuery(document).ready(function(){
         h = img.height();
         h = h * 0.75;
         
+        if(w > 430 && w < 440){
+            w = 434;
+        }
+        
+        if(h > 450 && h < 640){
+            h = 520;
+        }
+        
+        if(h > 160 && h < 400){
+            h = 260;
+        }
+        
         if(w<250){
-            width_background = w-25;
+            w = 217;
+            width_background = w-35;
            jQuery(this).find(".img-collection-text").css("width",width_background);
         }
         
-        jQuery(this).attr("style","height:"+/*(parseFloat(*/h/*)+18)*/+"px;width:"+w+"px;padding:5px;");
+        jQuery(this).attr("style","height:"+/*(parseFloat(*/h/*)+18)*/+"px;width:"+w+"px;padding:0px;");
+        
+        
+        
+        
+        if(h == 260){
+            jQuery(this).find("img").attr("style","height: 250px; width: "+(w-10)+"px; margin-left: 5px; margin-top: 5px;");
+        }else{
+            jQuery(this).find("img").attr("style","height: "+(h-10)+"px; width: "+(w-10)+"px; margin-left: 5px; margin-top: 5px;");
+        }
+        
     });
     
     $container = jQuery(".create-art-list");
     
     $container.isotope({
       itemSelector: '.item-isotope',
-      layoutMode: 'masonry'
+      layoutMode: 'masonry',
+      masonry: {
+        columnWidth: 1
+      }
     });
     
-    /*jQuery(".item-isotope-sp").each(function(){
-        top = (parseFloat(jQuery(this).css("top"))-285);
-        jQuery(this).css("top",top); 
-    });*/
-        jQuery(".item-isotope-sp").each(function(){
+    
+        /*jQuery(".item-isotope-sp").each(function(){
             t = jQuery(this).css("top")
             t = parseFloat(t);
             t = t-285;
             jQuery(this).css("top",t); 
-        })
+        })*/
     
 });
 </script>
