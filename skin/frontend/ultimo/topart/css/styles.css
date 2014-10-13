@@ -3942,20 +3942,46 @@ ul.create-art-list li div:nth-child(3){
     }
     /*JP: for ticket 203 Fix fix End*/
     /*JP 203 Start*/
-#welcome-message h2{
-    border-bottom: 1px solid #b4a063;
-    color: #b4a063;
-    font-size: 30px;
-    margin-bottom: 25px;
-    text-align: left;
-    font-family: "Libre Baskerville",serif;
-}
-
-#welcome-message p{
-    color: #444;
-    font-size: 14px;
-}
-#welcome-message {
-    text-align: left;
-}
-/*JP 203 End*/
+    #welcome-message h2{
+        border-bottom: 1px solid #b4a063;
+        color: #b4a063;
+        font-size: 30px;
+        margin-bottom: 25px;
+        text-align: left;
+        font-family: "Libre Baskerville",serif;
+    }
+    #welcome-message p{
+        color: #444;
+        font-size: 14px;
+    }
+    #welcome-message {
+        text-align: left;
+    }
+    /*JP 203 End*/
+    /*JP 203 Start*/
+    .item-isotope .item-isotope-background{
+        background-color: black;
+        height: 100%;
+        opacity: 0.5;
+        position: absolute;
+        width: 100%;
+    }
+    .item-isotope .item-isotope-more{
+        background: url("../images/more.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+        display: block;
+        height: 120px;
+        width: 120px;
+        margin: -60px auto 0;
+    }
+    .item-isotope-alt {
+        height: 50%;
+        position: relative;
+        width: 100%;
+    }
+    .item-isotope-background{
+        display:none;
+    }
+    .item-isotope a:hover .item-isotope-background{
+        display:block;
+    }
+    /**/

@@ -3002,7 +3002,7 @@ var globals = {};
               });
               /*JP: For ticket 109 Start*/
                 jQuery("#tab-description").hide();
-                setTimeout(function(){jQuery("#tab-tabreviews a").click();},5000)
+                setTimeout(function(){jQuery("#tab-tabreviews").next().find("a:first").click();},5000)
               /*JP: For ticket 109 End*/
               
               /*JP: For ticket 198 Start*/

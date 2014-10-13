@@ -413,11 +413,14 @@
             $test = array();
             $test2 = array();
             //size_photopaper_oversize_ui_84_width_48_length_36
+            $show_fraction = true;
             foreach ($values as $v)
             {
                 $option_sku = $v->getData('sku');
                 
-                $fraction = $v->getData('sku');
+                $option_sku_temp = $option_sku;
+                
+                $fraction = $_product->getData('udf_image_size_in');
                 
                 $test2[] = $option_sku;
                 
@@ -476,11 +479,21 @@
                         
                         $product_size = $this->getSize($option_sku);
                         //47&#34; x 35&#34;
+                        
                         if(is_array($product_size)){
                             if(isset($product_size["width"],$product_size["length"])){
-                                $product_size = $product_size["width"] ."&#34; x " . $product_size["length"] . "&#34;";
-                                //47&#34; x 35&#34;
-                                $size_initial = $product_size;
+                                if(strpos($option_sku_temp, "posterpaper") && $show_fraction){
+                                    $fraction = explode(" ",$fraction);
+                                    $fraction = $fraction[0]."&#34; ".$fraction[1]." ".$fraction[2]." ".$fraction[3]."&#34; ".$fraction[4];
+                                    $product_size = $fraction;
+                                    $size_initial = $product_size;
+                                    $show_fraction = false;
+                                }else{
+                                    //custom_option_size_posterpaper_xl_ui_82_width_47_length_35
+                                    $product_size = $product_size["width"] ."&#34; x " . $product_size["length"] . "&#34;";
+                                    //47&#34; x 35&#34;
+                                    $size_initial = $product_size;
+                                }
                             }
                         }
                         
