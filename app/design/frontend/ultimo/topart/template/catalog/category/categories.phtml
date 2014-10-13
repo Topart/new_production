@@ -1,3 +1,13 @@
+<?php
+// Define labels black and white 
+$black = array(
+    "african safari", "art for kids", "art for him", 
+    "modern blooms", "say it with words", "shabby chic", 
+    "the real marilyn", "antonio massa",
+    "cuisine", "dance", "fashion", "music", 
+    "people", "sports & recreation", 
+    "still life", "transportation");
+?>
 <style>
     .create-art-list{
         /*width: 615px !important;*/
@@ -6,18 +16,19 @@
         height: 4150px !important;
     }
     .img-collection-text {
-        background-color: black;
         color: white;
-        font-size: 18px;
+        font-size: 24px;
         left: 5px;
-        opacity: 0.5;
         padding-bottom: 5px;
         padding-left: 20px !important;
         padding-right: 5px;
-        padding-top: 7px !important;
+        padding-top: 12px !important;
         padding-bottom: 10px;
         top: 5px;
         width: 92.0%;
+    }
+    .img-collection-text-black{
+        color: black;
     }
 
 </style>
@@ -51,7 +62,8 @@
             <div class="item-isotope item-isotope-<?php echo $count ." "; if($count>9){echo "item-isotope-sp";} ?> ">
                 <a href="<?php echo $anchor ?>">
                     <img src="<?php echo $categoryImg; ?>" alt="<?php echo $categoryName; ?>" />
-                    <div class="img-collection-text" style="position:absolute">
+                    
+                    <div class="img-collection-text <?php if(in_array(strtolower(trim($catVar)), $black)) echo "img-collection-text-black"?>" style="position:absolute">
                         <?php echo $catVar ?>
                     </div>
                 </a>
