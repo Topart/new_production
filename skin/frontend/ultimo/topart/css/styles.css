@@ -3982,6 +3982,155 @@ ul.create-art-list li div:nth-child(3){
         display:none;
     }
     .item-isotope a:hover .item-isotope-background{
-        display:block;
+        display: block;
+        margin-left: 1%;
+        margin-top: 1%;
+        width: 98%;
+        height: 98%;
     }
+    /**/
+    /**/
+    .e-gift-wrapper h1{
+        color: #aaaaaa;
+        font-family: "BaskervilleOldFacSCD";
+        font-size: 28px;
+        font-style: normal;
+        font-weight: normal;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+    #left-column-e-gift,#right-column-e-gift{
+        float:left;
+    }
+    #left-column-e-gift {
+        margin: 0 3% 1% 0;
+        width: 37%;
+    }
+    #right-column-e-gift {
+        width: 48%;
+    }
+    .form-list-gift input, 
+    .form-list-gift textarea,
+    .form-list-gift select{
+        min-width: 80%;
+    }
+    .e-gift-wrapper .add-to-cart,
+    .e-gift-wrapper .btn-cart{
+        float: left;
+    }
+    .e-gift-wrapper .add-to-cart{
+        width: 36%;
+    }
+    .e-gift-wrapper .add-to-links li a{
+        margin-top: -9px;
+    }
+    .e-gift-wrapper .golden-letters{
+        color: #8f752a;
+        float: left;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        margin-top: 15px;
+        width: 100%;
+    }
+    .e-gift-wrapper .form-list-gift{
+        float: left;
+        margin-bottom: 30px;
+        width: 100%;
+    }
+    .e-gift-wrapper .product-options-bottom{
+        
+    }
+    .e-gift-wrapper .product-options-bottom{
+        padding-bottom: 10px;
+    }
+    .e-gift-wrapper label{
+        float: left;
+        font-weight: bold;
+        padding-top: 10px;
+    }
+    .e-gift-wrapper .input-box{
+        float: left;
+        width: 100%;
+    }
+    .e-gift-wrapper .addthis_native_toolbox{
+        border-top: 1px solid rgb(219, 219, 219);
+        float: left;
+        margin-top: 20px;
+        padding-top: 30px;
+    }
+    /*Tabs Start*/
+    .e-gift-tabs{
+        float: left;
+        margin-top: 10%;
+        width: 100%;
+    }
+    .e-gift-tabs .tab-free-shipping{
+        display:table;
+        padding-top: 15px;
+    }
+    .e-gift-tabs .tab-free-shipping li{
+        background-repeat: no-repeat;
+        padding-left: 60px;
+        color: #888;
+        display:table-row;
+    }
+    .e-gift-tabs .tab-free-shipping li p {
+        display: table-cell;
+        height: 49px;
+        padding-bottom: 34px;
+        padding-left: 69px;
+        vertical-align: middle;
+    }
+    .e-gift-tabs .tab-free-shipping li a,.tab-easy-return .right-column a{
+        color: #888;
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    .e-gift-tabs .tab-free-shipping li span{
+        color: #8f752a;
+        font-weight: bold;
+    }
+    .e-gift-tabs .tab-free-shipping .truck{
+        background-image: url(../images/truck.png);
+    }
+    .e-gift-tabs .tab-free-shipping .plane{
+        background-image: url(../images/plane.png);
+    }
+    .e-gift-tabs .tab-free-shipping .hand{
+        background-image: url(../images/hand.png);
+    }
+    .e-gift-tabs .tab-free-shipping .gift{
+        background-image: url(../images/gift.png);
+    }
+    .e-gift-tabs .tab-free-shipping .information{
+        background-image: url(../images/information.png);
+    }
+    .e-gift-tabs .tab-easy-return .left-column{
+        border-right: 1px solid #8f752a;
+        color: #8f752a;
+        float: left;
+        font-size: 26px;
+        padding: 0 20px 20px;
+        width: 12%;
+        height: 170px;
+    }
+    .e-gift-tabs .tab-easy-return .right-column{
+        float: left;
+        padding: 0 20px 20px;
+        width: 74%;
+        color: #888;
+    }
+    .e-gift-tabs .tab-easy-return .left-column span{
+        font-weight: bold;
+        font: bold 138%/150% bentonsansregular,Arial,Helvetica,sans-serif;
+    }
+    .e-gift-tabs .tab-easy-return .right-column span {
+        color: #333;
+        font-weight: bold;
+    }
+    .e-gift-tabs .tab-easy-return p .golden-letters{
+        color: #8f752a;
+    }
+    /*Tabs End*/
     /**/
