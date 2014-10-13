@@ -17,7 +17,8 @@ $black = array(
     }
     .img-collection-text {
         color: white;
-        font-size: 24px;
+        font-size: 22px;
+        line-height: 24px;
         left: 5px;
         padding-bottom: 5px;
         padding-left: 20px !important;
@@ -61,6 +62,10 @@ $black = array(
             
             <div class="item-isotope item-isotope-<?php echo $count ." "; if($count>9){echo "item-isotope-sp";} ?> ">
                 <a href="<?php echo $anchor ?>">
+                    <span class="item-isotope-background">
+                        <div class="item-isotope-alt">&nbsp;</div>
+                        <span class="item-isotope-more"></span>
+                    </span>
                     <img src="<?php echo $categoryImg; ?>" alt="<?php echo $categoryName; ?>" />
                     
                     <div class="img-collection-text <?php if(in_array(strtolower(trim($catVar)), $black)) echo "img-collection-text-black"?>" style="position:absolute">
