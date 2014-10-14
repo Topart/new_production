@@ -19,9 +19,6 @@ if (!defined('awsSecretKey'))
 
 $s3 = new S3(awsAccessKey, awsSecretKey);
 $s3->putBucket($bucket, S3::ACL_PUBLIC_READ);
-?>
-
-<?php
 
 function getExtension($str) {
     $i = strrpos($str, ".");
@@ -35,9 +32,7 @@ function getExtension($str) {
 
 //Here you can add valid file extensions. 
 $valid_formats = array("jpg", "png", "gif", "bmp", "jpeg", "PNG", "JPG", "JPEG", "GIF", "BMP");
-?>
 
-<?php
 //include('image_check.php'); // getExtension Method
 $msg = '';
 $s3file = '';
@@ -116,26 +111,6 @@ $s3_images_base_url = "http://s3.amazonaws.com/topart_images/";
 </script>
 <?php endif; ?>
 <?php
-/***************************************************************************************************************************************/
-/***************************************************************************************************************************************/
-/***************************************************************************************************************************************/
-/**
- * Category view template
- *
- * @see Mage_Catalog_Block_Category_View
- */
-?>
-<?php
-/* $img_uploaded_name = "";
-  if(isset($_FILES)){
-  if(count($_FILES)>0){
-  $img_uploaded_name = $_FILES["file"]['name'];
-  }
-  }
-  echo "<input type='hidden' name='image-uploaded' value='".$img_uploaded_name."'>"; */
-?>
-
-<?php
 $_helper = $this->helper('catalog/output');
 $_category = $this->getCurrentCategory();
 $_imgHtml = '';
@@ -152,80 +127,73 @@ if ($_imgUrl = $_category->getImageUrl()) {
     <?php $parent = $_category->getParentCategory(); ?>
     <div class="page-title category-title-top">
         <h1>
-    <?php $parentName = $_helper->categoryAttribute($parent, $parent->getName(), 'name'); ?>
-    <?php //echo $this->__('Shop our %s', $parentName) ?>
-    <?php echo $this->escapeHtml($_category->getName()) ?>
+        <?php $parentName = $_helper->categoryAttribute($parent, $parent->getName(), 'name'); ?>
+        <?php //echo $this->__('Shop our %s', $parentName) ?>
+        <?php echo $this->escapeHtml($_category->getName()) ?>
         </h1>
     </div>
 <?php endif; ?>
-<div <?php echo (!empty($_imgUrl) ? ' class="category-top"' : '') ?>>
+<?php
+$class1 = "";
+$class2 = "";
+$class3 = "";
+if (!empty($_imgUrl)) {
+    $class1 = ' class="category-top"';
+    $class2 = ' class="category-info"';
+    $class3 = ' category-name';
+}
+?>
+<div <?php echo $class2 ?>>
 <?php if (!$this->isSubcategoriesMode()): ?>
     <?php 
     if (!empty($_imgUrl)){
         echo $_imgHtml;
     } 
     ?>
-    <?php 
-    if (!empty($_imgUrl)) { 
-        $class_category = ' class="category-info"';
-        
-    }else{ 
-        $class_category = ''; 
-        
-    } 
-    if(!empty($_imgUrl)) { 
-        $class_category2 = ' category-name';
-    }else{
-      $class_category2 = "";  
-    } 
-    ?>
-    <div <?php echo $class_category ?>>
-        <div class="page-title category-title <?php echo $class_category2 ?>">
-            <?php if ($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
-                <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
-                <?php endif; ?>
-                <?php echo (empty($_imgUrl) ? '<h1>' : '') ?>
-                <?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?>
-                <?php echo (empty($_imgUrl) ? '</h1>' : '') ?>
+   <div <?php echo $class2 ?>>
+       
+        <div class="page-title category-title <?php echo $class3 ?>">
+        <?php if ($this->IsRssCatalogEnable() && $this->IsTopCategory()): ?>
+            <a href="<?php echo $this->getRssLink() ?>" class="link-rss"><?php echo $this->__('Subscribe to RSS Feed') ?></a>
             <?php endif; ?>
+            <?php echo (empty($_imgUrl) ? '<h1>' : '') ?>
+            <?php echo $_helper->categoryAttribute($_category, $_category->getName(), 'name') ?>
+            <?php echo (empty($_imgUrl) ? '</h1>' : '') ?>
         </div>
-    </div>
-    <?php if ($_description = $this->getCurrentCategory()->getDescription()): ?>
-        <div class="category-description std <?php echo (!empty($_imgUrl) ? ' category-intro' : '') ?>">
+    
+
+        <?php if ($_description = $this->getCurrentCategory()->getDescription()): ?>
+            <div class="category-description std <?php echo (!empty($_imgUrl) ? ' category-intro' : '') ?>">
             <?php echo $_helper->categoryAttribute($_category, $_description, 'description') ?>
-        </div>
+            </div>
+        <?php endif; ?>
+    </div>
     <?php endif; ?>
 </div>
-    <!--Remove this div close tag to fix the aside left in collection page-->
-<!--</div>-->
-            <?php if ($this->isContentMode()): ?>
-                <?php echo $this->getCmsBlockHtml() ?>
-                <style>
-                    .create-art-content{
-                        float:left;
-                    }
-                    .create-art-list-container > ul > li.middle-li {
-                        margin: 0 4% 2em !important;
-                    }
-                    ul.create-art-list li:nth-child(3) {
-                        width: 31.4%;
-                    }
-                </style>
-                <?php
-                echo Mage::getModel('cms/page')->load('submit-your-art')->getContent();
-                ?>
-            <?php elseif ($this->isMixedMode()): ?>
-                <?php echo $this->getCmsBlockHtml() ?>
-                <?php echo $this->getProductListHtml() ?>
-            <?php /* [START] add the new subcategory display mode. */ ?>
-        <?php elseif ($this->isSubcategoriesMode()): ?>
-
-            <?php echo $this->getSubcategoriesHtml() ?>
-                <?php /* [END] */ ?>
-            <?php else: ?>
-            <?php echo $this->getProductListHtml() ?>
-        <?php endif; ?>
-
+<?php if ($this->isContentMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+    <style>
+        .create-art-content{
+            float:left;
+        }
+        .create-art-list-container > ul > li.middle-li {
+            margin: 0 4% 2em !important;
+        }
+        ul.create-art-list li:nth-child(3) {
+            width: 31.4%;
+        }
+    </style>
+    <?php echo Mage::getModel('cms/page')->load('submit-your-art')->getContent(); ?>
+<?php elseif ($this->isMixedMode()): ?>
+    <?php echo $this->getCmsBlockHtml() ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php /* [START] add the new subcategory display mode. */ ?>
+<?php elseif ($this->isSubcategoriesMode()): ?>
+    <?php echo $this->getSubcategoriesHtml() ?>
+    <?php /* [END] */ ?>
+<?php else: ?>
+    <?php echo $this->getProductListHtml() ?>
+<?php endif; ?>
 <script type='text/javascript'>
    var featherEditor = new Aviary.Feather({
        apiKey: 'kq2ngl5kd16a73gf',
@@ -249,6 +217,3 @@ if ($_imgUrl = $_category->getImageUrl()) {
       return false;
    }
 </script>
-<?php
-//var_dump($this->getRequest()->getModuleName());
-?>
