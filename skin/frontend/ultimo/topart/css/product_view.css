@@ -2176,10 +2176,14 @@ div.select-frame-colors {
 /*>>>>>>> origin/#198-Design_the_help_info_for_the_custom_pages*/
 
 /*JP: Ticket 252 START*/
+#customer-reviews h2{
+    color: #8f752a;
+}
 #customer-reviews h2#title-review{
     border-bottom: 1px solid #e5e5e5;
     color: #8f752a;
     padding-bottom: 10px;
+    margin-bottom: 0;
 }
 #customer-reviews h2 span {
     font-weight: bold;
@@ -2195,7 +2199,9 @@ div.select-frame-colors {
     color: #8f752a;
 }
 .review-by{
-	font-weight: normal;
+    font-weight: normal;
+    margin-top: 5px;
+    font-size: 14px;
 }
 #customer-reviews dt .date {
     color: #aaa;
@@ -2203,8 +2209,40 @@ div.select-frame-colors {
     margin-left: 5px;
 }
 .body-review {
+    border-bottom: 1px solid #e5e5e5;
     font-size: 14px;
     line-height: 9px;
+    margin: 0 10px 10px 0;
     padding: 15px 15px 15px 0;
+    font-weight: normal;
+}
+#customer-reviews dt span.heading{font-size: 14px;}
+#review-form h3 {
+    font-weight: bold;
+}
+#customer-reviews #review-form #product-review-table tbody th {
+    color: #8f752a;
+}
+.data-table tr.odd.last{
+    border-bottom: medium none;
+}
+.table-review-title{
+    
+}
+-table-review-title-1{
+    
+}
+.data-table tr.odd td, .data-table tr.odd th {
+    border-right: medium none;
+}
+.data-table thead{
+    border-bottom: medium none;
+}
+#product-review-table tbody td {
+    padding-left: 14px;
+    padding-top: 0;
+}
+form#review-form .form-list label,form#review-form .form-list label em {
+    color: #8f752a;
 }
 /*JP: Ticket 252 END*/

@@ -44,7 +44,7 @@
                     <col width="1" />
                     <thead>
                         <tr>
-                            <th>&nbsp;</th>
+                            <th class="table-review-title">&nbsp;</th>
                             <th><span class="nobr"><?php echo $this->__('1 star') ?></span></th>
                             <th><span class="nobr"><?php echo $this->__('2 stars') ?></span></th>
                             <th><span class="nobr"><?php echo $this->__('3 stars') ?></span></th>
@@ -53,13 +53,15 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <?php $cuento = 1; ?>
                     <?php foreach ($this->getRatings() as $_rating): ?>
                         <tr>
-                            <th><?php echo $this->escapeHtml($_rating->getRatingCode()) ?></th>
+                            <th class="table-review-title-<?php echo $cuento ?>"><?php echo $this->escapeHtml($_rating->getRatingCode()) ?></th>
                         <?php foreach ($_rating->getOptions() as $_option): ?>
                             <td class="value"><input type="radio" name="ratings[<?php echo $_rating->getId() ?>]" id="<?php echo $this->escapeHtml($_rating->getRatingCode()) ?>_<?php echo $_option->getValue() ?>" value="<?php echo $_option->getId() ?>" class="radio" /></td>
                         <?php endforeach; ?>
                         </tr>
+                        <?php $cuento++; ?>
                     <?php endforeach; ?>
                     </tbody>
                 </table>

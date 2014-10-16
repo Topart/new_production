@@ -31,7 +31,6 @@
 <?php $_items = $this->getReviewsCollection()->getItems();?>
 <div class="box-collateral box-reviews" id="customer-reviews">
     <h2 id="title-review">Customer <span>Review</span></h2>
-    <hr>
     <?php if (count($_items)):?>
         <?php /*?> <h2><?php echo $this->__('Customer Reviews') ?></h2> <?php */?>
         <?php echo $this->getChildHtml('toolbar') ?>
@@ -61,13 +60,13 @@
                     <span class="heading"><?php echo $this->escapeHtml($_review->getTitle()) ?></span>
                     <p class="golden-letters review-by">
                         <?php echo $this->__('Review by <span>%s</span>', $this->escapeHtml($_review->getNickname())) ?>
-                        <small class="date"><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt()), 'long') ?></small>
+                        <small class="date"><?php echo $this->__('Posted on %s', $this->formatDate($_review->getCreatedAt()), 'long') ?></small>
+                    </p>
+                    <p class="body-review">
+                        <?php echo nl2br($this->escapeHtml($_review->getDetail())) ?>
                     </p>
                 </dt>
                 <?php endif; ?>
-                <p class="body-review">
-                    <?php echo nl2br($this->escapeHtml($_review->getDetail())) ?>
-                </p>
                 
             </dd>
         <?php endforeach; ?>
