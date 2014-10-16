@@ -2276,4 +2276,12 @@ form#review-form #product-review-table{
 form#review-form textarea#review_field{
     width:263px;
 }
+#review-form button{
+    float: left;
+    margin-left: -15px;
+}
+#review-form button span {
+    background-color: #5b5b5b;
+    color: #fff;
+}
 /*JP: Ticket 252 END*/
