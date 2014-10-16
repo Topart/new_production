@@ -3050,6 +3050,18 @@ var globals = {};
 
                     if(pos!==-1){
                       rprice = parseFloat(rprice.substring(pos+1,rprice.length));
+                    }else{
+                        var pos2=rprice.indexOf("+");
+                        if(pos2!==-1){
+                            rprice = rprice.substring(pos2+1,rprice.length);
+                            var pos3 = rprice.indexOf(".");
+                            if(pos3 !==-1){
+                                rprice = rprice.substring(0,pos3+3);
+                                rprice = parseFloat(rprice);
+                            }
+                        }else{
+                            return;
+                        }
                     }
                     
                     if((rprice != "" && rprice != NaN) && (current_price != NaN && current_price != "")){
@@ -3060,6 +3072,22 @@ var globals = {};
                     
                 });
               /**/
+              /* Fixes Product price on Mat click  Start*/
+              jQuery(document).on("mousedown",".mats_color",function(){
+                 return false; 
+              });
+              jQuery(document).on("click",".mats_color",function(){
+                 return false;
+                 /*var old_price = jQuery(".price-box .price").text().trim();
+                 var pos = old_price.indexOf("$");
+                 
+                 if(pos!==-1){
+                    old_price = parseFloat(old_price.substring(pos+1,old_price.length));
+                  }
+                  
+                  console.log("old_price: "+old_price);*/
+              });
+              /* Fixes Product price on Mat click  End*/
 	});
         
 /* JP: For ticket 137 Start*/
