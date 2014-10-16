@@ -3088,6 +3088,12 @@ var globals = {};
                   console.log("old_price: "+old_price);*/
               });
               /* Fixes Product price on Mat click  End*/
+              setTimeout(function(){
+                  var title = jQuery(".table-review-title-1").text();
+                  jQuery(".table-review-title").text(title);
+                  jQuery(".table-review-title-1").remove();
+                  jQuery("#product-review-table thead tr th:first").remove();
+              },1000);
 	});
         
 /* JP: For ticket 137 Start*/

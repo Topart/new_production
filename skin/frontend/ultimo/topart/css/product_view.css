@@ -2226,8 +2226,11 @@ div.select-frame-colors {
 form#review-form .data-table tr.odd.last{
     border-bottom: medium none;
 }
-.table-review-title{
-    
+.table-review-title {
+    color: #8f752a;
+    display: block;
+    font-size: 14px;
+    margin-top: 30px;
 }
 -table-review-title-1{
     
@@ -2241,11 +2244,36 @@ form#review-form .data-table thead{
 #product-review-table tbody td {
     padding-left: 14px;
     padding-top: 0;
+    margin-right: 15px;
+    float: left;
 }
 form#review-form .form-list label,form#review-form .form-list label em {
     color: #8f752a;
+    font-size: 14px;
+    font-weight: normal;
 }
 form#review-form .data-table thead th {
     font-weight: normal;
+}
+
+body, #gb, #gt-submit.jfk-button {
+    font-family: arial,sans-serif !important;
+}
+body {
+    background: none repeat scroll 0 0 #fff;
+    color: #777;
+    font: 13px arial,sans-serif;
+    margin: 0;
+    padding: 0;
+}
+form#review-form .data-table thead th {
+    float:left;
+}
+form#review-form #product-review-table{
+    margin-left: -10px;
+}
+#customer-reviews .form-add h2{margin-top: 20px;}
+form#review-form textarea#review_field{
+    width:263px;
 }
 /*JP: Ticket 252 END*/
