@@ -7,23 +7,23 @@
  */
 ?>
 <?php
-	$_helper = $this->helper('catalog/output');
-	$_product = $this->getProduct();
-        
-        $product_type = "just_a_product";
-        
-        if(isset($_POST["s3file"])){
-            $product_type = "myself";
-        }
-        
-	$theme = $this->helper('ultimo');
+$_helper = $this->helper('catalog/output');
+$_product = $this->getProduct();
 
-	//CSS classes based on product type
-	$productTypeId = $_product->getTypeId();
-	$productTypeClasses = '';
-	if ($productTypeId === 'grouped') {
-		$productTypeClasses .= ' is-type-grouped';
-	}
+$product_type = "just_a_product";
+
+if (isset($_POST["s3file"])) {
+    $product_type = "myself";
+}
+
+$theme = $this->helper('ultimo');
+
+//CSS classes based on product type
+$productTypeId = $_product->getTypeId();
+$productTypeClasses = '';
+if ($productTypeId === 'grouped') {
+    $productTypeClasses .= ' is-type-grouped';
+}
 ?>
 <script type="text/javascript">
     var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
@@ -33,1299 +33,1269 @@
 <!-- New code -->
 <div id="product_view_container">
 
-		<?php $site_base_url = "http://" . $_SERVER["SERVER_NAME"]; ?>
-
-		<?php
-
-			function endsWith( $str, $sub )
-			{
-			   return ( substr( $str, strlen( $str ) - strlen( $sub ) ) === $sub );
-			}
-			
-
-			function get_first_number_index($text)
-			{
-			    preg_match('/^\D*(?=\d)/', $text, $m);
-			    return strlen($m[0]);
-			}
-
-			function compute_size_initial($size_ui)
-			{
-				if ($size_ui < 40) 
-					return "xs";
+    <?php $site_base_url = "http://" . $_SERVER["SERVER_NAME"]; ?>
 
-				if ($size_ui >= 40 and $size_ui < 50)
-					return "s";
+    <?php
 
-				if ($size_ui >= 50 and $size_ui < 60)
-					return "m";
-
-				if ($size_ui >= 60 and $size_ui < 70)
-					return "l";
-
-				if ($size_ui >= 70)
-					return "xl";
+    function endsWith($str, $sub) {
+        return ( substr($str, strlen($str) - strlen($sub)) === $sub );
+    }
 
-				return "l";
-			}
-		?>
+    function get_first_number_index($text) {
+        preg_match('/^\D*(?=\d)/', $text, $m);
+        return strlen($m[0]);
+    }
 
-		<?php
-			
-			$popularity = $this->getProduct()->getPopularity();
-			$this->getProduct()->setPopularity($popularity + 1)->save();
+    function compute_size_initial($size_ui) {
+        if ($size_ui < 40)
+            return "xs";
 
-			$description = $_product->getName() .  " was created by " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" . ". <br />";
+        if ($size_ui >= 40 and $size_ui < 50)
+            return "s";
 
-			$orientation = strtolower($_product->getAttributeText('udf_orientation'));
+        if ($size_ui >= 50 and $size_ui < 60)
+            return "m";
 
-			// Show Canvas as material only when allowed
-			$canvas_available = $_product->getUdfCanvas();
-			$poster_available = $_product->getUdfPoster();
-			$paper_available = $_product->getUdfPhotoPaper();
+        if ($size_ui >= 60 and $size_ui < 70)
+            return "l";
 
-			// Stock information
-			$is_in_stock = 0;
-			$stockItem = $_product->getStockItem();
-			if ($stockItem->getIsInStock())
-			{
-				$is_in_stock = 1;
-			}
-			else
-			{
-				$is_in_stock = 0;
-			}
+        if ($size_ui >= 70)
+            return "xl";
 
-			echo "<div class='is_in_stock'>" . $is_in_stock . "</div>";
+        return "l";
+    }
+    ?>
 
-		?>
-		
-
-	<div class="product-visualize">
-		<div id="final_product_image_background">
-
-			<?php 
-
-				$original_sku = $_product->getSku();
-				$image_file_name = "";
-
-				if ( endsWith($original_sku, "DG") )
-				{
-					$dg_suffix_index = strrpos($original_sku, "DG");
-					$image_file_name = substr_replace($original_sku, "", $dg_suffix_index, 2) . ".jpg";
-				}
-				else
-				{
-					$image_file_name = $original_sku . ".jpg";
-				}
-				
-				$one_corner_flag = 0;
-
-				$thumbnail_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/thumbnail_images/";
-				$small_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/small_images/";
-				$large_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/large_images/";
-				
-				$thumbnail_image_file_url = $thumbnail_image_base_url . $image_file_name;
-				$small_image_file_url = $small_image_base_url . $image_file_name;
-				$large_image_file_url = $large_image_base_url . $image_file_name;
-
-
-				$framing_profile_url = "http://d3odr912zwpuhm.cloudfront.net/icons/framing_profiles/";
-				$framing_corner_url = "http://d3odr912zwpuhm.cloudfront.net/icons/framing_corners/";
-
-
-				// User uploaded image
-				if ( isset($_POST['s3file']) )
-				{
-					$thumbnail_image_file_url = $_POST['s3file'];
-					$small_image_file_url = $_POST['s3file'];
-					$large_image_file_url = $_POST['s3file'];
-				}
-
-				echo "<div class='image_url'>" . $thumbnail_image_file_url . "</div>";
-
-			?>
-
-			
-			<a href="<?php echo $large_image_file_url; ?>" rel="prettyPhoto" title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>, by <?php echo $_product->getUdfArtistName() ?>.">
-
-				<div id="jcanvas_frame">
-
-					<canvas id="corner_top_left" width="40" height="40" class="jcanvas_corner"></canvas>
-					<canvas id="corner_top_right" width="40" height="40" class="jcanvas_corner"></canvas>
-					<canvas id="corner_bottom_left" width="40" height="40" class="jcanvas_corner"></canvas>
-					<canvas id="corner_bottom_right" width="40" height="40" class="jcanvas_corner"></canvas>
-
-					<canvas id="edge_top" width="574" height="40" class="jcanvas_edge"></canvas>
-					<canvas id="edge_left" height="574" width="40" class="jcanvas_edge"></canvas>
-					<canvas id="edge_bottom" width="574" height="40" class="jcanvas_edge"></canvas>
-					<canvas id="edge_right" height="574" width="40" class="jcanvas_edge"></canvas>
-
-				</div>
-
-				<div id="jcanvas_mats">
-					
-				</div>
-
-				<div id="final_product_image" class="custom_option_viewport" style="background-image: url('<?php echo $small_image_file_url; ?>');">
-
-					<div id="load_icon">
-					</div>
-					
-				</div>
-
-
-				<?php /*
-				for($count=2;$count<=8;$count++){
-					echo '<div id="final_product_image" class="custom_option_viewport lvl'. $count .'" style="background-image: url('. $small_image_file_url .')"></div>';
-				}
-*/
-				?>
-
-			</a>
-			
-		</div>
-
-		<div id="hide_button">
-			<div id="hide_down_arrow">
-			
-			</div>
-
-			Hide
-		</div>
-
-		<div id="color_switch">
-			<?php
-				$color_set = array("#ffffff", "#f1efdc", "#fdf8de", "#f8ecc6","#faeddc", "#f5e7dc", "#fbebcf", "#ffe8a4", "#f6d9ad", "#f3c585", "#f3c589", "#7a4f3e", "#fbf7ec", "#e0d7c6", "#e1cead", "#b48b75", "#4c2625", "#6b6a6f", "#fdf0e7", "#d1797c", "#b2463a", "#c7a5be", "#493371", "#7086ab", "#ebf4f3", "#c4dae7", "#c2dbd8", "#98977b", "#d8e6b3", "#5fadaf");
-				
-				foreach ($color_set as $color) 
-				{
-					//echo "<div id='" . $color . "' class='color'></div>";
-					echo "<div class='color' style='background-color: " . $color . "'></div>";
-				}
-			?>	
-		</div>
-
-		<div id="room_switch">
-			<?php
-				$dir =  getcwd() . '/media/rooms';
-				//$dir = 'https://s3.amazonaws.com/topart_images/rooms/';
-
-				$room_set = array();
-				
-				// Open a known directory, and proceed to read its contents
-				if (is_dir($dir)) 
-				{
-					if ($dh = opendir($dir)) 
-					{
-						while (($file = readdir($dh)) !== false) 
-						{
-							$path_parts = pathinfo($dir . $file);
-							$file_type = $path_parts['extension'];
-							
-							if ($file_type == "png" || $file_type == "jpg" || $file_type == "jpeg")
-								array_push($room_set, $file);
-						}
-						closedir($dh);
-
-						sort($room_set);
-					}
-				}
-				
-				$image_dir = $site_base_url . "/media/rooms/";
-				
-				foreach ($room_set as $room) 
-				{
-					echo "<img class='room_thumbnail' src='" . $image_dir . $room . "' />";
-				}
-				
-			?>
-		</div>
-
-		<div id="details_switch">
-			
-			<div id="text">
-				<?php echo $description; ?>
-			</div>
-
-			<?php
-
-		    	$udf_specpaper = $_product->getAttributeText('udf_specpaper');
-		    	$udf_foil = $_product->getAttributeText('udf_foil');
-		    	$udf_metallic_ink = $_product->getAttributeText('udf_metallic_ink');
-		    	$udf_embellished = $_product->getAttributeText('udf_embellished');
-		    	$udf_limited = $_product->getAttributeText('udf_limited');
-		    	$poster_size = $_product->getUdfImageSizeIn();
-
-		    	$special_features = "";
-
-		    	if ($udf_specpaper == "Yes")
-		    	{
-		    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Special Paper</span> - Fine Art Paper is specifically selected to enhance the image.</div>";
-		    	}
-
-		    	if ($udf_foil == "Yes")
-		    	{
-		    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Foil</span> - The addition of Metallic gold foil creates a subtle but dramatic visual effect.</div>";
-		    	}
-
-		    	if ($udf_metallic_ink == "Yes")
-		    	{
-		    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Metallic Inks</span> - Metallic Inks duplicate effects in the original painting, and enhance the image.</div>";
-		    	}
-
-		    	if ($udf_limited == "Yes")
-		    	{
-		    		$special_features = $special_features . "<div class='special_feature'><span class='bold'>Limited Edition</span> - Our Limited Edition pieces are hand signed, numbered and rare.</div>";
-		    	}
-
-		    ?>
-
-			<div id="features">
-				<?php echo $special_features; ?>
-			</div>
-
-			<div class="poster_size">
-				<?php echo $poster_size; ?>
-			</div>
-
-		</div>
-
-
-		<div id="options_sequence">
-
-			<div id="option_one">1.</div>
-			<div id="option_two">2.</div>
-			<div id="option_three">3.</div>
-
-		</div>
-
-		<div id="product_image_functions">
-
-			<a id="full_screen" class="function_icon">
-				<div class="product_function_text">Full screen</div>
-			</a>
-			
-			<a id="zoom_in" class="function_icon">
-				<div class="product_function_text">Zoom in</div>
-			</a>
-			
-			<a id="wall_color" class="function_icon">
-				<div class="product_function_text">Wall color</div>
-			</a>
-			
-			<a id="rooms" class="function_icon">
-				<div class="product_function_text">Rooms</div>
-			</a>
-			
-			<a id="details" class="function_icon">
-				<div class="product_function_text">Details</div>
-			</a>
-			
-		</div>
-		<!-- End of new code -->
-		<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
-	</div>
-
-<div class="product-view">
-
-    <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
-
-    	<?php echo $this->getBlockHtml('formkey'); ?>
-        <div class="no-display">
-            <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
-            <input type="hidden" name="related_product" id="related-products-field" value="" />
-        </div>
-
-        <div class="product-name">
-            <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
-        </div>
-        
-    	<?php
-			//Product collaterals
-			$section = array();
-			
-			//Related products. $section['related'] is set only if related products (or replacement) exist
-			$replaceRelated = $theme->getCfg('product_page/replace_related');
-			if ($replaceRelated == 1) //don't replace with static block
-			{
-				if ($tmpHtml = trim($this->getChildHtml('catalog.product.related')))
-					$section['related'] = $tmpHtml;
-				//$section['related'] = trim($this->getChildHtml('catalog.product.related'));
-			}
-			elseif ($replaceRelated == 2) //if related is empty, replace with static block
-			{
-				if ($tmpHtml = trim($this->getChildHtml('catalog.product.related')))
-					$section['related'] = $tmpHtml;
-				else //related empty
-					if ($tmpHtml = $this->getChildHtml('block_product_replace_related'))
-						$section['related'] = '<div class="block_product_replace_related">'. $tmpHtml .'</div>';
-			}
-			elseif ($replaceRelated == 3) //replace with static block
-			{
-				if ($tmpHtml = $this->getChildHtml('block_product_replace_related'))
-					$section['related'] = '<div class="block_product_replace_related">'. $tmpHtml .'</div>';
-			}
-	
-			//Up-sell products. $section['upsell'] is set only if up-sell products (or replacement) exist
-			$replaceUpsell = $theme->getCfg('product_page/replace_upsell');
-			if ($replaceUpsell == 1) //don't replace with static block
-			{
-				if ($tmpHtml = trim($this->getChildHtml('upsell_products')))
-					$section['upsell'] = $tmpHtml;
-				//$section['upsell'] = $this->getChildHtml('upsell_products');
-			}
-			elseif ($replaceUpsell == 2) //if upsell is empty, replace with static block
-			{
-				if ($tmpHtml = trim($this->getChildHtml('upsell_products')))
-					$section['upsell'] = $tmpHtml;
-				else //upsell empty
-					if ($tmpHtml = $this->getChildHtml('block_product_replace_upsell'))
-						$section['upsell'] = '<div class="block_product_replace_upsell">'. $tmpHtml .'</div>';
-			}
-			elseif ($replaceUpsell == 3) //replace with static block
-			{
-				if ($tmpHtml = $this->getChildHtml('block_product_replace_upsell'))
-					$section['upsell'] = '<div class="block_product_replace_upsell">'. $tmpHtml .'</div>';
-			}
-			
-			
-			
-			//Assign related products to selected position
-			if (isset($section['related']))
-			{
-				$relatedPosition = $theme->getCfg('product_page/related_position');
-				//TODO:remove: $relatedPosition = 11;
-				switch ($relatedPosition)
-				{
-					case 10:
-						$p['secondaryCol'][0] = $section['related'];
-						break;
-					case 11:
-						$p['secondaryCol'][1] = $section['related'];
-						break;
-					case 20:
-						$p['collatSecondaryCol'] = $section['related'];
-						break;
-				}
-			}
-			
-			
-			
-			//Width (in grid units) of product page sections
-			$imgColUnits					= $theme->getCfg('product_page/image_column');
-			$primaryColUnits				= $theme->getCfg('product_page/primary_column');
-			$secondaryColUnits				= $theme->getCfg('product_page/secondary_column');
-			$container2ColUnits				= $imgColUnits + $primaryColUnits;
-			$collatPrimaryColUnits			= $imgColUnits + $primaryColUnits;
-			$collatSecondaryColUnits		= $secondaryColUnits;
-
-			//If no secondary column
-			if (empty($secondaryColUnits))
-			{
-				$primaryColUnits			+= 12 - ($imgColUnits + $primaryColUnits);
-				$container2ColUnits			= $imgColUnits + $primaryColUnits;
-				$collatPrimaryColUnits		= 9;
-				$collatSecondaryColUnits	= 3;
-			}
-			
-			//If no related products, stretch collateral primary column
-			if (!isset($section['related']))
-			{
-				$container2ColUnits			= 12;
-				$collatPrimaryColUnits		= 12;
-				$collatSecondaryColUnits	= 0;
-			}
-			elseif (!isset($p['secondaryCol']))
-			{
-				$container2ColUnits 		= 12;
-			}
-
-			//Grid classes
-			$imgColGridClass				= 'grid12-' . $imgColUnits;
-			$primaryColGridClass			= 'grid12-' . $primaryColUnits;
-			$secondaryColGridClass			= 'grid12-' . $secondaryColUnits;
-			$container2ColGridClass			= 'grid12-' . $container2ColUnits;
-			$collatPrimaryColGridClass		= 'grid12-' . $collatPrimaryColUnits;
-			$collatSecondaryColGridClass	= 'grid12-' . $collatSecondaryColUnits;
-			if (empty($secondaryColUnits))
-			{
-				$secondaryColGridClass	= '';
-			}
-		?>
-
-		<!-- Commenting this section
-        <div class="product-img-column <?php //echo $imgColGridClass; ?>">
-            <?php //echo $this->getChildHtml('media') ?>
-            <?php //Product labels
-				//echo $this->helper('ultimo/labels')->getLabels($_product);
-			?>
-        </div>
-        -->
-
-        <!-- New short description -->
-        <?php if ($_product->getShortDescription()):?>
-            <?php if($product_type !== "myself"): ?>
-                <div class="short-description">
-                    <h2><?php echo $this->__('Quick Overview') ?></h2>
-                    <div class="std"><?php echo "By " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ","-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" ?></div>
+    <?php
+    $popularity = $this->getProduct()->getPopularity();
+    $this->getProduct()->setPopularity($popularity + 1)->save();
+
+    $description = $_product->getName() . " was created by " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ", "-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" . ". <br />";
+
+    $orientation = strtolower($_product->getAttributeText('udf_orientation'));
+
+    // Show Canvas as material only when allowed
+    $canvas_available = $_product->getUdfCanvas();
+    $poster_available = $_product->getUdfPoster();
+    $paper_available = $_product->getUdfPhotoPaper();
+
+    // Stock information
+    $is_in_stock = 0;
+    $stockItem = $_product->getStockItem();
+    if ($stockItem->getIsInStock()) {
+        $is_in_stock = 1;
+    } else {
+        $is_in_stock = 0;
+    }
+
+    echo "<div class='is_in_stock'>" . $is_in_stock . "</div>";
+    ?>
+
+
+    <div class="product-visualize">
+        <div id="final_product_image_background">
+
+    <?php
+    $original_sku = $_product->getSku();
+    $image_file_name = "";
+
+    if (endsWith($original_sku, "DG")) {
+        $dg_suffix_index = strrpos($original_sku, "DG");
+        $image_file_name = substr_replace($original_sku, "", $dg_suffix_index, 2) . ".jpg";
+    } else {
+        $image_file_name = $original_sku . ".jpg";
+    }
+
+    $one_corner_flag = 0;
+
+    $thumbnail_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/thumbnail_images/";
+    $small_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/small_images/";
+    $large_image_base_url = "http://d3odr912zwpuhm.cloudfront.net/large_images/";
+
+    $thumbnail_image_file_url = $thumbnail_image_base_url . $image_file_name;
+    $small_image_file_url = $small_image_base_url . $image_file_name;
+    $large_image_file_url = $large_image_base_url . $image_file_name;
+
+
+    $framing_profile_url = "http://d3odr912zwpuhm.cloudfront.net/icons/framing_profiles/";
+    $framing_corner_url = "http://d3odr912zwpuhm.cloudfront.net/icons/framing_corners/";
+
+
+    // User uploaded image
+    if (isset($_POST['s3file'])) {
+        $thumbnail_image_file_url = $_POST['s3file'];
+        $small_image_file_url = $_POST['s3file'];
+        $large_image_file_url = $_POST['s3file'];
+    }
+
+    echo "<div class='image_url'>" . $thumbnail_image_file_url . "</div>";
+    ?>
+
+
+            <a href="<?php echo $large_image_file_url; ?>" rel="prettyPhoto" title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?>, by <?php echo $_product->getUdfArtistName() ?>.">
+
+                <div id="jcanvas_frame">
+
+                    <canvas id="corner_top_left" width="40" height="40" class="jcanvas_corner"></canvas>
+                    <canvas id="corner_top_right" width="40" height="40" class="jcanvas_corner"></canvas>
+                    <canvas id="corner_bottom_left" width="40" height="40" class="jcanvas_corner"></canvas>
+                    <canvas id="corner_bottom_right" width="40" height="40" class="jcanvas_corner"></canvas>
+
+                    <canvas id="edge_top" width="574" height="40" class="jcanvas_edge"></canvas>
+                    <canvas id="edge_left" height="574" width="40" class="jcanvas_edge"></canvas>
+                    <canvas id="edge_bottom" width="574" height="40" class="jcanvas_edge"></canvas>
+                    <canvas id="edge_right" height="574" width="40" class="jcanvas_edge"></canvas>
+
                 </div>
-            <?php endif;?>
-        <?php endif;?>
-        
-        
-        <?php
 
-         $udf_serigraph = $_product->getAttributeText('udf_serigraph');
-         $udf_embossed = $_product->getAttributeText('udf_embossed');
-         $udf_specpaper = $_product->getAttributeText('udf_specpaper');
-         $udf_foil = $_product->getAttributeText('udf_foil');
-         $udf_metallic_ink = $_product->getAttributeText('udf_metallic_ink');
-         $udf_embellished = $_product->getAttributeText('udf_embellished');
-         $udf_limited = $_product->getAttributeText('udf_limited');
+                <div id="jcanvas_mats">
 
-         $special_features = "";
+                </div>
 
-         if ($udf_serigraph == "Yes"){
-            $special_features = $special_features . "Serigraph Print ";
-         }
+                <div id="final_product_image" class="custom_option_viewport" style="background-image: url('<?php echo $small_image_file_url; ?>');">
 
-         if ($udf_embossed == "Yes"){
-            $special_features = $special_features . "Embossed Image, ";
-         }
+                    <div id="load_icon">
+                    </div>
 
-         if ($udf_specpaper == "Yes"){
-            $special_features = $special_features . "Special Paper, ";
-         }
+                </div>
 
-         if ($udf_foil == "Yes"){
-            $special_features = $special_features . "Foil Details, ";
-         }
 
-         if ($udf_metallic_ink == "Yes"){
-            $special_features = $special_features . "Metallic Inks, ";
-         }
+<?php /*
+  for($count=2;$count<=8;$count++){
+  echo '<div id="final_product_image" class="custom_option_viewport lvl'. $count .'" style="background-image: url('. $small_image_file_url .')"></div>';
+  }
+ */
+?>
 
-         if ($udf_embellished == "Yes"){
-            $special_features = $special_features . "Hand Embellished, ";
-         }
+            </a>
 
-         if ($udf_limited == "Yes"){
-            $special_features = $special_features . "S/N Limited Edition of 950 on Fine Art Paper, ";
-         }
+        </div>
 
-        ?>
-        <?php /*
-        <div id="special_features">
-            <?php 
-                if($special_features){ 
-                    echo trim($special_features,", "); 
+        <div id="hide_button">
+            <div id="hide_down_arrow">
+
+            </div>
+
+            Hide
+        </div>
+
+        <div id="color_switch">
+                <?php
+                $color_set = array("#ffffff", "#f1efdc", "#fdf8de", "#f8ecc6", "#faeddc", "#f5e7dc", "#fbebcf", "#ffe8a4", "#f6d9ad", "#f3c585", "#f3c589", "#7a4f3e", "#fbf7ec", "#e0d7c6", "#e1cead", "#b48b75", "#4c2625", "#6b6a6f", "#fdf0e7", "#d1797c", "#b2463a", "#c7a5be", "#493371", "#7086ab", "#ebf4f3", "#c4dae7", "#c2dbd8", "#98977b", "#d8e6b3", "#5fadaf");
+
+                foreach ($color_set as $color) {
+                    //echo "<div id='" . $color . "' class='color'></div>";
+                    echo "<div class='color' style='background-color: " . $color . "'></div>";
                 }
-            ?>
-        </div>*/?>
-        <!-- End of new short description -->
+                ?>	
+        </div>
 
-        <div class="product-shop <?php echo $primaryColGridClass; ?>">
+        <div id="room_switch">
+<?php
+$dir = getcwd() . '/media/rooms';
+//$dir = 'https://s3.amazonaws.com/topart_images/rooms/';
+
+$room_set = array();
+
+// Open a known directory, and proceed to read its contents
+if (is_dir($dir)) {
+    if ($dh = opendir($dir)) {
+        while (($file = readdir($dh)) !== false) {
+            $path_parts = pathinfo($dir . $file);
+            $file_type = $path_parts['extension'];
+
+            if ($file_type == "png" || $file_type == "jpg" || $file_type == "jpeg")
+                array_push($room_set, $file);
+        }
+        closedir($dh);
+
+        sort($room_set);
+    }
+}
+
+$image_dir = $site_base_url . "/media/rooms/";
+
+foreach ($room_set as $room) {
+    echo "<img class='room_thumbnail' src='" . $image_dir . $room . "' />";
+}
+?>
+        </div>
+
+        <div id="details_switch">
+
+            <div id="text">
+            <?php echo $description; ?>
+            </div>
+
+            <?php
+            $udf_specpaper = $_product->getAttributeText('udf_specpaper');
+            $udf_foil = $_product->getAttributeText('udf_foil');
+            $udf_metallic_ink = $_product->getAttributeText('udf_metallic_ink');
+            $udf_embellished = $_product->getAttributeText('udf_embellished');
+            $udf_limited = $_product->getAttributeText('udf_limited');
+            $poster_size = $_product->getUdfImageSizeIn();
+
+            $special_features = "";
+
+            if ($udf_specpaper == "Yes") {
+                $special_features = $special_features . "<div class='special_feature'><span class='bold'>Special Paper</span> - Fine Art Paper is specifically selected to enhance the image.</div>";
+            }
+
+            if ($udf_foil == "Yes") {
+                $special_features = $special_features . "<div class='special_feature'><span class='bold'>Foil</span> - The addition of Metallic gold foil creates a subtle but dramatic visual effect.</div>";
+            }
+
+            if ($udf_metallic_ink == "Yes") {
+                $special_features = $special_features . "<div class='special_feature'><span class='bold'>Metallic Inks</span> - Metallic Inks duplicate effects in the original painting, and enhance the image.</div>";
+            }
+
+            if ($udf_limited == "Yes") {
+                $special_features = $special_features . "<div class='special_feature'><span class='bold'>Limited Edition</span> - Our Limited Edition pieces are hand signed, numbered and rare.</div>";
+            }
+            ?>
+
+            <div id="features">
+            <?php echo $special_features; ?>
+            </div>
+
+            <div class="poster_size">
+            <?php echo $poster_size; ?>
+            </div>
+
+        </div>
+
+
+        <div id="options_sequence">
+
+            <div id="option_one">1.</div>
+            <div id="option_two">2.</div>
+            <div id="option_three">3.</div>
+
+        </div>
+
+        <div id="product_image_functions">
+
+            <a id="full_screen" class="function_icon">
+                <div class="product_function_text">Full screen</div>
+            </a>
+
+            <a id="zoom_in" class="function_icon">
+                <div class="product_function_text">Zoom in</div>
+            </a>
+
+            <a id="wall_color" class="function_icon">
+                <div class="product_function_text">Wall color</div>
+            </a>
+
+            <a id="rooms" class="function_icon">
+                <div class="product_function_text">Rooms</div>
+            </a>
+
+            <a id="details" class="function_icon">
+                <div class="product_function_text">Details</div>
+            </a>
+
+        </div>
+        <!-- End of new code -->
+        <div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+    </div>
+
+    <div class="product-view">
+
+        <form action="<?php echo $this->getSubmitUrl($_product) ?>" method="post" id="product_addtocart_form"<?php if ($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+
+<?php echo $this->getBlockHtml('formkey'); ?>
+            <div class="no-display">
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
+            </div>
+
+            <div class="product-name">
+                <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+            </div>
+
+<?php
+//Product collaterals
+$section = array();
+
+//Related products. $section['related'] is set only if related products (or replacement) exist
+$replaceRelated = $theme->getCfg('product_page/replace_related');
+if ($replaceRelated == 1) { //don't replace with static block
+    if ($tmpHtml = trim($this->getChildHtml('catalog.product.related')))
+        $section['related'] = $tmpHtml;
+    //$section['related'] = trim($this->getChildHtml('catalog.product.related'));
+}
+elseif ($replaceRelated == 2) { //if related is empty, replace with static block
+    if ($tmpHtml = trim($this->getChildHtml('catalog.product.related')))
+        $section['related'] = $tmpHtml;
+    else //related empty
+    if ($tmpHtml = $this->getChildHtml('block_product_replace_related'))
+        $section['related'] = '<div class="block_product_replace_related">' . $tmpHtml . '</div>';
+}
+elseif ($replaceRelated == 3) { //replace with static block
+    if ($tmpHtml = $this->getChildHtml('block_product_replace_related'))
+        $section['related'] = '<div class="block_product_replace_related">' . $tmpHtml . '</div>';
+}
+
+//Up-sell products. $section['upsell'] is set only if up-sell products (or replacement) exist
+$replaceUpsell = $theme->getCfg('product_page/replace_upsell');
+if ($replaceUpsell == 1) { //don't replace with static block
+    if ($tmpHtml = trim($this->getChildHtml('upsell_products')))
+        $section['upsell'] = $tmpHtml;
+    //$section['upsell'] = $this->getChildHtml('upsell_products');
+}
+elseif ($replaceUpsell == 2) { //if upsell is empty, replace with static block
+    if ($tmpHtml = trim($this->getChildHtml('upsell_products')))
+        $section['upsell'] = $tmpHtml;
+    else //upsell empty
+    if ($tmpHtml = $this->getChildHtml('block_product_replace_upsell'))
+        $section['upsell'] = '<div class="block_product_replace_upsell">' . $tmpHtml . '</div>';
+}
+elseif ($replaceUpsell == 3) { //replace with static block
+    if ($tmpHtml = $this->getChildHtml('block_product_replace_upsell'))
+        $section['upsell'] = '<div class="block_product_replace_upsell">' . $tmpHtml . '</div>';
+}
+
+
+
+//Assign related products to selected position
+if (isset($section['related'])) {
+    $relatedPosition = $theme->getCfg('product_page/related_position');
+    //TODO:remove: $relatedPosition = 11;
+    switch ($relatedPosition) {
+        case 10:
+            $p['secondaryCol'][0] = $section['related'];
+            break;
+        case 11:
+            $p['secondaryCol'][1] = $section['related'];
+            break;
+        case 20:
+            $p['collatSecondaryCol'] = $section['related'];
+            break;
+    }
+}
+
+
+
+//Width (in grid units) of product page sections
+$imgColUnits = $theme->getCfg('product_page/image_column');
+$primaryColUnits = $theme->getCfg('product_page/primary_column');
+$secondaryColUnits = $theme->getCfg('product_page/secondary_column');
+$container2ColUnits = $imgColUnits + $primaryColUnits;
+$collatPrimaryColUnits = $imgColUnits + $primaryColUnits;
+$collatSecondaryColUnits = $secondaryColUnits;
+
+//If no secondary column
+if (empty($secondaryColUnits)) {
+    $primaryColUnits += 12 - ($imgColUnits + $primaryColUnits);
+    $container2ColUnits = $imgColUnits + $primaryColUnits;
+    $collatPrimaryColUnits = 9;
+    $collatSecondaryColUnits = 3;
+}
+
+//If no related products, stretch collateral primary column
+if (!isset($section['related'])) {
+    $container2ColUnits = 12;
+    $collatPrimaryColUnits = 12;
+    $collatSecondaryColUnits = 0;
+} elseif (!isset($p['secondaryCol'])) {
+    $container2ColUnits = 12;
+}
+
+//Grid classes
+$imgColGridClass = 'grid12-' . $imgColUnits;
+$primaryColGridClass = 'grid12-' . $primaryColUnits;
+$secondaryColGridClass = 'grid12-' . $secondaryColUnits;
+$container2ColGridClass = 'grid12-' . $container2ColUnits;
+$collatPrimaryColGridClass = 'grid12-' . $collatPrimaryColUnits;
+$collatSecondaryColGridClass = 'grid12-' . $collatSecondaryColUnits;
+if (empty($secondaryColUnits)) {
+    $secondaryColGridClass = '';
+}
+?>
+
+            <!-- Commenting this section
+    <div class="product-img-column <?php //echo $imgColGridClass; ?>">
+            <?php //echo $this->getChildHtml('media') ?>
+            <?php
+            //Product labels
+            //echo $this->helper('ultimo/labels')->getLabels($_product);
+            ?>
+    </div>
+            -->
+
+            <!-- New short description -->
+            <?php if ($_product->getShortDescription()): ?>
+                <?php if ($product_type !== "myself"): ?>
+                    <div class="short-description">
+                        <h2><?php echo $this->__('Quick Overview') ?></h2>
+                        <div class="std"><?php echo "By " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ", "-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" ?></div>
+                    </div>
+                <?php endif; ?>
+            <?php endif; ?>
+
+
+            <?php
+            $udf_serigraph = $_product->getAttributeText('udf_serigraph');
+            $udf_embossed = $_product->getAttributeText('udf_embossed');
+            $udf_specpaper = $_product->getAttributeText('udf_specpaper');
+            $udf_foil = $_product->getAttributeText('udf_foil');
+            $udf_metallic_ink = $_product->getAttributeText('udf_metallic_ink');
+            $udf_embellished = $_product->getAttributeText('udf_embellished');
+            $udf_limited = $_product->getAttributeText('udf_limited');
+
+            $special_features = "";
+
+            if ($udf_serigraph == "Yes") {
+                $special_features = $special_features . "Serigraph Print ";
+            }
+
+            if ($udf_embossed == "Yes") {
+                $special_features = $special_features . "Embossed Image, ";
+            }
+
+            if ($udf_specpaper == "Yes") {
+                $special_features = $special_features . "Special Paper, ";
+            }
+
+            if ($udf_foil == "Yes") {
+                $special_features = $special_features . "Foil Details, ";
+            }
+
+            if ($udf_metallic_ink == "Yes") {
+                $special_features = $special_features . "Metallic Inks, ";
+            }
+
+            if ($udf_embellished == "Yes") {
+                $special_features = $special_features . "Hand Embellished, ";
+            }
+
+            if ($udf_limited == "Yes") {
+                $special_features = $special_features . "S/N Limited Edition of 950 on Fine Art Paper, ";
+            }
+            ?>
+            <?php /*
+              <div id="special_features">
+              <?php
+              if($special_features){
+              echo trim($special_features,", ");
+              }
+              ?>
+              </div> */ ?>
+            <!-- End of new short description -->
+
+            <div class="product-shop <?php echo $primaryColGridClass; ?>">
             <?php //hidden the review points ?>
             <?php //echo $this->getReviewsSummaryHtml($_product, false, true); //reviews ?>
 
 
-            <!-- New special features -->
-            <div id="special_features">
-	        	<?php
-		        	echo $special_features;
-		        ?>
-	        </div>
-	       	<!-- End of new special features -->
+                <!-- New special features -->
+                <div id="special_features">
+            <?php
+            echo $special_features;
+            ?>
+                </div>
+                <!-- End of new special features -->
 
 
             <?php if ($theme->getCfg('product_page/sku')): ?>
-                <div class="sku"><span><?php echo $this->__('SKU'); ?>: </span><?php echo $_product->getSku(); ?></div>
+                    <div class="sku"><span><?php echo $this->__('SKU'); ?>: </span><?php echo $_product->getSku(); ?></div>
             <?php endif; ?>
 
             <?php echo $this->getChildHtml('alert_urls'); //alerts ?>
-            
+
             <?php if ($extrahint_html = $this->getChildHtml('extrahint')): //qty increments ?>
-                <div class="extrahint-wrapper"><?php echo $extrahint_html; ?></div>
+                    <div class="extrahint-wrapper"><?php echo $extrahint_html; ?></div>
             <?php endif; ?>
-            
-            <div class="product-type-data<?php echo $productTypeClasses; ?>">
-            	<a id="reset" class="function_icon"></a>
-            	<?php echo $this->getChildHtml('product_type_data'); ?>
-            </div>
-            
+
+                <div class="product-type-data<?php echo $productTypeClasses; ?>">
+                    <a id="reset" class="function_icon"></a>
+            <?php echo $this->getChildHtml('product_type_data'); ?>
+                </div>
+
             <?php echo $this->getTierPriceHtml(); //tier prices ?>
 
             <?php if (!$this->hasOptions()): //add to cart when no options ?>
-                <?php if($_product->isSaleable()): ?>
-                    <div class="add-to-box">
-                        <?php echo $this->getChildHtml('addtocart') ?>
-                    </div>
+                <?php if ($_product->isSaleable()): ?>
+                        <div class="add-to-box">
+                    <?php echo $this->getChildHtml('addtocart') ?>
+                        </div>
                 <?php endif; ?>
                 <?php echo $this->getChildHtml('extra_buttons') ?>
             <?php endif; ?>
 
-            <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
+<?php if ($_product->isSaleable() && $this->hasOptions()): ?>
 
-                <?php if ($container1_html = $this->getChildChildHtml('container1', '', true, true)): ?>
-                    <div class="container1-wrapper"><?php echo $container1_html; ?></div>
+                    <?php if ($container1_html = $this->getChildChildHtml('container1', '', true, true)): ?>
+                        <div class="container1-wrapper"><?php echo $container1_html; ?></div>
+    <?php endif; ?>
+<?php endif; ?>
+
+                    <?php if ($addtoLinksHtml = $this->getChildHtml('addto')): //compare, wishlist, to friend  ?>
+                    <div class="action-box clearer">
+                        <?php echo $addtoLinksHtml; ?>
+                    </div>
+<?php endif; ?>
+
+<?php echo $this->getChildHtml('other'); ?>
+
+                <?php if ($tmpHtml = $this->getChildHtml('block_product_primary_bottom')): ?>
+                    <div class="feature-wrapper top-border block_product_primary_bottom"><?php echo $tmpHtml; ?></div>
                 <?php endif; ?>
-            <?php endif;?>
 
-            <?php if ($addtoLinksHtml = $this->getChildHtml('addto')): //compare, wishlist, to friend ?>
-                <div class="action-box clearer">
-					<?php echo $addtoLinksHtml; ?>
-				</div>
-            <?php endif; ?>
-            
-            <?php echo $this->getChildHtml('other'); ?>
+                <?php if ($tmpHtml = $this->getChildHtml('product_primary_bottom_placeholder')): //Placeholder for extensions ?>
+                    <div class="feature-wrapper top-border"><?php echo $tmpHtml; ?></div>
+                <?php endif; ?>
 
-            <?php if ($tmpHtml = $this->getChildHtml('block_product_primary_bottom')): ?>
-            	<div class="feature-wrapper top-border block_product_primary_bottom"><?php echo $tmpHtml; ?></div>
-            <?php endif; ?>
-            
-            <?php if ($tmpHtml = $this->getChildHtml('product_primary_bottom_placeholder')): //Placeholder for extensions ?>
-            	<div class="feature-wrapper top-border"><?php echo $tmpHtml; ?></div>
-            <?php endif; ?>
+            </div> <!-- end: product-shop -->
 
-        </div> <!-- end: product-shop -->
-        
-        <?php if ($secondaryColUnits): //(!empty($secondaryColUnits)): ?>
-            <div class="product-secondary-column <?php echo $secondaryColGridClass; ?> custom-sidebar-right">
-            	<div class="inner">
+<?php if ($secondaryColUnits): //(!empty($secondaryColUnits)):  ?>
+                <div class="product-secondary-column <?php echo $secondaryColGridClass; ?> custom-sidebar-right">
+                    <div class="inner">
 
-					<?php //Placeholder for extensions ?>
-					<?php if ($tmpHtml = $this->getChildHtml('product_secondary_top_placeholder')): //Placeholder for extensions ?>
-						<div class="margin-bottom"><?php echo $tmpHtml; ?></div>
+                    <?php //Placeholder for extensions  ?>
+                    <?php if ($tmpHtml = $this->getChildHtml('product_secondary_top_placeholder')): //Placeholder for extensions ?>
+                            <div class="margin-bottom"><?php echo $tmpHtml; ?></div>
                     <?php endif; ?>
-                    
-                    <?php if (isset($p['secondaryCol'][0])): ?>
-						<?php echo $p['secondaryCol'][0]; ?>
+
+                        <?php if (isset($p['secondaryCol'][0])): ?>
+                            <?php echo $p['secondaryCol'][0]; ?>
                     <?php endif; ?>
-                    
+
                     <?php if ($tmpHtml = $this->getChildHtml('block_product_secondary_bottom')): ?>
-                        <div class="feature-wrapper top-border block_product_secondary_bottom"><?php echo $tmpHtml; ?></div>
+                            <div class="feature-wrapper top-border block_product_secondary_bottom"><?php echo $tmpHtml; ?></div>
                     <?php endif; ?>
-                    
+
                     <?php if (isset($p['secondaryCol'][1])): ?>
-						<div class="margin-top"><?php echo $p['secondaryCol'][1]; ?></div>
+                            <div class="margin-top"><?php echo $p['secondaryCol'][1]; ?></div>
                     <?php endif; ?>
-                    
-                    <?php /*?>
-					<?php if (isset($section['related'])): ?>
-                    	<div class="margin-top"><?php echo $section['related']; ?></div>
-                    <?php endif; ?>
-                    <?php */?>
 
-				</div>
-            </div> <!-- end: product-secondary-column -->
-        <?php endif; ?>
+                    <?php /* ?>
+                      <?php if (isset($section['related'])): ?>
+                      <div class="margin-top"><?php echo $section['related']; ?></div>
+                      <?php endif; ?>
+                      <?php */ ?>
 
-<!--
-<div class="product-reloaded">
-	<div class="option-reloaded">
-		<div class="step-reloaded" id="clickme">
-			<strong class="step-number">Step 1</strong>
-			<span class="step-title">Material and Size</span>
-			<span class="step-selected"></span>
-		</div>
-		<div class="content-reloaded">
-			
-		</div>	
-	</div>
+                    </div>
+                </div> <!-- end: product-secondary-column -->
+                <?php endif; ?>
 
-	<div class="option-reloaded">
-		<div class="step-reloaded">
-			<strong class="step-number">Step 2</strong>
-			<span class="step-title">Borders</span>
-			<span class="step-selected"></span>
-		</div>
-		<div class="content-reloaded">
-			
-		</div>	
-	</div>
+            <!--
+            <div class="product-reloaded">
+                    <div class="option-reloaded">
+                            <div class="step-reloaded" id="clickme">
+                                    <strong class="step-number">Step 1</strong>
+                                    <span class="step-title">Material and Size</span>
+                                    <span class="step-selected"></span>
+                            </div>
+                            <div class="content-reloaded">
+                                    
+                            </div>	
+                    </div>
+            
+                    <div class="option-reloaded">
+                            <div class="step-reloaded">
+                                    <strong class="step-number">Step 2</strong>
+                                    <span class="step-title">Borders</span>
+                                    <span class="step-selected"></span>
+                            </div>
+                            <div class="content-reloaded">
+                                    
+                            </div>	
+                    </div>
+            
+                    <div class="option-reloaded">
+                            <div class="step-reloaded">
+                                    <strong class="step-number">Step 3</strong>
+                                    <span class="step-title">Frame</span>
+                                    <span class="step-selected"></span>
+                            </div>
+                            <div class="content-reloaded">
+                                    
+                            </div>	
+                    </div>
+            
+                    <div class="option-reloaded">
+                            <div class="step-reloaded">
+                                    <strong class="step-number">Step 4</strong>
+                                    <span class="step-title">Mat</span>
+                                    <span class="step-selected"></span>
+                            </div>
+                            <div class="content-reloaded">
+                                    
+                            </div>	
+                    </div>
+            
+            </div>
+            -->
+<?php if ($_product->isSaleable() && $this->hasOptions()): ?>
+    <?php if ($container2_html = $this->getChildChildHtml('container2', '', true, true)): ?>
+                    <div class="box-additional <?php echo $container2ColGridClass; ?>">
 
-	<div class="option-reloaded">
-		<div class="step-reloaded">
-			<strong class="step-number">Step 3</strong>
-			<span class="step-title">Frame</span>
-			<span class="step-selected"></span>
-		</div>
-		<div class="content-reloaded">
-			
-		</div>	
-	</div>
 
-	<div class="option-reloaded">
-		<div class="step-reloaded">
-			<strong class="step-number">Step 4</strong>
-			<span class="step-title">Mat</span>
-			<span class="step-selected"></span>
-		</div>
-		<div class="content-reloaded">
-			
-		</div>	
-	</div>
-
-</div>
--->
-      <?php if ($_product->isSaleable() && $this->hasOptions()): ?>
-            <?php if ($container2_html = $this->getChildChildHtml('container2', '', true, true)): ?>
-        	<div class="box-additional <?php echo $container2ColGridClass; ?>">
-                        
-
-                    <div  class="container2-wrapper">
-                            <?php echo $container2_html; ?>
+                        <div  class="container2-wrapper">
+        <?php echo $container2_html; ?>
                         </div>
                     </div>
-                    <div class="addthis_native_toolbox"></div>
+                    <!--<div class="addthis_native_tolbox"></div>-->
+                    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+                    <div class="addthis_custom_sharing"></div> 
             </div>
-				    <?php /*
-					<div id="custom_options_images">
-						<ul id="mats_previews">
-							<li id='mats_2_inches' class='mats_style'>
-								<div class="mats_l_shape"></div>
-							</li>
-							<li id='mats_3_inches' class='mats_style'>
-								<div class="mats_l_shape"></div>
-							</li>
-							<li id='mats_none' class='mats_style'></li>
-						</ul>
-						*/?>
-						<?php /*
-
-							// Fame categories list
-							$frame_categories = array();
-
-							$selected_size_ui = "<div class='selected_size_ui'></div>";
-							echo $selected_size_ui;
-
-						    $selected_mats_size = "<div class='selected_mats_size'></div>";
-							echo $selected_mats_size;
-
-							$custom_size_label_counter = 0;
-
-
-							// Current product state
-							$current_material = "<div class='current_material'></div>";
-							echo $current_material;
-
-							$current_size = "<div class='current_size'></div>";
-							echo $current_size;
-
-							$current_borders = "<div class='current_borders'></div>";
-							echo $current_borders;
-
-							$current_canvas_stretching = "<div class='current_canvas_stretching'></div>";
-							echo $current_canvas_stretching;
-
-							$current_frame = "<div class='current_frame'></div>";
-							echo $current_frame;
-
-							$current_mats = "<div class='current_mats'></div>";
-							echo $current_mats;
-
-
-							foreach ($_product->getOptions() as $o) 
-							{			
-								$option_type = $o->getType();
-							    $option_title = strtolower(str_replace(" ","_", $o->getTitle()));
-
-							    if ( $option_title == "material" )
-							    {
-							    	$option_label = "Select Material";
-							    }
-
-							    if ( $option_title == "size" )
-							    {
-							    	echo "<div id='size_info'>Select Your Size (Inches): <div id='size_data'></div></div>";
-
-							    	// Custom Size is not available on Limited Edition items
-							    	if ($udf_limited != "Yes")
-							    		echo "<a id='custom_size_link' class='fancybox' href='#info_custom_size'>Custom Size?</a>";
-							    }
-
-							    if ( $option_title == "borders" )
-							    {
-							    	// First border
-							    	echo "<div id='three_inches_white_top_border' class='arrow_right'></div>";
-									echo "<div id='three_inches_white_right_border' class='arrow_left'></div>";
-
-									// Second border
-							    	echo "<div id='two_inches_black_one_inch_white_top_border' class='arrow_right'></div>";
-									echo "<div id='two_inches_black_one_inch_white_right_border' class='arrow_left'></div>";
-							    }
-
-							    if ( $option_title == "frame" )
-							    {
-							    	$option_label = "Select Frame";
-
-							    	// Draw the 2 arrows that allow framing category sliding
-							    	echo "<div id='category_frames_left_arrow_1' class='arrow_left category_framing'></div>";
-							    	echo "<div id='category_frames_right_arrow_1' class='arrow_right category_framing'></div>";
-							    	echo "<div id='category_frames_left_arrow_2' class='arrow_left category_framing'></div>";
-							    	echo "<div id='category_frames_right_arrow_2' class='arrow_right category_framing'></div>";
-							    }
-
-							    if ( $option_title == "mat" )
-							    {
-							    	$option_label = "Select Mat";
-							    	echo "<div id='available_mats' class='custom_option_label'>Available mats</div>";
-							    	echo "<div id='mats_line'></div>";
-							    }
-
-						?>
-
-								<!-- Informational lightboxes -->
-								<div id="info_custom_size" style="width:400px; display: none;">
-									Top Art specializes in custom orders.
-									<br /> 
-									Please contact us at <a href="mailto:cs@topart.com?Subject=Custom Order">cs@topart.com</a> to place your custom order.
-								</div>
-		
-							  <div id="info_material" style="width:600px; display: none;">
-									<h3>Material Options</h3>
-									<p>
-
-										<div>
-											<div class="bold">Poster</div>
-											Our Posters are high quality fine art prints that are produced using a high speed four color offset lithography printing press.
-
-											<br />
-											<br />
-
-											This is a traditional method of printing that still utilizes individual metal plates to create the final print. Today, digital technology plays an important roll in the pre-press stages of offset printing.  
-
-											<br />
-											<br />
-
-											The results are fine art posters that very accurately reproduce the color, shading, and details of the original artworks.  
-										</div>
-
-										<br />
-
-										<div>
-											<div class="bold">Paper Substrate</div>
-											Giclées on paper are printed on high quality 275 gram satin paper.  Smaller images may be printed on slightly lighter weight paper.  
-
-											<br />
-											<br />
-
-											Images printed on this bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting.    
-
-											<br />
-											<br />
-
-											Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council. 
-										</div>
-
-										<br />
-										
-										<div>
-											<div class="bold">Canvas Substrate</div>
-											Giclées on canvas are printed on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  
+        <?php /*
+          <div id="custom_options_images">
+          <ul id="mats_previews">
+          <li id='mats_2_inches' class='mats_style'>
+          <div class="mats_l_shape"></div>
+          </li>
+          <li id='mats_3_inches' class='mats_style'>
+          <div class="mats_l_shape"></div>
+          </li>
+          <li id='mats_none' class='mats_style'></li>
+          </ul>
+         */ ?>
+        <?php /*
+
+          // Fame categories list
+          $frame_categories = array();
+
+          $selected_size_ui = "<div class='selected_size_ui'></div>";
+          echo $selected_size_ui;
+
+          $selected_mats_size = "<div class='selected_mats_size'></div>";
+          echo $selected_mats_size;
+
+          $custom_size_label_counter = 0;
 
-											<br />
-											<br />
+
+          // Current product state
+          $current_material = "<div class='current_material'></div>";
+          echo $current_material;
+
+          $current_size = "<div class='current_size'></div>";
+          echo $current_size;
 
-											After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting. 
-										</div>
-										
-									</p>
-								</div>
-
-								<!-- Informational lightboxes -->
-							  <div id="info_size" style="width:600px; display: none;">
-									<h3>Our Materials:</h3>
-									<p>
-										<div>
-											<span style="font-style:italic; font-weight:bold;">Posters</span>
-											<br /><br />
-
-											Depending on the size of the poster we use between 180-270 gram satin paper, with a high quality 90 brightness and a satin finish.  Our posters are environmentally responsible made with 30% recycled post consumer pulp. Our poster paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.  Images printed as offset posters may, over time, fade when exposed to direct sunlight, interior lighting or florescent lighting
-										</div>
-									</p>
-
-									<p>
-										<div>
-											<span style="font-style:italic; font-weight:bold;">Paper</span>
-											<br /><br />
-
-											We use high quality 275 gram satin paper for our paper art prints . This bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting. Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.
-										</div>
-									</p>
-
-									<p>
-										<div>
-											<span style="font-style:italic; font-weight:bold;">Canvas</span> 
-											<br /><br />
-
-											We print on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting.
-										</div>
-									</p>
-								</div>
-
-								<!-- Informational lightboxes -->
-							  <div id="info_borders" style="width:600px; display: none;">
-									<h3>Canvas Borders</h3>
-									<p>
-										<div>
-											All fine art canvas is printed with image borders ready for <span class="italic">gallery wrap stretching</span> on 1.5” stretcher bars.
-											
-											<br />
-
-											Please <a href="mailto:cs@topart.com">contact us</a> if you want to buy it unstretched.
-										</div>
-
-										<br />
-										<br />
-
-										<div>
-											<div class="bold">Gallery Stretching</div>
-											Gallery stretching is a method that stretches an added border around thick stretcher bars to create a visible decorative edge.  The stretched canvas can then be hung directly on the wall without framing to produce a clean contemporary design.  In addition, a canvas float frame can also be selected that will keep the decorative edges visible.  The float frame adds a wood element to the design and creates a professional finished fine art statement.
-										</div>
-
-										<br />
-
-										<div>
-											<div class="bold">3” White Borders</div>
-											Choose this border to create a clean contemporary white edge when your art is gallery wrapped or float framed.
-											The canvas will have at least 3” of unprinted white canvas around the image.
-										</div>
-
-										<div id="canvas_white_borders" class="canvas_borders_preview">
-										</div>
-
-										<br />
-
-										<div>
-											<div class="bold"> 2” Black Border + 1” White</div>
-											Choose this border to create a sophisticated black edge when your art is gallery wrapped or float framed.
-											The canvas will have a 2” black border around the image plus at least 1” of additional plain white canvas for stretching.
-										</div>
-
-										<div id="canvas_black_borders" class="canvas_borders_preview">
-										</div>
-
-										<br />
-
-										<div>
-											<div class="bold">2” Mirrored Border + 1” White</div>
-											Choose this border to create a colorful edge that is a dramatic extension of the image when your art is gallery wrapped or float framed.
-
-											<br />
-											<br />
-
-											The canvas will have a 2” mirrored extension of the image plus at least 1” of additional canvas for stretching.
-										</div>
-
-										<div id="canvas_mirrored" class="canvas_borders_preview">
-										</div>
-
-									</p>
-								</div>
-
-								<!-- Informational lightboxes -->
-							  <div id="info_frame" style="width:600px; display: none;">
-									<h3>Frames:</h3>
-									<p>
-										<div>
-											Our frame suppliers use 100% sustainable woods that are certified by the "Forest Stewardship Council" (FSC). We use finishes that recreate the look of exotic woods. Choose from black, metallic, wood, and white frames.
-										</div>
-									</p>
-								</div>
-
-								<!-- Informational lightboxes -->
-							 	<div id="info_mats" style="width:600px; display: none;">
-									<h3>Mats Boards:</h3>
-									<p>
-										<div>
-											All mat boards are made from the finest acid-free ph neutral buffered pulp cores and lined with acid free backing papers.
-										</div>
-									</p>
-								</div>
-
-								<div class="custom_option_label">
-					        		<?php 
-
-					        			// Information light box link
-							    		$information_lightbox = "<a class='fancybox' href='#info_". $option_title . "'>(?)</a>";
-
-					        			echo $option_label . $information_lightbox; 
-					        		?>
-					      </div>
-
-							  <ul id="custom_option_<?php echo $option_title; ?>">
-
-							        <?php
-
-							        	// Used to display the 3 mats dimensions only once in the loop
-							        	$mats_counter = 0;
-
-								        $values = $o->getValues();
-								        foreach ($values as $v) 
-								        {
-								        	$option_sku = $v->getData('sku');
-								        	$option_choice = $v->getData('title');
-								        	$option_price = $v->getData('price');
-								        	$i++;
-
-								        	$option_name = strtolower(str_replace(" ","_", $v->getData('title')));
-								        	$material_name = "";
-
-								        	
-
-								        	// If the option is the size, then check if is related to paper or canvas
-								        	if ( $option_title == "size" )
-								        	{
-									        	if ( strpos( $option_sku, '_paper_' ) !== false)
-									        	{
-									        		$material_name = "paper";
-									        	}
-
-									        	if ( strpos( $option_sku, '_canvas_' ) !== false)
-									        	{
-									        		$material_name = "canvas";
-									        	}
-
-									        	if ( strpos( $option_sku, 'custom' ) !== false)
-									        	{
-									        		$custom_size_label = "<li class='custom_size_label'><a href='/contact-us' target='blank'>Contact us</a> to specify your preferred height or width for the perfect fit.</li>";
-
-									        		if ( $custom_size_label_counter == 0)
-									        		{
-									        			echo $custom_size_label;
-									        			$custom_size_label_counter++;	
-									        		}
-									        		
-									        	}
-
-									        	else
-									        	{
-
-									        		$custom_size_label = "";
-
-									        		// Size initials out of the sku name
-										        	$size_initial = "";
-									        		if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
-									        			$size_initial = "xs";
-									 
-									        		else if (strpos($option_sku, "small") !== false || strpos($option_sku, "size_posterpaper_s_") !== false)
-									        			$size_initial = "s";
-
-									        		else if (strpos($option_sku, "medium") !== false || strpos($option_sku, "size_posterpaper_m_") !== false)
-									        			$size_initial = "m";
-
-									        		else if (strpos($option_sku, "large") !== false || strpos($option_sku, "size_posterpaper_l_") !== false)
-									        			$size_initial = "l";
-
-								        			else if (strpos($option_sku, "oversize") !== false || strpos($option_sku, "size_posterpaper_xl_") !== false)
-									        			$size_initial = "xl";
-									  
-									        		else
-								        			{
-								        				
-								        			}
-
-
-									        		$colon_position = strpos($option_name, ':', 1);
-										        	$option_name = substr($option_name, 0, $colon_position);
-
-									        		?>
-
-									        		<li id="custom_option_<?php echo $option_sku; ?>" class="background_border_size <?php echo $material_name; ?>">
-
-														<div class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text">
-															<?php echo $size_initial; ?>
-														</div>
-														
-													</li>
-
-													<?php
-									        	}
-
-									        }
-
-									        else if ( $option_title == "frame" ) 
-									        {
-
-									        	// Get the framing product by sku. Every other related information can be extracted from this product.
-												$product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
-									        	$frame_product = Mage::getModel('catalog/product')->load($product_id);
-
-									        	// The frame item number is uppercase
-									        	$frame_item_number = strtoupper($option_sku);
-									        	$frame_title = $option_choice;
-
-									        	$category_name = $frame_product->getUdfFramecat();
-									        	$frame_size = $frame_product->getUdfMouldingWidth();
-									        	$frame_available_4_paper = $frame_product->getAttributeText('udf_f_m_avail_4_paper');
-									        	$frame_available_4_canvas = $frame_product->getAttributeText('udf_f_m_avail_4_canvas');
-
-									        	$frame_maximum_long_side = $frame_product->getUdfFmaxslsin();
-									        	$frame_maximum_short_side = $frame_product->getUdfFmaxsssin();
-									        	
-
-									        	// Add each frame category name to an array, to be used later to dynamically build the dropdown of categories
-									        	if ( !in_array($category_name, $frame_categories) )
-									        	{
-									        		array_push($frame_categories, $category_name);
-									        	}
-
-									        	if ($option_sku == "frame_none")
-									        	{
-									        		$frame_item_number = "";
-									        	}
-
-									        	?>
-
-									        	
-									        	<li id="<?php echo $option_sku; ?>" class="background_border custom_option_viewport" data-frame_category="<?php echo $category_name; ?>" style="background-image: url('<?php echo $framing_profile_url . $frame_item_number . ".png"; ?>')" data-frame_size="<?php echo $frame_size; ?>" data-frame_available_4_paper="<?php echo $frame_available_4_paper; ?>" data-frame_available_4_canvas="<?php echo $frame_available_4_canvas; ?>" data-frame_maximum_long_side="<?php echo $frame_maximum_long_side; ?>" data-frame_maximum_short_side="<?php echo $frame_maximum_short_side; ?>">
-													<div class="frame_description">
-														<div class="frame_title"><?php echo $frame_title; ?></div>
-														<div class="frame_price">Add $
-															<div class="frame_real_price">
-																0.00
-															</div>
-															<div class="frame_ui_price">
-																<?php echo number_format((float)$option_price, 2, '.', ''); ?>
-															</div>
-														</div>
-													</div>
-													<div id="custom_option_<?php echo $option_sku; ?>_corner_image" class="frame_corner_image" style="background-image: url('<?php echo $framing_corner_url . $frame_item_number . ".png"; ?>')">
-													</div>
-												</li>
-
-												<?php
-									        }
-
-									        else if ( $option_title == "mat" ) 
-									        {
-
-									        	// Get the framing product by sku. Every other related information can be extracted from this product.
-												$product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
-									        	$mat_product = Mage::getModel('catalog/product')->load($product_id);
-
-									        	$mats_sku = strtolower($mat_product->getSku());
-									        	$category_name = $mat_product->getUdfFramecat();
-									        	$mats_color_code = $mat_product->getUdfColorcode();
-									        	$mats_size = $mat_product->getUdfMouldingWidth();
-									        	$mat_available_4_paper = $mat_product->getAttributeText('udf_f_m_avail_4_paper');
-									        	$mat_available_4_canvas = $mat_product->getAttributeText('udf_f_m_avail_4_canvas');
-
-									        	$mat_maximum_long_side = $mat_product->getUdfFmaxslsin();
-									        	$mat_maximum_short_side = $mat_product->getUdfFmaxsssin();
-									        	
-
-									        	?>
-
-									        	<!-- Mats color for each choice -->
-									        	<li id="<?php echo $option_sku; ?>" class="mats_color" style="background-color: <?php echo $mats_color_code; ?>;" data-mat_category="<?php echo $category_name; ?>" data-mats_sku="<?php echo $mats_sku; ?>" data-mats_size="<?php echo $mats_size; ?>" data-mat_available_4_paper="<?php echo $mat_available_4_paper; ?>" data-mat_available_4_canvas="<?php echo $mat_available_4_canvas; ?>" data-mat_maximum_long_side="<?php echo $mat_maximum_long_side; ?>" data-mat_maximum_short_side="<?php echo $mat_maximum_short_side; ?>">
-									        		<div class="mats_ui_price">
-														<?php echo number_format((float)$option_price, 2, '.', ''); ?>
-													</div>
-												</li>
-
-
-
-												<?php
-									        }
-
-									        else
-									        {
-									        	
-								    ?>	
-
-									       <li id="custom_option_<?php echo $option_sku; ?>_background" class="background_border">
-													<div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport" style="background-image: url('<?php echo $thumbnail_image_file_url; ?>')" >
-													</div>
-
-													<?php
-															if ( $option_sku == "material_canvas" && $one_corner_flag == 0 ){
-							    							echo "<div id='canvas_top_border' class='arrow_right'></div>";
-																echo "<div id='canvas_right_border' class='arrow_left'></div>";
-																$one_corner_flag++;
-															}
-														?>
-												</li>
-										<?php
-											} 
-								    }
-								 	?>
-								</ul>
-
-								<select id="frame_categories">
-						    		<?php
-						    			$i = 0;
-						    			// Dynamically build the list of frame categories
-						    			foreach ($frame_categories as $category_name)
-						    			{
-						    				// Rename each category name that will be displayed, except for the first one i.e. "No Frame"
-						    				if ( $i > 0)
-						    				{
-									        	$category_name_displayed = ucfirst($category_name);
-									        }
-									        else
-									        {
-									        	$category_name = "no_frame";
-									        	$category_name_displayed = "No Frame";
-									        }
-						    				?>
-											<option value=<?php echo $category_name; ?>><?php echo $category_name_displayed; ?></option>
-
-											<?php
-												$i++;
-										}
-									?>
-								</select>
-							    <?php    		
-							}
-
-					</div>*/?>
-
-				<?php
-					echo "<div class='canvas_available'>" . $canvas_available . "</div>";
-					echo "<div class='poster_available'>" . $poster_available . "</div>";
-					echo "<div class='paper_available'>" . $paper_available . "</div>";
-					echo "<div class='orientation'>" . $orientation . "</div>";
-				?>
-
-        	<?php endif; ?>
-        	<!-- End of new code for product configuration div -->
-
-        	<!-- New code for copyright text -->
-        	<div id="copyright_text">
-		        <?php
-		        	$copyright_flag = $_product->getAttributeText('udf_copyright');
-		        	$copyright_text = $_product->getUdfCrline();
-
-		        	if ($copyright_flag == "Yes")
-		        	{
-		        		echo $copyright_text;
-		        	}
-		        ?>
-        	</div>
-        	<!-- End of new code for copyright text -->
+          $current_borders = "<div class='current_borders'></div>";
+          echo $current_borders;
+
+          $current_canvas_stretching = "<div class='current_canvas_stretching'></div>";
+          echo $current_canvas_stretching;
+
+          $current_frame = "<div class='current_frame'></div>";
+          echo $current_frame;
+
+          $current_mats = "<div class='current_mats'></div>";
+          echo $current_mats;
+
+
+          foreach ($_product->getOptions() as $o)
+          {
+          $option_type = $o->getType();
+          $option_title = strtolower(str_replace(" ","_", $o->getTitle()));
+
+          if ( $option_title == "material" )
+          {
+          $option_label = "Select Material";
+          }
+
+          if ( $option_title == "size" )
+          {
+          echo "<div id='size_info'>Select Your Size (Inches): <div id='size_data'></div></div>";
+
+          // Custom Size is not available on Limited Edition items
+          if ($udf_limited != "Yes")
+          echo "<a id='custom_size_link' class='fancybox' href='#info_custom_size'>Custom Size?</a>";
+          }
+
+          if ( $option_title == "borders" )
+          {
+          // First border
+          echo "<div id='three_inches_white_top_border' class='arrow_right'></div>";
+          echo "<div id='three_inches_white_right_border' class='arrow_left'></div>";
+
+          // Second border
+          echo "<div id='two_inches_black_one_inch_white_top_border' class='arrow_right'></div>";
+          echo "<div id='two_inches_black_one_inch_white_right_border' class='arrow_left'></div>";
+          }
+
+          if ( $option_title == "frame" )
+          {
+          $option_label = "Select Frame";
+
+          // Draw the 2 arrows that allow framing category sliding
+          echo "<div id='category_frames_left_arrow_1' class='arrow_left category_framing'></div>";
+          echo "<div id='category_frames_right_arrow_1' class='arrow_right category_framing'></div>";
+          echo "<div id='category_frames_left_arrow_2' class='arrow_left category_framing'></div>";
+          echo "<div id='category_frames_right_arrow_2' class='arrow_right category_framing'></div>";
+          }
+
+          if ( $option_title == "mat" )
+          {
+          $option_label = "Select Mat";
+          echo "<div id='available_mats' class='custom_option_label'>Available mats</div>";
+          echo "<div id='mats_line'></div>";
+          }
+
+          ?>
+
+          <!-- Informational lightboxes -->
+          <div id="info_custom_size" style="width:400px; display: none;">
+          Top Art specializes in custom orders.
+          <br />
+          Please contact us at <a href="mailto:cs@topart.com?Subject=Custom Order">cs@topart.com</a> to place your custom order.
+          </div>
+
+          <div id="info_material" style="width:600px; display: none;">
+          <h3>Material Options</h3>
+          <p>
+
+          <div>
+          <div class="bold">Poster</div>
+          Our Posters are high quality fine art prints that are produced using a high speed four color offset lithography printing press.
+
+          <br />
+          <br />
+
+          This is a traditional method of printing that still utilizes individual metal plates to create the final print. Today, digital technology plays an important roll in the pre-press stages of offset printing.
+
+          <br />
+          <br />
+
+          The results are fine art posters that very accurately reproduce the color, shading, and details of the original artworks.
+          </div>
+
+          <br />
+
+          <div>
+          <div class="bold">Paper Substrate</div>
+          Giclées on paper are printed on high quality 275 gram satin paper.  Smaller images may be printed on slightly lighter weight paper.
+
+          <br />
+          <br />
+
+          Images printed on this bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting.
+
+          <br />
+          <br />
+
+          Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.
+          </div>
+
+          <br />
+
+          <div>
+          <div class="bold">Canvas Substrate</div>
+          Giclées on canvas are printed on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.
+
+          <br />
+          <br />
+
+          After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting.
+          </div>
+
+          </p>
+          </div>
+
+          <!-- Informational lightboxes -->
+          <div id="info_size" style="width:600px; display: none;">
+          <h3>Our Materials:</h3>
+          <p>
+          <div>
+          <span style="font-style:italic; font-weight:bold;">Posters</span>
+          <br /><br />
+
+          Depending on the size of the poster we use between 180-270 gram satin paper, with a high quality 90 brightness and a satin finish.  Our posters are environmentally responsible made with 30% recycled post consumer pulp. Our poster paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.  Images printed as offset posters may, over time, fade when exposed to direct sunlight, interior lighting or florescent lighting
+          </div>
+          </p>
+
+          <p>
+          <div>
+          <span style="font-style:italic; font-weight:bold;">Paper</span>
+          <br /><br />
+
+          We use high quality 275 gram satin paper for our paper art prints . This bright white, ph neutral paper will resist fading for decades when framed under glass and exposed to standard interior lighting. Our paper is FSC certified and produced from forests meeting the well managed criteria defined by the Forest Stewardship Council.
+          </div>
+          </p>
+
+          <p>
+          <div>
+          <span style="font-style:italic; font-weight:bold;">Canvas</span>
+          <br /><br />
+
+          We print on archival 365 gram poly-cotton fine art canvas.  Our canvas is ph neutral, acid free and has a light texture.  After printing a special coating is applied to all canvases.  This clear coating provides maximum protection against moisture, soiling, and staining.  Images printed on this bright white canvas will resist fading for decades when exposed to standard interior lighting.
+          </div>
+          </p>
+          </div>
+
+          <!-- Informational lightboxes -->
+          <div id="info_borders" style="width:600px; display: none;">
+          <h3>Canvas Borders</h3>
+          <p>
+          <div>
+          All fine art canvas is printed with image borders ready for <span class="italic">gallery wrap stretching</span> on 1.5” stretcher bars.
+
+          <br />
+
+          Please <a href="mailto:cs@topart.com">contact us</a> if you want to buy it unstretched.
+          </div>
+
+          <br />
+          <br />
+
+          <div>
+          <div class="bold">Gallery Stretching</div>
+          Gallery stretching is a method that stretches an added border around thick stretcher bars to create a visible decorative edge.  The stretched canvas can then be hung directly on the wall without framing to produce a clean contemporary design.  In addition, a canvas float frame can also be selected that will keep the decorative edges visible.  The float frame adds a wood element to the design and creates a professional finished fine art statement.
+          </div>
+
+          <br />
+
+          <div>
+          <div class="bold">3” White Borders</div>
+          Choose this border to create a clean contemporary white edge when your art is gallery wrapped or float framed.
+          The canvas will have at least 3” of unprinted white canvas around the image.
+          </div>
+
+          <div id="canvas_white_borders" class="canvas_borders_preview">
+          </div>
+
+          <br />
+
+          <div>
+          <div class="bold"> 2” Black Border + 1” White</div>
+          Choose this border to create a sophisticated black edge when your art is gallery wrapped or float framed.
+          The canvas will have a 2” black border around the image plus at least 1” of additional plain white canvas for stretching.
+          </div>
+
+          <div id="canvas_black_borders" class="canvas_borders_preview">
+          </div>
+
+          <br />
+
+          <div>
+          <div class="bold">2” Mirrored Border + 1” White</div>
+          Choose this border to create a colorful edge that is a dramatic extension of the image when your art is gallery wrapped or float framed.
+
+          <br />
+          <br />
+
+          The canvas will have a 2” mirrored extension of the image plus at least 1” of additional canvas for stretching.
+          </div>
+
+          <div id="canvas_mirrored" class="canvas_borders_preview">
+          </div>
+
+          </p>
+          </div>
+
+          <!-- Informational lightboxes -->
+          <div id="info_frame" style="width:600px; display: none;">
+          <h3>Frames:</h3>
+          <p>
+          <div>
+          Our frame suppliers use 100% sustainable woods that are certified by the "Forest Stewardship Council" (FSC). We use finishes that recreate the look of exotic woods. Choose from black, metallic, wood, and white frames.
+          </div>
+          </p>
+          </div>
+
+          <!-- Informational lightboxes -->
+          <div id="info_mats" style="width:600px; display: none;">
+          <h3>Mats Boards:</h3>
+          <p>
+          <div>
+          All mat boards are made from the finest acid-free ph neutral buffered pulp cores and lined with acid free backing papers.
+          </div>
+          </p>
+          </div>
+
+          <div class="custom_option_label">
+          <?php
+
+          // Information light box link
+          $information_lightbox = "<a class='fancybox' href='#info_". $option_title . "'>(?)</a>";
+
+          echo $option_label . $information_lightbox;
+          ?>
+          </div>
+
+          <ul id="custom_option_<?php echo $option_title; ?>">
+
+          <?php
+
+          // Used to display the 3 mats dimensions only once in the loop
+          $mats_counter = 0;
+
+          $values = $o->getValues();
+          foreach ($values as $v)
+          {
+          $option_sku = $v->getData('sku');
+          $option_choice = $v->getData('title');
+          $option_price = $v->getData('price');
+          $i++;
+
+          $option_name = strtolower(str_replace(" ","_", $v->getData('title')));
+          $material_name = "";
+
+
+
+          // If the option is the size, then check if is related to paper or canvas
+          if ( $option_title == "size" )
+          {
+          if ( strpos( $option_sku, '_paper_' ) !== false)
+          {
+          $material_name = "paper";
+          }
+
+          if ( strpos( $option_sku, '_canvas_' ) !== false)
+          {
+          $material_name = "canvas";
+          }
+
+          if ( strpos( $option_sku, 'custom' ) !== false)
+          {
+          $custom_size_label = "<li class='custom_size_label'><a href='/contact-us' target='blank'>Contact us</a> to specify your preferred height or width for the perfect fit.</li>";
+
+          if ( $custom_size_label_counter == 0)
+          {
+          echo $custom_size_label;
+          $custom_size_label_counter++;
+          }
+
+          }
+
+          else
+          {
+
+          $custom_size_label = "";
+
+          // Size initials out of the sku name
+          $size_initial = "";
+          if (strpos($option_sku, "petite") !== false || strpos($option_sku, "size_posterpaper_xs_") !== false)
+          $size_initial = "xs";
+
+          else if (strpos($option_sku, "small") !== false || strpos($option_sku, "size_posterpaper_s_") !== false)
+          $size_initial = "s";
+
+          else if (strpos($option_sku, "medium") !== false || strpos($option_sku, "size_posterpaper_m_") !== false)
+          $size_initial = "m";
+
+          else if (strpos($option_sku, "large") !== false || strpos($option_sku, "size_posterpaper_l_") !== false)
+          $size_initial = "l";
+
+          else if (strpos($option_sku, "oversize") !== false || strpos($option_sku, "size_posterpaper_xl_") !== false)
+          $size_initial = "xl";
+
+          else
+          {
+
+          }
+
+
+          $colon_position = strpos($option_name, ':', 1);
+          $option_name = substr($option_name, 0, $colon_position);
+
+          ?>
+
+          <li id="custom_option_<?php echo $option_sku; ?>" class="background_border_size <?php echo $material_name; ?>">
+
+          <div class="custom_option_<?php echo $option_title . "_" . $option_name; ?> custom_option_size_text">
+          <?php echo $size_initial; ?>
+          </div>
+
+          </li>
+
+          <?php
+          }
+
+          }
+
+          else if ( $option_title == "frame" )
+          {
+
+          // Get the framing product by sku. Every other related information can be extracted from this product.
+          $product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
+          $frame_product = Mage::getModel('catalog/product')->load($product_id);
+
+          // The frame item number is uppercase
+          $frame_item_number = strtoupper($option_sku);
+          $frame_title = $option_choice;
+
+          $category_name = $frame_product->getUdfFramecat();
+          $frame_size = $frame_product->getUdfMouldingWidth();
+          $frame_available_4_paper = $frame_product->getAttributeText('udf_f_m_avail_4_paper');
+          $frame_available_4_canvas = $frame_product->getAttributeText('udf_f_m_avail_4_canvas');
+
+          $frame_maximum_long_side = $frame_product->getUdfFmaxslsin();
+          $frame_maximum_short_side = $frame_product->getUdfFmaxsssin();
+
+
+          // Add each frame category name to an array, to be used later to dynamically build the dropdown of categories
+          if ( !in_array($category_name, $frame_categories) )
+          {
+          array_push($frame_categories, $category_name);
+          }
+
+          if ($option_sku == "frame_none")
+          {
+          $frame_item_number = "";
+          }
+
+          ?>
+
+
+          <li id="<?php echo $option_sku; ?>" class="background_border custom_option_viewport" data-frame_category="<?php echo $category_name; ?>" style="background-image: url('<?php echo $framing_profile_url . $frame_item_number . ".png"; ?>')" data-frame_size="<?php echo $frame_size; ?>" data-frame_available_4_paper="<?php echo $frame_available_4_paper; ?>" data-frame_available_4_canvas="<?php echo $frame_available_4_canvas; ?>" data-frame_maximum_long_side="<?php echo $frame_maximum_long_side; ?>" data-frame_maximum_short_side="<?php echo $frame_maximum_short_side; ?>">
+          <div class="frame_description">
+          <div class="frame_title"><?php echo $frame_title; ?></div>
+          <div class="frame_price">Add $
+          <div class="frame_real_price">
+          0.00
+          </div>
+          <div class="frame_ui_price">
+          <?php echo number_format((float)$option_price, 2, '.', ''); ?>
+          </div>
+          </div>
+          </div>
+          <div id="custom_option_<?php echo $option_sku; ?>_corner_image" class="frame_corner_image" style="background-image: url('<?php echo $framing_corner_url . $frame_item_number . ".png"; ?>')">
+          </div>
+          </li>
+
+          <?php
+          }
+
+          else if ( $option_title == "mat" )
+          {
+
+          // Get the framing product by sku. Every other related information can be extracted from this product.
+          $product_id = Mage::getModel("catalog/product")->getIdBySku( $option_sku );
+          $mat_product = Mage::getModel('catalog/product')->load($product_id);
+
+          $mats_sku = strtolower($mat_product->getSku());
+          $category_name = $mat_product->getUdfFramecat();
+          $mats_color_code = $mat_product->getUdfColorcode();
+          $mats_size = $mat_product->getUdfMouldingWidth();
+          $mat_available_4_paper = $mat_product->getAttributeText('udf_f_m_avail_4_paper');
+          $mat_available_4_canvas = $mat_product->getAttributeText('udf_f_m_avail_4_canvas');
+
+          $mat_maximum_long_side = $mat_product->getUdfFmaxslsin();
+          $mat_maximum_short_side = $mat_product->getUdfFmaxsssin();
+
+
+          ?>
+
+          <!-- Mats color for each choice -->
+          <li id="<?php echo $option_sku; ?>" class="mats_color" style="background-color: <?php echo $mats_color_code; ?>;" data-mat_category="<?php echo $category_name; ?>" data-mats_sku="<?php echo $mats_sku; ?>" data-mats_size="<?php echo $mats_size; ?>" data-mat_available_4_paper="<?php echo $mat_available_4_paper; ?>" data-mat_available_4_canvas="<?php echo $mat_available_4_canvas; ?>" data-mat_maximum_long_side="<?php echo $mat_maximum_long_side; ?>" data-mat_maximum_short_side="<?php echo $mat_maximum_short_side; ?>">
+          <div class="mats_ui_price">
+          <?php echo number_format((float)$option_price, 2, '.', ''); ?>
+          </div>
+          </li>
+
+
+
+          <?php
+          }
+
+          else
+          {
+
+          ?>
+
+          <li id="custom_option_<?php echo $option_sku; ?>_background" class="background_border">
+          <div id="custom_option_<?php echo $option_sku; ?>" class="custom_option_viewport" style="background-image: url('<?php echo $thumbnail_image_file_url; ?>')" >
+          </div>
+
+          <?php
+          if ( $option_sku == "material_canvas" && $one_corner_flag == 0 ){
+          echo "<div id='canvas_top_border' class='arrow_right'></div>";
+          echo "<div id='canvas_right_border' class='arrow_left'></div>";
+          $one_corner_flag++;
+          }
+          ?>
+          </li>
+          <?php
+          }
+          }
+          ?>
+          </ul>
+
+          <select id="frame_categories">
+          <?php
+          $i = 0;
+          // Dynamically build the list of frame categories
+          foreach ($frame_categories as $category_name)
+          {
+          // Rename each category name that will be displayed, except for the first one i.e. "No Frame"
+          if ( $i > 0)
+          {
+          $category_name_displayed = ucfirst($category_name);
+          }
+          else
+          {
+          $category_name = "no_frame";
+          $category_name_displayed = "No Frame";
+          }
+          ?>
+          <option value=<?php echo $category_name; ?>><?php echo $category_name_displayed; ?></option>
+
+          <?php
+          $i++;
+          }
+          ?>
+          </select>
+          <?php
+          }
+
+          </div> */ ?>
+
+            <?php
+            echo "<div class='canvas_available'>" . $canvas_available . "</div>";
+            echo "<div class='poster_available'>" . $poster_available . "</div>";
+            echo "<div class='paper_available'>" . $paper_available . "</div>";
+            echo "<div class='orientation'>" . $orientation . "</div>";
+            ?>
 
         <?php endif; ?>
+        <!-- End of new code for product configuration div -->
 
-    </form>
-    <script type="text/javascript">
+        <!-- New code for copyright text -->
+        <div id="copyright_text">
+        <?php
+        $copyright_flag = $_product->getAttributeText('udf_copyright');
+        $copyright_text = $_product->getUdfCrline();
+
+        if ($copyright_flag == "Yes") {
+            echo $copyright_text;
+        }
+        ?>
+        </div>
+        <!-- End of new code for copyright text -->
+
+    <?php endif; ?>
+
+</form>
+<script type="text/javascript">
     //<![CDATA[
 
-        jQuery(document).ready(function(){
-            /*jQuery('.info').magnificPopup({
-                items: {
-                    src: '<div class="white-popup">Dynamically created popup</div>',
-                    type: 'inline'
-                }
-            });*/
-        });
+    jQuery(document).ready(function() {
+        /*jQuery('.info').magnificPopup({
+         items: {
+         src: '<div class="white-popup">Dynamically created popup</div>',
+         type: 'inline'
+         }
+         });*/
+    });
 
-        var productAddToCartForm = new VarienForm('product_addtocart_form');
-        productAddToCartForm.submit = function(button, url) {
+    var productAddToCartForm = new VarienForm('product_addtocart_form');
+    productAddToCartForm.submit = function(button, url) {
+        if (this.validator.validate()) {
+            var form = this.form;
+            var oldUrl = form.action;
+
+            if (url) {
+                form.action = url;
+            }
+            var e = null;
+            try {
+                this.form.submit();
+            } catch (e) {
+            }
+            this.form.action = oldUrl;
+            if (e) {
+                throw e;
+            }
+
+            if (button && button != 'undefined') {
+                button.disabled = true;
+            }
+        }
+    }.bind(productAddToCartForm);
+
+    productAddToCartForm.submitLight = function(button, url) {
+        if (this.validator) {
+            var nv = Validation.methods;
+            delete Validation.methods['required-entry'];
+            delete Validation.methods['validate-one-required'];
+            delete Validation.methods['validate-one-required-by-name'];
             if (this.validator.validate()) {
-                var form = this.form;
-                var oldUrl = form.action;
-
                 if (url) {
-                   form.action = url;
+                    this.form.action = url;
                 }
-                var e = null;
-                try {
-                    this.form.submit();
-                } catch (e) {
-                }
-                this.form.action = oldUrl;
-                if (e) {
-                    throw e;
-                }
-
-                if (button && button != 'undefined') {
-                    button.disabled = true;
-                }
+                this.form.submit();
             }
-        }.bind(productAddToCartForm);
-
-        productAddToCartForm.submitLight = function(button, url){
-            if(this.validator) {
-                var nv = Validation.methods;
-                delete Validation.methods['required-entry'];
-                delete Validation.methods['validate-one-required'];
-                delete Validation.methods['validate-one-required-by-name'];
-                if (this.validator.validate()) {
-                    if (url) {
-                        this.form.action = url;
-                    }
-                    this.form.submit();
-                }
-                Object.extend(Validation.methods, nv);
-            }
-        }.bind(productAddToCartForm);
+            Object.extend(Validation.methods, nv);
+        }
+    }.bind(productAddToCartForm);
     //]]>
-    </script>
-    
-	<div class="box-additional box-tabs <?php echo $collatPrimaryColGridClass; ?>">
-    	<?php $info_tabs_html = trim($this->getChildHtml('info_tabs'));
-			if ($info_tabs_html) echo $info_tabs_html; ?>
+</script>
 
-		<?php //Open the "Reviews" tab, when "X Review(s)" or "Be the first to review this product" links are clicked ?>
-		<script type="text/javascript">
-		//<![CDATA[
-			jQuery(function($){$("#goto-reviews, #goto-reviews-form").click(function(){if($("#product-tabs").hasClass("accor")){$("#product-tabs .tabs-panels").data("tabs").click($(".tabs-panels .acctab").index($("#acctab-tabreviews")))}else{$("#product-tabs .tabs").data("tabs").click($("#tab-tabreviews").index())}})});
-		//]]>
-		</script>
-        
-        <?php echo $this->getChildHtml('product_additional_data') ?>
-	</div> <!-- end: box-tabs -->
-    
-    
-    
-    <?php /*if (isset($p['collatSecondaryCol'])): */?>
-    <?php if (false): ?>
-		<div class="box-additional box-sidebar custom-sidebar-right <?php echo $collatSecondaryColGridClass; ?>">
-			<div class="inner"><?php echo $p['collatSecondaryCol']; ?></div>
-		</div>
-	<?php endif; ?>
-         
-    <?php /*if (isset($section['upsell'])): */?>
-    <?php if (false): ?>
-    	<div class="box-additional box-up-sell <?php echo $collatPrimaryColGridClass; ?>"><?php echo $section['upsell']; ?></div>
-    <?php endif; ?>
-    
+<div class="box-additional box-tabs <?php echo $collatPrimaryColGridClass; ?>">
+<?php $info_tabs_html = trim($this->getChildHtml('info_tabs'));
+if ($info_tabs_html)
+    echo $info_tabs_html;
+?>
+
+<?php //Open the "Reviews" tab, when "X Review(s)" or "Be the first to review this product" links are clicked  ?>
+    <script type="text/javascript">
+        //<![CDATA[
+        jQuery(function($) {
+            $("#goto-reviews, #goto-reviews-form").click(function() {
+                if ($("#product-tabs").hasClass("accor")) {
+                    $("#product-tabs .tabs-panels").data("tabs").click($(".tabs-panels .acctab").index($("#acctab-tabreviews")))
+                } else {
+                    $("#product-tabs .tabs").data("tabs").click($("#tab-tabreviews").index())
+                }
+            })
+        });
+        //]]>
+    </script>
+
+<?php echo $this->getChildHtml('product_additional_data') ?>
+</div> <!-- end: box-tabs -->
+
+
+
+<?php /* if (isset($p['collatSecondaryCol'])): */ ?>
+<?php if (false): ?>
+    <div class="box-additional box-sidebar custom-sidebar-right <?php echo $collatSecondaryColGridClass; ?>">
+        <div class="inner"><?php echo $p['collatSecondaryCol']; ?></div>
+    </div>
+<?php endif; ?>
+
+<?php /* if (isset($section['upsell'])): */ ?>
+<?php if (false): ?>
+    <div class="box-additional box-up-sell <?php echo $collatPrimaryColGridClass; ?>"><?php echo $section['upsell']; ?></div>
+<?php endif; ?>
+
 </div> <!-- end: product-view -->
 
 <!-- It's not Necesary now 
 <div id="product_configuration">
-	
-	<div id="product_configuration_title">
-		Your Selections
-	</div>
+        
+        <div id="product_configuration_title">
+                Your Selections
+        </div>
 
-	<div class="feature">
-		<span id="selected_substrate" class="strong"></span>
-		<a id="customize_substrate_link" class="configuration_link">(edit)</a>
-	</div>
+        <div class="feature">
+                <span id="selected_substrate" class="strong"></span>
+                <a id="customize_substrate_link" class="configuration_link">(edit)</a>
+        </div>
 
-	<div class="feature">
-		<span id="selected_borders" class="strong"></span>
-		<a id="customize_borders_link" class="configuration_link">(edit)</a>
-	</div>
+        <div class="feature">
+                <span id="selected_borders" class="strong"></span>
+                <a id="customize_borders_link" class="configuration_link">(edit)</a>
+        </div>
 
-	<div class="feature">
-		<span id="selected_wrap" class="strong"></span>
-		<a id="customize_wrap_link" class="configuration_link">(edit)</a>
-	</div>
+        <div class="feature">
+                <span id="selected_wrap" class="strong"></span>
+                <a id="customize_wrap_link" class="configuration_link">(edit)</a>
+        </div>
 
-	<div class="feature">            		
-		<span id="selected_frame" class="strong"></span>
-		<a id="customize_frame_link" class="configuration_link">(edit)</a>
-	</div>
+        <div class="feature">            		
+                <span id="selected_frame" class="strong"></span>
+                <a id="customize_frame_link" class="configuration_link">(edit)</a>
+        </div>
 
-	<div class="feature">
-		<span id="selected_mats" class="strong"></span>
-		<a id="customize_mats_link" class="configuration_link">(edit)</a>
-	</div>
+        <div class="feature">
+                <span id="selected_mats" class="strong"></span>
+                <a id="customize_mats_link" class="configuration_link">(edit)</a>
+        </div>
 
 </div>
 -->
