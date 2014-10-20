@@ -2211,7 +2211,7 @@ div.select-frame-colors {
 .body-review {
     border-bottom: 1px solid #e5e5e5;
     font-size: 14px;
-    line-height: 9px;
+    line-height: 18px;
     margin: 0 10px 10px 0;
     padding: 15px 15px 15px 0;
     font-weight: normal;
@@ -2285,3 +2285,11 @@ form#review-form textarea#review_field{
     color: #fff;
 }
 /*JP: Ticket 252 END*/
+#customer-reviews .ratings-table{
+    margin-bottom: 5px;
+    margin-top: 15px;
+    padding-top: 10px;
+}
+#review-form{
+    color:#333;
+}

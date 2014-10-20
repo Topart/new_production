@@ -1643,7 +1643,7 @@ h3.product-name {
 }
 .ratings dt {}
 .ratings dd {}
-.rating-box { width:69px; height:13px; font-size:0; line-height:0; background:url(../images/img/rating.png) 0 0 repeat-x; text-indent:-999em; overflow:hidden; }
+.rating-box { width:80px; height:13px; font-size:0; line-height:0; background:url(../images/img/rating.png) 0 0 repeat-x; text-indent:-999em; overflow:hidden; }
 .rating-box .rating { float:left; height:13px; background:url(../images/img/rating.png) 0 100% repeat-x; }
 .ratings .rating-box { float:left; margin-right:8px; }
 .ratings .amount { white-space:nowrap; font-size:10px; text-transform:uppercase; }
