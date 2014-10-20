@@ -2293,3 +2293,16 @@ form#review-form textarea#review_field{
 #review-form{
     color:#333;
 }
+form#review-form label.required,form#review-form .table-review-title{
+    background-image: url("../images/img/gold-bullet.png");
+    background-position: 0 5px;
+    background-repeat: no-repeat;
+    padding-left: 8px;
+    margin-top: 10px;
+}
+form#review-form .table-review-title{
+    margin-top: 20px;
+}
+form#review-form #product-review-table .first th {
+    font-weight: bold;
+}
