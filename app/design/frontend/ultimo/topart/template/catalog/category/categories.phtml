@@ -83,7 +83,7 @@ $black = array(
 <?php endif; ?>
 <script>
 jQuery(document).ready(function(){
-    setTimeout(function(){
+    jQuery(".item-isotope:last").find("img").load(function(){
         jQuery(".item-isotope").each(function(){
             img = jQuery(this).find("img");
             w = img.width();
@@ -91,7 +91,7 @@ jQuery(document).ready(function(){
             h = img.height();
             h = h * 0.75;
 
-            if(w > 430 && w < 440){
+            if(w > 430 /*&& w < 440*/){
                 w = 434;
             }
 
@@ -129,7 +129,7 @@ jQuery(document).ready(function(){
             columnWidth: 1
           }
         });
-    },2000);
+    });
 });
 </script>
 </div>
