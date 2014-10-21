@@ -3034,8 +3034,13 @@ var globals = {};
                 });
               /*JP: For ticket 198 End*/
               /**/
+                jQuery(document).on("mousedown","dd.mat input.product-custom-option",function(){
+                    jQuery(this).attr("checked",false);
+                });
                 jQuery(document).on("change","dd.mat input.product-custom-option",function(){
-                    console.log("entre");
+                    
+                    jQuery(this).attr("onclick","");
+                    
                     var current_price = jQuery(".regular-price .price").text();
                         current_price = current_price.trim();
                         
