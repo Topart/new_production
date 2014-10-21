@@ -3039,8 +3039,6 @@ var globals = {};
                 });
                 jQuery(document).on("change","dd.mat input.product-custom-option",function(){
                     
-                    console.log("aaa");
-                    
                     jQuery(this).attr("onclick","");
                     
                     var current_price = jQuery(".regular-price .price").text();
