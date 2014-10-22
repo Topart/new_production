@@ -1,0 +1,436 @@
+<?php
+/**
+ * $this->renderCategoriesMenuHtml() supports optional arguments:
+ * bool Add openers if menu is used as accordion
+ * int Level number for list item class to start from
+ * string Extra class of outermost list items
+ * string If specified wraps children list in div with this class
+ */
+?>
+<?php
+    $helper = Mage::helper('ultramegamenu');
+?>
+<?php if ($helper->getCfg('general/enable')): ?>
+
+    <?php
+        $mode = $helper->getCfg('general/mode');
+        // -1   = mobile menu only
+        // 0    = both
+        // 1    = drop-down menu only
+        
+        $categories = $helper->getCfg('general/categories');
+        $linksHtml = $this->getChildHtml('block_nav_links');
+        
+        $menuCss = array();
+        if ($helper->getCfg('mainmenu/classic_menu'))
+        {
+            $menuCss[] = 'classic';
+        }
+        if ($helper->getCfg('mainmenu/wide_menu'))
+        {
+            $menuCss[] = 'wide';
+        }
+    ?>
+
+
+
+    <?php //Mobile main menu %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ?>
+
+    <?php if (($mode <= 0) && ($categories || $linksHtml)): //Mode: mobile or both ?>
+
+        <div id="mobnav" class="grid-full">
+            <a id="mobnav-trigger" href="">
+                <span class="trigger-icon"><span class="line"></span><span class="line"></span><span class="line"></span></span>
+                <span><?php echo $this->__('Menu'); ?></span>
+            </a>
+        </div>
+
+        <ul class="accordion vertnav vertnav-top grid-full">
+        
+            <?php //Categories ?>
+            <?php if ($categories): ?>
+                <?php echo $this->renderCategoriesMenuHtml(TRUE, 0, 'level-top'); ?>
+            <?php endif; ?>
+            
+            <?php //Custom links ?>
+            <?php echo $linksHtml; ?>
+
+        </ul>
+
+    <?php endif; ?>
+
+
+
+    <?php //Drop-down main menu %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ?>
+
+    <?php if ($mode >= 0): //Mode: drop-down or both ?>
+
+        <ul id="nav" class="grid-full<?php if($menuCss) echo " " . implode(" ", $menuCss); ?>">
+        
+            <?php //Single home link icon ?>
+            <?php if ($helper->getCfg('mainmenu/home_link_icon')): ?>
+                <?php
+                    //Home link icon suffix
+                    $suffix = $helper->getSingleHomelinkIconSuffix();
+                ?>
+                <li id="homelink-icon" class="level0 level-top">
+                    <a class="level-top feature feature-icon-hover" href="<?php echo $this->getBaseUrl(); ?>"><span class="icon i-home<?php echo $suffix; ?> force-no-bg-color"></span></a>
+                </li>
+            <?php endif; ?>
+
+            <?php //Home link displayed inside menu item ?>
+            <?php if ($helper->getCfg('mainmenu/home') || $helper->getCfg('mainmenu/home_img')): ?>
+                <?php
+                    $homeLinkWrapperClass = '';
+                    $homeLinkClass = '';
+                    $homeLinkText = '';
+                    $homeLinkImg = '';
+                    
+                    //If home link with image
+                    if ($helper->getCfg('mainmenu/home_img'))
+                    {
+                        //Home link icon suffix
+                        $suffix = $helper->getHomeIconSuffix();
+                    
+                        $homeLinkWrapperClass = 'nav-home-img';
+                        $homeLinkClass = 'feature feature-icon-hover';
+                        $homeLinkImg = '<span class="icon i-home' . $suffix . '"></span>';
+                    }
+                    
+                    //If home link with text
+                    if ($helper->getCfg('mainmenu/home'))
+                    {
+                        $homeLinkText = '<span>' . $this->__('Home') . '</span>';
+                    }
+                ?>
+                <li id="nav-home" class="<?php echo $homeLinkWrapperClass; ?> level0 level-top">
+                    <a class="level-top feature feature-icon-hover" href="<?php echo $this->getBaseUrl(); ?>"><?php echo $homeLinkImg, $homeLinkText; ?></a>
+                </li>
+            <?php endif; ?>
+            
+            <?php //Categories ?>
+            <?php if ($categories): ?>
+                <?php echo $this->renderCategoriesMenuHtml(FALSE, 0, 'level-top'); ?>
+            <?php endif; ?>
+        
+            <?php //Static block as a drop-down box ?>
+            <?php if ($tmpHtml = $this->getChildHtml('block_header_nav_dropdown')): ?>
+                <li class="nav-custom-link level0 level-top parent<?php if ($helper->getCfg('mainmenu/custom_block_floating')) echo ' right last'; ?>">
+                    <?php // Get the block title, and display it as tab title
+                        $blockTitle = Mage::getModel('cms/block')
+                            ->setStoreId(Mage::app()->getStore()->getId())
+                            ->load('block_header_nav_dropdown')
+                            ->getTitle();
+                    ?>
+                    <a class="level-top" href="#"><span><?php echo $blockTitle; ?></span><span class="caret">&nbsp;</span></a>
+                    <div class="level0-wrapper">
+                            <div class="header-nav-dropdown-wrapper clearer"><?php echo $tmpHtml; ?></div>
+                    </div>
+                </li>
+            <?php endif; ?>
+            
+            <?php //Custom links ?>
+            <?php echo $linksHtml; ?>
+            
+        </ul>
+<style>
+    .schedule-link{
+        background-image: url("<?php echo $this->getSkinUrl('images/img/calendar.png'); ?>");
+        background-position: 6px 6px;
+        background-repeat: no-repeat;
+        border: 2px solid #b19d68;
+        float: right;
+        font-size: 14px;
+        padding: 5px 5px 5px 50px;
+    }
+    .schedule-link p{
+        text-align: center;
+    }
+    .scheudle-first-line{
+        color: #b19d68;
+    }
+    .scheudle-first-line span{
+        font-weight: bold;
+    }
+    .scheudle-second-line{
+        color:#888;
+    }
+</style>
+<div id="fancy-schedule">
+    <div id="wufoo-qzlo1dn1tqmlzy">
+    Fill out my <a href="https://824labs.wufoo.com/forms/qzlo1dn1tqmlzy">online form</a>.
+    </div>
+    <div id="wuf-adv" style="font-family:inherit;font-size: small;color:#a7a7a7;text-align:center;display:block;">Use <a href="http://www.wufoo.com/gallery/templates/">Wufoo templates</a> to make your own HTML forms.</div>
+    <script type="text/javascript">var qzlo1dn1tqmlzy;(function(d, t) {
+    var s = d.createElement(t), options = {
+    'userName':'824labs',
+    'formHash':'qzlo1dn1tqmlzy',
+    'autoResize':true,
+    'height':'657',
+    'async':true,
+    'host':'wufoo.com',
+    'header':'show',
+    'ssl':true};
+    s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+    s.onload = s.onreadystatechange = function() {
+    var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+    try { qzlo1dn1tqmlzy = new WufooForm();qzlo1dn1tqmlzy.initialize(options);qzlo1dn1tqmlzy.display(); } catch (e) {}};
+    var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+    })(document, 'script');
+    
+    jQuery(document).ready(function() {
+        jQuery("#fancy-schedule").css("opacity","0");
+        setTimeout(function(){
+            jQuery("#fancy-schedule").hide();
+            jQuery("#fancy-schedule").css("opacity","1");
+            jQuery("#schedule-fancy").fancybox({
+                'content': jQuery("#fancy-schedule").html()
+            });
+        },5000);
+    });
+    </script> 
+</div>
+<div style="float: right; margin-top: -50px; margin-right: 12px;">
+    <a id="schedule-fancy" class="fancybox schedule-link" href="#fancy-schedule">
+        <p class="scheudle-first-line">SCHEDULE YOUR <span>FREE</span></p>
+        <p class="scheudle-second-line">CONSULTATION</p>
+    </a>
+</div>
+    <?php endif; ?>
+
+
+
+    <?php //Activate mobile menu %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ?>
+
+    <?php if ($mode <= 0): //Mode: mobile or both ?>
+
+        <script type="text/javascript">
+            var trigger_remove_map = false,
+                main_image_product = {};
+            
+            jQuery(document).ready(function(){
+                jQuery(".color").click(function(){
+                    main_image_product.opt_visible = "#color_switch";
+                });
+
+                jQuery(".room_thumbnail").click(function(){
+                    main_image_product.opt_visible = "#room_switch";
+                });
+
+                jQuery("#reset").click(function(){
+
+                    jQuery("#final_product_image")
+                        .css("width","100%")
+                        .css("height","100%")
+                        .css("left","50%")
+                        .css("top","50%");
+                
+                    main_image_product.width = "100%";
+                    main_image_product.height = "100%";
+                    main_image_product.left = "50%";
+                    main_image_product.top = "50%";
+                    
+                    hideMarcos();
+                    
+                    main_image_product.opt_visible = null;
+                });
+                
+                
+            });
+            
+            function hideFrame(){
+                var frame_selected = jQuery(document).find("dt.frame .step-selection").text();
+                
+                if(frame_selected.indexOf("No Frame") === -1){
+                    jQuery("select#frame_categories option[value='no_frame']").trigger("change");
+                }
+            }
+            
+            function hideMaterial(){
+                var mat_selected = jQuery(document).find("dt.mat .step-selection").text();
+                
+                if(mat_selected.indexOf("No Mat") === -1){
+                    jQuery(".mats_none").find("input[type=radio]").trigger("click");
+                }
+            }
+            
+            function hideMarcos(){
+                
+                if(main_image_product.opt_visible === "#color_switch"){
+                    jQuery("#color_switch").slideUp("fast");
+                    jQuery("#hide_button").slideUp("fast");
+                }else{
+                    if(main_image_product.opt_visible === "#room_switch"){
+                        jQuery("#room_switch").slideUp("fast");
+                        jQuery("#hide_button").slideUp("fast");
+                    }
+                }
+            }
+            
+            function showMarcos(){
+                if(main_image_product.opt_visible === "#color_switch"){
+                    jQuery("#color_switch").slideDown("fast");
+                    jQuery("#hide_button").slideDown("fast");
+                }else{
+                    if(main_image_product.opt_visible === "#room_switch"){
+                        jQuery("#room_switch").slideDown("fast");
+                        jQuery("#hide_button").slideDown("fast");
+                    }
+                }
+            }
+            
+            function resizeMainImageProduct(){
+                if( main_image_product.width !== undefined && main_image_product.width !== "undefined"){
+                    jQuery("#final_product_image").css("width",main_image_product.width);
+                    jQuery("#final_product_image").css("height",main_image_product.height);
+                    jQuery("#final_product_image").css("left",main_image_product.left);
+                    jQuery("#final_product_image").css("top",main_image_product.top);
+                    
+                    hideMarcos();
+                }
+            }
+            //<![CDATA[
+            
+                <?php if ($mode == 0): //Mode: both ?>
+        
+                    <?php $threshold = intval($helper->getCfg('mobilemenu/threshold')); ?>
+                    var activateMobileMenu = function()
+                    {
+                        if (jQuery(window).width() < <?php echo $threshold; ?>)
+                        {
+                            jQuery('#mobnav').show();
+                            jQuery('.vertnav-top').addClass('mobile');
+                            jQuery('#nav').addClass('mobile');
+                            
+                        }
+                        else
+                        {
+                            jQuery('#nav').removeClass('mobile');
+                            jQuery('.vertnav-top').removeClass('mobile');
+                            jQuery('#mobnav').hide();
+                            
+                        }
+                        
+                        var mat_selected = jQuery(document).find("dt.mat .step-selection").text();
+                        var frame_selected = jQuery(document).find("dt.frame .step-selection").text();
+                        
+                        if ((jQuery(window).width() <= 480) )
+                        {
+                            if(main_image_product.opt_visible === "#color_switch" || 
+                               main_image_product.opt_visible === "#room_switch"|| 
+                               frame_selected.indexOf("No Frame") === -1 || 
+                               mat_selected.indexOf("No Mat") === -1){
+                           
+                                main_image_product.width = jQuery("#final_product_image").css("width");
+                                main_image_product.height = jQuery("#final_product_image").css("height");
+                                main_image_product.left = jQuery("#final_product_image").css("left");
+                                main_image_product.top = jQuery("#final_product_image").css("top");
+
+                                hideMarcos();
+                                hideFrame();
+                                hideMaterial();
+                                
+                                jQuery("#final_product_image")
+                                    .css("width","100%")
+                                    .css("height","100%")
+                                    .css("left","0")
+                                    .css("top","0");
+                                
+                            }
+                            jQuery("#product_image_functions").hide();
+                        }else{
+                            jQuery("#product_image_functions").show();
+                            if(main_image_product.opt_visible === "#color_switch" || 
+                               main_image_product.opt_visible === "#room_switch"){
+                               
+                               
+                               showMarcos();
+
+                                jQuery("#final_product_image")
+                                    .css("width","16.6667%")
+                                    .css("height","16.6667%")
+                                    .css("left","42.5%")
+                                    .css("top","44.5%");
+                            }else{
+                                resizeMainImageProduct();
+                            }
+
+                        }
+                    }
+                    activateMobileMenu();
+                    jQuery(window).resize(activateMobileMenu);
+        
+                <?php else: //Mode: mobile ?>
+        
+                    jQuery('#mobnav').show();
+                    jQuery('.vertnav-top').addClass('mobile');
+        
+                <?php endif; ?>
+
+                <?php //Toggle mobile menu ?>
+                jQuery('#mobnav-trigger').toggle(function() {
+                    jQuery('.vertnav-top').addClass('show');
+                    jQuery(this).addClass('active');
+                }, function() {
+                    jQuery('.vertnav-top').removeClass('show');
+                    jQuery(this).removeClass('active');
+                });
+                
+        //]]>
+        </script>
+
+    <?php endif; ?>
+
+
+
+    <?php //Wide menu style %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ?>
+
+    <?php if (($mode >= 0) && $helper->getCfg('mainmenu/wide_menu')): //Mode: drop-down or both ?>
+
+        <script type="text/javascript">
+        //<![CDATA[
+
+            jQuery(function($) {
+                $("#nav > li").hover(function() {
+                    var el = $(this).find(".level0-wrapper");
+                    el.hide();
+                    el.css("left", "0");
+                    el.stop(true, true).delay(150).fadeIn(300, "easeOutCubic");
+                }, function() {
+                    $(this).find(".level0-wrapper").stop(true, true).delay(300).fadeOut(300, "easeInCubic");
+                });
+            });
+
+            var isTouchDevice = ('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0);
+            jQuery(window).on("load", function() {
+
+                //if(/iPhone|iPad|iPod/i.test(navigator.userAgent))
+                if (isTouchDevice)
+                {
+                    jQuery('#nav a.level-top').click(function(e) {
+                        $t = jQuery(this);
+                        $parent = $t.parent();
+                        if ($parent.hasClass('parent'))
+                        {
+                            if ( !$t.hasClass('menu-ready'))
+                            {                    
+                                jQuery('#nav a.level-top').removeClass('menu-ready');
+                                $t.addClass('menu-ready');
+                                return false;
+                            }
+                            else
+                            {
+                                $t.removeClass('menu-ready');
+                            }
+                        }
+                    });
+                }
+
+            }); //end: on load
+
+        //]]>
+        </script>
+
+    <?php endif; ?>
+
+<?php endif; //end: if 'general/enable' ?>
