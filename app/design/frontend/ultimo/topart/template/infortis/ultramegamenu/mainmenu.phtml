@@ -179,8 +179,6 @@
     })(document, 'script');
     
     jQuery(document).ready(function() {
-        jQuery("#fancybox-overlay").show();
-        jQuery("#fancybox-loading").show();
         jQuery("#fancy-schedule").css("opacity","0");
         setTimeout(function(){
             jQuery("#fancy-schedule").hide();
@@ -188,8 +186,6 @@
             jQuery("#schedule-fancy").fancybox({
                 'content': jQuery("#fancy-schedule").html()
             });
-            jQuery("#fancybox-overlay").hide();
-            jQuery("#fancybox-loading").hide();
         },5000);
     });
     </script> 
