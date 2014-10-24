@@ -156,46 +156,8 @@
         color:#888;
     }
 </style>
-<div id="fancy-schedule">
-    <div id="wufoo-qzlo1dn1tqmlzy">
-    Fill out my <a href="https://824labs.wufoo.com/forms/qzlo1dn1tqmlzy">online form</a>.
-    </div>
-    <div id="wuf-adv" style="font-family:inherit;font-size: small;color:#a7a7a7;text-align:center;display:block;">Use <a href="http://www.wufoo.com/gallery/templates/">Wufoo templates</a> to make your own HTML forms.</div>
-    <script type="text/javascript">var qzlo1dn1tqmlzy;(function(d, t) {
-    var s = d.createElement(t), options = {
-    'userName':'824labs',
-    'formHash':'qzlo1dn1tqmlzy',
-    'autoResize':true,
-    'height':'657',
-    'async':true,
-    'host':'wufoo.com',
-    'header':'show',
-    'ssl':true};
-    s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
-    s.onload = s.onreadystatechange = function() {
-    var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
-    try { qzlo1dn1tqmlzy = new WufooForm();qzlo1dn1tqmlzy.initialize(options);qzlo1dn1tqmlzy.display(); } catch (e) {}};
-    var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-    })(document, 'script');
-    
-    jQuery(document).ready(function() {
-        jQuery("#fancy-schedule").css("opacity","0");
-        setTimeout(function(){
-            jQuery("#fancy-schedule").hide();
-            jQuery("#fancy-schedule").css("opacity","1");
-            jQuery("#schedule-fancy").fancybox({
-                'content': jQuery("#fancy-schedule").html()
-            });
-        },5000);
-    });
-    </script> 
-</div>
-<div style="float: right; margin-top: -50px; margin-right: 12px;">
-    <a id="schedule-fancy" class="fancybox schedule-link" href="#fancy-schedule">
-        <p class="scheudle-first-line">SCHEDULE YOUR <span>FREE</span></p>
-        <p class="scheudle-second-line">CONSULTATION</p>
-    </a>
-</div>
+
+
     <?php endif; ?>
 
 
