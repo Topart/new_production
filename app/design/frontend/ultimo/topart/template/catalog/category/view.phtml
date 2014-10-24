@@ -183,7 +183,7 @@ if (!empty($_imgUrl)) {
             width: 31.4%;
         }
     </style>
-    <?php echo Mage::getModel('cms/page')->load('submit-your-art')->getContent(); ?>
+    <?php //echo Mage::getModel('cms/page')->load('submit-your-art')->getContent(); ?>
 <?php elseif ($this->isMixedMode()): ?>
     <?php echo $this->getCmsBlockHtml() ?>
     <?php echo $this->getProductListHtml() ?>
