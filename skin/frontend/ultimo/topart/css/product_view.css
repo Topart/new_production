@@ -2306,3 +2306,26 @@ form#review-form .table-review-title{
 form#review-form #product-review-table .first th {
     font-weight: bold;
 }
+
+.item ul.clearer li.product img {
+    width: 50%;
+    height: 50%;
+    max-width: 150px;
+    max-height: 150px;
+    margin: auto 0;
+}
+.item ul.clearer li.product .product-details {
+    margin-left: 0;
+}
+.item ul.clearer li.product {
+    float: left;
+    padding: 10px;
+    margin-right: 20px;
+}
+.item ul.clearer li.product h3.product-name a{
+    color: #8f752a !important;
+    margin-bottom: 0;
+}
+.item ul.clearer li.product .price{
+    display:none;
+}
