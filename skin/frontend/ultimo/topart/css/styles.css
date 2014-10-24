@@ -3362,7 +3362,7 @@ form#create-art-upload{
 	display: inline-block;
 }
 .create-art .create-main-image {
-	width: 50%;
+	width: 49%;
 	height: auto;
 	display: inline-block;
 	vertical-align: top;
@@ -3419,6 +3419,7 @@ form#create-art-upload{
 }
 .create-art-list-container > ul > li.middle-li{
 	margin: 0em 5% 2em 5%;
+        width: 29%;
 }
 .create-art-list li a > div{
 	position: absolute;
