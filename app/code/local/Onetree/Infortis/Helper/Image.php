@@ -38,7 +38,15 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
                 $cpath = $cloudFontBaseUrl .DS. $version . DS;
 		$imgSku = $this->cleanSkuImg($sku,'DG',$cpath);
 		$url = $cloudFontBaseUrl .DS. $version . DS. $imgSku;
-
+                
+                /*JP: Fix for ticket 257 Start*/
+                $size = getimagesize($url);
+                
+                if(!$size){
+                    $url = str_replace("DG.", ".", $url);
+                }
+                /*JP: Fix for ticket 257 End*/
+                
 		return $url;
 		if ($h <= 0)
 		{
