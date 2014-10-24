@@ -4135,3 +4135,4 @@ ul.create-art-list li div:nth-child(3){
     /*Tabs End*/
     /**/
     .catalog-category-view .category-top .category-image img{float:left;}
+    div.product-image-wrapper a img{max-width: 260px;}
