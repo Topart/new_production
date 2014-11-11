@@ -38,4 +38,19 @@ class Onetree_Subcatmode_Model_Catalog_Category extends Mage_Catalog_Model_Categ
      * Can display only categories children
      */
     const DM_SUBCATEGORIES            = 'SUBCATEGORIES';
+
+
+    /**
+     * Retrieve image URL
+     *
+     * @return string
+     */
+    public function getCollectionImageUrl()
+    {
+        $url = false;
+        if ($image = $this->getCollectionImage()) {
+            $url = Mage::getBaseUrl('media').'catalog/category/'.$image;
+        }
+        return $url;
+    }
 }
