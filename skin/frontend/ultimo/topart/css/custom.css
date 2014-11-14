@@ -1,0 +1,13 @@
+/* Slideshow
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* Slide
+-------------------------------------------------------------- */
+
+.owl-carousel .slide .full-width {  width: 100%;  }
+.owl-carousel .slide .caption.top { margin: 3% 0; width: 100%; }
+.owl-carousel .slide .caption h3 { font: 3.5em bentonsansregular, Arial, "Helvetica Neue", Helvetica, sans-serif; color: #4d4d4d; }
+.owl-carousel .slide .caption h3 a { color: #b1a06d; }
+.slider-arrows2 .owl-controls .owl-buttons .owl-prev { left: 5%; border-radius: 50%; }
+.slider-arrows2 .owl-controls .owl-buttons .owl-next { right: 5%; border-radius: 50%; }
