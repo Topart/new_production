@@ -27,9 +27,22 @@
 #editor-picks-wrapper ul { text-align: left; }
 #editor-picks-wrapper li { position: relative; display: inline-block; margin: 0 6px 10px 0; }
 #editor-picks-wrapper .bg-image-pick { width: 180px;  height: 130px; background-position: center center; background-size: auto 200px; }
-#editor-picks-wrapper .overlay-opacity { background-color: black; height: 100%; opacity: 0.5; position: absolute; width: 100%; display: none;}
+#editor-picks-wrapper .overlay-opacity { background-color: #000; height: 100%; opacity: 0.5; position: absolute; width: 100%; display: none;}
 #editor-picks-wrapper .overlay-more { background: url("../images/more.png") no-repeat center center; display: none; position: absolute; left: 50%; top: 50%; margin: -25px 0 0 -25px; width: 50px; height: 50px; }
 #editor-picks-wrapper a:hover .overlay-opacity,#editor-picks-wrapper a:hover .overlay-more { display: block; }
+
+
+/* Blog posts section
+-------------------------------------------------------------- */
+.blog-posts { padding-bottom: 5%; width: 102%; }
+.blog-posts .blog-isotope { margin: 0 10px 10px 0; }
+.blog-posts .overlay-opacity { display: none; position: absolute; width: 100%; height: 100%; opacity: 0.5; background-color: #000; }
+.blog-posts .overlay-icon { display: none; position: absolute; width: 100%; height: 100%; background-image: url("../images/more.png"); background-repeat: no-repeat; background-position: center center; background-size: auto 30%; }
+.blog-posts .overlay-info { display: none; position: absolute; left: 0; top: 70%; padding: 0.5%; width: 99%; color: #fff; font-family: bentonsansregular, Arial, "Helvetica Neue", Helvetica, sans-serif; font-size: 18px; line-height: 20px; text-align: center; }
+.blog-posts .blog-isotope a:hover .overlay-opacity,
+.blog-posts .blog-isotope a:hover .overlay-icon,
+.blog-posts .blog-isotope a:hover .overlay-info { display: block; }
+.blog-posts .bg-image-post { background-position: center center; background-size: auto 100%; }
 
 
 /* Grid section
