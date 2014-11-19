@@ -1,0 +1,70 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+
+<?php
+
+$_productCollection = $this->getLoadedProductCollection();
+
+$productLimit = is_numeric($this->getData('limit')) ? (int)$this->getData('limit') : (int)$this->getLimit();
+
+if ($productLimit) {
+    $_productCollection->clear()->setPageSize($productLimit)->load();
+}
+
+$_collectionSize = $_productCollection->count();
+
+$helpImg = $this->helper('infortis/image');
+//Default image size
+$imgWidth = 180;
+$imgHeight = 130;
+
+?>
+
+<div id="editor-picks-wrapper">
+    <?php if (!$_collectionSize): ?>
+        <p class="note-msg empty-catalog"><?php echo $this->__('There are no products matching the selection.') ?></p>
+    <?php else: ?>
+        <ul>
+        <?php foreach ($_productCollection as $_product): ?>
+            <li class="item-isotope ">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+                    <span class="overlay-opacity"></span>
+                    <span class="overlay-more"></span>
+                    <div class="bg-image-pick" style="background-image: url('<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>');"></div>
+                </a>
+            </li>
+        <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>

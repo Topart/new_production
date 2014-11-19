@@ -20,6 +20,7 @@
 			<!--<action method="addJs"><script>infortis/jquery/plugins/jquery.flexslider.min.js</script></action>-->
 			
                         <!--JP:-->
+                            <action method="addJs"><script>topart/imagesloaded.pkgd.min.js</script></action>
                             <!--Isotope-->
                             <action method="addJs"><script>topart/isotope.js</script></action>
                             <!--Fancybox:-->
