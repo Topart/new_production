@@ -19,6 +19,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 
+.home-sections-title .title-link { position: relative; bottom: -10px; float: right; color: #a48d4f; font: 15px bentonsansregular, Arial, "Helvetica Neue", Helvetica, sans-serif; text-transform: lowercase; letter-spacing: 0; }
+
+
 /* Editor's picks section
 -------------------------------------------------------------- */
 #editor-picks-wrapper ul { text-align: left; }
