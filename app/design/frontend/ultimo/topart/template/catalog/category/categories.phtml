@@ -56,7 +56,7 @@ $black = array(
             $categoryImg = $_helper->getAmazonS3CategoryUrl() .$firstItemSku . '.jpg';
             $anchor = $this->getCategoryUrl($_category); 
             $categoryName = $_category->getName(); 
-            $categoryImg = Mage::getModel('catalog/category')->load($k)->getImageUrl(); 
+            $categoryImg = Mage::getModel('catalog/category')->load($k)->getCollectionImageUrl(); 
             $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name'); 
             if(getimagesize($categoryImg)): ?>
             

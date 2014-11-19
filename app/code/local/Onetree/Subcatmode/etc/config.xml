@@ -3,7 +3,7 @@
 <config>
     <modules>
         <Onetree_Subcatmode>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
 		</Onetree_Subcatmode>
     </modules>
     <global>
@@ -40,5 +40,13 @@
 				</rewrite>
 			</catalog>
 		</blocks>
+        <resources>
+            <onetree_subcatmode_setup>
+                <setup>
+                    <module>Onetree_Subcatmode</module>
+                    <class>Mage_Catalog_Model_Resource_Eav_Mysql4_Setup</class>
+                </setup>
+            </onetree_subcatmode_setup>
+        </resources>
    </global>
 </config>
