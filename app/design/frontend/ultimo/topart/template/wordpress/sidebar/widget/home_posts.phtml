@@ -1,0 +1,51 @@
+<?php
+/**
+ * @category    Fishpig
+ * @package     Fishpig_Wordpress
+ * @license     http://fishpig.co.uk/license.txt
+ * @author      Ben Tideswell <help@fishpig.co.uk>
+ */
+?>
+<?php $posts = $this->getPosts() ?>
+<?php if (count($posts) > 0): ?>
+    <div class="blog-posts">
+        <?php foreach ($posts as $post): ?>
+        <div class="blog-isotope">
+            <a href="<?php echo $post->getPermalink() ?>" title="<?php echo $this->htmlEscape($post->getPostTitle()) ?>">
+                <div class="overlay-opacity"></div>
+                <div class="overlay-icon"></div>
+                <div class="overlay-info"><?php echo $this->escapeHtml($post->getPostTitle()); ?></div>
+                <?php
+                $url = '';
+                
+                if ($featuredImage = $post->getFeaturedImage()) {
+                    $url = $featuredImage->getAvailableImage();
+                }
+                ?>
+                <div class="bg-image-post" style="background-image: url('<?php echo $url; ?>')"></div>
+            </a>
+        </div>
+        <?php endforeach; ?>
+    </div>
+
+    <script>
+        jQuery(document).ready(function () {
+            var postAllowedSize = [[369, 398], [185, 194], [185, 194], [277, 305], [277, 305]];
+            var $container = jQuery('.blog-posts');
+
+            $container.find(".bg-image-post").each(function (index) {
+                jQuery(this).width(postAllowedSize[index % postAllowedSize.length][0]);
+                jQuery(this).height(postAllowedSize[index % postAllowedSize.length][1]);
+            });
+
+            $container.isotope({
+                itemSelector: '.blog-posts .blog-isotope',
+                layoutMode: 'masonry',
+                masonry: {
+                    columnWidth: 1
+                }
+            });
+        });
+    </script>
+
+<?php endif; ?>
