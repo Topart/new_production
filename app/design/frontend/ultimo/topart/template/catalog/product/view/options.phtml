@@ -29,12 +29,6 @@
 <?php $_options = Mage::helper('core')->decorateArray($this->getOptions()) ?>
 <?php if (count($_options)):?>
     <script type="text/javascript">
-        setTimeout(function(){
-            jQuery("#cboxOverlay").show();
-            jQuery("#fancybox-loading").show();
-            jQuery("#cboxOverlay").css("opacity","0.5");
-        },100);
-        
     //<![CDATA[
     var optionFileUpload = {
         productForm : $('product_addtocart_form'),
@@ -177,9 +171,6 @@
                     }
                 }
             });
-            
-            jQuery("#cboxOverlay").hide();
-            jQuery("#fancybox-loading").hide();
         }
     }
     function validateOptionsCallback(elmId, result) {

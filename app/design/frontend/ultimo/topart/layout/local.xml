@@ -507,7 +507,26 @@
 
 		</reference>
 
-	</catalog_product_view>
+        <reference name="after_body_start">
+            <block type="core/text" name="load_screen">
+                <action method="setText">
+                    <text><![CDATA[
+                        <script>
+                            window.addEventListener('load', function(){
+                               var loadScreen = document.getElementById('load-screen');
+                                document.body.removeChild(loadScreen);
+                            });
+                        </script>
+                        <div id="load-screen">
+                            <div class="overlay"></div>
+                            <div class="loading"></div>
+                        </div>
+                    ]]></text>
+                </action>
+            </block>
+        </reference>
+
+    </catalog_product_view>
 
 
 	<!-- CATEGORY %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
