@@ -34,7 +34,7 @@
 */
 
 #load-screen .overlay { position: fixed; top: 0; z-index: 10; width: 100%; height: 100%; background: url('../images/infortis/_shared/colorbox/overlay.png'); opacity: 0.5; }
-#load-screen .loading { position: absolute; left: 50%; top: 50%; z-index: 20; margin: -25px 0 0 -25px; border-radius: 5px; width: 50px; height: 50px; background: #000 url('../images/loading.gif') no-repeat center; }
+#load-screen .loading { position: absolute; left: 50%; top: 50%; z-index: 20; margin: -20px 0 0 -20px; border-radius: 5px; width: 40px; height: 40px; background: #000 url('../images/loading.gif') no-repeat center; }
 
 
 
