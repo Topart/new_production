@@ -8,31 +8,6 @@ $black = array(
     "people", "sports & recreation", 
     "still life", "transportation");
 ?>
-<style>
-    .create-art-list{
-        /*width: 615px !important;*/
-    }
-    .create-art-list{
-        /*height: 4150px !important;*/
-    }
-    .img-collection-text {
-        color: white;
-        font-size: 22px;
-        line-height: 24px;
-        left: 5px;
-        padding-bottom: 5px;
-        padding-left: 20px !important;
-        padding-right: 5px;
-        padding-top: 12px !important;
-        padding-bottom: 10px;
-        top: 5px;
-        width: 92.0%;
-    }
-    .img-collection-text-black{
-        color: black;
-    }
-
-</style>
 <div class="category-products">
 <?php
 	$_helper    = $this->helper('catalog/output');
@@ -40,13 +15,18 @@ $black = array(
         if (!Mage::registry('current_category')) {
             return;
         }
+
+$_category = $this->getCurrentCategory();
 ?>
+    <div class="page-title category-title-top">
+        <h1><?php echo $this->escapeHtml($_category->getName()) ?></h1>
+    </div>
 <?php $_categories = $this->getCurrentChildCategories();?>
 <?php $_count = is_array($_categories)?count($_categories):$_categories->count();?>
 
 <?php if($_count): ?>
     <div class="create-art-list-container">
-        <div class="create-art-list">
+        <div class="create-art-list category-collections">
 
     <?php 
         $_columnCount = $this->getColumnCount();/*'4'*/  
@@ -57,22 +37,17 @@ $black = array(
             $anchor = $this->getCategoryUrl($_category); 
             $categoryName = $_category->getName(); 
             $categoryImg = Mage::getModel('catalog/category')->load($k)->getCollectionImageUrl(); 
-            $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name'); 
+            $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name');
             if(getimagesize($categoryImg)): ?>
-            
-            <div class="item-isotope item-isotope-<?php echo $count ." "; if($count>9){echo "item-isotope-sp";} ?> ">
-                <a href="<?php echo $anchor ?>">
-                    <span class="item-isotope-background">
-                        <div class="item-isotope-alt">&nbsp;</div>
-                        <span class="item-isotope-more"></span>
-                    </span>
-                    <img src="<?php echo $categoryImg; ?>" alt="<?php echo $categoryName; ?>" />
-                    
-                    <div class="img-collection-text <?php if(in_array(strtolower(trim($catVar)), $black)) echo "img-collection-text-black"?>" style="position:absolute">
-                        <?php echo $catVar ?>
-                    </div>
-                </a>
-            </div>            
+                
+                <div class="category-isotope">
+                    <a href="<?php echo $anchor; ?>" title="<?php echo $categoryName; ?>">
+                        <div class="overlay-opacity"></div>
+                        <div class="overlay-icon"></div>
+                        <div class="overlay-info <?php if(in_array(strtolower(trim($catVar)), $black)) echo "black"?>"><?php echo $categoryName; ?></div>
+                        <div class="bg-image-category" style="background-image: url('<?php echo $categoryImg; ?>')" title="<?php echo $categoryName; ?>"></div>
+                    </a>
+                </div>
             
             <?php endif; ?>
     <?php $count++; ?>
@@ -81,55 +56,32 @@ $black = array(
     </div>
     <div class="clear"></div>
 <?php endif; ?>
-<script>
-jQuery(document).ready(function(){
-    jQuery(".item-isotope:last").find("img").load(function(){
-        jQuery(".item-isotope").each(function(){
-            img = jQuery(this).find("img");
-            w = img.width();
-            w = w * 0.75;
-            h = img.height();
-            h = h * 0.75;
+    <script>
+        jQuery(document).ready(function () {
+            var postAllowedSize = [
+                [580, 250], [580, 400], [580, 400], [580, 250],
+                [580, 250], [285, 250], [285, 250],
+                [285, 250], [285, 250], [580, 250],
+                [580, 500], [580, 245], [580, 245],
+                [580, 245], [580, 500], [580, 245],
+                [580, 500], [580, 245], [580, 245]
+            ];
+            var $container = jQuery('.category-collections');
 
-            if(w > 430 /*&& w < 440*/){
-                w = 434;
-            }
+            $container.find(".bg-image-category").each(function (index) {
+                var i = index % postAllowedSize.length;
 
-            if(h > 430 && h < 640){
-                h = 520;
-            }
+                jQuery(this).width(postAllowedSize[i][0]);
+                jQuery(this).height(postAllowedSize[i][1]);
+            });
 
-            if(h > 160 && h < 400){
-                h = 260;
-            }
-
-            if(w<250){
-                w = 217;
-                width_background = w-35;
-               jQuery(this).find(".img-collection-text").css("width",width_background);
-            }
-
-            jQuery(this).attr("style","height:"+/*(parseFloat(*/h/*)+18)*/+"px;width:"+w+"px;padding:0px;");
-
-
-            if(h == 260){
-                jQuery(this).find("img").attr("style","height: 250px; width: "+(w-10)+"px; margin-left: 5px; margin-top: 5px;");
-            }else{
-                jQuery(this).find("img").attr("style","height: "+(h-10)+"px; width: "+(w-10)+"px; margin-left: 5px; margin-top: 5px;");
-            }
-
+            $container.isotope({
+                itemSelector: '.category-isotope',
+                layoutMode: 'masonry',
+                masonry: {
+                    columnWidth: 1
+                }
+            });
         });
-
-        $container = jQuery(".create-art-list");
-
-        $container.isotope({
-          itemSelector: '.item-isotope',
-          layoutMode: 'masonry',
-          masonry: {
-            columnWidth: 1
-          }
-        });
-    });
-});
-</script>
+    </script>
 </div>
