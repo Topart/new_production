@@ -4,10 +4,7 @@
 
 /* Item grid: 3 columns */
 .itemgrid-adaptive.itemgrid-3col .item:nth-child(4n+1) { clear:none !important; }
-
-/*JP: for ticket 212 Start*/
-.itemgrid-3col .item:nth-child(3n+1){ clear:left !important; }
-/*JP: for ticket 212 End*/
+.itemgrid-adaptive.itemgrid-3col .item:nth-child(3n+1) { clear:left !important; }
 
 
 
