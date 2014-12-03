@@ -21,7 +21,17 @@ $_category = $this->getCurrentCategory();
     <div class="page-title category-title-top">
         <h1><?php echo $this->escapeHtml($_category->getName()) ?></h1>
     </div>
-<?php $_categories = $this->getCurrentChildCategories();?>
+<?php
+$_categories = $_category->getCollection();
+$_categories->addAttributeToSelect('url_key')
+    ->addAttributeToSelect('name')
+    ->addAttributeToSelect('all_children')
+    ->addAttributeToSelect('is_anchor')
+    ->addAttributeToFilter('is_active', 1)
+    ->addIdFilter($_category->getChildren())
+    ->setOrder('position', Varien_Db_Select::SQL_ASC)
+    ->load();
+?>
 <?php $_count = is_array($_categories)?count($_categories):$_categories->count();?>
 
 <?php if($_count): ?>
@@ -45,7 +55,7 @@ $_category = $this->getCurrentCategory();
                         <div class="overlay-opacity"></div>
                         <div class="overlay-icon"></div>
                         <div class="overlay-info <?php if(in_array(strtolower(trim($catVar)), $black)) echo "black"?>"><?php echo $categoryName; ?></div>
-                        <div class="bg-image-category" style="background-image: url('<?php echo $categoryImg; ?>')" title="<?php echo $categoryName; ?>"></div>
+                        <img class="image-isotope" src="<?php echo $categoryImg; ?>" title="<?php echo $categoryName; ?>" alt="<?php echo $categoryName; ?>" />
                     </a>
                 </div>
             
@@ -58,7 +68,7 @@ $_category = $this->getCurrentCategory();
 <?php endif; ?>
     <script>
         jQuery(document).ready(function () {
-            var postAllowedSize = [
+            var itemSizes = [
                 [580, 250], [580, 400], [580, 400], [580, 250],
                 [580, 250], [285, 250], [285, 250],
                 [285, 250], [285, 250], [580, 250],
@@ -68,11 +78,11 @@ $_category = $this->getCurrentCategory();
             ];
             var $container = jQuery('.category-collections');
 
-            $container.find(".bg-image-category").each(function (index) {
-                var i = index % postAllowedSize.length;
+            $container.find(".image-isotope").each(function (index) {
+                var i = index % itemSizes.length;
 
-                jQuery(this).width(postAllowedSize[i][0]);
-                jQuery(this).height(postAllowedSize[i][1]);
+                jQuery(this).width(itemSizes[i][0]);
+                jQuery(this).height(itemSizes[i][1]);
             });
 
             $container.isotope({
