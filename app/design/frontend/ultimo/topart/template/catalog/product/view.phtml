@@ -93,6 +93,7 @@ if ($productTypeId === 'grouped') {
 
 
     <div class="product-visualize">
+        <a id="reset" class="function_icon"></a>
         <div id="final_product_image_background">
 
     <?php
@@ -509,7 +510,6 @@ if (empty($secondaryColUnits)) {
             <?php endif; ?>
 
                 <div class="product-type-data<?php echo $productTypeClasses; ?>">
-                    <a id="reset" class="function_icon"></a>
             <?php echo $this->getChildHtml('product_type_data'); ?>
                 </div>
 
