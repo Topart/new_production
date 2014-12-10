@@ -1,6 +1,8 @@
 var globals = {};
     globals.init = false;
     globals.initClickMat = false;
+    globals.frame = { matted_size: 0, mounting_flat_price: 0 };
+    globals.mat = { size_ui: 0 };
 
 	var jQuery = jQuery.noConflict(); 
 	
@@ -559,7 +561,9 @@ var globals = {};
 					frame_real_node = jQuery(this).find(".frame_real_price");
 					frame_real_price = ( matted_size * frame_ui_price + mounting_flat_price ).toFixed(2);
 					frame_real_node.html(frame_real_price);
-					
+                    
+                    globals.frame.matted_size = matted_size;
+                    globals.frame.mounting_flat_price = mounting_flat_price;
 				}
 			);
 
@@ -580,10 +584,11 @@ var globals = {};
 
 					// Compute the real price and round it to the first two decimal digits
 					mats_real_price = ( (parseFloat(size_ui) + 4*parseFloat(current_node_mats_size)) * mats_ui_price ).toFixed(2);
+
+                    globals.mat.size_ui = parseFloat(size_ui);
 					
 					// Assign it back to the node
 					mats_real_node.find("span.price").html(mats_real_price);
-					
 				}
 			);
 
@@ -3071,7 +3076,7 @@ var globals = {};
                     
                     if((rprice != "" && rprice != NaN) && (current_price != NaN && current_price != "")){
                         ttotal = rprice + current_price;
-                        jQuery(".regular-price .price").text("$"+ttotal);
+                        //jQuery(".regular-price .price").text("$"+ttotal);
                     }
                     //product-custom-optio
                     

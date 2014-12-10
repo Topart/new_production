@@ -110,9 +110,9 @@
             document.observe("dom:loaded", this.reloadPrice.bind(this));
         },
         reloadPrice : function() {
-            
             var config = this.config;
             var skipIds = [];
+            var productThis = this;
             $$('body .product-custom-option').each(function(element){
                 var optionId = 0;
                 element.name.sub(/[0-9]+/, function(match){
@@ -124,7 +124,7 @@
                     if (element.type == 'checkbox' || element.type == 'radio') {
                         if (element.checked) {
                             if (typeof configOptions[element.getValue()] != 'undefined') {
-                                curConfig = configOptions[element.getValue()];
+                                curConfig = productThis.calculatePrices(element, configOptions[element.getValue()]);
                             }
                         }
                     } else if(element.hasClassName('datetime-picker') && !skipIds.include(optionId)) {
@@ -143,7 +143,7 @@
                             $A(element.options).each(function(selectOption){
                                 if ('selected' in selectOption && selectOption.selected) {
                                     if (typeof(configOptions[selectOption.value]) != 'undefined') {
-                                        curConfig = configOptions[selectOption.value];
+                                        curConfig = productThis.calculatePrices(element, configOptions[selectOption.value]);
                                     }
                                 }
                             });
@@ -174,6 +174,34 @@
             
             jQuery("#cboxOverlay").hide();
             jQuery("#fancybox-loading").hide();
+        },
+        calculatePrices: function (element, curConfig) {
+            var optionTitle = jQuery(element).closest('dd').attr('data-option-title');
+
+            if (curConfig.price > 0 && globals) {
+                if (optionTitle == 'frame') {
+                    var frameConfig = jQuery.extend(true, {}, curConfig);
+                    frameConfig.excludeTax = (curConfig.excludeTax * globals.frame.matted_size + globals.frame.mounting_flat_price) * 100 / 100;
+                    frameConfig.includeTax = (curConfig.includeTax * globals.frame.matted_size + globals.frame.mounting_flat_price) * 100 / 100;
+                    frameConfig.oldPrice = (curConfig.oldPrice * globals.frame.matted_size + globals.frame.mounting_flat_price) * 10000 / 10000;
+                    frameConfig.price = (curConfig.price * globals.frame.matted_size + globals.frame.mounting_flat_price) * 10000 / 10000;
+                    frameConfig.priceValue = ((curConfig.priceValue * globals.frame.matted_size + globals.frame.mounting_flat_price) * 10000 / 10000).toString();
+                    
+                    return frameConfig;
+                } else if (optionTitle == 'mat') {
+                    var matConfig = jQuery.extend(true, {}, curConfig);
+                    var matSize = parseFloat(mats_sizes_list[jQuery(element).attr('data-option-sku')]);
+                    matConfig.excludeTax = ((globals.mat.size_ui + 4 * matSize) * curConfig.excludeTax) * 100 / 100;
+                    matConfig.includeTax = ((globals.mat.size_ui + 4 * matSize) * curConfig.includeTax) * 100 / 100;
+                    matConfig.oldPrice = ((globals.mat.size_ui + 4 * matSize) * curConfig.oldPrice) * 10000 / 10000;
+                    matConfig.price = ((globals.mat.size_ui + 4 * matSize) * curConfig.price) * 10000 / 10000;
+                    matConfig.priceValue = (((globals.mat.size_ui + 4 * matSize) * curConfig.priceValue) * 10000 / 10000).toString();
+                    
+                    return matConfig;
+                }
+            }
+
+            return curConfig;
         }
     }
     function validateOptionsCallback(elmId, result) {

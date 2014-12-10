@@ -128,7 +128,7 @@ class Mage_Catalog_Block_Product_View_Options_Type_Select
                     $checked = $configValue == $htmlValue ? 'checked' : '';
                 }
 
-                $selectHtml .= "<li class='" . strtolower(str_replace(" ","_", $_value->getSku())) . "'>" . '<input type="' . $type . '" class="' . $class . ' ' . $require
+                $selectHtml .= "<li class='" . strtolower(str_replace(" ","_", $_value->getSku())) . "'>" . '<input data-option-sku="' . strtolower(str_replace(" ","_", $_value->getSku())) . '" type="' . $type . '" class="' . $class . ' ' . $require
                     . ' product-custom-option"'
                     . ($this->getSkipJsReloadPrice() ? '' : ' onclick="opConfig.reloadPrice()"')
                     . ' name="options[' . $_option->getId() . ']' . $arraySign . '" id="options_' . $_option->getId()

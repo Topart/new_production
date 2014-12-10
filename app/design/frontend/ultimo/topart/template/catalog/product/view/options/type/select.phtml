@@ -48,7 +48,7 @@
                 <?php endif; ?>
                 <?php echo $lbl; ?>
         </dt>
-        <dd class='<?php echo $option_title; ?>'<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
+        <dd class='<?php echo $option_title; ?>'<?php if ($_option->decoratedIsLast){?> class="last"<?php }?> data-option-title="<?php echo $option_title; ?>">
 	    <div class="input-box">
 	        <?php echo $this->getValuesHtml() ?>
 	        <?php if ($_option->getIsRequire()): ?>
