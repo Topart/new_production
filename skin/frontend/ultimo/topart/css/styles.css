@@ -3234,6 +3234,8 @@ a.title-anchor:hover h2{color: #b19d68}
 .catalog-category-view .category-top .category-name {padding: 15px 25px; margin-bottom: 5px; font-size: 25px; text-transform: uppercase;font-family:baskervilleoldfacscdregular,tahoma,times new roman,serif;}
 .catalog-category-view .category-top .category-intro {padding: 20px 18px 25px 18px; font-size: 14px;}
 .product-shop a#reset {
+    position: relative;
+    z-index: 100;
     float: right;
     margin: -25px 5px 0 0;
 	background-image: url(../images/icon_prod_reset.png);
