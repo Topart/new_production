@@ -35,6 +35,7 @@
 
 if ($this->getRecentlyViewed()) {
     $_productCollection = Mage::getSingleton('Mage_Reports_Block_Product_Viewed')->getItemsCollection();
+    $this->setCollection($_productCollection);
 } else {
     $_productCollection = $this->getLoadedProductCollection();
 }
