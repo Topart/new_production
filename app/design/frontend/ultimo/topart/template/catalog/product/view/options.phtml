@@ -181,21 +181,19 @@
             if (curConfig.price > 0 && globals) {
                 if (optionTitle == 'frame') {
                     var frameConfig = jQuery.extend(true, {}, curConfig);
-                    frameConfig.excludeTax = (curConfig.excludeTax * globals.frame.matted_size + globals.frame.mounting_flat_price) * 100 / 100;
-                    frameConfig.includeTax = (curConfig.includeTax * globals.frame.matted_size + globals.frame.mounting_flat_price) * 100 / 100;
-                    frameConfig.oldPrice = (curConfig.oldPrice * globals.frame.matted_size + globals.frame.mounting_flat_price) * 10000 / 10000;
-                    frameConfig.price = (curConfig.price * globals.frame.matted_size + globals.frame.mounting_flat_price) * 10000 / 10000;
-                    frameConfig.priceValue = ((curConfig.priceValue * globals.frame.matted_size + globals.frame.mounting_flat_price) * 10000 / 10000).toString();
+                    var mountingFlatPrice = 12;
+                    
+                    frameConfig.excludeTax = (curConfig.excludeTax * globals.artSize + mountingFlatPrice) * 100 / 100;
+                    frameConfig.includeTax = (curConfig.includeTax * globals.artSize + mountingFlatPrice) * 100 / 100;
+                    frameConfig.price = (curConfig.price * globals.artSize + mountingFlatPrice) * 10000 / 10000;
                     
                     return frameConfig;
                 } else if (optionTitle == 'mat') {
                     var matConfig = jQuery.extend(true, {}, curConfig);
-                    var matSize = parseFloat(mats_sizes_list[jQuery(element).attr('data-option-sku')]);
-                    matConfig.excludeTax = ((globals.mat.size_ui + 4 * matSize) * curConfig.excludeTax) * 100 / 100;
-                    matConfig.includeTax = ((globals.mat.size_ui + 4 * matSize) * curConfig.includeTax) * 100 / 100;
-                    matConfig.oldPrice = ((globals.mat.size_ui + 4 * matSize) * curConfig.oldPrice) * 10000 / 10000;
-                    matConfig.price = ((globals.mat.size_ui + 4 * matSize) * curConfig.price) * 10000 / 10000;
-                    matConfig.priceValue = (((globals.mat.size_ui + 4 * matSize) * curConfig.priceValue) * 10000 / 10000).toString();
+                    
+                    matConfig.excludeTax = (curConfig.excludeTax * globals.artSize) * 100 / 100;
+                    matConfig.includeTax = (curConfig.includeTax * globals.artSize) * 100 / 100;
+                    matConfig.price = (curConfig.price * globals.artSize) * 10000 / 10000;
                     
                     return matConfig;
                 }
