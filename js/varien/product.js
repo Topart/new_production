@@ -697,66 +697,13 @@ Product.OptionsPrice.prototype = {
                     global.count_each++;
                     
                     if (el.excludeTax && el.includeTax) {
-                        
                         if(global.count == 26395){
                             if(global.count_each == 28){
                                 stop = 3;
                             }
                         }
-
-                        // Framing and Stretching
-                        if ( parseFloat(el.excludeTax) < 5.0 && parseFloat(el.excludeTax) > 1.0 )
-                        {
-                            if(el.excludeTax==2.18){
-                                retorno = 0;
-                            }
-                            
-                            if ( !isNaN(parseFloat(this.selected_mats_size)) ){
-                                /*a = parseFloat(el.excludeTax);
-                                b = parseFloat(this.size_ui);
-                                c = 4.0;
-                                d = 3;//parseFloat(this.selected_mats_size);
-                                res = a * b + c * d;
-                                
-                                tmp = subPrice;
-                                
-                                tmp += res;
-                                
-                                mult = 3 * (parseFloat(this.selected_mats_size)+2);
-                                
-                                subPrice = tmp;
-                                //subPrice -= el.excludeTax;
-                                
-                                subPrice +=  mult;*/
-                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui));
-                            }
-                            else{
-                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui));
-                                //subPrice -= el.excludeTax;
-                            }
-                                
-                            
-                            // Canvas stretching does not have the additional mounting price: change this whenever the canvas stretching retail price is updated
-                            if (parseFloat(el.excludeTax) != 1.08)
-                                subPrice += parseFloat(12.00);
-                        }
                         
-                        if(subPrice == 134.72){
-                            global.count_each;
-                        }
-                        // Matting
-                        else if ( parseFloat(el.excludeTax) < 1.0 )
-                        {
-                            if(subPrice == 0){
-                                subPrice += parseFloat(el.excludeTax) * (parseFloat(this.size_ui) + 4.0 * parseFloat(this.selected_mats_size) );
-                            }
-                        }
-                        else{
-                            if(subPrice == 0){
-                                subPrice += parseFloat(el.excludeTax);
-                            }
-                        }
-                        
+                        subPrice += parseFloat(el.excludeTax);
                         subPriceincludeTax += parseFloat(el.includeTax);
                     } else {
                         subPrice += parseFloat(el.price);
@@ -827,11 +774,7 @@ Product.OptionsPrice.prototype = {
             global.count++;
         }.bind(this));
 
-		// The product price is not correctly updated with the below commented original... 
-		// ...statement condition, i.e. "i < this.tierPrices.length;". So, I replaced it with "i < 2;"
-		
-		// for (var i = 0; i < this.tierPrices.length; i++) {
-        for (var i = 0; i < 2; i++) {
+        for (var i = 0; i < this.tierPrices.length; i++) {
             $$('.price.tier-' + i).each(function (el) {
                 var price = this.tierPrices[i] + parseFloat(optionPrices);
                 el.innerHTML = this.formatPrice(price);
@@ -846,8 +789,8 @@ Product.OptionsPrice.prototype = {
                 };
                 var container = $(this.containers[3]) ? this.containers[3] : this.containers[0];
                 var price = parsePrice($(container).innerHTML);
-                var tierPrice = $$('.price.tier-' + i);
-                tierPrice = tierPrice.length ? parseInt(tierPrice[0].innerHTML, 10) : 0;
+                var tierPrice = $$('.tier-price.tier-' + i+' .price');
+                tierPrice = tierPrice.length ? parsePrice(tierPrice[0].innerHTML, 10) : 0;
                 var $percent = Selector.findChildElements(el, ['.percent.tier-' + i]);
                 $percent.each(function (el) {
                     el.innerHTML = Math.ceil(100 - ((100 / price) * tierPrice));

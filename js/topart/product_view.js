@@ -1,6 +1,7 @@
 var globals = {};
     globals.init = false;
     globals.initClickMat = false;
+    globals.artSize = 0;
 
 	var jQuery = jQuery.noConflict(); 
 	
@@ -545,6 +546,7 @@ var globals = {};
 		// Refresh the framing, matting and stretching prices to reflect the selected size UI
 		function update_ui_prices(size_ui, matted_size)
 		{
+			globals.artSize = matted_size;
 			// Dynamically update the displayed prices for the framing options
 			var frame_options = jQuery("ul#custom_option_frame li").siblings();
 			var mounting_flat_price = 12.00;
@@ -559,7 +561,6 @@ var globals = {};
 					frame_real_node = jQuery(this).find(".frame_real_price");
 					frame_real_price = ( matted_size * frame_ui_price + mounting_flat_price ).toFixed(2);
 					frame_real_node.html(frame_real_price);
-					
 				}
 			);
 
@@ -583,7 +584,6 @@ var globals = {};
 					
 					// Assign it back to the node
 					mats_real_node.find("span.price").html(mats_real_price);
-					
 				}
 			);
 
@@ -612,6 +612,8 @@ var globals = {};
 
 			setup = 0;
 			old_size_ui = matted_size;
+
+			updateFrameSelection(jQuery(".option-reloaded .custom_options_images #custom_option_frame li.activeFrame"));
 		}
 
 
@@ -2192,6 +2194,7 @@ var globals = {};
 			function()
 			{
 				clicked_image_index = jQuery(this).index();
+				jQuery(this).find('input').attr("checked", "checked");
 				jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").attr("checked", "checked");
 				jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").trigger("click");
 
@@ -2690,52 +2693,6 @@ var globals = {};
                 
                 
                 /* Jp: Ticket 107 y otros Start*/
-                
-                    /*
-                     * Actualiza la opcion seleccionada en cualqueira 
-                     * de los step (Material & size,Frame,Mat,border)
-                     */
-                    function ShowSelectedOption(selected,option_name){
-                        if(selected !== null){
-                            //jQuery(document).find(".option-reloaded span.step-selection").text("");
-                            var opt = jQuery("input[name=size]:checked").next().text()
-                            
-                            //console.log("selected: "+selected+" and option_name: "+option_name);
-                            
-                            
-                            if(selected.indexOf("Paper") !==-1){
-                                selected += " "+ opt;
-                            }
-                            
-                            if(option_name == "frame" && selected.indexOf("No Frame") === -1){
-                                
-                                val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
-                                selected += " + $"+val;
-                                
-                            }
-                            
-                            if(option_name !== "poster-size"){
-                                jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
-                            }else{
-                                var txt = jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text();
-                                
-                                if(txt.indexOf("Paper") !== -1 ){
-                                    txt = "(Paper)" + selected;
-                                }
-                                
-                                if(txt.indexOf("Poster") !== -1 ){
-                                    txt = "(Poster)" + selected;
-                                }
-                                
-                                if(txt.indexOf("Canvas") !== -1 ){
-                                    txt = "(Canvas)" + selected;
-                                }
-                                
-                                jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+txt+")");
-                            }
-                                
-                       }
-                    }   
 
                     /*
                      * Muestra la opcion seleccionada por defecto en el paso Materials & Size, Mat y Borders
@@ -2808,9 +2765,7 @@ var globals = {};
                          * Set  "Frame"
                          */
                         jQuery(document).on("click", ".option-reloaded .custom_options_images #custom_option_frame li", function(){
-                            var selected = jQuery(this).find(".frame_title").text();
-
-                            ShowSelectedOption(selected,"frame");
+                            updateFrameSelection(this);
                         });
                         
                         /*
@@ -3071,7 +3026,7 @@ var globals = {};
                     
                     if((rprice != "" && rprice != NaN) && (current_price != NaN && current_price != "")){
                         ttotal = rprice + current_price;
-                        jQuery(".regular-price .price").text("$"+ttotal);
+                        //jQuery(".regular-price .price").text("$"+ttotal);
                     }
                     //product-custom-optio
                     
@@ -3183,4 +3138,58 @@ function setLiPosition(image,li,listart,margin){
                 .css("width",liwidth+"px");
             }
         });
+}
+
+/*
+ * Actualiza la opcion seleccionada en cualqueira 
+ * de los step (Material & size,Frame,Mat,border)
+ */
+function ShowSelectedOption(selected,option_name){
+	if(selected !== null){
+		//jQuery(document).find(".option-reloaded span.step-selection").text("");
+		var opt = jQuery("input[name=size]:checked").next().text()
+
+		//console.log("selected: "+selected+" and option_name: "+option_name);
+
+
+		if(selected.indexOf("Paper") !==-1){
+			selected += " "+ opt;
+		}
+
+		if(option_name == "frame" && selected.indexOf("No Frame") === -1){
+
+			val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
+			selected += " + $"+val;
+
+		}
+
+		if(option_name !== "poster-size"){
+			jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+selected+")");
+		}else{
+			var txt = jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text();
+
+			if(txt.indexOf("Paper") !== -1 ){
+				txt = "(Paper)" + selected;
+			}
+
+			if(txt.indexOf("Poster") !== -1 ){
+				txt = "(Poster)" + selected;
+			}
+
+			if(txt.indexOf("Canvas") !== -1 ){
+				txt = "(Canvas)" + selected;
+			}
+
+			jQuery(document).find(".option-reloaded dt."+option_name+" span.step-selection").text("("+txt+")");
+		}
+
+	}
+}
+
+function updateFrameSelection(frame){
+	var selected = jQuery(frame).find(".frame_title").text();
+
+	jQuery(".option-reloaded .custom_options_images #custom_option_frame li").removeClass('activeFrame');
+	ShowSelectedOption(selected,"frame");
+	jQuery(frame).addClass('activeFrame');
 }
