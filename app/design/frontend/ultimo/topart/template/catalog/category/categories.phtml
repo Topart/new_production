@@ -48,7 +48,7 @@ $_categories->addAttributeToSelect('url_key')
             $categoryName = $_category->getName(); 
             $categoryImg = Mage::getModel('catalog/category')->load($k)->getCollectionImageUrl(); 
             $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name');
-            if(getimagesize($categoryImg)): ?>
+            if(!empty($categoryImg)): ?>
                 
                 <div class="category-isotope">
                     <a href="<?php echo $anchor; ?>" title="<?php echo $categoryName; ?>">
