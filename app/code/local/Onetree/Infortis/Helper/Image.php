@@ -40,7 +40,7 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 		$url = $cloudFontBaseUrl .DS. $version . DS. $imgSku;
                 
                 /*JP: Fix for ticket 257 Start*/
-                $size = getimagesize($url);
+                $size = false;//getimagesize($url);
                 
                 if(!$size){
                     $url = str_replace("DG.", ".", $url);
@@ -80,7 +80,7 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
                 
                 $cpath .= $imgSku;
                 
-                $imgSize = getimagesize($cpath);
+                $imgSize = false;//getimagesize($cpath);
                 
                 if ($imgSize === false) {
                     $imgSku = $sku . ".jpg";
