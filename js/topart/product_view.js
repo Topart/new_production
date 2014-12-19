@@ -2784,7 +2784,7 @@ var globals = {};
                          * Set  "Borders"
                          */
                         jQuery(document).on("click",".option-reloaded .borders ul.options-list li input[type=radio]",function(){
-                            
+                            jQuery(this).attr('checked','checked');
                             var selected =  jQuery("dd.borders ul.options-list li input[type=radio]:checked")
                                                 .next()
                                                 .find("label:first")
