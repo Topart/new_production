@@ -110,7 +110,7 @@
             <div class="product-image-wrapper grid12-4 mobile-grid-half">
 
                 <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" style="max-width:<?php echo $imgWidth; ?>px;">
-                    <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                    <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
                     
                     <?php if ($theme->getCfg('category/alt_image')): ?>
                         <?php echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight); ?>
@@ -229,7 +229,7 @@
                         <?php
                             $img_1 = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image',null,true);
                         ?>
-                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
+                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
 
                         <?php if ($theme->getCfg('category/alt_image')): ?>
                             <?php echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight); ?>   
