@@ -76,3 +76,11 @@
 .create-art-list-container .category-collections .category-isotope a:hover .overlay-opacity,
 .create-art-list-container .category-collections .category-isotope a:hover .overlay-icon { display: block; }
 .create-art-list-container .category-collections .black { color: #000; }
+
+
+
+
+/* Product view
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+.product-view input[type="radio"] { cursor: pointer; }

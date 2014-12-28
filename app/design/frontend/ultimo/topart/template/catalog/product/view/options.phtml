@@ -221,27 +221,3 @@
     <?php endforeach; ?>
     </dl>
 <?php endif; ?>
-<script>
-    jQuery(document).ready(function(){
-        
-        setTimeout(function(){
-            jQuery("#cboxOverlay").hide();
-            jQuery("#fancybox-loading").hide();
-        },2000);
-        
-        jQuery(document).on("mousedown", ".product-custom-option, .custom_option_size_text", function(){
-            
-            var $this = jQuery(this);
-            
-            jQuery("#cboxOverlay").show();
-            
-            jQuery("#fancybox-loading").show();
-            
-            jQuery("#cboxOverlay").css("opacity","0.5");
-            
-            setTimeout(function(){
-                jQuery($this).click();
-            },100);
-        });
-    });
-</script>
