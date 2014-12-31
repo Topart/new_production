@@ -2,6 +2,7 @@ var globals = {};
     globals.init = false;
     globals.initClickMat = false;
     globals.artSize = 0;
+    globals.sizeName = '';
 
 	var jQuery = jQuery.noConflict(); 
 	
@@ -1104,6 +1105,8 @@ var globals = {};
 					{ 
 						//size_scale_factor = 1.0;
 					}
+					
+					globals.sizeName = size_name;
 
 					// Resize the image in the preview
 					if (rooms_view_enabled == 1)
