@@ -178,7 +178,7 @@
         calculatePrices: function (element, curConfig) {
             var optionTitle = jQuery(element).closest('dd').attr('data-option-title');
 
-            if (curConfig.price > 0 && globals) {
+            if (curConfig.price > 0) {
                 if (optionTitle == 'frame') {
                     var frameConfig = jQuery.extend(true, {}, curConfig);
                     var mountingFlatPrice = 12;
@@ -197,6 +197,35 @@
                     
                     return matConfig;
                 }
+            }
+
+            if (optionTitle == 'borders' && jQuery("input[data-option-sku='material_canvas']").is(':checked')) {
+                var i = jQuery("input[data-option-sku='border_treatment_3_inches_of_white']").parent().index();
+                var sku = jQuery("dd.size li[class*='" + globals.sizeName + "_treatment_" + i + "']:eq(0) input").attr('data-option-sku');
+                var size_ui = sku.replace(/.*ui_/, '');
+                var end_index = size_ui.indexOf("_width");
+                var stretch = jQuery("input[data-option-sku='stretch']").attr('price');
+                var borderConfig = jQuery.extend(true, {}, curConfig);
+
+                size_ui = size_ui.substr(0, end_index);
+
+                borderConfig.excludeTax = (stretch * size_ui) * 100 / 100;
+                borderConfig.includeTax = (stretch * size_ui) * 100 / 100;
+                borderConfig.price = (stretch * size_ui) * 10000 / 10000;
+
+                return borderConfig;
+            }
+            
+            // when canvas material is selected the stretching is included in borders calculation price, 
+            // so the stretching option price should be disregarded
+            if (optionTitle == 'canvas_stretching' && jQuery("input[data-option-sku='material_canvas']").is(':checked')) {
+                var stretchConfig = jQuery.extend(true, {}, curConfig);
+
+                stretchConfig.excludeTax = 0;
+                stretchConfig.includeTax = 0;
+                stretchConfig.price = 0;
+
+                return stretchConfig;
             }
 
             return curConfig;
