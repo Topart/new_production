@@ -1,7 +1,6 @@
 var globals = {};
     globals.init = false;
     globals.initClickMat = false;
-    globals.artSize = 0;
     globals.sizeName = '';
 
 	var jQuery = jQuery.noConflict(); 
@@ -304,7 +303,7 @@ var globals = {};
 			else if (option_name == "mat")
 			{
 				jQuery("dd.mat li:last input").attr('checked', 'checked');
-				buildArt(jQuery("dd.mat li:last input"));
+				jQuery("dd.mat li:last input").trigger('click');
 			}
 
 			else
@@ -545,7 +544,6 @@ var globals = {};
 		// Refresh the framing, matting and stretching prices to reflect the selected size UI
 		function update_ui_prices(size_ui, matted_size)
 		{
-			globals.artSize = matted_size;
 			// Dynamically update the displayed prices for the framing options
 			var frame_options = jQuery("ul#custom_option_frame li").siblings();
 			var mounting_flat_price = 12.00;
@@ -717,8 +715,6 @@ var globals = {};
 
 				// Update the size UI accordingly
 				jQuery(".selected_mats_size").html(selected_mats_size);
-
-				opConfig.reloadPrice();
 
 				if (mats_sku == "mats_none")
 				{
@@ -2795,7 +2791,7 @@ var globals = {};
                 jQuery("li.material_photopaper input[type=radio]").click(function(){
                     var isFirstPhotoPaper = true;
                     
-                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_photopaper']")
+                    jQuery(".custom_options_images ul#custom_option_size li[id^='custom_option_size_photopaper']")
                         .each(function(){
                             if(jQuery(this).is(":visible")){
                                 if(isFirstPhotoPaper){
@@ -2809,7 +2805,7 @@ var globals = {};
                 jQuery("li.material_posterpaper input[type=radio]").click(function(){
                     var isFirstPhotoPoster = true;
                     
-                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_posterpaper']")
+                    jQuery(".custom_options_images ul#custom_option_size li[id^='custom_option_size_posterpaper']")
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstPhotoPoster){
@@ -2823,7 +2819,7 @@ var globals = {};
                 jQuery("li.material_canvas input[type=radio]").click(function(){
                     var isFirstCanvas = true;
                     
-                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_canvas']")
+                    jQuery(".custom_options_images ul#custom_option_size li[id^='custom_option_size_canvas']")
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstCanvas){

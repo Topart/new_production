@@ -171,64 +171,78 @@
                     }
                 }
             });
-            
-            jQuery("#cboxOverlay").hide();
-            jQuery("#fancybox-loading").hide();
         },
         calculatePrices: function (element, curConfig) {
             var optionTitle = jQuery(element).closest('dd').attr('data-option-title');
 
-            if (curConfig.price > 0) {
-                if (optionTitle == 'frame') {
-                    var frameConfig = jQuery.extend(true, {}, curConfig);
-                    var mountingFlatPrice = 12;
-                    
-                    frameConfig.excludeTax = (curConfig.excludeTax * globals.artSize + mountingFlatPrice) * 100 / 100;
-                    frameConfig.includeTax = (curConfig.includeTax * globals.artSize + mountingFlatPrice) * 100 / 100;
-                    frameConfig.price = (curConfig.price * globals.artSize + mountingFlatPrice) * 10000 / 10000;
-                    
-                    return frameConfig;
-                } else if (optionTitle == 'mat') {
-                    var matConfig = jQuery.extend(true, {}, curConfig);
-                    
-                    matConfig.excludeTax = (curConfig.excludeTax * globals.artSize) * 100 / 100;
-                    matConfig.includeTax = (curConfig.includeTax * globals.artSize) * 100 / 100;
-                    matConfig.price = (curConfig.price * globals.artSize) * 10000 / 10000;
-                    
-                    return matConfig;
-                }
+            if (optionTitle == 'frame' && curConfig.price > 0) {
+                var frameConfig = jQuery.extend(true, {}, curConfig);
+                var mountingFlatPrice = 12;
+                var ui = this.calculateUnitedInches();
+                
+                frameConfig.excludeTax = (curConfig.excludeTax * ui + mountingFlatPrice) * 100 / 100;
+                frameConfig.includeTax = (curConfig.includeTax * ui + mountingFlatPrice) * 100 / 100;
+                frameConfig.price = (curConfig.price * ui + mountingFlatPrice) * 10000 / 10000;
+                
+                return frameConfig;
             }
+            
+            if (optionTitle == 'mat') {
+                var matConfig = jQuery.extend(true, {}, curConfig);
+                var ui = this.calculateUnitedInches();
 
-            if (optionTitle == 'borders' && jQuery("input[data-option-sku='material_canvas']").is(':checked')) {
+                matConfig.excludeTax = (curConfig.excludeTax * ui) * 100 / 100;
+                matConfig.includeTax = (curConfig.includeTax * ui) * 100 / 100;
+                matConfig.price = (curConfig.price * ui) * 10000 / 10000;
+                
+                return matConfig;
+            }
+            
+            var bCanvas = jQuery("input[data-option-sku='material_canvas']").is(':checked');
+
+            if (optionTitle == 'borders' && bCanvas) {
                 var i = jQuery("input[data-option-sku='border_treatment_3_inches_of_white']").parent().index();
                 var sku = jQuery("dd.size li[class*='" + globals.sizeName + "_treatment_" + i + "']:eq(0) input").attr('data-option-sku');
-                var size_ui = sku.replace(/.*ui_/, '');
-                var end_index = size_ui.indexOf("_width");
+                var sizeUI = sku.replace(/.*ui_/, '');
                 var stretch = jQuery("input[data-option-sku='stretch']").attr('price');
                 var borderConfig = jQuery.extend(true, {}, curConfig);
 
-                size_ui = size_ui.substr(0, end_index);
+                sizeUI = sizeUI.substr(0, sizeUI.indexOf("_width"));
 
-                borderConfig.excludeTax = (stretch * size_ui) * 100 / 100;
-                borderConfig.includeTax = (stretch * size_ui) * 100 / 100;
-                borderConfig.price = (stretch * size_ui) * 10000 / 10000;
-
+                borderConfig.excludeTax = (stretch * sizeUI) * 100 / 100;
+                borderConfig.includeTax = (stretch * sizeUI) * 100 / 100;
+                borderConfig.price = (stretch * sizeUI) * 10000 / 10000;
+                
                 return borderConfig;
             }
-            
+
             // when canvas material is selected the stretching is included in borders calculation price, 
             // so the stretching option price should be disregarded
-            if (optionTitle == 'canvas_stretching' && jQuery("input[data-option-sku='material_canvas']").is(':checked')) {
+            if (optionTitle == 'canvas_stretching' && bCanvas) {
                 var stretchConfig = jQuery.extend(true, {}, curConfig);
 
                 stretchConfig.excludeTax = 0;
                 stretchConfig.includeTax = 0;
                 stretchConfig.price = 0;
-
+                
                 return stretchConfig;
             }
-
+            
             return curConfig;
+        },
+        calculateUnitedInches: function () {
+            var sizeSku = jQuery('dd.size li input:checked').attr('data-option-sku');
+            var sizeUI = sizeSku.replace(/.*ui_/, '');
+            sizeUI = parseFloat(sizeUI.substr(0, sizeUI.indexOf("_width")));
+
+            var matSku = jQuery('dd.mat li input:checked').attr('data-option-sku');
+            var matUI = parseFloat(jQuery('#custom_option_mat li[data-mats_sku="' + matSku + '"]').attr('data-mats_size'));
+            
+            if (!isNaN(matUI)) {
+                return sizeUI + 4 * matUI;
+            }
+            
+            return sizeUI;
         }
     }
     function validateOptionsCallback(elmId, result) {
