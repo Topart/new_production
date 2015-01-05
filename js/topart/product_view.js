@@ -1,7 +1,6 @@
 var globals = {};
     globals.init = false;
     globals.initClickMat = false;
-    globals.artSize = 0;
     globals.sizeName = '';
 
 	var jQuery = jQuery.noConflict(); 
@@ -274,7 +273,7 @@ var globals = {};
 			if ( option_name == "material" )
 			{
 				jQuery("dd." + option_name + " li[class*='" + material_name + "']:eq(0) input").attr('checked','checked');
-				jQuery("dd." + option_name + " li[class*='" + material_name + "']:eq(0) input").trigger('click');
+				buildArt(jQuery("dd." + option_name + " li[class*='" + material_name + "']:eq(0) input"));
 			}
 
 			else if ( option_name == "size" )
@@ -282,7 +281,7 @@ var globals = {};
 				if ( material_name == "canvas" )
 				{
 					jQuery("dd.size li[class*='" + size_name + "_treatment_" + index + "']:eq(0) input").attr('checked','checked');
-					jQuery("dd.size li[class*='" + size_name + "_treatment_" + index + "']:eq(0) input").trigger('click');
+					buildArt(jQuery("dd.size li[class*='" + size_name + "_treatment_" + index + "']:eq(0) input"));
 
 					selected_canvas_size = jQuery("ul#custom_option_size li[id*='" + size_name + "_treatment_" + index + "']:eq(0)");
 
@@ -295,7 +294,7 @@ var globals = {};
 				else
 				{
 					jQuery("dd.size li[class*='" + material_name + "']:eq(0) input").attr('checked','checked');
-					jQuery("dd.size li[class*='" + material_name + "']:eq(0) input").trigger('click');
+					buildArt(jQuery("dd.size li[class*='" + material_name + "']:eq(0) input"));
 
 					jQuery("ul#custom_option_size li[id*='" + material_name + "']:eq(0)").css("background-color", selected_size_background_color);
 				}
@@ -304,13 +303,13 @@ var globals = {};
 			else if (option_name == "mat")
 			{
 				jQuery("dd.mat li:last input").attr('checked', 'checked');
-				jQuery("dd.mat li:last input").trigger('click');	
+				jQuery("dd.mat li:last input").trigger('click');
 			}
 
 			else
 			{
 				jQuery("dd." + option_name + " li:nth-of-type(" + index + ") input").attr('checked','checked');
-				jQuery("dd." + option_name + " li:nth-of-type(" + index + ") input").trigger('click');
+				buildArt(jQuery("dd." + option_name + " li:nth-of-type(" + index + ") input"));
 			}
 
 			// Update the current option information
@@ -326,9 +325,7 @@ var globals = {};
 
 		function reset_matting()
 		{
-			jQuery("dd.mat li.mats_none input").trigger("click");
-			opConfig.reloadPrice();
-			//jQuery("#customize_substrate_link").trigger("click");
+			buildArt(jQuery("dd.mat li.mats_none input"));
 		}
 
 		function reset_framing_matting()
@@ -547,7 +544,6 @@ var globals = {};
 		// Refresh the framing, matting and stretching prices to reflect the selected size UI
 		function update_ui_prices(size_ui, matted_size)
 		{
-			globals.artSize = matted_size;
 			// Dynamically update the displayed prices for the framing options
 			var frame_options = jQuery("ul#custom_option_frame li").siblings();
 			var mounting_flat_price = 12.00;
@@ -719,8 +715,6 @@ var globals = {};
 
 				// Update the size UI accordingly
 				jQuery(".selected_mats_size").html(selected_mats_size);
-
-				opConfig.reloadPrice();
 
 				if (mats_sku == "mats_none")
 				{
@@ -900,389 +894,367 @@ var globals = {};
 			}
 		);
 
-
-
-		// When the user clicks on an option
-		jQuery(".product-options input").click(
+		function buildArt(option) {
+			if (jQuery(option).is(':radio')) {
+				jQuery(option).attr("checked", "checked");
+			}
 			
-			function()
-			{
+			// Business logic cases
+			// If Canvas is selected, show the related options
+			if (jQuery(option).parent().attr('class') == 'material_canvas') {
 
-				// Business logic cases
-				// If Canvas is selected, show the related options
-				if ( jQuery(this).parent().attr('class') == 'material_canvas' )
-				{
+				if (paper_active == 1) {
+					reset_framing_matting();
+				}
 
-					if (paper_active == 1)
-					{
-						reset_framing_matting();
-					}
+				canvas_active = 1;
+				paper_active = 0;
 
-					canvas_active = 1;
-					paper_active = 0;
+				click_option("borders", 2, "canvas");
+				activate_option_tab("borders");
+				jQuery("li.treatments_none").hide();
 
-					click_option("borders", 2, "canvas");
-					activate_option_tab("borders");
-					jQuery("li.treatments_none").hide();
+				// Hide the framing from the configuration panel
+				jQuery("#selected_frame").parent().hide();
 
-					// Hide the framing from the configuration panel
-					jQuery("#selected_frame").parent().hide();
+				// Show canvas related sizes
+				show_canvas(1);
 
-					// Show canvas related sizes
-					show_canvas(1);
+				// Update the current product configuration
+				selected_substrate = jQuery(option).next("span.label").find("label").html();
+
+				// Slide the frame and mats tabs right
+				jQuery("dt.frame").css("left", "645px");
+				jQuery("dt.mat").css("left", "691px");
+
+				// Matting is not available, and any matting selection is reset
+				jQuery("dt.mat").hide();
+				jQuery("dd.mat select option:eq(1)").attr("selected", "selected");
+				jQuery("dd.mat select option:eq(1)").trigger("click");
+
+				// Show the "Canvas" framing category ONLY
+				jQuery("select#frame_categories option").hide();
+				jQuery("select#frame_categories option[value*='no_frame']").show();
+				jQuery("select#frame_categories option[value*='Canvas']").show();
+
+				// Currently disabled, until canvas framing becomes available again
+				deactivate_option_tab("frame");
+
+				// Canvas stretching is active by default
+				jQuery("dd.canvas_stretching ul li input").trigger("click");
+
+				// Update the current material information
+				jQuery(".current_material").html(jQuery(option).parent().attr('class'));
+				jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
+
+				reset_matting();
+
+				// Hide the matting option from the product configuration
+				jQuery("#product_configuration #mats_status_label").hide();
+				jQuery("#product_configuration #selected_mats").hide();
+				jQuery("#product_configuration #selected_mats").next("a").hide();
+
+				// Hide the special features for digital paper and canvas
+				jQuery("#special_features").hide();
+			}
+			
+			if (jQuery(option).parent().attr('class') == 'material_photopaper' || jQuery(option).parent().attr('class') == 'material_posterpaper') {
+
+				if (canvas_active == 1) {
+					reset_framing_matting();
+					select_framing_category("Blacks");
+				}
+
+				canvas_active = 0;
+				paper_active = 1;
+
+				// Select no borders, as canvas is turned off
+				click_option("borders", 1, "canvas");
+
+				// Uncheck canvas stretching if already checked
+				if (jQuery("dd.canvas_stretching ul li input").attr('checked') == "checked") {
+					click_option("canvas_stretching", 1, "canvas");
+				}
+
+				deactivate_option_tab("borders");
+				jQuery("li.treatments_none").hide();
+
+				// Show the framing in the configuration panel
+				jQuery("#selected_frame").parent().show();
+
+				// Hide the borders
+				jQuery("#three_inches_white_top_border").hide();
+				jQuery("#three_inches_white_right_border").hide();
+
+				// Update the current product configuration
+				selected_substrate = jQuery(option).next("span.label").find("label").html();
+
+				// Poster size
+				poster_size = jQuery(".poster_size").html();
+
+
+				if (jQuery(option).parent().attr('class') == 'material_posterpaper') {
+					click_option("size", 0, "posterpaper");
+					show_poster_paper();
+
+					// Show the special features for poster only, if present
+					jQuery("#special_features").show();
+
+					// Show the exact poster size
+					jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + poster_size + ") ");
+				}
+
+				if (jQuery(option).parent().attr('class') == 'material_photopaper') {
+					click_option("size", 0, "photopaper");
+					show_photo_paper();
+
+					// Hide the special features for digital paper
+					jQuery("#special_features").hide();
+
+					jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
+				}
+
+
+				activate_option_tab("frame");
+				jQuery("select#frame_categories option").show();
+				jQuery("select#frame_categories option[value*='Canvas']").hide();
+
+				// Slide the frame and mats tabs left
+				jQuery("dt.frame").css("left", "496px");
+				jQuery("dt.mat").css("left", "645px");
+
+				// Matting becomes available
+				jQuery("dt.mat").show();
+
+				// Update the current material information
+				jQuery(".current_material").html(jQuery(option).parent().attr('class'));
+
+				
+				// Hide the matting option from the product configuration
+				jQuery("#product_configuration #selected_wrap").hide();
+				jQuery("#product_configuration #selected_wrap").next("a").hide();
+			}
+
+			if (jQuery(option).parent().parent().parent().parent().attr('class') == 'size') {
+				// Compute the selected size UI
+				class_name = jQuery(option).parent().attr("class");
+
+				// Make the currently selected size background dark green and deselect all the others
+				clicked_size_index = jQuery(option).index() + 1;
+				jQuery(".custom_options_images ul .background_border_size").css("background-color", "");
+				jQuery(".custom_options_images ul .background_border_size:nth-child(" + clicked_size_index + ")").css("background-color", selected_size_background_color);
+
+				oversize_flag = false;
+
+				// Compute the exact size name
+				if (class_name.indexOf("petite") != -1) {
+					size_name = "petite";
+					//size_scale_factor = 0.9;
+				}
+				else if (class_name.indexOf("small") != -1) {
+					size_name = "small";
+					//size_scale_factor = 1.0;
+				}
+				else if (class_name.indexOf("medium") != -1) {
+					size_name = "medium";
+					//size_scale_factor = 1.1;
+				}
+				else if (class_name.indexOf("oversize") != -1) {
+					size_name = "oversize";
+					//size_scale_factor = 1.3;
+
+					oversize_flag = true;
+				}
+				else if (class_name.indexOf("oversize_large") != -1) {
+					size_name = "oversize_large";
+					//size_scale_factor = 1.4;
+
+					oversize_flag = true;
+				}
+				else if (class_name.indexOf("large") != -1) {
+					size_name = "large";
+					//size_scale_factor = 1.2;
+				}
+				else {
+					//size_scale_factor = 1.0;
+				}
+
+				globals.sizeName = size_name;
+
+				// Resize the image in the preview
+				if (rooms_view_enabled == 1) {
+					display_rooms_view(1, 1);
+				}
+
+
+				// Store the visible standard sizes
+				standard_sizes = jQuery("ul#custom_option_size li:visible").siblings();
+
+				// Compute the selected size class name
+				selected_size_name = jQuery("dd.size li input:checked").parent().attr('class');
+				size_ui = selected_size_name.replace(/.*ui_/, '');
+				end_index = size_ui.indexOf("_width");
+
+				size_ui = size_ui.substr(0, end_index);
+
+				// Add the size UI to the DOM in order to retrieve it later in reloadPrice()
+				jQuery(".selected_size_ui").html(size_ui);
+
+				// Update the current size information
+				jQuery(".current_size").html(jQuery(option).parent().attr('class'));
+
+
+				// Display the selected width and height
+				selected_width_index = jQuery(".current_size").html().indexOf("width_");
+				selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 2);
+
+				if (selected_width.indexOf("_") >= 0)
+					selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 1);
+
+				selected_length_index = jQuery(".current_size").html().indexOf("length_");
+				selected_length = jQuery(".current_size").html().substr(selected_length_index + 7, 4);
+
+				selected_size = selected_width + "\"" + "x" + selected_length + "\"";
+
+				// If the the current substrate selection is Poster, show the corresponding dimension
+				if (selected_substrate == "Poster ")
+					jQuery("#size_data").html(poster_size);
+				else
+					jQuery("#size_data").html(selected_size);
+
+				jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
+
+				// Compute the short and long sides of the image
+				if (selected_width <= selected_length) {
+					image_short_side = selected_width;
+					image_long_side = selected_length;
+				}
+				else {
+					image_short_side = selected_length;
+					image_long_side = selected_width;
+				}
+
+
+				/* MATTING */
+				// Show the corresponding matting options
+				select_framing_category(last_selected_frame_category);
+				//show_mats_options(mats_color_code);
+
+				// Update the frame and mats prices
+				update_ui_prices(size_ui, size_ui);
+
+				// If the previously selected frame is not available anymore with the new size selection, then reset the framing and matting
+				if (!is_frame_available(last_selected_frame_sku)) {
+					reset_framing_matting();
+					//alert(last_selected_frame_sku + " is not available anymore with the new size selection");
+				}
+
+				// If the previously selected mat is not available anymore with the new size selection, then reset the matting
+				if (!is_mat_available(last_selected_mat_sku)) {
+					reset_matting();
+				}
+
+				check_mats_visibility();
+
+				if (number_of_shown_mats == 0)
+					deactivate_option_tab("mat");
+				else
+					activate_option_tab("mat");
+
+				if (rooms_view_enabled == 1)
+					display_rooms_view(1, rooms_view_enabled);
+
+			}
+
+			// Select a treatment
+			if (jQuery(option).parent().parent().parent().parent().attr('class') == "borders") {
+				// Compute the treatment index
+				checked_treatment_index = jQuery(option).parent().index();
+
+				// Show the corresponding sizes
+				show_canvas(checked_treatment_index);
+
+				// Matting is not available, and any matting selection is reset
+				jQuery("dt.mat").hide();
+				jQuery("dd.mat select option:eq(1)").attr("selected", "selected");
+				jQuery("dd.mat select option:eq(1)").trigger("click");
+
+				// Automatically check the first option available
+				//alert(checked_treatment_index);
+				click_option("size", checked_treatment_index, "canvas");
+
+				// Update the current product configuration
+				selected_borders = jQuery(option).next("span.label").find("label").html();
+				jQuery("#product_configuration #selected_borders").html(selected_borders);
+
+				// Show the framing option from the product configuration
+				jQuery("#product_configuration #selected_borders").show();
+				jQuery("#product_configuration #selected_borders").next("a").show();
+
+				var selected =  jQuery("dd.borders ul.options-list li input[type=radio]:checked")
+					.next()
+					.find("label:first")
+					.text();
+
+				ShowSelectedOption(selected,"borders");
+			}
+
+			if (jQuery(option).parent().parent().parent().parent().attr('class') != "borders" && jQuery(option).parent().parent().parent().parent().attr('class') != "canvas_stretching") {
+				// Hide the framing option from the product configuration
+				jQuery("#product_configuration #selected_borders").hide();
+				jQuery("#product_configuration #selected_borders").next("a").hide();
+			}
+
+			if (jQuery(option).parent().parent().parent().parent().attr('class') == "canvas_stretching") {
+				selected_wrap = jQuery(option).next("span.label").find("label").html();
+				jQuery("#product_configuration #selected_wrap").html(selected_wrap);
+			}
+
+			// Select a matting option
+			// Update the selected size dynamically, based on the matting selection:
+			// e.g. 3" matting ==> selected_size_ui += 3*2. Pricing is automatically recalculated
+			if (jQuery(option).parent().parent().parent().parent().attr('class') == "mat") {
+
+				mats_class = jQuery(option).parent().attr('class');
+				currently_selected_size_ui = jQuery(".selected_size_ui").html();
+
+				if (mats_class != "mats_none") {
+					// The matted size has to be counted 4 times, once for each dimension
+					matted_size = parseFloat(currently_selected_size_ui) + 4 * parseFloat(mats_size);
 
 					// Update the current product configuration
-					selected_substrate = jQuery(this).next("span.label").find("label").html();
+					selected_mats = jQuery(option).next("span.label").find("label").html();
+					jQuery("#product_configuration #selected_mats").html(selected_mats);
 
-					// Slide the frame and mats tabs right
-					jQuery("dt.frame").css("left", "645px");
-					jQuery("dt.mat").css("left", "691px");
+					// Show the matting option from the product configuration
+					jQuery("#product_configuration #mats_status_label").show();
+					jQuery("#product_configuration #selected_mats").show();
+					jQuery("#product_configuration #selected_mats").next("a").show();
+				}
 
-					// Matting is not available, and any matting selection is reset
-					jQuery("dt.mat").hide();
-					jQuery("dd.mat select option:eq(1)").attr("selected","selected");
-					jQuery("dd.mat select option:eq(1)").trigger("click");
-
-					// Show the "Canvas" framing category ONLY
-					jQuery("select#frame_categories option").hide();
-					jQuery("select#frame_categories option[value*='no_frame']").show();
-					jQuery("select#frame_categories option[value*='Canvas']").show();
-					
-					// Currently disabled, until canvas framing becomes available again
-					deactivate_option_tab("frame");
-
-					// Canvas stretching is active by default
-					jQuery("dd.canvas_stretching ul li input").trigger("click");
-
-					// Update the current material information
-					jQuery(".current_material").html(jQuery(this).parent().attr('class'));
-					jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
-
-					reset_matting();
+				else {
+					matted_size = parseFloat(currently_selected_size_ui);
 
 					// Hide the matting option from the product configuration
 					jQuery("#product_configuration #mats_status_label").hide();
-		   			jQuery("#product_configuration #selected_mats").hide();
-		   			jQuery("#product_configuration #selected_mats").next("a").hide();
-
-		   			// Hide the special features for digital paper and canvas
-		   			jQuery("#special_features").hide();
-				}
-				
-				if ( jQuery(this).parent().attr('class') == 'material_photopaper' || jQuery(this).parent().attr('class') == 'material_posterpaper' )
-				{
-
-					if (canvas_active == 1)
-					{
-						reset_framing_matting();
-						select_framing_category("Blacks");
-					}
-
-					canvas_active = 0;
-					paper_active = 1;
-
-					// Select no borders, as canvas is turned off
-					click_option("borders", 1, "canvas");
-
-					// Uncheck canvas stretching if already checked
-					if ( jQuery("dd.canvas_stretching ul li input").attr('checked') == "checked" )
-					{
-						click_option("canvas_stretching", 1, "canvas");
-					}
-
-					deactivate_option_tab("borders");
-					jQuery("li.treatments_none").hide();
-
-					// Show the framing in the configuration panel
-					jQuery("#selected_frame").parent().show();
-
-					// Hide the borders
-					jQuery("#three_inches_white_top_border").hide();
-					jQuery("#three_inches_white_right_border").hide();
-
-					// Update the current product configuration
-					selected_substrate = jQuery(this).next("span.label").find("label").html();
-
-					// Poster size
-					poster_size = jQuery(".poster_size").html();
-
-
-					if ( jQuery(this).parent().attr('class') == 'material_posterpaper' )
-					{
-						click_option("size", 0, "posterpaper");
-						show_poster_paper();
-
-						// Show the special features for poster only, if present
-		   				jQuery("#special_features").show();
-
-		   				// Show the exact poster size
-		   				jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + poster_size + ") ");
-					}					
-					
-					if ( jQuery(this).parent().attr('class') == 'material_photopaper' )
-					{
-						click_option("size", 0, "photopaper");
-						show_photo_paper();
-
-						// Hide the special features for digital paper
-		   				jQuery("#special_features").hide();
-
-		   				jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
-					}
-
-
-
-					activate_option_tab("frame");
-					jQuery("select#frame_categories option").show();
-					jQuery("select#frame_categories option[value*='Canvas']").hide();
-
-					// Slide the frame and mats tabs left
-					jQuery("dt.frame").css("left", "496px");
-					jQuery("dt.mat").css("left", "645px");
-
-					// Matting becomes available
-					jQuery("dt.mat").show();
-
-					// Update the current material information
-					jQuery(".current_material").html(jQuery(this).parent().attr('class'));
-
-					
-
-
-					// Hide the matting option from the product configuration
-		   			jQuery("#product_configuration #selected_wrap").hide();
-		   			jQuery("#product_configuration #selected_wrap").next("a").hide();
+					jQuery("#product_configuration #selected_mats").hide();
+					jQuery("#product_configuration #selected_mats").next("a").hide();
 				}
 
-				if ( jQuery(this).parent().parent().parent().parent().attr('class') == 'size' )
-				{
-					// Compute the selected size UI
-					class_name = jQuery(this).parent().attr("class");
+				// Update the current mats information
+				jQuery(".current_mats").html(jQuery(option).parent().attr('class'));
 
-					// Make the currently selected size background dark green and deselect all the others
-					clicked_size_index = jQuery(this).index()+1;
-					jQuery(".custom_options_images ul .background_border_size").css("background-color", "");
-					jQuery(".custom_options_images ul .background_border_size:nth-child(" + clicked_size_index +")").css("background-color", selected_size_background_color);
-
-					oversize_flag = false;
-
-					// Compute the exact size name
-					if (class_name.indexOf("petite") != -1)
-					{
-						size_name = "petite";
-						//size_scale_factor = 0.9;
-					}
-					else if (class_name.indexOf("small") != -1)
-					{
-						size_name = "small";
-						//size_scale_factor = 1.0;
-					}
-					else if (class_name.indexOf("medium") != -1)
-					{
-						size_name = "medium";
-						//size_scale_factor = 1.1;
-					}
-					else if (class_name.indexOf("oversize") != -1)
-					{
-						size_name = "oversize";
-						//size_scale_factor = 1.3;
-
-						oversize_flag = true;
-					}
-					else if (class_name.indexOf("oversize_large") != -1)
-					{
-						size_name = "oversize_large";
-						//size_scale_factor = 1.4;
-
-						oversize_flag = true;
-					}
-					else if (class_name.indexOf("large") != -1)
-					{
-						size_name = "large";
-						//size_scale_factor = 1.2;
-					}
-					else
-					{ 
-						//size_scale_factor = 1.0;
-					}
-					
-					globals.sizeName = size_name;
-
-					// Resize the image in the preview
-					if (rooms_view_enabled == 1)
-					{
-						display_rooms_view(1, 1);
-					}
-
-
-					// Store the visible standard sizes
-					standard_sizes = jQuery("ul#custom_option_size li:visible").siblings();
-
-					// Compute the selected size class name
-					selected_size_name = jQuery("dd.size li input:checked").parent().attr('class');
-					size_ui = selected_size_name.replace(/.*ui_/, '');
-					end_index = size_ui.indexOf("_width");
-
-					size_ui = size_ui.substr(0, end_index);
-
-					// Add the size UI to the DOM in order to retrieve it later in reloadPrice()
-					jQuery(".selected_size_ui").html(size_ui);
-
-					// Update the current size information
-					jQuery(".current_size").html(jQuery(this).parent().attr('class'));
-
-
-
-					// Display the selected width and height
-					selected_width_index = jQuery(".current_size").html().indexOf("width_");
-					selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 2);
-
-					if (selected_width.indexOf("_") >= 0)
-						selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 1);
-
-					selected_length_index = jQuery(".current_size").html().indexOf("length_");
-					selected_length = jQuery(".current_size").html().substr(selected_length_index + 7, 4);
-
-					selected_size = selected_width + "\"" + "x" + selected_length + "\"";
-					
-					// If the the current substrate selection is Poster, show the corresponding dimension
-					if (selected_substrate == "Poster ")
-						jQuery("#size_data").html(poster_size);
-					else
-						jQuery("#size_data").html(selected_size);
-					
-					jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
-
-					// Compute the short and long sides of the image
-					if (selected_width <= selected_length)
-					{
-						image_short_side = selected_width;
-						image_long_side = selected_length;
-					}
-					else
-					{
-						image_short_side = selected_length;
-						image_long_side = selected_width;
-					}
-
-
-					/* MATTING */
-					// Show the corresponding matting options
-					select_framing_category(last_selected_frame_category);
-					//show_mats_options(mats_color_code);
-
-					// Update the frame and mats prices
-					update_ui_prices(size_ui, size_ui);
-
-					// If the previously selected frame is not available anymore with the new size selection, then reset the framing and matting
-					if (!is_frame_available(last_selected_frame_sku))
-					{
-						reset_framing_matting();
-						//alert(last_selected_frame_sku + " is not available anymore with the new size selection");
-					}
-					
-					// If the previously selected mat is not available anymore with the new size selection, then reset the matting
-					if (!is_mat_available(last_selected_mat_sku))
-					{
-						reset_matting();
-					}
-
-					check_mats_visibility();
-
-					if (number_of_shown_mats == 0)
-						deactivate_option_tab("mat");
-					else
-						activate_option_tab("mat");
-
-					if (rooms_view_enabled == 1)
-						display_rooms_view(1, rooms_view_enabled);
-
-				}
-
-				// Select a treatment
-				if ( jQuery(this).parent().parent().parent().parent().attr('class') == "borders" )
-				{
-					// Compute the treatment index
-					checked_treatment_index = jQuery(this).parent().index();
-					
-					// Show the corresponding sizes
-					show_canvas(checked_treatment_index);
-
-					// Matting is not available, and any matting selection is reset
-					jQuery("dt.mat").hide();
-					jQuery("dd.mat select option:eq(1)").attr("selected","selected");
-					jQuery("dd.mat select option:eq(1)").trigger("click");
-
-					// Automatically check the first option available
-					//alert(checked_treatment_index);
-					click_option("size", checked_treatment_index, "canvas");
-
-					// Update the current product configuration
-					selected_borders = jQuery(this).next("span.label").find("label").html();
-					jQuery("#product_configuration #selected_borders").html(selected_borders);
-
-					// Show the framing option from the product configuration
-	   				jQuery("#product_configuration #selected_borders").show();
-	   				jQuery("#product_configuration #selected_borders").next("a").show();
-				}
-
-				if ( jQuery(this).parent().parent().parent().parent().attr('class') != "borders" && jQuery(this).parent().parent().parent().parent().attr('class') != "canvas_stretching")
-				{
-					// Hide the framing option from the product configuration
-	   				jQuery("#product_configuration #selected_borders").hide();
-	   				jQuery("#product_configuration #selected_borders").next("a").hide();
-				}
-
-				if ( jQuery(this).parent().parent().parent().parent().attr('class') == "canvas_stretching" )
-				{
-					selected_wrap = jQuery(this).next("span.label").find("label").html();
-					jQuery("#product_configuration #selected_wrap").html(selected_wrap);
-				}
-
-				// Select a matting option
-				// Update the selected size dynamically, based on the matting selection:
-				// e.g. 3" matting ==> selected_size_ui += 3*2. Pricing is automatically recalculated
-				if ( jQuery(this).parent().parent().parent().parent().attr('class') == "mat" )
-				{
-
-					mats_class = jQuery(this).parent().attr('class');
-					currently_selected_size_ui = jQuery(".selected_size_ui").html();			
-
-					if (mats_class != "mats_none")
-					{
-						// The matted size has to be counted 4 times, once for each dimension
-						matted_size = parseFloat(currently_selected_size_ui) + 4 * parseFloat(mats_size);
-
-						// Update the current product configuration
-						selected_mats = jQuery(this).next("span.label").find("label").html();
-						jQuery("#product_configuration #selected_mats").html(selected_mats);
-
-						// Show the matting option from the product configuration
-						jQuery("#product_configuration #mats_status_label").show();
-			   			jQuery("#product_configuration #selected_mats").show();
-			   			jQuery("#product_configuration #selected_mats").next("a").show();
-					}
-
-					else
-					{
-						matted_size = parseFloat(currently_selected_size_ui);
-
-						// Hide the matting option from the product configuration
-						jQuery("#product_configuration #mats_status_label").hide();
-		   				jQuery("#product_configuration #selected_mats").hide();
-		   				jQuery("#product_configuration #selected_mats").next("a").hide();
-					}
-
-					// Update the current mats information
-					jQuery(".current_mats").html(jQuery(this).parent().attr('class'));
-
-					// Update the frame and mats prices
-					update_ui_prices(currently_selected_size_ui, matted_size);
-					
-				}
+				// Update the frame and mats prices
+				update_ui_prices(currently_selected_size_ui, matted_size);
 
 			}
-		);
+
+		}
+
+		// When the user clicks on an option
+		jQuery(".product-options input").click(function() {
+			buildArt(this);
+		});
 
 		jQuery("li.canvas_stretching input").click(
 
@@ -2781,19 +2753,6 @@ var globals = {};
                                                 .text();
 
                             ShowSelectedOption(selected,"mat");
-                        });  
-                        
-                        /*
-                         * Set  "Borders"
-                         */
-                        jQuery(document).on("click",".option-reloaded .borders ul.options-list li input[type=radio]",function(){
-                            jQuery(this).attr('checked','checked');
-                            var selected =  jQuery("dd.borders ul.options-list li input[type=radio]:checked")
-                                                .next()
-                                                .find("label:first")
-                                                .text();
-
-                            ShowSelectedOption(selected,"borders");
                         });
                         
                         /*
@@ -2826,11 +2785,11 @@ var globals = {};
                 jQuery("li.material_photopaper input[type=radio]").click(function(){
                     var isFirstPhotoPaper = true;
                     
-                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_photopaper']")
+                    jQuery(".custom_options_images ul#custom_option_size li[id^='custom_option_size_photopaper']")
                         .each(function(){
                             if(jQuery(this).is(":visible")){
                                 if(isFirstPhotoPaper){
-                                    jQuery(this).find("input:first").click();
+                                    jQuery(this).find("input:first").attr('checked','checked');
                                     isFirstPhotoPaper = false;
                                 }
                             }
@@ -2840,11 +2799,11 @@ var globals = {};
                 jQuery("li.material_posterpaper input[type=radio]").click(function(){
                     var isFirstPhotoPoster = true;
                     
-                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_posterpaper']")
+                    jQuery(".custom_options_images ul#custom_option_size li[id^='custom_option_size_posterpaper']")
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstPhotoPoster){
-                                jQuery(this).find("input:first").click();
+                                jQuery(this).find("input:first").attr('checked','checked');
                                 isFirstPhotoPoster = false;
                             }
                         }
@@ -2854,11 +2813,11 @@ var globals = {};
                 jQuery("li.material_canvas input[type=radio]").click(function(){
                     var isFirstCanvas = true;
                     
-                    jQuery(".custom_options_images ul.#custom_option_size li[id^='custom_option_size_canvas']")
+                    jQuery(".custom_options_images ul#custom_option_size li[id^='custom_option_size_canvas']")
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstCanvas){
-                                jQuery(this).find("input:first").click();
+                                jQuery(this).find("input:first").attr('checked','checked');
                                 isFirstCanvas = false;
                             }
                         }
@@ -2991,65 +2950,6 @@ var globals = {};
                     jQuery("#fancybox-wrap").addClass("mat_popup");
                 });
               /*JP: For ticket 198 End*/
-              /**/
-                jQuery(document).on("mousedown","dd.mat input.product-custom-option",function(){
-                    jQuery(this).attr("checked",false);
-                });
-                jQuery(document).on("change","dd.mat input.product-custom-option",function(){
-                    
-                    jQuery(this).attr("onclick","");
-                    
-                    var current_price = jQuery(".regular-price .price").text();
-                        current_price = current_price.trim();
-                        
-                    var cpos = current_price.indexOf("$");
-                    
-                    if(cpos!==-1){
-                      current_price = parseFloat(current_price.substring(cpos+1,current_price.length));
-                    }
-
-                    var rprice = jQuery("dd.mat .product-custom-option:checked").next().find("span").text();
-                    var pos = rprice.indexOf("$");
-
-                    if(pos!==-1){
-                      rprice = parseFloat(rprice.substring(pos+1,rprice.length));
-                    }else{
-                        var pos2=rprice.indexOf("+");
-                        if(pos2!==-1){
-                            rprice = rprice.substring(pos2+1,rprice.length);
-                            var pos3 = rprice.indexOf(".");
-                            if(pos3 !==-1){
-                                rprice = rprice.substring(0,pos3+3);
-                                rprice = parseFloat(rprice);
-                            }
-                        }else{
-                            return;
-                        }
-                    }
-                    
-                    if((rprice != "" && rprice != NaN) && (current_price != NaN && current_price != "")){
-                        ttotal = rprice + current_price;
-                        //jQuery(".regular-price .price").text("$"+ttotal);
-                    }
-                    //product-custom-optio
-                    
-                });
-              /**/
-              /* Fixes Product price on Mat click  Start*/
-              jQuery(document).on("mousedown",".mats_color",function(){
-                 return false; 
-              });
-              jQuery(document).on("click",".mats_color",function(){
-                 return false;
-                 /*var old_price = jQuery(".price-box .price").text().trim();
-                 var pos = old_price.indexOf("$");
-                 
-                 if(pos!==-1){
-                    old_price = parseFloat(old_price.substring(pos+1,old_price.length));
-                  }
-                  
-                  console.log("old_price: "+old_price);*/
-              });
               /* Fixes Product price on Mat click  End*/
               setTimeout(function(){
                   var title = jQuery(".table-review-title-1").text();
