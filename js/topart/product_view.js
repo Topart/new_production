@@ -1190,6 +1190,13 @@ var globals = {};
 				// Show the framing option from the product configuration
 				jQuery("#product_configuration #selected_borders").show();
 				jQuery("#product_configuration #selected_borders").next("a").show();
+
+				var selected =  jQuery("dd.borders ul.options-list li input[type=radio]:checked")
+					.next()
+					.find("label:first")
+					.text();
+
+				ShowSelectedOption(selected,"borders");
 			}
 
 			if (jQuery(option).parent().parent().parent().parent().attr('class') != "borders" && jQuery(option).parent().parent().parent().parent().attr('class') != "canvas_stretching") {
@@ -2746,19 +2753,6 @@ var globals = {};
                                                 .text();
 
                             ShowSelectedOption(selected,"mat");
-                        });  
-                        
-                        /*
-                         * Set  "Borders"
-                         */
-                        jQuery(document).on("click",".option-reloaded .borders ul.options-list li input[type=radio]",function(){
-                            jQuery(this).attr('checked','checked');
-                            var selected =  jQuery("dd.borders ul.options-list li input[type=radio]:checked")
-                                                .next()
-                                                .find("label:first")
-                                                .text();
-
-                            ShowSelectedOption(selected,"borders");
                         });
                         
                         /*
@@ -2795,7 +2789,7 @@ var globals = {};
                         .each(function(){
                             if(jQuery(this).is(":visible")){
                                 if(isFirstPhotoPaper){
-                                    jQuery(this).find("input:first").click();
+                                    jQuery(this).find("input:first").attr('checked','checked');
                                     isFirstPhotoPaper = false;
                                 }
                             }
@@ -2809,7 +2803,7 @@ var globals = {};
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstPhotoPoster){
-                                jQuery(this).find("input:first").click();
+                                jQuery(this).find("input:first").attr('checked','checked');
                                 isFirstPhotoPoster = false;
                             }
                         }
@@ -2823,7 +2817,7 @@ var globals = {};
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstCanvas){
-                                jQuery(this).find("input:first").click();
+                                jQuery(this).find("input:first").attr('checked','checked');
                                 isFirstCanvas = false;
                             }
                         }
