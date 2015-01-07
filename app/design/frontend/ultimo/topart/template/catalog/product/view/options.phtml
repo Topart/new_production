@@ -203,17 +203,20 @@
             if (optionTitle == 'borders' && bCanvas) {
                 var i = jQuery("input[data-option-sku='border_treatment_3_inches_of_white']").parent().index();
                 var sku = jQuery("dd.size li[class*='" + globals.sizeName + "_treatment_" + i + "']:eq(0) input").attr('data-option-sku');
-                var sizeUI = sku.replace(/.*ui_/, '');
-                var stretch = jQuery("input[data-option-sku='stretch']").attr('price');
-                var borderConfig = jQuery.extend(true, {}, curConfig);
 
-                sizeUI = sizeUI.substr(0, sizeUI.indexOf("_width"));
+                if (typeof sku !== "undefined") {
+                    var sizeUI = sku.replace(/.*ui_/, '');
+                    var stretch = jQuery("input[data-option-sku='stretch']").attr('price');
+                    var borderConfig = jQuery.extend(true, {}, curConfig);
 
-                borderConfig.excludeTax = (stretch * sizeUI) * 100 / 100;
-                borderConfig.includeTax = (stretch * sizeUI) * 100 / 100;
-                borderConfig.price = (stretch * sizeUI) * 10000 / 10000;
-                
-                return borderConfig;
+                    sizeUI = sizeUI.substr(0, sizeUI.indexOf("_width"));
+
+                    borderConfig.excludeTax = (stretch * sizeUI) * 100 / 100;
+                    borderConfig.includeTax = (stretch * sizeUI) * 100 / 100;
+                    borderConfig.price = (stretch * sizeUI) * 10000 / 10000;
+
+                    return borderConfig;
+                }
             }
 
             // when canvas material is selected the stretching is included in borders calculation price, 

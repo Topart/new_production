@@ -2789,7 +2789,7 @@ var globals = {};
                         .each(function(){
                             if(jQuery(this).is(":visible")){
                                 if(isFirstPhotoPaper){
-                                    jQuery(this).find("input:first").attr('checked','checked');
+                                    jQuery(this).find("input:first").click();
                                     isFirstPhotoPaper = false;
                                 }
                             }
@@ -2803,7 +2803,7 @@ var globals = {};
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstPhotoPoster){
-                                jQuery(this).find("input:first").attr('checked','checked');
+                                jQuery(this).find("input:first").click();
                                 isFirstPhotoPoster = false;
                             }
                         }
@@ -2817,7 +2817,7 @@ var globals = {};
                     .each(function(){
                         if(jQuery(this).is(":visible")){
                             if(isFirstCanvas){
-                                jQuery(this).find("input:first").attr('checked','checked');
+                                jQuery(this).find("input:first").click();
                                 isFirstCanvas = false;
                             }
                         }
