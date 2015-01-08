@@ -1893,7 +1893,7 @@ dd.material{
      */
     #special_features{
         color: #aaaaaa;
-        display: block !important;
+        display: none;
         font-size: 14px;
         padding: 7px 0;
     }

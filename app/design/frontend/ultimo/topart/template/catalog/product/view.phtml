@@ -447,7 +447,7 @@ if (empty($secondaryColUnits)) {
             $special_features = "";
 
             if ($udf_serigraph == "Yes") {
-                $special_features = $special_features . "Serigraph Print ";
+                $special_features = $special_features . "Serigraph Print, ";
             }
 
             if ($udf_embossed == "Yes") {
@@ -473,6 +473,8 @@ if (empty($secondaryColUnits)) {
             if ($udf_limited == "Yes") {
                 $special_features = $special_features . "S/N Limited Edition of 950 on Fine Art Paper, ";
             }
+            
+            $special_features = substr_replace($special_features, "", -2);
             ?>
             <?php /*
               <div id="special_features">
@@ -489,13 +491,13 @@ if (empty($secondaryColUnits)) {
             <?php //echo $this->getReviewsSummaryHtml($_product, false, true); //reviews ?>
 
 
+            <?php if (!empty($special_features)): ?>
                 <!-- New special features -->
                 <div id="special_features">
-            <?php
-            echo $special_features;
-            ?>
+                    <?php echo $special_features; ?>
                 </div>
                 <!-- End of new special features -->
+            <?php endif; ?>
 
 
             <?php if ($theme->getCfg('product_page/sku')): ?>
