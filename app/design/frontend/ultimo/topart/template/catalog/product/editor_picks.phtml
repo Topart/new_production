@@ -34,12 +34,14 @@
 
 <?php
 
-$_productCollection = $this->getLoadedProductCollection();
+$_productCollection = clone $this->getLoadedProductCollection();
 
 $productLimit = is_numeric($this->getData('limit')) ? (int)$this->getData('limit') : (int)$this->getLimit();
 
 if ($productLimit) {
-    $_productCollection->clear()->setPageSize($productLimit)->load();
+    $_productCollection->clear()->setPageSize($productLimit);
+    $_productCollection->getSelect()->reset(Zend_Db_Select::ORDER);
+    $_productCollection->addAttributeToSort('position', 'ASC');
 }
 
 $_collectionSize = $_productCollection->count();
