@@ -60,10 +60,10 @@ $imgHeight = 130;
         <ul>
         <?php foreach ($_productCollection as $_product): ?>
             <li class="item-isotope ">
-                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>">
+                <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'thumbnail'), null, true) ?>">
                     <span class="overlay-opacity"></span>
                     <span class="overlay-more"></span>
-                    <div class="bg-image-pick" style="background-image: url('<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>');"></div>
+                    <div class="bg-image-pick" style="background-image: url('<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>');"></div>
                 </a>
             </li>
         <?php endforeach; ?>
