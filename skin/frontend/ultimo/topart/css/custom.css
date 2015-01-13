@@ -36,8 +36,8 @@
 /* Editor's picks section
 -------------------------------------------------------------- */
 #editor-picks-wrapper ul { text-align: left; }
-#editor-picks-wrapper li { position: relative; display: inline-block; margin: 0 6px 10px 0; }
-#editor-picks-wrapper .bg-image-pick { width: 180px;  height: 130px; background-position: center center; background-size: auto 180px; }
+#editor-picks-wrapper li { position: relative; display: inline-block; margin: 0 8px 6px; }
+#editor-picks-wrapper .bg-image-pick { width: 170px;  height: 170px; background-position: center center; background-size: auto 170px; }
 #editor-picks-wrapper .overlay-opacity { background-color: #000; height: 100%; opacity: 0.5; position: absolute; width: 100%; display: none;}
 #editor-picks-wrapper .overlay-more { background: url("../images/more.png") no-repeat center center; display: none; position: absolute; left: 50%; top: 50%; margin: -25px 0 0 -25px; width: 50px; height: 50px; }
 #editor-picks-wrapper a:hover .overlay-opacity,#editor-picks-wrapper a:hover .overlay-more { display: block; }
