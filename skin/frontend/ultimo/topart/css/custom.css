@@ -84,3 +84,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 .product-view input[type="radio"] { cursor: pointer; }
+
+
+/* Custom Options
+-------------------------------------------------------------- */
+
+/* Material
+-------------------------------------------------------------- */
+.product-options dd.material { margin-bottom: 0; }
+.product-options dd.material ul.options-list li { margin: 0 4% 5% 0; width: auto; }
+.product-options dd.material .background_border { margin-bottom: 5px; width: auto; height: auto; }
+.product-options dd.material .background_border img { max-width: 240px; max-height: 128px; }
+.product-options dd.material #custom_option_material_canvas_background { border: none; }
+.product-options dd.material .custom_option_viewport { cursor: default; }
+
+/* Borders
+-------------------------------------------------------------- */
+.product-options dd.borders ul.options-list li { margin: 0 2% 5% 0; width: auto; }
+.product-options dd.borders .background_border { margin-bottom: 5px; }
+.product-options dd.borders .background_border img { max-width: 200px; }
+.product-options dd.borders .border_folded_top { position: absolute; left: -1px; top: -9px; background: url('../images/border_folded_top.png'); width: 10px; height: 10px; }
+.product-options dd.borders .border_folded_bottom { position: absolute; right: -9px; bottom: -1px; background: url('../images/border_folded_bottom.png'); width: 10px; height: 10px; }
+.product-options dd.borders .custom_option_viewport { cursor: default; }
+
+
+/* Mats
+-------------------------------------------------------------- */
+.product-options dd.mat { margin: 0; padding: 0; }
+.product-options dd.mat ul.options-list li { margin: 0 5% 2% 0; width: auto; }
+.product-options dd.mat .background_border { margin-bottom: 5px; }
+.product-options #cont_mat { padding-bottom: 2%; }
+
+/* IE 8, 9 and 10+
+-------------------------------------------------------------- */
+@media screen\0 {
+    .product-options ul.options-list .label { display: inline-block; margin: 0; padding-left: 5px; line-height: 25px; }
+    .product-options ul#custom_option_size li > label { position: relative; top: 3px; display: inline-block; padding-left: 5px; }
+}

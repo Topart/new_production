@@ -3805,85 +3805,12 @@ ul.create-art-list li div:nth-child(3){
         margin-top: 1px;
     }
     /* JP: For ticket 91 End*/
-    
-    /* JP: For ticket 146 Start*/
-    #custom_option_material_posterpaper, #custom_option_material_photopaper {
-        height: 100% !important;
-        left: 0 !important;
-        top: 0 !important;
-        width: 100% !important;
-    }
-    ul#custom_option_material li {
-        height: auto !important;
-    }
-    #custom_option_borders li:nth-of-type(3){
-        height: auto !important;
-    }
-    #custom_option_borders li{
-        height: auto !important;
-    }
-    ul#custom_option_material #custom_option_material_canvas_background {
-        overflow: hidden !important;
-    }
-    dd.material {
-        bottom: 0 !important;
-        top:auto !important;
-    }
-    #size_info {
-        margin-top: 0px;
-    }
-    .product-options dl dd {
-        position: absolute !important;
-    }
-    dd.borders .input-box ul.options-list {
-        position: relative;
-        height: 30px;
-        top:auto;
-    }
-    ul#custom_option_borders{
-        margin-bottom: 0px;
-    }
-    #custom_option_material .background_border .custom_option_viewport img{
-        max-height:128px
-    }
-    ul#custom_option_material li{
-        width:auto !important;
-    }
-    dd.material {
-        top: 202px !important;
-    }
-    dd.borders {
-        top: 0px !important;
-    }
-    /* JP: For ticket 146 End*/
 
     /* JP: For ticket 139 Start*/
     .main-page-blog-title{
         padding-top: 50px !important;
     }
     /* JP: For ticket 139 End*/
-
-    /* JP: For ticket 144 Start*/
-    #custom_option_material .background_border .custom_option_viewport img {
-        max-width: 240px;
-    }
-    /*dd.borders .input-box ul.options-list {
-        top: 150px !important;
-    }*/
-    ul#custom_option_borders li img{
-        /*max-height: 70px !important;*/
-    }
-    #custom_option_borders li:nth-of-type(2),#custom_option_borders li:nth-of-type(3), #custom_option_borders li:nth-of-type(4) {
-        width: auto !important;
-    }
-    #custom_option_borders li {
-        margin-right: 0 !important;
-        max-width: 200px !important;
-    }
-    #three_inches_white_right_border ,#two_inches_black_one_inch_white_right_border{
-        /*display:none !important;*/
-    }
-    /* JP: For ticket 144 End*/
     
     /* JP: For ticket 134 
         Fix: Images too large
@@ -3901,7 +3828,6 @@ ul.create-art-list li div:nth-child(3){
     #size_info {
         font-size: 12px !important;
         line-height: 12px;
-        margin-top: 50px !important;
     }
     ul#custom_option_size {
         margin-top: 10px !important;
@@ -3912,20 +3838,9 @@ ul.create-art-list li div:nth-child(3){
         min-height: 950px;
     }
     /* JP: For ticket 189 End*/
-    #custom_option_material li div img{
-        max-width:140px;
-    }
     p.t-left{
         text-align: left;
     }
-    
-    /*JP: for ticket 211 Start*/
-    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-        #custom_option_borders li { 
-            margin-right: 4px !important;
-        }
-    }
-    /*JP: for ticket 211 End*/
     
     /*JP: for ticket 212 Fix Start*/
     :root .products-grid .product-image-wrapper a img { 

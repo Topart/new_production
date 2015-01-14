@@ -633,8 +633,8 @@ var globals = {};
 					oversize_flag = true;
 
 				// Apply the selected color to the background of the corresponding preview
-				jQuery("#mats_2_inches").css("background-color", mats_color_code);
-				jQuery("#mats_3_inches").css("background-color", mats_color_code);
+				jQuery(".mats_2_inches").css("background-color", mats_color_code);
+				jQuery(".mats_3_inches").css("background-color", mats_color_code);
 				
 				// Reset every mats color border to the original value
 				original_border_color = "#cccccc";
@@ -729,20 +729,20 @@ var globals = {};
 
 				if (mats_size == 2)
 				{
-					jQuery("#mats_2_inches").addClass("active_option");
-					jQuery("#mats_2_inches .mats_l_shape").addClass("active_mats_l_shape");
+					jQuery(".mats_2_inches").addClass("active_option");
+					jQuery(".mats_2_inches .mats_l_shape").addClass("active_mats_l_shape");
 
-					jQuery("#mats_3_inches").removeClass("active_option");
-					jQuery("#mats_3_inches .mats_l_shape").removeClass("active_mats_l_shape");
+					jQuery(".mats_3_inches").removeClass("active_option");
+					jQuery(".mats_3_inches .mats_l_shape").removeClass("active_mats_l_shape");
 				}
 
 				else if (mats_size == 3)
 				{
-					jQuery("#mats_3_inches").addClass("active_option");
-					jQuery("#mats_3_inches .mats_l_shape").addClass("active_mats_l_shape");
+					jQuery(".mats_3_inches").addClass("active_option");
+					jQuery(".mats_3_inches .mats_l_shape").addClass("active_mats_l_shape");
 
-					jQuery("#mats_2_inches").removeClass("active_option");
-					jQuery("#mats_2_inches .mats_l_shape").removeClass("active_mats_l_shape");
+					jQuery(".mats_2_inches").removeClass("active_option");
+					jQuery(".mats_2_inches .mats_l_shape").removeClass("active_mats_l_shape");
 				}
 
 				else
@@ -872,7 +872,7 @@ var globals = {};
 
 				if ( clicked_option == "mat" )
 				{
-					jQuery("#mats_previews").show();
+					jQuery("#cont_mat").show();
 					jQuery("#available_mats").show();
 					jQuery("#mats_line").show();
 
@@ -882,7 +882,7 @@ var globals = {};
 
 				else
 				{
-					jQuery("#mats_previews").hide();
+					jQuery("#cont_mat").hide();
 					jQuery("#available_mats").hide();
 					jQuery("#mats_line").hide();
 
@@ -2827,57 +2827,9 @@ var globals = {};
                 jQuery("li.material_photopaper input[type=radio]").trigger("click");
                 
                 /* Jp: Ticket 129 End*/
-                        
-            var img_uploaded = jQuery("input[name=image-uploaded]").val();
             
-            if(img_uploaded !== ""){
-                
-                setTimeout(function(){
-                    //window.location = "your-photos-to-art-63";
-                },5000);
-                
-            }else{
-                //console.log("no uploaded ");
-            }
-            
-            var imgSize = 0;
-
-            jQuery("#custom_option_material li").each(function(){
-                jQuery(this).find("img").load(function() {
-                    imgSize = jQuery(this).css("width");
-                    jQuery("dd.material .product-options ul.options-list li").each(function(){
-                        jQuery(this).attr("style","margin-right:23px;width:"+imgSize+" !important");
-                    });
-                    return;
-                });
-            });
-            /*
-             * Ugly Fix
-             * Force delay to resize images in firefox
-             */
-            setTimeout(
-                function(){
-                    setLiPosition('#custom_option_material li img:first',"dd.material .options-list li");
-                },
-            5000);
             jQuery(document).on("click", 'dt.borders label', function(){
                 if(globals.init === false){
-                    /*
-                     * Set the position of li in "Borders" step
-                     */
-                    setLiPosition('#custom_option_border_treatment_3_inches_of_white img',"dd.borders .options-list li",1,1,18);
-                    
-                    /*
-                     * Set the top of ul options-list when select "canvas" option and then the step "borders"
-                     */
-                    jQuery("#custom_option_border_treatment_3_inches_of_white").find("img").ready(function(){
-                            jQuery("dd.borders .input-box ul.options-list")
-                                .attr("style","top: "
-                                    +(jQuery('#custom_option_border_treatment_3_inches_of_white img').height()+85)
-                                    +"px"
-                                    +" !important");
-                        });
-
                     /*
                      * Set the position for the corners to simulate 3d effect
                      * to white border and blanck border in the step "borders"
@@ -2977,14 +2929,14 @@ function fixMatRender(){
     });
 
     if(show2in){
-            jQuery("#mats_2_inches").show();
+            jQuery(".mats_2_inches").show();
     }else{
-            jQuery("#mats_2_inches").hide();
+            jQuery(".mats_2_inches").hide();
     }
     if(show3in){
-            jQuery("#mats_3_inches").show();
+            jQuery(".mats_3_inches").show();
     }else{
-            jQuery("#mats_3_inches").hide();
+            jQuery(".mats_3_inches").hide();
     }
 }
 /* JP: For ticket 137 End*/
