@@ -1605,10 +1605,6 @@ a
 	}
 }
 @media only screen and (max-width : 410px) {
-	.mats_style{
-		width: 76px;
-		height: 62px;
-	}
 	.addthis_native_toolbox {
 		width: auto;
 	}
@@ -2084,4 +2080,18 @@ form#review-form #product-review-table .first th {
 }
 .item ul.clearer li.product .price{
     display:none;
+}
+
+
+
+
+/* Responsive design
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+@media only screen and (max-width: 480px) {
+	/* Product view
+	-------------------------------------------------------------- */
+	
+	.option-reloaded dt .step-selection { position: static; }
 }
