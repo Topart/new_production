@@ -107,17 +107,10 @@
 	display: none;
 }
 
-.product-options ul li
-{
-	/*list-style-type: none;
-	display: inline;*/
-}
-
 .product-options li label
 {
   display: inline;
   background-color: #ffffff;
-  padding-left: 7px;
 }
 
 .product-options dd.frame select
@@ -135,11 +128,13 @@ select#frame_categories
 	right: 30px;
 }
 
-.mats_style
-{
-  width: 103px;
-  height: 65px;
-  border: 1px solid #cccccc;
+.mats_style {
+	position: relative;
+	margin-bottom: 5px;
+	width: 103px;
+	height: 65px;
+	border: 1px solid #cccccc;
+	border-right: none;
 }
 
 #mats_previews
@@ -148,26 +143,11 @@ select#frame_categories
   margin-bottom: 60px;
 margin-top: 15px;
 }
-dd.mat {
-	top: 115px;
-}
-#mats_previews li
-{
-  position: relative;
-  display: inline-block;
-  margin-right: 45px;
-}
-
 
 #mats_none
 {
 	margin-right: 0 !important;
   border: 1px dashed #cccccc;
-}
-
-
-dd.mat ul
-{
 }
 
 .active_option
@@ -206,16 +186,14 @@ ul#custom_option_mat li
 #available_mats
 {
 	 font-size: 12px;
-	margin-top: 75px;
 }
 
-#mats_line
-{
-  background-color: #e1e1e1;
-  width: 374px;
-  height: 1px;
-
-  display: none;
+#mats_line {
+	margin-bottom: 3%;
+	background-color: #e1e1e1;
+	width: 374px;
+	height: 1px;
+	display: none;
 }
 
 #more_mats
@@ -350,20 +328,6 @@ top: 107px;
   border-right: 9px solid #000000;
 }
 
-.border_treatment_2_inches_of_black_and_1_inch_of_white
-{
-	position: relative;
-	left: 160px;
-}
-
-.border_treatment_2_inches_mirrored_and_1_inch_of_white
-{
-	position: relative;
-	left: 311px;
-}
-.border_treatment_3_inches_of_white{
-	left: 5px;
-}
 .product-options dd.border_treatments
 {
   top: 300px;
@@ -417,41 +381,11 @@ dt
 dd .input-box ul li
 {
 	display: inline-block;
-	width: 24%;
-  z-index: 1;
+	z-index: 1;
 }
 
-dd.borders .input-box ul li
-{
-  width: 130px;
-}
-dd.material .input-box ul li {
-width: 150px;
-}
-
-dd.mat .input-box ul li
-{
+dd.mat .input-box ul li {
 	vertical-align: top;
-vertical-align: top;
-margin-right: 10px;
-margin-top: 10px;
-height: 50px;
-overflow: hidden;
-width: 145px;
-}
-
-dd.borders .input-box ul li
-{
-  position: absolute;
-}
-dd.borders .input-box ul.options-list {
-top: 185px;
-position: absolute;
-left: 0px;
-}
-dd.canvas_stretching .input-box ul li
-{
-
 }
 
 dd.canvas_stretching span.label
@@ -624,10 +558,7 @@ line-height: 40px;
 	border-style: solid;
 	border-color: #cccccc;
 	border-width: 1px;
-	width: 161px;
-	height: 161px;
-
-  position: relative;
+	position: relative;
 }
 
 .background_border_size
@@ -666,28 +597,9 @@ line-height: 40px;
 /***************** CUSTOM OPTIONS ***************************/
 
 /* Custom Option 1 - MATERIAL */
-
-/* Tabs positioning */
-.product-options dl dt.material
-{
-}
-
 .product-options dl dt.size
 {
   display: none;
-}
-
-.product-options dl dt.borders
-{
-}
-
-.product-options dl dt.frame
-{
-}
-
-.product-options dl dt.mat
-{
-
 }
 
 .product-options dl dt{
@@ -699,46 +611,6 @@ line-height: 40px;
 .product-options dd.canvas_stretching
 {
   position: relative;
-}
-
-#custom_options_images ul#custom_option_material
-{
-  position: relative;
-}
-
-ul#custom_option_material li
-{
-  width: 124px;
-  height: 124px;
-  margin-right: 18px;
-  display: inline-block;
-  overflow: hidden;
-}
-
-#custom_option_material_posterpaper, #custom_option_material_photopaper
-{
-	position: relative;
-	top: 3px;
-	left: 3px;
-	width: 96%;
-	height: 96%;
-}
-
-ul#custom_option_material #custom_option_material_canvas_background
-{
-  width: 126px;
-  height: 124px;
-  overflow: visible;
-  border: none;
-  margin-bottom: 2px;
-}
-
-#custom_option_material_canvas
-{
-	position: relative;
-  top: 0px;
-  width: 100%;
-  height: 100%;
 }
 
 
@@ -788,57 +660,7 @@ ul#custom_option_size .custom_option_label
 {
   font-size: 14px;
   width: 350px;
-  margin-top: 35px;
 }
-
-
-
-/* Custom Option 3 - Borders */
-
-ul#custom_option_borders
-{
-	margin-bottom: 55px;
-}
-#custom_option_borders li {
-	display: inline-block;
-	margin-right: 12px;
-}
-#custom_option_borders li:nth-of-type(2)
-{
-  width: 130px;
-  height: 130px;
-}
-
-#custom_option_borders li:nth-of-type(2) div
-{
-width: 100%;
-height: 100%;
-}
-
-#custom_option_borders li:nth-of-type(3)
-{
-  width: 130px;
-  height: 130px;
-}
-
-#custom_option_borders li:nth-of-type(3) div
-{
-width: 100%;
-height: 100%;
-}
-
-#custom_option_borders li:nth-of-type(4)
-{
-  width: 130px;
-  height: 130px;
-}
-
-#custom_option_borders li:nth-of-type(4) div
-{
-width: 100%;
-height: 100%;
-}
-
 
 /* Custom Option 4 - FRAME */
 
@@ -889,11 +711,6 @@ position: absolute;
   left: 0px;
 }
 
-.product-options dl dd
-{
-	position: absolute;
-  z-index: 1;
-}
 #custom_option_mat{
 	overflow: hidden;
 }
@@ -976,17 +793,12 @@ dd .input-box ul li span label
   font-size: 11px;
 }
 
-dd.mat .input-box
+dd.mat .input-box .label
 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
-
-    padding-right: 10px;
-}
-.catalog-product-view .btn.btn-primary
-{
 }
 #special_products_features
 {
@@ -1544,22 +1356,20 @@ font-weight: bold;
 	border-bottom: 2px solid #04A6E4;
 }
 
-#mats_2_inches .mats_l_shape
+.mats_2_inches .mats_l_shape
 {
 	position: absolute;
 	top: -2px;
 	left: 17px;
-
-	width: 87px;
+	width: 86px;
 	height: 48px;
 }
 
-#mats_3_inches .mats_l_shape
+.mats_3_inches .mats_l_shape
 {
 	position: absolute;
 	top: -2px;
 	left: 23px;
-
 	width: 80px;
 	height: 42px;
 }
@@ -1678,10 +1488,6 @@ a
 .product-secondary-column{
 	display: none;
 }
-dd.material{
-	position: absolute;
-	top: 202px;
-}
 .custom_options_images{
 	position: relative;
 }
@@ -1758,12 +1564,6 @@ dd.material{
 }
 
 @media only screen and (max-width : 640px) {
-	ul#custom_option_material li {
-		margin-right: 12px;
-	}
-	dd.material .input-box ul li, dd.borders .input-box ul li {
-		width: 139px;
-	}
 	.product-options {
 	margin-bottom: 55px;
 	}
@@ -1775,20 +1575,11 @@ dd.material{
 		height: 34px;
 		line-height: 34px;
 	}
-	#custom_option_borders li {
-		margin-right: 2px;
-	}
 	#two_inches_black_one_inch_white_top_border{
 		left: 146px;
 	}
 	#two_inches_black_one_inch_white_right_border{
 		left: 276px;
-	}
-	.border_treatment_2_inches_of_black_and_1_inch_of_white {
-		left: 147px;
-	}
-	.border_treatment_2_inches_mirrored_and_1_inch_of_white {
-		left: 294px;
 	}
 	#room_switch {
 		bottom: 50px;
@@ -1800,29 +1591,6 @@ dd.material{
 
 
 @media only screen and (max-width : 520px) {
-	ul#custom_option_material li,
-	ul#custom_option_material #custom_option_material_canvas_background
-	{
-	  width: 75px;
-	  height: 75px;
-	  margin-right: 9px;
-	}
-	dd.material{
-		top: 170px;
-	}
-	#mats_previews li{
-		margin-right: 9px;
-	}
-	dd.mat .input-box ul li{
-		width: 98px;
-		margin-right: 20px;
-		height: 50px;
-		overflow: hidden;
-	}
-	dd.material .input-box ul li, 
-	dd.borders .input-box ul li{
-		width: 88px;
-	}
 	.product-view .add-to-cart{
 		float: inherit;
 		margin: auto;
@@ -1840,12 +1608,6 @@ dd.material{
 	.mats_style{
 		width: 76px;
 		height: 62px;
-	}
-	#mats_3_inches .mats_l_shape{
-		width: 53px;
-	}
-	dd.mat .input-box ul li{
-		width: 73px;
 	}
 	.addthis_native_toolbox {
 		width: auto;
@@ -1907,12 +1669,6 @@ dd.material{
 
 /* JP: ticket 105 - Muestra centradas las imagenes dentro del fancy de borders*/
 /*#canvas_white_borders{margin: 0 auto 20px !important;}*/
-
-/* JP: For ticket 204 Start*/
-ul#custom_option_material li {
-    max-width: 200px !important;
-}
-/* JP: For ticket 204 End*/
 /* JP: For ticket 205 Start*/
     #size_info{
         display:inline-block;
