@@ -30,14 +30,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 
-.home-sections-title .title-link { position: relative; bottom: -10px; float: right; color: #a48d4f; font: 15px bentonsansregular, Arial, "Helvetica Neue", Helvetica, sans-serif; text-transform: lowercase; letter-spacing: 0; }
+.home-sections-title .title-link { float: right; margin-top: 10px; color: #a48d4f; font: 15px bentonsansregular, Arial, "Helvetica Neue", Helvetica, sans-serif; text-transform: lowercase; letter-spacing: 0; }
 
 
 /* Editor's picks section
 -------------------------------------------------------------- */
 #editor-picks-wrapper ul { text-align: left; }
 #editor-picks-wrapper li { position: relative; display: inline-block; margin: 0 8px 6px; }
-#editor-picks-wrapper .bg-image-pick { width: 170px;  height: 170px; background-position: center center; background-size: auto 170px; }
+#editor-picks-wrapper .bg-image-pick { width: 170px;  height: 170px; background-position: center center; background-size: auto 100%; }
 #editor-picks-wrapper .overlay-opacity { background-color: #000; height: 100%; opacity: 0.5; position: absolute; width: 100%; display: none;}
 #editor-picks-wrapper .overlay-more { background: url("../images/more.png") no-repeat center center; display: none; position: absolute; left: 50%; top: 50%; margin: -25px 0 0 -25px; width: 50px; height: 50px; }
 #editor-picks-wrapper a:hover .overlay-opacity,#editor-picks-wrapper a:hover .overlay-more { display: block; }
@@ -45,8 +45,8 @@
 
 /* Blog posts section
 -------------------------------------------------------------- */
-.blog-posts { padding-bottom: 5%; width: 102%; }
-.blog-posts .blog-isotope { margin: 0 10px 10px 0; }
+.blog-posts { padding-bottom: 5%; }
+.blog-posts .blog-isotope { margin: 0 1% 2%; }
 .blog-posts .overlay-opacity { display: none; position: absolute; width: 100%; height: 100%; opacity: 0.5; background-color: #000; }
 .blog-posts .overlay-icon { display: none; position: absolute; width: 100%; height: 100%; background-image: url("../images/more.png"); background-repeat: no-repeat; background-position: center center; background-size: auto 30%; }
 .blog-posts .overlay-info { display: none; position: absolute; left: 0; top: 70%; padding: 0.5%; width: 99%; color: #fff; font-family: bentonsansregular, Arial, "Helvetica Neue", Helvetica, sans-serif; font-size: 18px; line-height: 20px; text-align: center; }
@@ -54,6 +54,16 @@
 .blog-posts .blog-isotope a:hover .overlay-icon,
 .blog-posts .blog-isotope a:hover .overlay-info { display: block; }
 .blog-posts .bg-image-post { background-position: center center; background-size: auto 100%; background-repeat: no-repeat; }
+.blog-posts .blog-isotope:nth-child(1) { width: 63%; }
+.blog-posts .blog-isotope:nth-child(1) .bg-image-post { padding-bottom: 112.5%; width: 100%; height: 0; }
+.blog-posts .blog-isotope:nth-child(2),
+.blog-posts .blog-isotope:nth-child(3) { width: 32.74%; }
+.blog-posts .blog-isotope:nth-child(2) .bg-image-post,
+.blog-posts .blog-isotope:nth-child(3) .bg-image-post{ padding-bottom: 104.86%; width: 100%; height: 0; }
+.blog-posts .blog-isotope:nth-child(4),
+.blog-posts .blog-isotope:nth-child(5) { width: 47.9%; }
+.blog-posts .blog-isotope:nth-child(4) .bg-image-post,
+.blog-posts .blog-isotope:nth-child(5) .bg-image-post{ padding-bottom: 111.5%; width: 100%; height: 0; }
 
 
 /* Grid section
@@ -120,4 +130,82 @@
 @media screen\0 {
     .product-options ul.options-list .label { display: inline-block; margin: 0; padding-left: 5px; line-height: 25px; }
     .product-options ul#custom_option_size li > label { position: relative; top: 3px; display: inline-block; padding-left: 5px; }
+}
+
+
+
+
+/* RESPONSIVE
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* Tablet (Portrait) - design for a width of 768px
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* 768px <= width < 960px */
+@media only screen and (min-width: 768px) and (max-width: 959px) {
+    /* Editor's picks section
+    -------------------------------------------------------------- */
+    #editor-picks-wrapper li { margin: 1%; width: 47%; }
+    #editor-picks-wrapper .bg-image-pick { padding-bottom: 100%; width: 100%; height: 0; }
+}
+
+/* All mobile - design for a width of less than 768px
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* width < 768px */
+@media only screen and (max-width: 767px) {
+    
+}
+
+/* Mobile (Landscape) - design for a width of 480px
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* 480px <= width < 768px */
+@media only screen and (min-width: 480px) and (max-width: 767px) {
+    
+}
+
+/* Mobile (Landscape, iPhone 4 Portrait) - design for a width of 640px
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+/* 640px <= width < 768px */
+@media only screen and (min-width: 640px) and (max-width: 767px) {
+    
+}
+
+/* Design for a width of less than 480px (small mobile)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* width < 480px */
+@media only screen and (max-width: 479px) {
+    
+}
+
+/* Mobile (Portrait) - design for a width of 320px
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* 320px <= width < 480px */
+@media only screen and (min-width: 320px) and (max-width: 479px) {
+    /* Editor's picks section
+    -------------------------------------------------------------- */
+    #editor-picks-wrapper li { margin: 1%; width: 47%; }
+    #editor-picks-wrapper .bg-image-pick { padding-bottom: 100%; width: 100%; height: 0; }
+}
+
+/* Mobile (Portrait) - design for a width of less than 320px
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+
+/* width < 320px */
+@media only screen and (max-width: 319px) {
+    /* Editor's picks section
+    -------------------------------------------------------------- */
+    #editor-picks-wrapper li { margin: 1%; width: 47%; }
+    #editor-picks-wrapper .bg-image-pick { padding-bottom: 100%; width: 100%; height: 0; }
 }
