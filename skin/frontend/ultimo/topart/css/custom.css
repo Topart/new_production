@@ -68,7 +68,7 @@
 
 /* Grid section
 -------------------------------------------------------------- */
-.product-home-grid  .bg-image-grid { position: absolute; left: 0; top: 0; width: 100%;  height: 100%; background-position: center center; background-size: auto 150%; }
+.product-home-grid  .bg-image-grid { padding-bottom: 100%; width: 100%; height: 0; background-position: center center; background-size: auto 100%; background-repeat: no-repeat; }
 .product-home-grid .product-image img { width: 100% !important; height: auto !important; }
 
 

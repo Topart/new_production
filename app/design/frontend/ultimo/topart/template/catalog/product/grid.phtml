@@ -35,20 +35,61 @@
 
 if ($this->getRecentlyViewed()) {
     $_productCollection = Mage::getSingleton('Mage_Reports_Block_Product_Viewed')->getItemsCollection();
-    $this->setCollection($_productCollection);
+} elseif ($this->getRecommended()) {
+    // load an empty collection
+    $_productCollection = Mage::getModel('catalog/product')
+        ->getCollection()
+        ->addFieldToFilter('entity_id', -1);
+    
+    // recently viewed products
+    $viewedCollection = Mage::getSingleton('Mage_Reports_Block_Product_Viewed')->getItemsCollection();
+    $prodIds = array();
+    $categoryFilter = $this->getCategoryFilter();
+
+    foreach ($viewedCollection as $viewed) {
+        $prodIds[] = $viewed->getId();
+        $currentCatIds = $viewed->getCategoryIds();
+        
+        // filter categories that has an specific category as ancestor
+        $categoryCollection = Mage::getResourceModel('catalog/category_collection')
+            ->addAttributeToSelect('path')
+            ->addAttributeToFilter('entity_id', $currentCatIds)
+            ->addAttributeToFilter(array(
+                array('attribute' => 'path', 'like' => "%/$categoryFilter/%"), 
+                array('attribute' => 'path', 'like' => "%/$categoryFilter")))
+            ->addIsActiveFilter();
+
+        $cat = $categoryCollection->getFirstItem();
+        $catId = $cat->getId();
+        
+        // check if category exists
+        if (!empty($catId)) {
+            $collection = Mage::getModel('catalog/product')
+                ->getCollection()
+                ->addAttributeToSelect('name')
+                ->addAttributeToFilter('entity_id', array('nin' => $prodIds))
+                ->addCategoryFilter($cat)
+                ->addStoreFilter();
+            $collection->getSelect()->order(new Zend_Db_Expr('RAND()'));
+            $collection->setPage(1, 1)->load();
+            $prod = $collection->getFirstItem();
+            $prodId = $prod->getId();
+
+            // check if product exists
+            if (!empty($prodId)) {
+                $prodIds[] = $prodId;
+                $_productCollection->addItem($prod);
+            }
+        }
+    }
 } else {
     $_productCollection = $this->getLoadedProductCollection();
 }
 
-$productLimit = is_numeric($this->getData('limit')) ? (int)$this->getData('limit') : (int)$this->getLimit();
-
-if ($productLimit) {
-    $_productCollection->clear()->setPageSize($productLimit)->load();
-}
-
+$this->setCollection($_productCollection);
 $_collectionSize = $_productCollection->count();
-
-
+$productLimit = is_numeric($this->getData('limit')) ? (int)$this->getData('limit') : $_collectionSize;
+$c = 0;
 ?>
 
 <?php if ($_collectionSize && $tmpHtml = $this->getChildHtml('block_category_above_collection')): ?>
@@ -151,15 +192,15 @@ $_collectionSize = $_productCollection->count();
     
     <ul class="products-grid category-products-grid itemgrid itemgrid-adaptive itemgrid-<?php echo $columnCount; ?>col<?php if($gridClasses) echo $gridClasses; ?>">
         <?php foreach ($_productCollection as $_product): ?>
+            <?php if ($c++ == $productLimit) break; ?>
             <li class="item">
             
-                <div class="product-image-wrapper product-home-grid" style="max-width:<?php echo $imgWidth; ?>px;">
+                <div class="product-image-wrapper product-home-grid">
                 
                     <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" class="product-image">
                         <?php
                             $img_1 = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image',null,true);
                         ?>
-                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
                         <div class="bg-image-grid" style="background-image: url('<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image'); ?>');" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>"></div>
 
                         <?php if ($theme->getCfg('category/alt_image')): ?>
