@@ -135,6 +135,16 @@
 
 
 
+/* Category view
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
+.catalog-category-view .category-products .category-products-grid .item { width: 31.33%; }
+.catalog-category-view .category-products div.product-image-wrapper a { height: 200px; }
+.catalog-category-view .category-products div.product-image-wrapper a img { position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; height: auto; max-width: 100%; }
+
+
+
+
 /* RESPONSIVE
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
@@ -145,6 +155,7 @@
 
 /* 768px <= width < 960px */
 @media only screen and (min-width: 768px) and (max-width: 959px) {
+    
     /* Editor's picks section
     -------------------------------------------------------------- */
     #editor-picks-wrapper li { margin: 1%; width: 47%; }
@@ -177,12 +188,29 @@
     
 }
 
+/* width < 640px */
+@media only screen and (max-width: 639px) {
+
+    /* Item grid: 3 columns */
+    .itemgrid-adaptive.itemgrid-3col .item:nth-child(3n+1) { clear:none !important; }
+
+    /* Category view
+    -------------------------------------------------------------- */
+    .catalog-category-view .category-products .category-products-grid .item { width: 48%; }
+    
+}
+
 /* Design for a width of less than 480px (small mobile)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 
 /* width < 480px */
 @media only screen and (max-width: 479px) {
+
+    /* Category view
+    -------------------------------------------------------------- */
+    .catalog-category-view .category-products div.product-image-wrapper a { height: 150px; }
+    .catalog-category-view .category-products div.product-image-wrapper a img { max-height: 150px !important; }
     
 }
 
@@ -192,6 +220,7 @@
 
 /* 320px <= width < 480px */
 @media only screen and (min-width: 320px) and (max-width: 479px) {
+    
     /* Editor's picks section
     -------------------------------------------------------------- */
     #editor-picks-wrapper li { margin: 1%; width: 47%; }
@@ -204,6 +233,7 @@
 
 /* width < 320px */
 @media only screen and (max-width: 319px) {
+    
     /* Editor's picks section
     -------------------------------------------------------------- */
     #editor-picks-wrapper li { margin: 1%; width: 47%; }
