@@ -95,6 +95,11 @@
 */
 .product-view input[type="radio"] { cursor: pointer; }
 
+/* Fancybox
+-------------------------------------------------------------- */
+.catalog-product-view #fancybox-content { height: auto !important; }
+.catalog-product-view #fancybox-content > div { width: 100% !important; height: auto !important; }
+
 
 /* Custom Options
 -------------------------------------------------------------- */
@@ -197,7 +202,11 @@
     /* Category view
     -------------------------------------------------------------- */
     .catalog-category-view .category-products .category-products-grid .item { width: 48%; }
-    
+
+    /* Product view - Fancybox
+    -------------------------------------------------------------- */
+    .catalog-product-view #fancybox-outer { padding: 0 !important; }
+    .catalog-product-view .canvas_borders_popup .clear_popup p { padding-left: 110px; padding-top: 0; }
 }
 
 /* Design for a width of less than 480px (small mobile)
