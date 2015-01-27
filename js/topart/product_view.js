@@ -2630,38 +2630,39 @@ var globals = {};
                 /*
                  * Init Fancys Product
                  */
+				var bMobile = jQuery(window).width() < 640 ? true : false;
+		
                 jQuery("#custom_size_link").fancybox({
-                    'content':jQuery("#info_custom_size").html()
+					'content': jQuery("#info_custom_size").html(),
+					'autoSize': false,
+					'autoDimensions': false,
+					'width': bMobile ? '100%' : '50%'
                 });
                 
                 jQuery(".fancy-material").fancybox({
                     'content':jQuery("#info_size").html(),
-                    'width':'55%',
-                    'height': '65%',
+					'width': bMobile ? '100%' : '60%',
                     'autoDimensions':false,
                     'autoSize':false
                 });
                 
                 jQuery(".fancy-frame").fancybox({
                     'content':jQuery("#info_frame").html(),
-                    'width':'55%',
-                    'height': '15%',
+					'width': bMobile ? '100%' : '60%',
                     'autoDimensions':false,
                     'autoSize':false
                 });
                 
                 jQuery(".fancy-mat").fancybox({
                     'content':jQuery("#info_mats").html(),
-                    'width':'55%',
-                    'height': '15%',
+					'width': bMobile ? '100%' : '60%',
                     'autoDimensions':false,
                     'autoSize':false
                 });
                 
                 jQuery(".fancy-borders").fancybox({
                     'content':jQuery("#info_borders").html(),
-                    'width':'55%',
-                    'height': '65%',
+					'width': bMobile ? '100%' : '60%',
                     'autoDimensions':false,
                     'autoSize':false
                 });
@@ -2902,7 +2903,7 @@ var globals = {};
                     jQuery("#fancybox-wrap").addClass("mat_popup");
                 });
               /*JP: For ticket 198 End*/
-              /* Fixes Product price on Mat click  End*/
+              
               setTimeout(function(){
                   var title = jQuery(".table-review-title-1").text();
                   jQuery(".table-review-title").text(title);

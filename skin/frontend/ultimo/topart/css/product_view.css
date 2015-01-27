@@ -1793,7 +1793,7 @@ a
     content: "X";
 }
 #fancybox-outer{
-    padding: 30px;
+    padding: 4%;
 }
 #fancybox-content {
     font:75%/150% bentonsansregular,Arial,Helvetica,sans-serif;
@@ -1816,63 +1816,6 @@ a
     font-weight: bold;
     text-decoration: underline;
 }
-/* define sizes for each popup START*/
-//Our Materials
-.our_materials_popup{
-    height: 675px;
-}
-.our_materials_popup #fancybox-content > div:first-child{
-    height: 675px !important;
-}
-.our_materials_popup #fancybox-outer {
-    height: 675px;
-}
-.our_materials_popup #fancybox-content {
-    height: 675px !important;
-}
-//Custom Order
-.custom_order_popup{
-    height: 140px;
-}
-.custom_order_popup #fancybox-content > div:first-child{
-    height: 140px !important;
-}
-.custom_order_popup #fancybox-outer {
-    height: 140px;
-}
-.custom_order_popup #fancybox-content {
-    height: 140px !important;
-}
-//Frames
-.frames_popup{
-    height: 200px;
-}
-.frames_popup #fancybox-content > div:first-child{
-    height: 200px !important;
-}
-.frames_popup #fancybox-outer {
-    height: 200px;
-}
-.frames_popup #fancybox-content {
-    height: 200px !important;
-}
-//Canvas Borders
-.canvas_borders_popup{
-    height: 850px;
-}
-.canvas_borders_popup #fancybox-content > div:first-child{
-    height: 850px !important;
-}
-.canvas_borders_popup #fancybox-outer {
-    height: 850px;
-}
-.canvas_borders_popup #fancybox-content {
-    height: 850px !important;
-}
-//Mat design??
-
-/* define sizes for each popup END*/
-
 
 div.select-frame-colors {
     margin-top: 30px;
@@ -1918,7 +1861,7 @@ div.select-frame-colors {
 }
 .clear_popup{
     clear:both;
-    height: 180px;
+	min-height: 180px;
 }
 .canvas_borders_popup .clear_popup p{
     padding-left: 120px;
@@ -1983,9 +1926,6 @@ form#review-form .data-table tr.odd.last{
     display: block;
     font-size: 14px;
     margin-top: 30px;
-}
--table-review-title-1{
-    
 }
 form#review-form .data-table tr.odd td, form#review-form .data-table tr.odd th {
     border-right: medium none;
