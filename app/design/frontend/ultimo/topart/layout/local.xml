@@ -28,7 +28,7 @@
                             
                             <!-- Fix upload button in cms page "your-photos-to-art" -->
                             <action method="addJs"><script>topart/jcanvas.min.js</script></action>
-                            <action method="addJs"><script>topart/jquery.prettyPhoto.js</script></action>
+							<action method="addItem"><type>skin_js</type><name>js/jquery.prettyPhoto.js</name></action>
                             <action method="addJs"><script>topart/purl.js</script></action>
                             <action method="addJs"><script>topart/product_view.js</script></action>
                         
@@ -84,6 +84,8 @@
 			<action method="addCssIe"><css>css/styles-ie.css</css></action>
 			<action method="addItem"><type>skin_css</type><name>css/styles-ie7.css</name><params/><if>lte IE 7</if></action>
 			<action method="addItem"><type>skin_css</type><name>css/styles-ie8.css</name><params/><if>lte IE 8</if></action>
+			
+			<action method="addCss"><stylesheet>css/prettyPhoto.css</stylesheet></action>
 			
 			<block type="core/template" name="head.theme.css" template="page/html/head_theme_css.phtml" before="-" />
 			
@@ -496,12 +498,10 @@
 
 
 		<reference name="head">
-
-			<action method="addCss"><stylesheet>css/prettyPhoto.css</stylesheet></action>
+			
 			<action method="addCss"><stylesheet>css/product_view.css</stylesheet></action>
 
 			<action method="addJs"><script>topart/jcanvas.min.js</script></action>
-			<action method="addJs"><script>topart/jquery.prettyPhoto.js</script></action>
 			<action method="addJs"><script>topart/purl.js</script></action>
 			<action method="addJs"><script>topart/product_view.js</script></action>
 
@@ -702,9 +702,6 @@
 
         <!-- Custom static blocks -->
         <!-- IMPORTANT: These blocks are removed from home page and 404 no route page -->
-        <reference name="head">
-            <action method="addCss"><stylesheet>css/prettyPhoto.css</stylesheet></action>
-        </reference>
         <reference name="content">
             <block type="page/html_wrapper" name="i_block_cms_page_top" before="-">
                 <action method="setElementClass">
