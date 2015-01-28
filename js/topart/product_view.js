@@ -2223,7 +2223,7 @@ var globals = {};
 		);
 		
 		
-		jQuery("a[rel^='prettyPhoto']").prettyPhoto();
+		jQuery("a[rel^='prettyPhoto']").prettyPhoto({horizontal_padding: 0, deeplinking: false, social_tools: null});
 		
 		jQuery("#full_screen, #full_screen_text").click(function() {
 		
