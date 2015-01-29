@@ -2236,21 +2236,8 @@ var globals = {};
 		// Automatic image resizing based on the image ratio
 		function resize_image(width, height, top, left, margin_top, margin_left)
 		{
-			/*if(width > height){
-                width = "100%";
-                height = height * 100 / 450;
-                height = height + "%";
-
-
-            }else{
-                width = width * 100 / 450;
-                width = width + "%";
-                height = "100%";
-            }*/
-
-            // Animate the automatic image resizing to make it fit nicely into the room
+			// Animate the automatic image resizing to make it fit nicely into the room
             jQuery("#final_product_image").animate({ width: width, height: height, top: top, left: left, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
-            //jQuery("#final_product_image").animate({ width: width, height: height, "margin-top": margin_top, "margin-left": margin_left }, "fast", function(){
 				activate_dynamic_framing_matting(frame_image_url, mats_color_code, mats_size)
 			});
 		}
@@ -2331,15 +2318,10 @@ var globals = {};
 				selected_width = selected_length;
 				selected_length = temp;
 			}
-
-            //alert(furniture_image_gap);
-
+			
             real_width = selected_width * size_scale_factor;
 			real_height = selected_length * size_scale_factor;
-
-			real_top = furniture_image_gap - real_height;
-			real_left = (background_container_width - real_width) / 2;
-
+			
 			if (framing_enabled == 1 && rooms_view_enabled == 0)
 			{
 				// Recompute the image geometric features
@@ -2361,7 +2343,11 @@ var globals = {};
             var withPoc = ((real_width * widthAux) / original_image_width);
             var heightPoc = ((real_height * heightAux) / original_image_height);
 
-			resize_image(withPoc + "%", heightPoc + "%", real_top, real_left, 0, 0);
+			var windowWidth = jQuery(window).width();
+			real_top = 45 - heightPoc / 2;
+			real_left = 50 - withPoc / 2;
+			
+			resize_image(withPoc + "%", heightPoc + "%", real_top + "%", real_left + "%", 0, 0);
 		}
 		
 		// Wall Color

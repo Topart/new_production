@@ -733,8 +733,8 @@ position: absolute;
 #final_product_image_background
 {
 	position: relative;
+	display: block;
 	background-color: #ffffff;
-	width: 100%;
 	padding-bottom: 100%;
 	border: 2px solid #E1E1E1;
 	box-shadow: 1px 1px 1px #E1E1E1;
