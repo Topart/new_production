@@ -235,14 +235,18 @@
         },
         calculateUnitedInches: function () {
             var sizeSku = jQuery('dd.size li input:checked').attr('data-option-sku');
-            var sizeUI = sizeSku.replace(/.*ui_/, '');
-            sizeUI = parseFloat(sizeUI.substr(0, sizeUI.indexOf("_width")));
+            var sizeUI = 1;
 
-            var matSku = jQuery('dd.mat li input:checked').attr('data-option-sku');
-            var matUI = parseFloat(jQuery('#custom_option_mat li[data-mats_sku="' + matSku + '"]').attr('data-mats_size'));
-            
-            if (!isNaN(matUI)) {
-                return sizeUI + 4 * matUI;
+            if (typeof sizeSku !== "undefined") {
+                sizeUI = sizeSku.replace(/.*ui_/, '');
+                sizeUI = parseFloat(sizeUI.substr(0, sizeUI.indexOf("_width")));
+
+                var matSku = jQuery('dd.mat li input:checked').attr('data-option-sku');
+                var matUI = parseFloat(jQuery('#custom_option_mat li[data-mats_sku="' + matSku + '"]').attr('data-mats_size'));
+
+                if (!isNaN(matUI)) {
+                    return sizeUI + 4 * matUI;
+                }
             }
             
             return sizeUI;
