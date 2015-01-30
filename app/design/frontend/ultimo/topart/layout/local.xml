@@ -95,6 +95,7 @@
 		<!-- Footer scripts ====================================================================== -->
 		<reference name="before_body_end">
 			<block type="core/template" name="footer.theme.scripts" template="page/html/footer_theme_scripts.phtml" before="-" />
+			<block type="core/template" name="wishpond" template="page/html/wishpond.phtml" />
 		</reference>
 		
 		
