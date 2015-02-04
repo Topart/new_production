@@ -34,7 +34,7 @@
     <dt class='<?php echo $option_title; ?>'><label<?php if ($_option->getIsRequire())
             echo ' class="required"' ?>><?php if ($_option->getIsRequire())
                 echo '<em>*</em>' ?>
-            <?php $lbl = $this->htmlEscape($_option->getTitle()) . "</label>" ?>
+            <?php $lbl = $this->__($this->htmlEscape($_option->getTitle())) . "</label>" ?>
             <?php if ($option_title == 'frame'): ?>
                 <span>Step 2: </span>
                 <?php $lbl .= '<span class="step-selection"></span>'; ?>
@@ -126,11 +126,11 @@
         }
 
         if ($option_title == "size") {
-            echo "<div id='size_info' class='custom_option_label label_size_custom'>Select Your Size (Inches): <div id='size_data'></div></div>";
+            echo "<div id='size_info' class='custom_option_label label_size_custom'>" . $this->__("Select Your Size (Inches):") . " <div id='size_data'></div></div>";
 
             // Custom Size is not available on Limited Edition items
             if ($udf_limited != "Yes")
-                echo "<a id='custom_size_link' class='fancybox' href='#info_custom_size'>Custom Size?</a>";
+                echo "<a id='custom_size_link' class='fancybox' href='#info_custom_size'>" . $this->__("Custom Size?") . "</a>";
         }
 
         if ($option_title == "borders") {
@@ -150,16 +150,13 @@
         if ($option_title == "mat") {
             $option_label = "Select Mat";
         }
-
+        
+        $option_label = $this->__($option_label);
         ?>
 
         <!-- Informational lightboxes -->
         <div id="info_custom_size" style="width:400px; display: none;">
-            <h3>Custom Order</h3>
-            Top Art specializes in custom orders.
-            <br/>
-            Please contact us at <a href="mailto:cs@topart.com?Subject=Custom Order">cs@topart.com</a> to place your
-            custom order.
+            <?php echo Mage::getBlockSingleton('cms/block')->setBlockId('block_product_custom_order')->toHtml(); ?>
         </div>
 
         <div id="info_material" style="width:600px; display: none;">
@@ -555,8 +552,8 @@
                         data-frame_maximum_long_side="<?php echo $frame_maximum_long_side; ?>"
                         data-frame_maximum_short_side="<?php echo $frame_maximum_short_side; ?>">
                         <div class="frame_description">
-                            <div class="frame_title"><?php echo $frame_title; ?></div>
-                            <div class="frame_price">Add $
+                            <div class="frame_title"><?php echo $this->__($frame_title); ?></div>
+                            <div class="frame_price"><?php echo $this->__('Add') . ' ' . Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>
                                 <div class="frame_real_price">
                                     0.00
                                 </div>
@@ -582,7 +579,7 @@
                                 $category_name_displayed = "No Frame";
                             }
                             ?>
-                            <option value=<?php echo $category_name; ?>><?php echo $category_name_displayed; ?></option>
+                            <option value=<?php echo $category_name; ?>><?php echo $this->__($category_name_displayed); ?></option>
 
                             <?php
                             $i++;
