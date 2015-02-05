@@ -2186,7 +2186,7 @@ var globals = {};
 		select_framing_category("Blacks");	
 		show_mats_options(mats_color_code);
 
-		jQuery("dt.material label").html('<em>*</em><span>Step 1: </span>Material & Size');	
+		jQuery("dt.material label").html(Translator.translate('<em>*</em><span>Step 1: </span>Material & Size'));	
 
 		// Display the whole custom options section, only when everything else has loaded
 		jQuery(".product-view").show();
@@ -2998,7 +2998,7 @@ function ShowSelectedOption(selected,option_name){
 			selected += " "+ opt;
 		}
 
-		if(option_name == "frame" && selected.indexOf("No Frame") === -1){
+		if(option_name == "frame" && selected.indexOf("No Frame") === -1 && selected.indexOf("Senza Cornice") === -1){
 
 			val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
 			selected += " + $"+val;
