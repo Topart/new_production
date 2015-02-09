@@ -3248,7 +3248,6 @@ a.title-anchor:hover h2{color: #b19d68}
 	width: 100% !important;
 }
 @media only screen and (max-width : 1280px) {
-    .catalog-category-view .category-top .category-intro{ display: none}
     .home-content .home-collection-list li {
 		max-height: 313px;
 	}
