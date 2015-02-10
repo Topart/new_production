@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 $actual_image_name = time() . "." . $ext;
 
                 if ($s3->putObjectFile($tmp, $bucket, $actual_image_name, S3::ACL_PUBLIC_READ)) {
-                    $msg = "Your Upload Was Successful. <br />Please Wait While We Take You To Our Customization Page.";
+                    $msg = $this->__("Your Upload Was Successful. <br />Please Wait While We Take You To Our Customization Page.");
 
                     $s3file = 'https://' . $bucket . '.s3.amazonaws.com/' . $actual_image_name;
                     list($width, $height, $type, $attr) = getimagesize($s3file);
@@ -72,14 +72,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                     echo "<img id='s3_image' src='$s3file' style='display:none;' />";
                 } else {
-                    $msg = "The Upload Failed. Please Try Again.";
+                    $msg = $this->__("The Upload Failed. Please Try Again.");
                 }
             } else
-                $msg = "The Maximum Image Size Is 10MB.";
+                $msg = $this->__("The Maximum Image Size Is 10MB.");
         } else
-            $msg = "The File Is Not Valid. Please Upload An Image File.";
+            $msg = $this->__("The File Is Not Valid. Please Upload An Image File.");
     } else
-        $msg = "Please Select An Image File.";
+        $msg = $this->__("Please Select An Image File.");
 }
 
 $s3_images_base_url = "http://s3.amazonaws.com/topart_images/";
