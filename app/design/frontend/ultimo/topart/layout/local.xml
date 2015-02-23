@@ -90,6 +90,10 @@
 			<block type="core/template" name="head.theme.css" template="page/html/head_theme_css.phtml" before="-" />
 			
 		</reference>
+
+        <reference name="after_body_start">
+            <block type="core/template" name="facebook.conversion.pixel.noscript" template="page/html/facebook_conversion_pixel_noscript.phtml" />
+        </reference>
 		
 		
 		<!-- Footer scripts ====================================================================== -->

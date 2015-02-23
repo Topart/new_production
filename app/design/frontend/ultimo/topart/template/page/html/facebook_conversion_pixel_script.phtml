@@ -1,0 +1,22 @@
+<?php
+// Add Add Facebook conversion pixel to order success and view cart after a product was added
+if (Mage::app()->getFrontController()->getAction()->getFullActionName() == 'checkout_onepage_success' 
+    || (Mage::app()->getFrontController()->getAction()->getFullActionName() == 'checkout_cart_index' && Mage::getModel('core/session')->getProductAddedToCart())):
+?>
+    <!-- Facebook Conversion Code for Conversion Checkout -->
+    <script>(function() {
+            var _fbq = window._fbq || (window._fbq = []);
+            if (!_fbq.loaded) {
+                var fbds = document.createElement('script');
+                fbds.async = true;
+                fbds.src = '//connect.facebook.net/en_US/fbds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(fbds, s);
+                _fbq.loaded = true;
+            }
+        })();
+        window._fbq = window._fbq || [];
+        window._fbq.push(['track', '6020074731384', {'value':'0.01','currency':'EUR'}]);
+    </script>
+<?php
+endif;

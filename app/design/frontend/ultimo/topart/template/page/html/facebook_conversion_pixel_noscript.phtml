@@ -1,0 +1,9 @@
+<?php
+// Add Add Facebook conversion pixel to order success and view cart after a product was added
+if (Mage::app()->getFrontController()->getAction()->getFullActionName() == 'checkout_onepage_success'
+    || (Mage::app()->getFrontController()->getAction()->getFullActionName() == 'checkout_cart_index' && Mage::getModel('core/session')->getProductAddedToCart())):
+?>
+    <noscript><img height="1" width="1" alt="" style="display:none" src="https://www.facebook.com/tr?ev=6020074731384&amp;cd[value" /></noscript>
+<?php
+    Mage::getModel('core/session')->unsProductAddedToCart();
+endif;
