@@ -77,4 +77,7 @@
 <?php endif;?>
 
 <!-- Go to www.addthis.com/dashboard to customize your tools -->
-<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-543c3660526ece98" async></script> 
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-543c3660526ece98" async></script>
+
+<?php // Add Facebook conversion pixel ?>
+<?php echo $this->getLayout()->createBlock('core/template', 'facebook.conversion.pixel')->setTemplate('page/html/facebook_conversion_pixel_script.phtml')->toHtml(); ?>
