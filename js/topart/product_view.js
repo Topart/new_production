@@ -287,8 +287,6 @@ var globals = {};
 
 					if (elements_exists(selected_canvas_size))
 						selected_canvas_size.css("background-color", selected_size_background_color);
-					//else
-						//jQuery("ul#custom_option_size li[id*='canvas']:eq(0)").css("background-color", selected_size_background_color);
 				}
 
 				else
@@ -1174,8 +1172,7 @@ var globals = {};
 				jQuery("dd.mat select option:eq(1)").trigger("click");
 
 				// Automatically check the first option available
-				//alert(checked_treatment_index);
-				click_option("size", checked_treatment_index, "canvas");
+                jQuery("ul#custom_option_size li[id*='" + size_name + "_treatment_" + checked_treatment_index + "']:eq(0)").find('input').trigger('click');
 
 				// Update the current product configuration
 				selected_borders = jQuery(option).next("span.label").find("label").html();
