@@ -1,6 +1,6 @@
 var globals = {};
     globals.init = false;
-    globals.initClickMat = false;
+    globals.lastMaterial = '';
     globals.sizeName = '';
 
 	var jQuery = jQuery.noConflict(); 
@@ -287,8 +287,6 @@ var globals = {};
 
 					if (elements_exists(selected_canvas_size))
 						selected_canvas_size.css("background-color", selected_size_background_color);
-					//else
-						//jQuery("ul#custom_option_size li[id*='canvas']:eq(0)").css("background-color", selected_size_background_color);
 				}
 
 				else
@@ -325,7 +323,11 @@ var globals = {};
 
 		function reset_matting()
 		{
-			buildArt(jQuery("dd.mat li.mats_none input"));
+            var noMat = jQuery("dd.mat li.mats_none input");
+			buildArt(noMat);
+            
+            var selected = noMat.next().find("label:first").text();
+            ShowSelectedOption(selected,"mat");
 		}
 
 		function reset_framing_matting()
@@ -580,7 +582,7 @@ var globals = {};
 					mats_real_price = ( (parseFloat(size_ui) + 4*parseFloat(current_node_mats_size)) * mats_ui_price ).toFixed(2);
 					
 					// Assign it back to the node
-					mats_real_node.find("span.price").html(mats_real_price);
+					mats_real_node.find("span.price").html(' $' + mats_real_price);
 				}
 			);
 
@@ -801,8 +803,6 @@ var globals = {};
 
 				if ( clicked_option == "borders" && canvas_active )
 				{
-					//jQuery("dd.canvas_stretching").show();
-
 					// Show the borders
 					jQuery("#three_inches_white_top_border").show();
 					jQuery("#three_inches_white_right_border").show();
@@ -940,9 +940,6 @@ var globals = {};
 				// Currently disabled, until canvas framing becomes available again
 				deactivate_option_tab("frame");
 
-				// Canvas stretching is active by default
-				jQuery("dd.canvas_stretching ul li input").trigger("click");
-
 				// Update the current material information
 				jQuery(".current_material").html(jQuery(option).parent().attr('class'));
 				jQuery("#product_configuration #selected_substrate").html(selected_substrate + " (" + selected_size + ") ");
@@ -970,11 +967,6 @@ var globals = {};
 
 				// Select no borders, as canvas is turned off
 				click_option("borders", 1, "canvas");
-
-				// Uncheck canvas stretching if already checked
-				if (jQuery("dd.canvas_stretching ul li input").attr('checked') == "checked") {
-					click_option("canvas_stretching", 1, "canvas");
-				}
 
 				deactivate_option_tab("borders");
 				jQuery("li.treatments_none").hide();
@@ -1180,8 +1172,7 @@ var globals = {};
 				jQuery("dd.mat select option:eq(1)").trigger("click");
 
 				// Automatically check the first option available
-				//alert(checked_treatment_index);
-				click_option("size", checked_treatment_index, "canvas");
+                jQuery("ul#custom_option_size li[id*='" + size_name + "_treatment_" + checked_treatment_index + "']:eq(0)").find('input').trigger('click');
 
 				// Update the current product configuration
 				selected_borders = jQuery(option).next("span.label").find("label").html();
@@ -1252,9 +1243,24 @@ var globals = {};
 		}
 
 		// When the user clicks on an option
-		jQuery(".product-options input").click(function() {
-			buildArt(this);
-		});
+        jQuery(".product-options input").click(function () {
+            var optionClass = jQuery(this).parent().attr('class');
+
+            // reset art when material is changed
+            if ((optionClass == 'material_photopaper' || optionClass == 'material_posterpaper') && globals.lastMaterial != optionClass) {
+                display_design_view();
+                globals.lastMaterial = optionClass;
+            }
+
+            buildArt(this);
+
+            var optionName = jQuery(this).closest('dd').attr('data-option-title');
+
+            // recalculate mat and frame prices
+            if (optionName == 'size') {
+                jQuery("dd.mat li input:checked").trigger("click");
+            }
+        });
 
 		jQuery("li.canvas_stretching input").click(
 
@@ -2163,22 +2169,12 @@ var globals = {};
 			}
 		);
 
-		// Clicking a custom option image should automatically select the corresponding button: SPECIFIC FOR THE SIZE OPTIONS
-		jQuery(".background_border_size").click(
+		// Clicking a custom option label should automatically select the corresponding button: SPECIFIC FOR THE SIZE OPTIONS
+		jQuery(".background_border_size label").click(
 
 			function()
 			{
-				clicked_image_index = jQuery(this).index();
-				jQuery(this).find('input').attr("checked", "checked");
-				jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").attr("checked", "checked");
-				jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").trigger("click");
-
-				// Make the currently selected size background dark green and deselect all the others
-				if ( jQuery(this).attr("id") != "custom_size_button_background" )
-				{
-					jQuery(".background_border_size").css("background-color", "");
-					jQuery(this).css("background-color", selected_size_background_color);
-				}
+				jQuery(this).parent().find('input').trigger("click");
 			}
 		);
 
@@ -2306,6 +2302,11 @@ var globals = {};
             image_left = original_image_leftPoc;
 
 			resize_image(width_percentage + "%", height_percentage + "%", image_top, image_left, margin_top_percentage, margin_left_percentage);
+
+            // expand Material & Size
+            jQuery(".product-options dt.material label.required").trigger('click');
+            
+            opConfig.reloadPrice();
 		}
 
 		function display_rooms_view(room_index, rooms_view_state)
@@ -2747,6 +2748,15 @@ var globals = {};
                          */
                         
                         jQuery(document).on("click","input[name=size]",function(){
+                            clicked_image_index = jQuery(this).parent().index();
+                            jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").trigger("click");
+
+                            // Make the currently selected size background dark green and deselect all the others
+                            if ( jQuery(this).parent().attr("id") != "custom_size_button_background" )
+                            {
+                                jQuery(".background_border_size").css("background-color", "");
+                                jQuery(this).parent().css("background-color", selected_size_background_color);
+                            }
                             
                             var txt = jQuery(this).next().text(),
                                 opt,
@@ -2843,18 +2853,6 @@ var globals = {};
             
             jQuery(document).on("click", "dt.mat label", function(){
                 fixMatRender();
-                if(globals.initClickMat === false){
-                    jQuery("dd.mat .options-list li").each(function(){
-                      if(jQuery(this).is(":visible")){
-                        txt = jQuery(this).find(".label .price-notice").text();
-                        if(txt.indexOf("+")!==-1){
-                          txt = "+ $"+txt.substring(1,txt.lenght);
-                          jQuery(this).find(".label .price-notice").text(txt);
-                        }
-                      }
-                    });
-                    globals.initClickMat = true;
-                }
               });
               /*JP: For ticket 109 Start*/
                 jQuery("#tab-description").hide();
