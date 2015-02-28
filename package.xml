@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+    <name>Fooman_GoogleAnalyticsPlus</name>
+    <version>0.15.13</version>
+    <stability>alpha</stability>
+    <license uri="http://www.opensource.org/licenses/osl-3.0.php">OSL v3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Additional features for the default GoogleAnalytics module.</summary>
+    <description>Additional features for the default GoogleAnalytics module.
+
+Current improvements:
+
+Track every individual page - including sections retrieved via AJAX during one-page-checkout
+Support for specifying DomainName to use
+Track to a secondary profile
+Track the actual typed in keywords by your customers when bidding on keywords
+
+Optionally track Adwords conversions for purchases
+
+First Touch tracking</description>
+    <notes>0.11.2</notes>
+    <authors><author><name>Kristof Ringleff</name><user>auto-converted</user><email>kristof@fooman.co.nz</email></author><author><name>Kristof Ringleff</name><user>auto-converted</user><email>kristof@fooman.co.nz</email></author></authors>
+    <date>2014-12-12</date>
+    <time>23:09:17</time>
+    <contents><target name="mageetc"><dir name="modules"><file name="Fooman_GoogleAnalyticsPlus.xml" hash="d30c61c7f101c47bab5805283aed2024"/></dir></target><target name="magecommunity"><dir name="Fooman"><dir name="GoogleAnalyticsPlus"><dir name="Block"><dir name="Adminhtml"><file name="Extensioninfo.php" hash="1746ed1571f63598f7913e412cd8541b"/></dir><dir name="Common"><file name="Abstract.php" hash="cb64a9c3b2d30b203bc5d3fbc1751a7f"/></dir><file name="Ajax.php" hash="bcb0a8e5ad70969a4e48311ffe76fb7a"/><file name="Ga.php" hash="7b152f35af4472b19b136d28fa6cf585"/><file name="GaConversion.php" hash="eb211528b96f45b89d8f6f26715788f4"/><file name="Remarketing.php" hash="6ebca5cc6ed75399db6fcae85917c040"/><file name="TagManager.php" hash="db966b0a3c80f8eec0d738c04d2fb6a3"/><file name="Universal.php" hash="7c98a1706b76561d79864a792fbabab8"/></dir><dir name="Helper"><file name="Data.php" hash="c3ee6b7954d3d6db429b691d67e4e3e1"/></dir><dir name="Model"><dir name="Backend"><file name="Accountnumber.php" hash="b749515d3a219209e5f5b65874efe43e"/></dir><dir name="Source"><file name="Productattribute.php" hash="60a12c458bd1f5eee57db6f8bcb84f9d"/></dir><dir name="System"><file name="Language.php" hash="1122c42348043a62396527da6870d026"/></dir><file name="Observer.php" hash="74390ee9157e3221946cdd85f555c04c"/><file name="Selftester.php" hash="e902a06178e2338922bd766b1813de37"/></dir><dir name="etc"><file name="config.xml" hash="eb36d99c23f2715344c5db1facce02ed"/><file name="system.xml" hash="39bcf567bea54fa0f3c4861ec4881f42"/></dir><dir name="sql"><dir name="googleanalyticsplus_setup"><file name="mysql4-install-0.0.1.php" hash="8d9a21c9c09fe44c6fe51ddd2106e3e0"/><file name="mysql4-upgrade-0.14.1-0.14.2.php" hash="c77ba90ff06f28d696c181c86b53a45a"/></dir></dir><file name="LICENSE.txt" hash="59563e7be45096d0833dade102989042"/><file name="modman" hash="1764b8bf855794c238b08c623344c360"/></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="googleanalyticsplus.xml" hash="a4bc635a987f62ef8fc0b30c74d22c9d"/></dir><dir name="template"><dir name="fooman"><dir name="googleanalyticsplus"><file name="ajax-tracking.phtml" hash="40f81bbe5ad065a7cfe00fa597f86feb"/><file name="ga-conversion.phtml" hash="b39b5cf88bb8d68ba1f48ff9daf5eb9e"/><file name="ga.phtml" hash="ae47f45cd57545cc80eeabf3c4cc47d4"/><file name="remarketing.phtml" hash="73de5b04d98a0071f21f9196dd0d13c8"/><file name="tagmanager.phtml" hash="02857ddd0402bb40addaa531a8021330"/><file name="universal.phtml" hash="df1bd765f9c5fae32a8eab37cb2559c7"/></dir></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies/>
+</package>
