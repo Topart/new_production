@@ -2762,22 +2762,13 @@ var globals = {};
                             }
                             
                             var txt = jQuery(this).next().text(),
-                                opt,
-                                tit = jQuery(".material .step-selection").text();
-                            
-                            if(tit.indexOf("Paper") !== -1){
-                                opt = "(Paper";
-                            }
-
-                            if(tit.indexOf("Canvas") !== -1){
-                                opt = "(Canvas";
-                            }
-
-                            if(tit.indexOf("Poster") !== -1){
-                                opt = "(Poster";
-                            }
+                                opt = jQuery("dd.material ul.options-list li input[type=radio]:checked")
+                                    .next()
+                                    .find("label:first")
+                                    .text();
+                                opt = jQuery.trim(opt);
                                 
-                            jQuery(".material .step-selection").text(opt+" "+txt+")")	
+                            jQuery(".material .step-selection").text("("+opt+" "+txt+")")	
                         });
                 /* Jp: Ticket 107 y otros End*/
                 
