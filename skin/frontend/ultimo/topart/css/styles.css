@@ -1761,7 +1761,6 @@ a.availability-only { cursor:pointer; }
 
 /* Price notice next to the options */
 .price-notice { margin-left:5px; }
-.price-notice .price { padding-left:3px; }
 
 /* Price as configured */
 .price-as-configured .price-label { font-size:1.1666em; font-weight:bold; text-transform:uppercase; white-space:nowrap; color:inherit; }

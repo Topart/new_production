@@ -582,7 +582,7 @@ var globals = {};
 					mats_real_price = ( (parseFloat(size_ui) + 4*parseFloat(current_node_mats_size)) * mats_ui_price ).toFixed(2);
 					
 					// Assign it back to the node
-					mats_real_node.find("span.price").html(' $' + mats_real_price);
+					mats_real_node.find("span.price").html(' ' + optionsPrice.formatPrice(mats_real_price));
 				}
 			);
 
@@ -605,7 +605,7 @@ var globals = {};
 				}
 
 				canvas_stretching_price = ( canvas_stretching_ui_price * matted_size ).toFixed(2);
-				canvas_stretching_node.html("$" + canvas_stretching_price);
+				canvas_stretching_node.html(optionsPrice.formatPrice(canvas_stretching_price));
 			}
 			
 
@@ -2376,15 +2376,20 @@ var globals = {};
 				// Reset the room wall to a white background
 				jQuery("#final_product_image_background").css("background", "none");
 			}
-		
-			//jQuery("#color_switch").css("visibility", "visible");
+            
 			if ( jQuery("#color_switch").is(":hidden") ) 
 			{
+                var height = jQuery('#product_image_functions').outerHeight(true);
+                height += 5;
+                
 				// Show the color switch tab
-				jQuery("#color_switch").slideDown("slow");
-				jQuery("#hide_button").css("top", "inherit");
-				jQuery("#hide_button").css("bottom", 115);
-				jQuery("#hide_button").slideDown("slow");
+                jQuery("#color_switch").css({left: 0, bottom: height});
+				jQuery("#color_switch").slideDown("slow", function(){
+                    height += jQuery(this).outerHeight(true) + 4;
+                    
+                    jQuery("#hide_button").css({bottom: height, top: 'inherit'});
+                    jQuery("#hide_button").slideDown("slow");
+                });
 			}
 			
 			else
@@ -2434,18 +2439,16 @@ var globals = {};
 		
 			if ( jQuery("#room_switch").is(":hidden") ) 
 			{
+                var height = jQuery('#product_image_functions').outerHeight(true);
+                height += 10;
+                
 				// Show the room switch tab
-				jQuery("#room_switch").slideDown("slow");
-				jQuery("#hide_button").css("top", "inherit");
-
-				if(viewportWidth > 640){
-					jQuery("#hide_button").css("bottom", 124);
-				}else if(viewportWidth > 480){
-					jQuery("#hide_button").css("bottom", 132);
-				}else{
-					jQuery("#hide_button").css("bottom", 215);
-				}
-				jQuery("#hide_button").slideDown("slow");
+				jQuery("#room_switch").css({left: 0, bottom: height});
+				jQuery("#room_switch").slideDown("slow", function(){
+                    height += jQuery(this).outerHeight(true);
+                    jQuery("#hide_button").css({bottom: height, top: 'inherit'});
+                    jQuery("#hide_button").slideDown("slow");
+                });
 			}
 			
 			else
@@ -2759,22 +2762,13 @@ var globals = {};
                             }
                             
                             var txt = jQuery(this).next().text(),
-                                opt,
-                                tit = jQuery(".material .step-selection").text();
-                            
-                            if(tit.indexOf("Paper") !== -1){
-                                opt = "(Paper";
-                            }
-
-                            if(tit.indexOf("Canvas") !== -1){
-                                opt = "(Canvas";
-                            }
-
-                            if(tit.indexOf("Poster") !== -1){
-                                opt = "(Poster";
-                            }
+                                opt = jQuery("dd.material ul.options-list li input[type=radio]:checked")
+                                    .next()
+                                    .find("label:first")
+                                    .text();
+                                opt = jQuery.trim(opt);
                                 
-                            jQuery(".material .step-selection").text(opt+" "+txt+")")	
+                            jQuery(".material .step-selection").text("("+opt+" "+txt+")")	
                         });
                 /* Jp: Ticket 107 y otros End*/
                 
@@ -2999,7 +2993,7 @@ function ShowSelectedOption(selected,option_name){
 		if(option_name == "frame" && selected.indexOf("No Frame") === -1 && selected.indexOf("Senza Cornice") === -1){
 
 			val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
-			selected += " + $"+val;
+			selected += " + " + optionsPrice.formatPrice(val);
 
 		}
 
