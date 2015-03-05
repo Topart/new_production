@@ -2376,15 +2376,20 @@ var globals = {};
 				// Reset the room wall to a white background
 				jQuery("#final_product_image_background").css("background", "none");
 			}
-		
-			//jQuery("#color_switch").css("visibility", "visible");
+            
 			if ( jQuery("#color_switch").is(":hidden") ) 
 			{
+                var height = jQuery('#product_image_functions').outerHeight(true);
+                height += 5;
+                
 				// Show the color switch tab
-				jQuery("#color_switch").slideDown("slow");
-				jQuery("#hide_button").css("top", "inherit");
-				jQuery("#hide_button").css("bottom", 115);
-				jQuery("#hide_button").slideDown("slow");
+                jQuery("#color_switch").css({left: 0, bottom: height});
+				jQuery("#color_switch").slideDown("slow", function(){
+                    height += jQuery(this).outerHeight(true) + 4;
+                    
+                    jQuery("#hide_button").css({bottom: height, top: 'inherit'});
+                    jQuery("#hide_button").slideDown("slow");
+                });
 			}
 			
 			else
@@ -2434,18 +2439,16 @@ var globals = {};
 		
 			if ( jQuery("#room_switch").is(":hidden") ) 
 			{
+                var height = jQuery('#product_image_functions').outerHeight(true);
+                height += 10;
+                
 				// Show the room switch tab
-				jQuery("#room_switch").slideDown("slow");
-				jQuery("#hide_button").css("top", "inherit");
-
-				if(viewportWidth > 640){
-					jQuery("#hide_button").css("bottom", 124);
-				}else if(viewportWidth > 480){
-					jQuery("#hide_button").css("bottom", 132);
-				}else{
-					jQuery("#hide_button").css("bottom", 215);
-				}
-				jQuery("#hide_button").slideDown("slow");
+				jQuery("#room_switch").css({left: 0, bottom: height});
+				jQuery("#room_switch").slideDown("slow", function(){
+                    height += jQuery(this).outerHeight(true);
+                    jQuery("#hide_button").css({bottom: height, top: 'inherit'});
+                    jQuery("#hide_button").slideDown("slow");
+                });
 			}
 			
 			else
