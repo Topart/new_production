@@ -582,7 +582,7 @@ var globals = {};
 					mats_real_price = ( (parseFloat(size_ui) + 4*parseFloat(current_node_mats_size)) * mats_ui_price ).toFixed(2);
 					
 					// Assign it back to the node
-					mats_real_node.find("span.price").html(' $' + mats_real_price);
+					mats_real_node.find("span.price").html(' ' + optionsPrice.formatPrice(mats_real_price));
 				}
 			);
 
@@ -605,7 +605,7 @@ var globals = {};
 				}
 
 				canvas_stretching_price = ( canvas_stretching_ui_price * matted_size ).toFixed(2);
-				canvas_stretching_node.html("$" + canvas_stretching_price);
+				canvas_stretching_node.html(optionsPrice.formatPrice(canvas_stretching_price));
 			}
 			
 
@@ -3002,7 +3002,7 @@ function ShowSelectedOption(selected,option_name){
 		if(option_name == "frame" && selected.indexOf("No Frame") === -1 && selected.indexOf("Senza Cornice") === -1){
 
 			val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
-			selected += " + $"+val;
+			selected += " + " + optionsPrice.formatPrice(val);
 
 		}
 
