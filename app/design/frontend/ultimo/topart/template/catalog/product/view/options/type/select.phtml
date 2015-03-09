@@ -155,9 +155,7 @@
         ?>
 
         <!-- Informational lightboxes -->
-        <div id="info_custom_size" style="width:400px; display: none;">
-            <?php echo Mage::getBlockSingleton('cms/block')->setBlockId('block_product_custom_order')->toHtml(); ?>
-        </div>
+        <?php echo Mage::getBlockSingleton('cms/block')->setBlockId('block_product_popup_custom_order')->toHtml(); ?>
 
         <div id="info_material" style="width:600px; display: none;">
             <h3>Material Options</h3>
@@ -219,183 +217,16 @@
         </div>
 
         <!-- Informational lightboxes -->
-        <div id="info_size" style="width:600px;height:600px !important; display: none;">
-            <div class="info_size_fancy">
-                <h3>Our Materials:</h3>
-
-                <div>
-                    <h4>Posters</h4>
-                    <ol>
-                        <li>
-                            <p>
-                                Depending on the size of the poster we use between 180-270 gram satin paper, with a high
-                                quality 90 brightness and a satin finish.
-                            </p>
-                        </li>
-                        <li>
-                            <p>Our posters are environmentally responsible made with 30% recycled post consumer
-                                pulp.</p>
-                        </li>
-                        <li>
-                            <p>Our poster paper is FSC certified and produced from forests meeting the well managed
-                                criteria defined by the Forest Stewardship Council.</p>
-                        </li>
-                        <li>
-                            <p>Images printed as offset posters may, over time, fade when exposed to direct sunlight,
-                                interior lighting or florescent lighting</p>
-                        </li>
-                    </ol>
-                </div>
-                <div>
-                    <h4>Paper</h4>
-                    <ol>
-                        <li>
-                            <p>
-                                We use high quality 275 gram satin paper for our paper art prints .
-                            </p>
-                        </li>
-                        <li>
-                            <p>Our paper is FSC certified and produced from forests meeting the well managed criteria
-                                defined by the Forest Stewardship Council.</p>
-                        </li>
-                        <li>
-                            <p>This bright white, ph neutral paper will resist fading for decades when framed under
-                                glass and exposed to standard interior lighting.</p>
-                        </li>
-                    </ol>
-                </div>
-                <div>
-                    <h4>Canvas</h4>
-                    <ol>
-                        <li>
-                            <p>
-                                We print on archival 365 gram poly-cotton fine art canvas.
-                            </p>
-                        </li>
-                        <li>
-                            <p> Our canvas is ph neutral, acid free and has a light texture.</p>
-                        </li>
-                        <li>
-                            <p>After printing a special coating is applied to all canvases.</p>
-                        </li>
-                        <li>
-                            <p>This clear coating provides maximum protection against moisture, soiling, and
-                                staining.</p>
-                        </li>
-                        <li>
-                            <p>Images printed on this bright white canvas will resist fading for decades when exposed to
-                                standard interior lighting.</p>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-        </div>
+        <?php echo Mage::getBlockSingleton('cms/block')->setBlockId('block_product_popup_materials')->toHtml(); ?>
 
         <!-- Informational lightboxes -->
-        <div id="info_borders" style="width:600px; display: none;">
-            <h3>Canvas Borders</h3>
-
-            <p>
-                All fine art canvas is printed with image borders ready for gallery wrap stretching on 1.5” stretcher
-                bars.
-                Please <a href="mailto:cs@topart.com">contact us</a> if you want to buy it unstretched.
-            </p>
-
-            <div>
-                <h4>Gallery Stretching</h4>
-
-                <p>Gallery stretching is a method that stretches an added border around thick stretcher bars to create a
-                    visible decorative edge. The stretched canvas can then be hung directly on the wall without framing
-                    to produce a clean contemporary design. In addition, a canvas float frame can also be selected that
-                    will keep the decorative edges visible. The float frame adds a wood element to the design and
-                    creates a professional finished fine art statement.
-
-                <p>
-            </div>
-
-            <div class="clear_popup">
-                <h4>3” White Borders</h4>
-
-                <div id="canvas_white_borders" class="canvas_borders_preview"></div>
-                <p>
-                    Choose this border to create a clean contemporary white edge when your art is gallery wrapped or
-                    float framed.
-                    The canvas will have at least 3” of unprinted white canvas around the image.
-                </p>
-            </div>
-
-            <div class="clear_popup">
-                <h4>2” Black Border + 1” White</h4>
-
-                <div id="canvas_black_borders" class="canvas_borders_preview"></div>
-                <p>
-                    Choose this border to create a sophisticated black edge when your art is gallery wrapped or float
-                    framed.
-                    The canvas will have a 2” black border around the image plus at least 1” of additional plain white
-                    canvas for stretching.
-
-                <p>
-            </div>
-
-            <div class="clear_popup">
-                <h4>2” Mirrored Border + 1” White</h4>
-
-                <div id="canvas_mirrored" class="canvas_borders_preview"></div>
-                <p>
-                    Choose this border to create a colorful edge that is a dramatic extension of the image when your art
-                    is gallery wrapped or float framed.
-                    The canvas will have a 2” mirrored extension of the image plus at least 1” of additional canvas for
-                    stretching.
-                </p>
-            </div>
-
-        </div>
+        <?php echo Mage::getBlockSingleton('cms/block')->setBlockId('block_product_popup_borders')->toHtml(); ?>
 
         <!-- Informational lightboxes -->
-        <div id="info_frame" style="width:600px; display: none;">
-            <h3>Frames:</h3>
-
-            <p>
-
-            <div>
-                <p>Our frame suppliers use 100% sustainable woods that are certified by the <span>"Forest Stewardship Council" (FSC).</span>
-                    We use finishes that recreate the look of exotic woods. Choose from black, metallic, wood, and white
-                    frames.
-
-                <p>
-
-                <div class="select-frame-colors select_frame_colors">
-                    <p>CHOOSE FROM:</p>
-
-                    <div>
-                        <span class="square square-black"></span><label>Black</label>
-                    </div>
-                    <div>
-                        <span class="square square-metallic"></span><label>Metallic</label>
-                    </div>
-                    <div>
-                        <span class="square square-wood"></span><label>Wood</label>
-                    </div>
-                    <div>
-                        <span class="square square-white"></span><label>White</label>
-                    </div>
-                </div>
-            </div>
-            </p>
-        </div>
+        <?php echo Mage::getBlockSingleton('cms/block')->setBlockId('block_product_popup_frames')->toHtml(); ?>
 
         <!-- Informational lightboxes -->
-        <div id="info_mats" style="width:600px; display: none;">
-            <h3>Mats Boards:</h3>
-
-            <p>
-
-            <div>
-                All mat boards are made from the finest acid-free ph neutral buffered pulp cores and lined with acid
-                free backing papers.
-            </div>
-            </p>
-        </div>
+        <?php echo Mage::getBlockSingleton('cms/block')->setBlockId('block_product_popup_mats')->toHtml(); ?>
 
         <div class="custom_option_label" id="<?php echo 'cont_' . $option_title ?>">
             <?php
