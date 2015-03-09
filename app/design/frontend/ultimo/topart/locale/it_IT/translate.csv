@@ -8,7 +8,7 @@
 "Custom Size?","Dimensioni Su Misura?"
 "Select Frame","Seleziona La Cornice"
 "Borders","Bordi"
-"Select Border","Seleziona I Bordi"
+"Select Border","Seleziona I Bordi Esterni"
 "2"" White Border","Bordi bianco da 2"""
 "2"" Black Border","Bordi neri da 2"""
 "2"" Mirrored Border","Bordi specchiati da 2"""
@@ -61,3 +61,4 @@
 "There are no recurring profiles yet.","Non ci ancora sono profili ricorrenti."
 "General Subscription","Iscrizione generale"
 "from","da"
+"Select Mat","Seleziona Il Bordo"
