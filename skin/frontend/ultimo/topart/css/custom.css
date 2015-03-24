@@ -143,9 +143,12 @@
 /* Category view
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
-.catalog-category-view .category-products .category-products-grid .item { width: 31.33%; }
-.catalog-category-view .category-products div.product-image-wrapper a { height: 200px; }
-.catalog-category-view .category-products div.product-image-wrapper a img { position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; height: auto; max-width: 100%; }
+.catalog-category-view .category-products .category-products-grid .item,
+.catalogsearch-result-index .category-products .category-products-grid .item { width: 31.33%; }
+.catalog-category-view .category-products div.product-image-wrapper a,
+.catalogsearch-result-index .category-products div.product-image-wrapper a { height: 200px; }
+.catalog-category-view .category-products div.product-image-wrapper a img,
+.catalogsearch-result-index .category-products div.product-image-wrapper a img { position: absolute; left: 0; right: 0; top: 0; bottom: 0; margin: auto; height: auto; max-width: 100%; }
 
 
 
