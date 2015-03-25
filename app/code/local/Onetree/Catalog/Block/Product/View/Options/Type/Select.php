@@ -210,4 +210,27 @@ class Onetree_Catalog_Block_Product_View_Options_Type_Select extends Mage_Catalo
         return false;
     }
 
+    public function loadProductsByOptionSkus($attributes = null) {
+        $values = $this->getOption()->getValues();
+        $productSkus = array();
+
+        foreach ($values as $value) {
+            $productSkus[] = $value->getData('sku');
+        }
+        
+        $products = Mage::getModel('catalog/product')->getCollection()->addAttributeToFilter('sku', array('in' => $productSkus));
+
+        if (isset($attributes)) {
+            $products->addAttributeToSelect($attributes);
+        }
+
+        $aProducts = array();
+
+        foreach ($products as $product) {
+            $aProducts[strtolower($product->getSku())] = $product;
+        }
+
+        return $aProducts;
+    }
+
 }
