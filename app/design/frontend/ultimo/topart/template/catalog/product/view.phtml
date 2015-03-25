@@ -68,7 +68,8 @@ if ($productTypeId === 'grouped') {
 
     <?php
     $popularity = $this->getProduct()->getPopularity();
-    $this->getProduct()->setPopularity($popularity + 1)->save();
+    $product_action = Mage::getModel('catalog/resource_product_action');
+    $product_action->updateAttributes(array($_product->getId()), array('popularity' => ++$popularity), Mage::app()->getStore()->getStoreId());
 
     $description = $_product->getName() . " was created by " . "<a href=" . $site_base_url . '/artists/' . str_replace(" ", "-", strtolower($_product->getUdfArtistName())) . ">" . $_product->getUdfArtistName() . "</a>" . ". <br />";
 
@@ -224,7 +225,6 @@ foreach ($room_set as $room) {
             $udf_embellished = $_product->getAttributeText('udf_embellished');
             $udf_limited = $_product->getAttributeText('udf_limited');
             $poster_size = $_product->getUdfImageSizeIn();
-
             $special_features = "";
 
             if ($udf_specpaper == "Yes") {
@@ -416,12 +416,6 @@ if (empty($secondaryColUnits)) {
             <?php
             $udf_serigraph = $_product->getAttributeText('udf_serigraph');
             $udf_embossed = $_product->getAttributeText('udf_embossed');
-            $udf_specpaper = $_product->getAttributeText('udf_specpaper');
-            $udf_foil = $_product->getAttributeText('udf_foil');
-            $udf_metallic_ink = $_product->getAttributeText('udf_metallic_ink');
-            $udf_embellished = $_product->getAttributeText('udf_embellished');
-            $udf_limited = $_product->getAttributeText('udf_limited');
-
             $special_features = "";
 
             if ($udf_serigraph == "Yes") {

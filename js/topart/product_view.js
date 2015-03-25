@@ -360,7 +360,7 @@ var globals = {};
 		function select_framing_category(category_name)
 		{
 			// Display the selected category in the list as the active one
-			jQuery("select#frame_categories option[value*='" + category_name + "']").attr("selected", "selected");
+			jQuery("select.frame_categories option[value*='" + category_name + "']").attr("selected", "selected");
 			last_selected_frame_category = category_name;
 
 			// Show the corresponding framing images
@@ -861,13 +861,13 @@ var globals = {};
 				if ( clicked_option == "frame" )
 				{
 					jQuery(".category_framing").show();
-					jQuery("select#frame_categories").show();
+					jQuery("select.frame_categories").show();
 				}
 
 				else
 				{
 					jQuery(".category_framing").hide();
-					jQuery("select#frame_categories").hide();
+					jQuery("select.frame_categories").hide();
 				}
 
 				if ( clicked_option == "mat" )
@@ -933,9 +933,9 @@ var globals = {};
 				jQuery("dd.mat select option:eq(1)").trigger("click");
 
 				// Show the "Canvas" framing category ONLY
-				jQuery("select#frame_categories option").hide();
-				jQuery("select#frame_categories option[value*='no_frame']").show();
-				jQuery("select#frame_categories option[value*='Canvas']").show();
+				jQuery("select.frame_categories option").hide();
+				jQuery("select.frame_categories option[value*='no_frame']").show();
+				jQuery("select.frame_categories option[value*='Canvas']").show();
 
 				// Currently disabled, until canvas framing becomes available again
 				deactivate_option_tab("frame");
@@ -1008,8 +1008,8 @@ var globals = {};
 
 
 				activate_option_tab("frame");
-				jQuery("select#frame_categories option").show();
-				jQuery("select#frame_categories option[value*='Canvas']").hide();
+				jQuery("select.frame_categories option").show();
+				jQuery("select.frame_categories option[value*='Canvas']").hide();
 
 				// Slide the frame and mats tabs left
 				jQuery("dt.frame").css("left", "496px");
@@ -1276,7 +1276,7 @@ var globals = {};
 		);
 
 
-		jQuery("select#frame_categories").change(
+		jQuery("select.frame_categories").change(
 
 			function()
 			{
@@ -1821,7 +1821,7 @@ var globals = {};
 			function()
 			{
 				// Compute the currently selected node
-				selected_category_node = jQuery("select#frame_categories").children(":selected");
+				selected_category_node = jQuery("select.frame_categories").children(":selected");
 				
 				// Compute the previous node
 				previous_node = selected_category_node.prev();
@@ -1848,8 +1848,8 @@ var globals = {};
    					jQuery("dd.mat li.mats_none input").trigger("click");
 
    					// Trigger the change event to reset the framing price
-					jQuery("select#frame_categories option[value='no_frame']").attr("selected", "selected");
-					jQuery("select#frame_categories option[value='no_frame']").trigger("change");
+					jQuery("select.frame_categories option[value='no_frame']").attr("selected", "selected");
+					jQuery("select.frame_categories option[value='no_frame']").trigger("change");
 				}
 			}
 		);
@@ -1860,7 +1860,7 @@ var globals = {};
 			function()
 			{
 				// Compute the currently selected node
-				selected_category_node = jQuery("select#frame_categories").children(":selected");
+				selected_category_node = jQuery("select.frame_categories").children(":selected");
 				
 				// Compute the previous node
 				next_node = selected_category_node.next();

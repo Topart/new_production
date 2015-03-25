@@ -213,7 +213,7 @@
                 var frame_selected = jQuery(document).find("dt.frame .step-selection").text();
                 
                 if(frame_selected.indexOf("No Frame") === -1){
-                    jQuery("select#frame_categories option[value='no_frame']").trigger("change");
+                    jQuery("select.frame_categories option[value='no_frame']").trigger("change");
                 }
             }
             

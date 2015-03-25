@@ -119,7 +119,7 @@
   display: none;
 }
 
-select#frame_categories
+select.frame_categories
 {
   	width: 125px;
 	position: absolute;
@@ -1619,7 +1619,7 @@ a
 		right: auto;
 		left: 55px;
 	}
-	select#frame_categories{
+	select.frame_categories{
 		top: 40px;
 		right: 0px;
 		left: 0px;
@@ -1659,7 +1659,7 @@ a
 /*
  *  JP Ugly fix to hide "(?)" near the "Custom size?" link in product view
  */
-#cont_size #info_size_link{
+#cont_size .info_size_link{
     display:none !important;
 }
 

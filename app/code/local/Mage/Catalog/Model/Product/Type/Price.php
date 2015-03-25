@@ -336,6 +336,8 @@ class Mage_Catalog_Model_Product_Type_Price
         $size_ui = 0;
         $mats_price = 0.0;
         $mats_size = 0;
+        $canvas_stretching_ui_price = 0;
+        $frame_ui_price = 0;
 
         if ($optionIds = $product->getCustomOption('option_ids')) {
             $basePrice = $finalPrice;
