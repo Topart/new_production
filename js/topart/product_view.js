@@ -2888,6 +2888,9 @@ var globals = {};
                   jQuery(".table-review-title-1").remove();
                   jQuery("#product-review-table thead tr th:first").remove();
               },1000);
+        
+        // hide loading popup
+        jQuery('#load-screen').css({display: 'none'});
 	});
         
 /* JP: For ticket 137 Start*/
