@@ -31,33 +31,27 @@ class Onetree_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_List
         return $this->_getProductOptionsCollection();
     }
 
-    public function getTopArtPrice($product){
-
+    public function getTopArtPrice($product) {
         $loadProductOptionCollection = $this->_getProductOptionsCollection();
-        $option = $loadProductOptionCollection->getItemByColumnValue('product_id',$product->getId());
+        $option = $loadProductOptionCollection->getItemByColumnValue('product_id', $product->getId());
+        $cheapestPrice = $this->getPriceHtml($product, true);
 
-        if(!is_null($option)){
+        if (!is_null($option)) {
             $optionValues = $option->getValues();
-            $sizePrice = null;
-            foreach($optionValues as $value){
+            $aPrices = array();
 
-                if(is_null($sizePrice)){
-                    $sizePrice = $value->getPrice();
-                }
-
-                $sku = $value->getSku();
-
-                if (strpos($sku, "photopaper_small") > 0) {
-                    $sizePrice = $value->getPrice();
-                }elseif(strpos($sku, "photopaper_medium") > 0) {
-                    $sizePrice = $value->getPrice();
-                    break;
+            foreach ($optionValues as $value) {
+                if ($value->getPrice() > 0) {
+                    $aPrices[] = $value->getPrice();
                 }
             }
-            $sizePrice = $this->helper('core')->formatCurrency($sizePrice);
-        }else {
-            $sizePrice = $this->getPriceHtml($product, true);
+            
+            if (count($aPrices)) {
+                sort($aPrices);
+                $cheapestPrice = $this->helper('core')->formatCurrency($aPrices[0]);
+            }
         }
-        return $this->__("from") . ' '.$sizePrice;
+
+        return $this->__("from") . ' ' . $cheapestPrice;
     }
 }
