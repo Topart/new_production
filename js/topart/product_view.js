@@ -1109,7 +1109,7 @@ var globals = {};
 				selected_size = selected_width + "\"" + "x" + selected_length + "\"";
 
 				// If the the current substrate selection is Poster, show the corresponding dimension
-				if (selected_substrate == "Poster ")
+				if (jQuery.trim(selected_substrate) == jQuery.trim(Translator.translate("Poster")))
 					jQuery("#size_data").html(poster_size);
 				else
 					jQuery("#size_data").html(selected_size);
@@ -2981,11 +2981,11 @@ function ShowSelectedOption(selected,option_name){
 		//console.log("selected: "+selected+" and option_name: "+option_name);
 
 
-		if(selected.indexOf("Paper") !==-1){
+		if(selected.indexOf(Translator.translate("Paper")) !==-1){
 			selected += " "+ opt;
 		}
 
-		if(option_name == "frame" && selected.indexOf("No Frame") === -1 && selected.indexOf("Senza Cornice") === -1){
+		if(option_name == "frame" && selected.indexOf(Translator.translate("No Frame")) === -1){
 
 			val = jQuery(".frame_description div:contains('"+selected+"')").parent().find(".frame_real_price").text();
 			selected += " + " + optionsPrice.formatPrice(val);
