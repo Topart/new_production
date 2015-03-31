@@ -2088,50 +2088,7 @@ var globals = {};
 				click_option("mat", 1, "");
 			}
 		}
-
-
-
-		// Parse the URL and automatically select a specific customization of an image
-		custom_url = jQuery.url();
-		if (custom_url.param('material'))
-		{
-			set_current_customization();
-		}
-
-		else
-		{
-			// Set custom options defaults for faster checkout
-			// Trigger their click events to update the overal proudct price
-
-			// If paper is available
-			// Select the medium size, if available, otherwise select the first paper size avaialble
-			if (paper_available == 1)
-			{
-				click_option("material", "", "photopaper");
-
-				if (size_exists("size_photopaper_medium"))
-				{
-					click_option("size", 0, "photopaper_medium");
-				}
-				else
-				{
-					click_option("size", 0, "photopaper");
-				}
-			}
-			else
-			{
-				click_option("material", "", "posterpaper");
-				click_option("size", 0, "posterpaper");	
-			}
-
-			var options = new Array("borders", "framing", "mat");
-			for (var i = 0; i < options.length; i++)
-			{ 
-				click_option(options[i], 1, "");
-			}
-		}
-
-
+        
 		// If the borders tab is not active yet, slide the others on its right towards the left
 		if ( jQuery("dt.borders").is(":visible") == false )
 		{
@@ -2814,9 +2771,6 @@ var globals = {};
                         }
                     });
                 });
-
-                jQuery("li.material_photopaper input[type=radio]").trigger("click");
-                
                 /* Jp: Ticket 129 End*/
             
             jQuery(document).on("click", 'dt.borders label', function(){
@@ -2888,6 +2842,44 @@ var globals = {};
                   jQuery(".table-review-title-1").remove();
                   jQuery("#product-review-table thead tr th:first").remove();
               },1000);
+
+        function selectCheapestSize() {
+            var sSku = '';
+            var cheapest = 0;
+
+            // loop searching for the cheapest size
+            jQuery('dd.size li input').each(function () {
+                var price = parseFloat(jQuery(this).attr('price'));
+
+                if (cheapest == 0 || price < cheapest) {
+                    cheapest = price;
+                    sSku = jQuery(this).attr('data-option-sku');
+                }
+            });
+
+            // select corresponding material
+            if (sSku.indexOf('_posterpaper_') > -1) {
+                jQuery("li.material_posterpaper input[type=radio]").trigger('click');
+            } else if (sSku.indexOf('_photopaper_') > -1) {
+                jQuery("li.material_photopaper input[type=radio]").trigger('click');
+            } else if (sSku.indexOf('_canvas_') > -1) {
+                jQuery("li.material_canvas input[type=radio]").trigger('click');
+            }
+
+            // select corresponding visual size 
+            jQuery('.custom_options_images #custom_option_size li[id="custom_option_' + sSku + '"] input').trigger('click');
+        }
+
+        // Parse the URL and automatically select a specific customization of an image
+        custom_url = jQuery.url();
+        if (custom_url.param('material')) {
+            set_current_customization();
+        }
+
+        else {
+            // select the cheapest size
+            selectCheapestSize();
+        }
         
         // hide loading popup
         jQuery('#load-screen').css({display: 'none'});
