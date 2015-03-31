@@ -94,6 +94,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 */
 .product-view input[type="radio"] { cursor: pointer; }
+.product-options ul.options-list li { white-space: nowrap; }
 
 /* Fancybox
 -------------------------------------------------------------- */
@@ -112,6 +113,9 @@
 .product-options dd.material .background_border img { max-width: 240px; max-height: 128px; }
 .product-options dd.material #custom_option_material_canvas_background { border: none; }
 .product-options dd.material .custom_option_viewport { cursor: default; }
+.product-options dd.material .background_border { border: none; }
+.product-options dd.material .background_border img { border: 1px solid #cccccc; }
+.product-options dd.material #custom_option_material_canvas_background.background_border img { border: none; }
 
 /* Borders
 -------------------------------------------------------------- */

@@ -2,4 +2,16 @@
     <product-view-1>
         <message><![CDATA[<em>*</em><span>Step 1: </span>Material & Size]]></message>
     </product-view-1>
+    <product-view-2>
+        <message>Poster</message>
+    </product-view-2>
+    <product-view-3>
+        <message>Paper</message>
+    </product-view-3>
+    <product-view-4>
+        <message>Canvas</message>
+    </product-view-4>
+    <product-view-5>
+        <message>No Frame</message>
+    </product-view-5>
 </jstranslator>
