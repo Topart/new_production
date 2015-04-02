@@ -31,8 +31,10 @@
 							<action method="addItem"><type>skin_js</type><name>js/jquery.prettyPhoto.js</name></action>
                             <action method="addJs"><script>topart/purl.js</script></action>
                             <action method="addJs"><script>topart/product_view.js</script></action>
-                        
-                        <!-- CSS: -->
+            <!-- CUSTOM JS" -->
+                <action method="addJs"><script>topart/app.js</script></action>
+
+            <!-- CSS: -->
 			
 			<!-- CSS base -->
 			<action method="addItem"><type>skin_css</type><name>css/styles-infortis.css</name><params/></action>
