@@ -14,7 +14,7 @@ class Springbot_Combine_Model_Api extends Varien_Object
 	protected $_retries = 0;
 	protected $_requestStart;
 
-	public function wrap($model, array $data)
+	public function wrap($model, $data)
 	{
 		$transport = new stdClass();
 		$transport->$model = $data;
@@ -86,7 +86,7 @@ class Springbot_Combine_Model_Api extends Varien_Object
 	public function hasToken()
 	{
 		$token = Mage::getStoreConfig('springbot/config/security_token');
-		if(!empty($token)) {
+		if($token) {
 			$this->_securityToken = $token;
 		}
 		return isset($this->_securityToken);
@@ -110,22 +110,20 @@ class Springbot_Combine_Model_Api extends Varien_Object
 	public function getApiUrl($method = '')
 	{
 		if(!isset($this->_url)) {
-			$url =  Mage::getStoreConfig('springbot/config/api_url', Mage::app()->getStore());
-			if(!isset($url)) {
-				$url = 'https://api.springbot.com/';
+			$this->_url =  Mage::getStoreConfig('springbot/config/api_url');
+			if(!$this->_url) {
+				$this->_url = 'https://api.springbot.com/';
 			}
-			$this->_url = $url . 'api/';
+			$this->_url .= 'api/';
 		}
 		return $this->_url . $method;
 	}
 
 	public function getClient($method = Varien_Http_Client::POST)
 	{
-		if(!isset($this->_client)) {
-			$this->_client = new Zend_Http_Client();
-			$this->_client->setMethod($method);
-			$this->_client->setHeaders(self::HTTP_CONTENT_TYPE);
-		}
+		$this->_client = new Zend_Http_Client();
+		$this->_client->setMethod($method);
+		$this->_client->setHeaders(self::HTTP_CONTENT_TYPE);
 		return $this->_client;
 	}
 

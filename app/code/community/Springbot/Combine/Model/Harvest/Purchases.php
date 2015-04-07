@@ -1,20 +1,32 @@
 <?php
 
-class Springbot_Combine_Model_Harvest_Purchases extends Springbot_Combine_Model_Harvest_Abstract implements Springbot_Combine_Model_Harvester
+class Springbot_Combine_Model_Harvest_Purchases extends Springbot_Combine_Model_Harvest
 {
-	protected $_mageModel = 'sales/order';
-	protected $_parserModel = 'combine/parser_purchase';
-	protected $_apiController = 'purchases';
-	protected $_apiModel = 'purchases';
 	protected $_segmentSize = 100;
+
+	public function getMageModel()
+	{
+		return 'sales/order';
+	}
+
+	public function getParserModel()
+	{
+		return 'combine/parser_purchase';
+	}
+
+	public function getApiController()
+	{
+		return 'purchases';
+	}
+
+	public function getApiModel()
+	{
+		return 'purchases';
+	}
 
 	public function loadMageModel($entityId)
 	{
-		if(!isset($this->_model)) {
-			$this->_model = Mage::getModel($this->_getMageModel());
-		}
-		$this->_model->unsetData();
-		$this->_model->reset();
-		return $this->_model->load($entityId);
+		$model = Mage::getModel($this->getMageModel());
+		return $model->load($entityId);
 	}
 }

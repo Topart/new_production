@@ -2,7 +2,6 @@
 
 class Springbot_Combine_Helper_Trackable extends Mage_Core_Helper_Abstract
 {
-	const SB_COOKIE = '_sbtk';
 
 	public function getTrackables()
 	{
@@ -10,9 +9,15 @@ class Springbot_Combine_Helper_Trackable extends Mage_Core_Helper_Abstract
 		return json_decode(base64_decode($sbCookie));
 	}
 
-	public function getCookie()
+	public function updateTrackables($order)
 	{
-		return Mage::getModel('core/cookie')->get(self::SB_COOKIE);
+		$quoteId = $order->getQuoteId();
+
+		foreach($this->getTrackablesForQuote($quoteId) as $trackable) {
+			$trackable->setOrderId($order->getId())
+				->setCustomerId($order->getCustomerId())
+				->save();
+		}
 	}
 
 	public function hasTrackables()
@@ -21,45 +26,36 @@ class Springbot_Combine_Helper_Trackable extends Mage_Core_Helper_Abstract
 		return !empty($sb);
 	}
 
-	public function addTrackable($customerEmail, $type, $value, $quoteId, $customerId) {
-		$model = Mage::getModel('combine/trackable');
-		$model->setData(
-			array(
-				'email' => $customerEmail,
-				'type' => $type,
-				'value' => $value,
-				'quote_id' => $quoteId,
-				'customer_id' => $customerId
-			)
-		);
-		$model->createOrUpdate();
+	public function getCookie()
+	{
+		return Mage::getModel('core/cookie')->get(Springbot_Boss::SB_TRACKABLES_COOKIE);
 	}
 
 	public function getTrackablesHashByOrder($orderId)
 	{
-		$collection = Mage::getModel('combine/trackable')->getCollection()
-			->addFieldToFilter('order_id', $orderId);
-
+		$collection = $this->getTrackablesForQuote($order->getQuote->getId());
 		return $this->_buildHash($collection);
 	}
 
 	public function getTrackablesHashByQuote($quoteId)
 	{
-		$collection = Mage::getModel('combine/trackable')->getCollection()
-			->addFieldToFilter('quote_id', $quoteId);
-
+		$collection = $this->getTrackablesForQuote($quoteId);
 		return $this->_buildHash($collection);
+	}
+
+	public function getTrackablesForQuote($quoteId)
+	{
+		return Mage::getModel('combine/trackable')->getCollection()
+			->addFieldToFilter('quote_id', $quoteId);
 	}
 
 	protected function _buildHash($collection)
 	{
 		$hash = new stdClass();
-
-		foreach($collection as $item) {
+		foreach ($collection as $item) {
 			$hash->{$item->getType()} = $item->getValue();
 		}
-
-		if(!Mage::helper('combine')->isEmpty($hash)) {
+		if (count((array) $hash) > 0) {
 			return $hash;
 		}
 	}

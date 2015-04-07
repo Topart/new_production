@@ -1,16 +1,8 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @category   springbot
- * @package    springbot_Combine
- * @author     springbot integration team
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
- -->
 <config>
 	<modules>
 		<Springbot_Combine>
-			<version>1.2.1.2</version>
+			<version>1.4.3.0</version>
 		</Springbot_Combine>
 	</modules>
 	<global>
@@ -32,6 +24,9 @@
 					<trackable>
 						<table>springbot_trackable</table>
 					</trackable>
+					<action>
+						<table>springbot_actions</table>
+					</action>
 					<cron_queue>
 						<table>springbot_cron_queue</table>
 					</cron_queue>
@@ -74,26 +69,34 @@
 				<segment_size>25</segment_size>
 				<show_notifications>1</show_notifications>
 				<remote_update>0</remote_update>
-				<use_cached_image>0</use_cached_image>
-				<remote_update>0</remote_update>
 				<stability>stable</stability>
 				<email_selector>billing:email,login-email,newsletter</email_selector>
 				<email_selector_classes>validate-email</email_selector_classes>
 				<sent_store_noemail>0</sent_store_noemail>
+				<store_zero_alias>1</store_zero_alias>
 			</config>
+			<images>
+				<use_cached_images>0</use_cached_images>
+			</images>
 			<debug>
 				<log_format>default</log_format>
 				<log_level>6</log_level>
-				<expire_time_days>30</expire_time_days>
-				<filesize_limit>104857600</filesize_limit>
+				<pretty_print>0</pretty_print>
+				<expire_time_days>10</expire_time_days>
+				<filesize_limit>10000000</filesize_limit>
 			</debug>
 			<advanced>
-				<nice>1</nice>
-				<nohup>1</nohup>
-				<worker_count>5</worker_count>
+				<harvester_type>cron</harvester_type>
+				<max_jobs>10</max_jobs>
+				<nice>0</nice>
+				<nohup>0</nohup>
+				<worker_count>2</worker_count>
 				<sleep_interval>1</sleep_interval>
 				<extended_config>0</extended_config>
 				<product_url_type>default</product_url_type>
+				<assets_domain>d2z0bn1jv8xwtk.cloudfront.net</assets_domain>
+				<scrape_coupons>0</scrape_coupons>
+				<max_job_time>60</max_job_time>
 			</advanced>
 			<cart_restore>
 				<do_restore>1</do_restore>

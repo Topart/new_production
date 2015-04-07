@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Customer extends Springbot_Combine_Model_Parser_Abstract
+class Springbot_Combine_Model_Parser_Customer extends Springbot_Combine_Model_Parser
 {
 	const TYPE = 'REGISTERED';
 
@@ -34,22 +34,18 @@ class Springbot_Combine_Model_Parser_Customer extends Springbot_Combine_Model_Pa
 		return $this->_getCustomerOrderCollection()->getSize() > 0;
 	}
 
-	public function parse($customer)
-	{
-		$this->_customer = $customer;
-		$this->_parse();
-
-		return $this;
-	}
-
 	protected function _parse()
 	{
+		$magentoStoreId = $this->_customer->getStore()->getId();
+		if ($magentoStoreId == 0) {
+			$magentoStoreId = Mage::getStoreConfig('springbot/config/store_zero_alias');
+		}
 		$this->setData(array(
 			'customer_id' => $this->_customer->getEntityId(),
 			'first_name' => $this->_customer->getFirstname(),
 			'last_name' => $this->_customer->getLastname(),
 			'email' => $this->_getEmail(),
-			'store_id' => $this->_getSpringbotStoreId($this->_customer->getStore()->getId()),
+			'store_id' => $this->_getSpringbotStoreId($magentoStoreId),
 			'has_purchase' => $this->hasCustomerPurchased(),
 			'json_data' => $this->_getAddressData(),
 			'custom_attribute_set_id' => $this->_customer->getAttributeSetId(),

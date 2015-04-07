@@ -1,68 +1,60 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @category   Socketware
- * @package    Socketware_Bmbleb
- * @author     ModuleCreator
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
- -->
 <config>
     <modules>
         <Springbot_Bmbleb>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </Springbot_Bmbleb>
     </modules>
-      <admin>
+    <admin>
         <routers>
-			<bmbleb>
-				<use>admin</use>
-				<args>
-					<module>Springbot_Bmbleb</module>
-					<frontName>bmbleb</frontName>
-				</args>
-			</bmbleb>
+            <bmbleb>
+                <use>admin</use>
+                <args>
+                    <module>Springbot_Bmbleb</module>
+                    <frontName>bmbleb</frontName>
+                </args>
+            </bmbleb>
         </routers>
     </admin>
     <adminhtml>
-		<menu>
-			<springbot_bmbleb module="bmbleb">
-				<title>Springbot</title>
-				<sort_order>71</sort_order>
-				<children>
+        <menu>
+            <springbot_bmbleb module="bmbleb">
+                <title>Springbot</title>
+                <sort_order>71</sort_order>
+                <children>
                     <dashboard module="bmbleb">
                         <title>Dashboard</title>
-					  <action>bmbleb/adminhtml_settings/index</action>
+                        <action>bmbleb/adminhtml_settings/index</action>
                     </dashboard>
-				</children>
-			</springbot_bmbleb>
-		</menu>
-		<acl>
-			<resources>
-			<all><title>Allow Everything</title></all>
-			<admin>
-                  <children>
-                    <springbot_bmbleb translate="title" module="bmbleb">
-                        <title>Springbot</title>
-                        <sort_order>300</sort_order>
-                        <children>
-                            <dashboard translate="title" module="bmbleb">
-                                <title>Dashboard</title>
-                                <sort_order>10</sort_order>
-                            </dashboard>
-                        </children>
-                    </springbot_bmbleb>
-                  </children>
-              </admin>
-		  </resources>
-		</acl>
-		<layout>
-			<updates>
-				<bmbleb>
-					<file>bmbleb.xml</file>
-				</bmbleb>
-			</updates>
-		</layout>
+                </children>
+            </springbot_bmbleb>
+        </menu>
+        <acl>
+            <resources>
+                <all><title>Allow Everything</title></all>
+                <admin>
+                    <children>
+                        <springbot_bmbleb translate="title" module="bmbleb">
+                            <title>Springbot</title>
+                            <sort_order>300</sort_order>
+                            <children>
+                                <dashboard translate="title" module="bmbleb">
+                                    <title>Dashboard</title>
+                                    <sort_order>10</sort_order>
+                                </dashboard>
+                            </children>
+                        </springbot_bmbleb>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <bmbleb>
+                    <file>bmbleb.xml</file>
+                </bmbleb>
+            </updates>
+        </layout>
     </adminhtml>
     <global>
         <models>
@@ -78,7 +70,7 @@
             <bmbleb_setup>
                 <setup>
                     <module>Springbot_Bmbleb</module>
-	                </setup>
+                </setup>
                 <connection>
                     <use>core_setup</use>
                 </connection>
@@ -106,9 +98,10 @@
         </helpers>
     </global>
     <default>
-    	<bmbleb>
-    		<config>
-    		</config>
-    	</bmbleb>
+        <bmbleb>
+            <config>
+            </config>
+        </bmbleb>
     </default>
 </config>
+

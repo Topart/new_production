@@ -1,0 +1,6 @@
+<?php if ($_product = Mage::registry('current_product')): ?>
+    <?php
+    $helpImg = $this->helper('infortis/image');
+    ?>
+    <meta property="og:image" content="<?php echo $helpImg->getImg($_product, 0, 0, 'thumbnail'); ?>"/>
+<?php endif; ?>

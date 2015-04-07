@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Redirect extends Springbot_Combine_Model_Abstract
+class Springbot_Combine_Model_Redirect extends Mage_Core_Model_Abstract
 {
 	public function _construct()
 	{
@@ -24,9 +24,24 @@ class Springbot_Combine_Model_Redirect extends Springbot_Combine_Model_Abstract
 	public function getAttributionIds()
 	{
 		$collection = Mage::getModel('combine/redirect')->getCollection()->loadByEmail($this->getEmail());
-
 		$ids = $collection->getAllIds();
-
 		return $ids;
+	}
+
+	/**
+	 * Insert ignore into collection
+	 */
+	public function insertIgnore()
+	{
+		try {
+			if($this->_validate()) {
+				$this->_getResource()->insertIgnore($this);
+			}
+		} catch(Exception $e) {
+			$this->_getResource()->rollBack();
+			Springbot_Log::error($e);
+		}
+
+		return $this;
 	}
 }

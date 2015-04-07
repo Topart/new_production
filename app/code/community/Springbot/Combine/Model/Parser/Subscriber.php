@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Subscriber extends Springbot_Combine_Model_Parser_Abstract
+class Springbot_Combine_Model_Parser_Subscriber extends Springbot_Combine_Model_Parser
 {
 	const TYPE = 'SUBSCRIBER';
 	const SUBSCRIBER_MODE = 'NL';
@@ -16,16 +16,7 @@ class Springbot_Combine_Model_Parser_Subscriber extends Springbot_Combine_Model_
 	public function isCustomer()
 	{
 		$customerId = $this->_subscriber->getCustomerId();
-
 		return !empty($customerId);
-	}
-
-	public function parse($subscriber)
-	{
-		$this->_subscriber = $subscriber;
-		$this->_parse();
-
-		return $this;
 	}
 
 	protected function _parse()
@@ -36,8 +27,7 @@ class Springbot_Combine_Model_Parser_Subscriber extends Springbot_Combine_Model_
 			->setEmail($this->_subscriber->getSubscriberEmail())
 			->setOptinStatus($this->_subscriber->getSubscriberStatus())
 			->setSubscriberMode(self::SUBSCRIBER_MODE)
-			->setCustomerType(self::TYPE)
-			;
+			->setCustomerType(self::TYPE);
 		return parent::_parse();
 	}
 

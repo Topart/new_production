@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Product extends Springbot_Combine_Model_Parser_Abstract implements Springbot_Combine_Model_Parser
+class Springbot_Combine_Model_Parser_Product extends Springbot_Combine_Model_Parser
 {
 	protected $_accessor = '_product';
 	protected $_product;
@@ -9,14 +9,6 @@ class Springbot_Combine_Model_Parser_Product extends Springbot_Combine_Model_Par
 	{
 		$this->_product = $product;
 		$this->_parse();
-	}
-
-	public function parse($product)
-	{
-		$this->_product = $product;
-		$this->_parse();
-
-		return $this;
 	}
 
 	public function _parse()

@@ -4,7 +4,7 @@ class Springbot_Bmbleb_Adminhtml_ProblemsController extends Mage_Adminhtml_Contr
 
 	public function indexAction()
 	{
-		if ($problems = Mage::helper('bmbleb/PluginStatus')->getAllPluginProblems()) {
+		if ($problems = Mage::helper('bmbleb/PluginStatus')->getPluginProblems()) {
 			Mage::getSingleton('core/session')->addError('If this problem persists please contact Springbot support.');
 			$this->loadLayout();
 			$this->_setActiveMenu('bmbleb/adminhtml_problems/index');

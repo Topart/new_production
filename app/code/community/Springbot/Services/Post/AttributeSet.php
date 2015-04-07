@@ -4,22 +4,16 @@ class Springbot_Services_Post_AttributeSet extends Springbot_Services_Post
 {
 	public function run()
 	{
-		$harvester = Mage::getModel('combine/harvest_attributeSets');
+		$api = Mage::getModel('combine/api');
+		$collection = new Varien_Data_Collection;
+		$harvester = new Springbot_Combine_Model_Harvest_AttributeSets($api, $collection, $this->getDataSource());
 
-		foreach($this->_getStoreIds() as $id) {
-			$harvester->setStoreId($id);
-			$harvester->push(Mage::getModel('eav/entity_attribute_set')->load($this->getEntityId()));
+		foreach (Mage::helper('combine/harvest')->getStoresToHarvest() as $store) {
+			$harvester->setStoreId($store->getStoreId());
+			$attributeSet = Mage::getModel('eav/entity_attribute_set')->load($this->getEntityId());
+			$harvester->push($attributeSet);
 		}
 		$harvester->postSegment();
 	}
 
-	protected function _getStoreIds()
-	{
-		$stores = Mage::helper('combine/harvest')->getStoresToHarvest();
-		$ids = array();
-		foreach($stores as $store) {
-			$ids[] = $store->getStoreId();
-		}
-		return $ids;
-	}
 }

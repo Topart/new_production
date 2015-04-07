@@ -50,7 +50,4 @@ class Springbot_Util_Caller
 		return self::_safeGet(self::$_trace, $depth - 1);
 	}
 
-	private static function _getCaller($depth)
-	{
-	}
 }

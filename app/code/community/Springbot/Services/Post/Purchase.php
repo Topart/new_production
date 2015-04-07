@@ -19,15 +19,20 @@ class Springbot_Services_Post_Purchase extends Springbot_Services_Post
 				->setRedirectMongoIds($redirectIds);
 		}
 
-		$harvester = Mage::getModel('combine/harvest_purchases');
+		$api = Mage::getModel('combine/api');
+		$collection = new Varien_Data_Collection;
+		$harvester = new Springbot_Combine_Model_Harvest_Purchases($api, $collection, $this->getDataSource());
 
 		$harvester->push($this->_purchase);
 		$harvester->postSegment();
 
 		if($this->_purchase->getCustomerIsGuest()) {
-			Mage::getModel('combine/harvest_guests')
-				->push($this->_purchase)
-				->postSegment();
+			Springbot_Boss::scheduleJob(
+				'post:guest',
+				array('i' => $orderId),
+				Springbot_Services::LISTENER,
+				'listener'
+			);
 		}
 	}
 

@@ -18,31 +18,4 @@
             <codePool>community</codePool>
         </Springbot_Shadow>
     </modules>
-
-	<!--
-
-	<global>
-       <resources>
-          <Springbot_setup>
-              <setup>
-                  <module>Springbot</module>
-                  <class>Springbot_Model_Installers_Setup</class>
-              </setup>
-              <connection>
-                  <use>core_setup</use>
-              </connection>
-          </Springbot_setup>
-          <Springbot_write>
-              <connection>
-                  <use>core_write</use>
-              </connection>
-          </Springbot_write>
-          <Springbot_read>
-              <connection>
-                  <use>core_read</use>
-              </connection>
-          </Springbot_read>
-      </resources>
-	</global>
-  -->
 </config>

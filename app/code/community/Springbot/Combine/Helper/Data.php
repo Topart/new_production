@@ -8,6 +8,17 @@ class Springbot_Combine_Helper_Data extends Mage_Core_Helper_Abstract
 		return $_date->format(DateTime::ATOM);
 	}
 
+	/**
+	 * Converts a store guid into its alphanumeric-only representation if present.
+	 */
+	public function getPublicGuid($storeId)
+	{
+		$guid = Mage::getStoreConfig('springbot/config/store_guid_' . $storeId);
+		if(isset($guid)) {
+			return str_replace('-', '', strtolower($guid));
+		}
+	}
+
 	public function getStoreGuid($storeId)
 	{
 		$guid = Mage::getStoreConfig('springbot/config/store_guid_' . $storeId);
@@ -34,12 +45,12 @@ class Springbot_Combine_Helper_Data extends Mage_Core_Helper_Abstract
 
 	public function checkCredentials($email = null, $password = null)
 	{
-		$return = array('valid' => false);
-
 		try {
+			$return = array('valid' => false);
 			$this->requestSecurityToken($email, $password, true);
 			$return['valid'] = true;
-		} catch (Exception $e) {
+		}
+		catch (Exception $e) {
 			$return['message'] = $e->getMessage();
 		}
 		return $return;
@@ -64,12 +75,13 @@ class Springbot_Combine_Helper_Data extends Mage_Core_Helper_Abstract
 
 	protected function _resolvePassword($email = null, $password = null)
 	{
-		if(is_null($email) || is_null($password)) {
+		if (is_null($email) || is_null($password)) {
 			$payload = array(
 				'user_id' => Mage::getStoreConfig('springbot/config/account_email'),
 				'password' => Mage::helper('core')->decrypt(Mage::getStoreConfig('springbot/config/account_password')),
 			);
-		} else {
+		}
+		else {
 			$payload = array(
 				'user_id' => $email,
 				'password' => $password,
@@ -81,10 +93,23 @@ class Springbot_Combine_Helper_Data extends Mage_Core_Helper_Abstract
 	public function doSendQuote($json)
 	{
 		$obj = json_decode($json);
-		$items = sha1(json_encode((isset($obj->line_items)) ? $obj->line_items : array()));
+		$toHash = '';
+		if (isset($obj->customer_firstname)) {
+			$toHash .= $obj->customer_firstname;
+		}
+		if (isset($obj->customer_lastname)) {
+			$toHash .= $obj->customer_lastname;
+		}
 
-		if(strcmp(Mage::getSingleton('core/session')->getSpringbotPostedQuoteItems(), $items) !== 0) {
-			Mage::getSingleton('core/session')->setSpringbotPostedQuoteItems($items);
+		if (isset($obj->line_items)) {
+			$hash = sha1($toHash . json_encode($obj->line_items));
+		}
+		else {
+			$hash = sha1($toHash . json_encode(array()));
+		}
+
+		if (Mage::getSingleton('core/session')->getSpringbotQuoteHash() !== $hash) {
+			Mage::getSingleton('core/session')->setSpringbotQuoteHash($hash);
 			return true;
 		} else {
 			return false;
@@ -179,55 +204,32 @@ class Springbot_Combine_Helper_Data extends Mage_Core_Helper_Abstract
 		);
 	}
 
-	public function getSpringbotErrorLog()
-	{
-		return Mage::getBaseDir('var') . DS . 'log' . DS . Springbot_Log::ERRFILE;
-	}
-
-	public function getSpringbotLog()
-	{
-		return Mage::getBaseDir('var') . DS . 'log' . DS . Springbot_Log::LOGFILE;
-	}
-
-	public function isEmpty($obj)
-	{
-		return count((array) $obj) == 0;
-	}
-
-	public function nohup()
-	{
-		return Mage::getStoreConfig('springbot/advanced/nohup') ? 'nohup' : '';
-	}
-
-	public function nice()
-	{
-		return Mage::getStoreConfig('springbot/advanced/nice') ? 'nice' : '';
-	}
-
 	public function getLogContents($logName)
 	{
 		$maxRecSize = 65536;
-		if (empty($logName)) {
-			$fullFilename = Mage::getBaseDir('log') . DS . Springbot_Log::LOGFILE;
-		} elseif (strpos($logName, '/') === 0){
-			$fullFilename = $logName;
-		} else {
-			$fullFilename = Mage::getBaseDir('log') . '/' . $logName;
-		}
+
+        if (empty($logName)) {
+            $fullFilename = Springbot_Log::getSpringbotLog();
+        }
+		else {
+			// Remove directory traversals for security
+            $fullFilename = Mage::getBaseDir('log') . DS . str_replace('../', '', $logName);
+        }
 
 		$buffer = '';
-		if(file_exists($fullFilename)) {
+		if (file_exists($fullFilename)) {
 			if (($fHandle = fopen($fullFilename, 'r')) !== FALSE) {
-				$fSize  = filesize($fullFilename)/1024;
+				$fSize = filesize($fullFilename) / 1024;
 				if ($fSize > 32) {
 					fseek($fHandle, 1024*($fSize-32));
 				}
 				while (!feof($fHandle)) {
 					$buffer .= fgets($fHandle,$maxRecSize) . ' ';
 				}
-				fclose ($fHandle);
-			} else {
-				$buffer='Open failed on '.$fullFilename;
+				fclose($fHandle);
+			}
+			else {
+				$buffer = 'Open failed on '.$fullFilename;
 			}
 		}
 		return $buffer;

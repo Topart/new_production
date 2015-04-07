@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Services_Store_Register extends Springbot_Services_Abstract
+class Springbot_Services_Store_Register extends Springbot_Services
 {
 	const API_CLASS = 'stores';
 

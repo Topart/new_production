@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Cron_Count extends Springbot_Combine_Model_Abstract
+class Springbot_Combine_Model_Cron_Count extends Springbot_Combine_Model_Cron
 {
 	public function _construct()
 	{

@@ -5,7 +5,6 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 	protected $_ignores;
 	protected $_defines;
 	protected $_rulesBuilt = false;
-	protected $_phpExec;
 	protected $_harvestId;
 
 	public function initRemoteHarvest($id)
@@ -63,34 +62,6 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 		return !empty($output) ? $output : array($model);
 	}
 
-	/**
-	 * Get PHP executable
-	 *
-	 * @return string
-	 */
-	public function getPhpExec()
-	{
-		if(!isset($this->_phpExec)) {
-			$php = Mage::getStoreConfig('springbot/config/php_exec');
-
-			if((empty($php))) {
-				// This prevents the system command from outputting to apache
-				ob_start();
-				if(empty($php) || !file_exists($php)) {
-					$php = Springbot_Boss::spawn('which php5 2> /dev/null');
-				}
-				if(empty($php) || !file_exists($php)) {
-					$php = Springbot_Boss::spawn('which php 2> /dev/null');
-				}
-				if(empty($php) || !file_exists($php)) {
-					$php = 'php';
-				}
-				ob_end_clean();
-			}
-			$this->_phpExec = $php;
-		}
-		return $this->_phpExec;
-	}
 
 	/**
 	 * Get last collection primary id
@@ -119,7 +90,7 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 	/**
 	 * Get id field name for collection
 	 *
-	 * Attepmt to get id field name (sql primary key) for collection through
+	 * Attempt to get id field name (sql primary key) for collection through
 	 * existing methods, then failing over to inspecting an the resource itself.
 	 * Mainly done this way for subscribers.
 	 *
@@ -171,7 +142,7 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 		$sampleSize = self::getSampleSize();
 		$reverseSample = self::getReverseSample();
 
-		$size = is_null($segmentSize) ? $this->_getMaxSegmentSize() : $segmentSize;
+		$size = is_null($segmentSize) ? $this->getSegmentSize() : $segmentSize;
 		$segments = array();
 
 		// If getting just a sample of each entity, get the $sampleSize most recent entities
@@ -215,10 +186,13 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 			->reset(Zend_Db_Select::COLUMNS)
 			->reset(Zend_Db_Select::WHERE)
 			->reset(Zend_Db_Select::ORDER)
-			->columns($idFieldName)
-			->where("{$idFieldName} < {$lastId}")
+			->columns("$idFieldName")
 			->order("{$idFieldName} DESC")
 			->limit(1, $size);
+
+		$collection->addFieldToFilter($idFieldName, array(
+			'lt' => $lastId
+		));
 
 		$result = $collection->getFirstItem();
 		if ($result) {
@@ -298,9 +272,7 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 			array(
 				'n' => $file->getBaseFilename(),
 				'm' => $method,
-			),
-			0,
-			'listener'
+			), 0, 'listener'
 		);
 	}
 
@@ -316,6 +288,7 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 			return $api->put("harvests/{$id}", $payload);
 		}
 	}
+
 
 	public function getStoreUrl($storeId)
 	{
@@ -419,7 +392,7 @@ class Springbot_Combine_Helper_Harvest extends Mage_Core_Helper_Abstract
 		$this->_rulesBuilt = true;
 	}
 
-	protected function _getMaxSegmentSize()
+	protected function getSegmentSize()
 	{
 		$size = Mage::getStoreConfig('springbot/config/segment_size');
 		return $size ? $size : 100;
