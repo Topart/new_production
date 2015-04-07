@@ -18,6 +18,7 @@ class Springbot_Util_Partition
 
 	public function __toString()
 	{
-		return $this->start . ':' . $this->stop;
+		// We are non-inclusive from the start
+		return ($this->start - 1) . ':' . $this->stop;
 	}
 }

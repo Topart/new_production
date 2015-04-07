@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Cron_Queue extends Springbot_Combine_Model_Abstract
+class Springbot_Combine_Model_Cron_Queue extends Springbot_Combine_Model_Cron
 {
 	const FAILED_JOB_PRIORITY = 9;
 
@@ -30,26 +30,36 @@ class Springbot_Combine_Model_Cron_Queue extends Springbot_Combine_Model_Abstrac
 			'attempts' => $this->getAttempts() + 1,
 			'run_at' => now(),
 			'locked_at' => now(),
-            'locked_by' => getmypid(),
-			'error'	=> null
+			'locked_by' => getmypid(),
+			'next_run_at' => $this->_calculateNextRunAt(),
+			'error' => null
 		));
 		$this->save();
 	}
 
 	public function run()
 	{
-		Springbot_Log::debug("Running ".__CLASS__);
-		$return = true;
-		$class = $this->getInstance();
-		$class->setData($this->getParsedArgs());
-		$this->_pre();
-
 		try {
-			$class->run();
-		} catch (Exception $e) {
+			$maxJobTime = Mage::getStoreConfig('springbot/advanced/max_job_time');
+			if (is_int($maxJobTime)) {
+				set_time_limit(Mage::getStoreConfig('springbot/advanced/max_job_time'));
+			}
+
+			$return = true;
+			$class = $this->getInstance();
+
+			if($class) {
+				$class->setData($this->getParsedArgs());
+				$this->_pre();
+				$class->run();
+			} else {
+				$this->delete();
+			}
+		}
+		catch (Exception $e) {
 			$this->setError($e->getMessage());
 			// Lower priority for failed job - keeping order intact
-			$this->setPriority($this->getPriority() + Springbot_Services_Priority::FAILED);
+			$this->setPriority($this->getPriority() + Springbot_Services::FAILED);
 			$return = false;
 			if ($this->getAttempts() >= Springbot_Combine_Model_Resource_Cron_Queue_Collection::ATTEMPT_LIMIT) {
 				Springbot_Log::remote(
@@ -60,19 +70,44 @@ class Springbot_Combine_Model_Cron_Queue extends Springbot_Combine_Model_Abstrac
 			}
 		}
 		$this->_post();
+
+		try {
+			Springbot_Log::debug("Scheduling future jobs");
+			Springbot_Boss::scheduleFutureJobs($class->getStoreId());
+
+			if (is_object($class)) {
+				$class->doFinally();
+			}
+		}
+		catch (Exception $e) {
+			Springbot_Log::error($e);
+		}
+
 		return $return;
+	}
+
+	protected function _calculateNextRunAt()
+	{
+		$attempts = $this->getAttempts();
+		$expMinutes = pow(2, $attempts);
+		$nextRun = date("Y-m-d H:i:s", strtotime("+$expMinutes minutes"));
+
+		Springbot_Log::debug('Next run at: ' . $nextRun);
+		return $nextRun;
 	}
 
 	protected function _post()
 	{
 		if(!$this->hasError()) {
 			$this->delete();
-		} else {
+		}
+		else {
 			$this->addData(array(
 				'locked_at' => null,
 				'locked_by' => null,
 			))->save();
 		}
+
 	}
 
 	public function getInstance()
@@ -85,5 +120,4 @@ class Springbot_Combine_Model_Cron_Queue extends Springbot_Combine_Model_Abstrac
 		$args = (array) json_decode($this->getArgs());
 		return Springbot_Services_Registry::parseOpts($args);
 	}
-
 }

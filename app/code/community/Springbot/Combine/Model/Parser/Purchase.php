@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Purchase extends Springbot_Combine_Model_Parser_Abstract implements Springbot_Combine_Model_Parser
+class Springbot_Combine_Model_Parser_Purchase extends Springbot_Combine_Model_Parser
 {
 	protected $_accessor = '_purchase';
 	protected $_purchase;
@@ -13,18 +13,15 @@ class Springbot_Combine_Model_Parser_Purchase extends Springbot_Combine_Model_Pa
 		$this->_parse();
 	}
 
-	public function parse($purchase)
-	{
-		$this->_lineItems = null;
-		$this->_purchase = $purchase;
-		$this->_parse();
-
-		return $this;
-	}
-
 	protected function _parse()
 	{
 		$model = $this->_purchase;
+		if ($model->getStoreId() == 0) {
+			$storeId = Mage::getStoreConfig('springbot/config/store_zero_alias');
+		}
+		else {
+			$storeId = $model->getStoreId();
+		}
 
 		$this->setData(array(
 			'purchase_id' => $model->getIncrementId(),
@@ -34,7 +31,7 @@ class Springbot_Combine_Model_Parser_Purchase extends Springbot_Combine_Model_Pa
 			'redirect_mongo_id' => $this->_getRedirectMongoId(),
 			'redirect_mongo_ids' => $this->_getRedirectMongoIds(),
 			'sb_params' => $this->_getSbParams($model->getQuoteId()),
-			'store_id' => $this->_getSpringbotStoreId($model->getStoreId()),
+			'store_id' => $this->_getSpringbotStoreId($storeId),
 			'customer_id' => $this->_getCustomerId(),
 			'order_date_time' => $model->getCreatedAt(),
 			'order_gross' => $this->_getBaseAmt('grand_total'),

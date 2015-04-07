@@ -9,7 +9,6 @@ $installer->getConnection()->beginTransaction();
 
 try {
 $installer->run("
-	DROP TABLE IF EXISTS `{$installer->getTable('combine/cron_queue')}`;
 	CREATE TABLE IF NOT EXISTS `{$installer->getTable('combine/cron_queue')}`
 	(
 		`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -29,7 +28,6 @@ $installer->run("
 		PRIMARY KEY (`id`),
 		KEY `IDX_PRIORITY_CREATED_AT` (`priority`, `created_at`)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-	DROP TABLE IF EXISTS `{$installer->getTable('combine/cron_count')}`;
 	CREATE TABLE IF NOT EXISTS `{$installer->getTable('combine/cron_count')}`
 	(
 		`id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -43,7 +41,7 @@ $installer->run("
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
 } catch (Exception $e) {
-	Mage::log('Springbot 1.2.0.0-1.2.1.0 update failed!');
+	Springbot_Log::error('Springbot 1.2.0.0-1.2.1.0 update failed!');
 }
 
 $installer->endSetup();

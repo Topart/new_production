@@ -16,7 +16,7 @@ class Springbot_Bmbleb_Adminhtml_IndexController extends Mage_Adminhtml_Controll
 		} elseif($this->getRequest()->getParam('killharvest')) {
 			Springbot_Boss::halt();
 			$this->_redirect('*/*/status');
-		} elseif ($problems = Mage::helper('bmbleb/PluginStatus')->getFatalPluginProblems()) {
+		} elseif ($problems = Mage::helper('bmbleb/PluginStatus')->getPluginProblems()) {
 			$this->_redirect('*/adminhtml_problems/index');
 		}
 	}

@@ -1,7 +1,7 @@
 <?php
+
 class Springbot_Bmbleb_Block_Adminhtml_Tabs extends Mage_Adminhtml_Block_Template
 {
-
     /**
      * Block constructor
      */
@@ -29,5 +29,4 @@ class Springbot_Bmbleb_Block_Adminhtml_Tabs extends Mage_Adminhtml_Block_Templat
 	{
 		return (Mage::getStoreConfig('springbot/advanced/extended_config') == 1);
 	}
-
 }

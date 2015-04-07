@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Services_Work_Stop extends Springbot_Services_Abstract
+class Springbot_Services_Work_Stop extends Springbot_Services
 {
 	public function run()
 	{
@@ -11,15 +11,15 @@ class Springbot_Services_Work_Stop extends Springbot_Services_Abstract
 		do{
 			if($pid = $this->getPid()) {
 				Springbot_Log::debug("Issuing kill command for manager pid: {$pid}");
-				Springbot_Boss::spawn('kill ' . $pid);
+				Springbot_Cli::spawn('kill ' . $pid);
 			} else {
 				Springbot_Log::debug("No active manager found, skipping");
 			}
 
 			if($pids = $this->_getStatus()->getActiveWorkerPids()) {
-				foreach($pids as $pid) {
+				foreach ($pids as $pid) {
 					Springbot_Log::debug("Issuing kill command for worker pid: {$pid}");
-					Springbot_Boss::spawn('kill ' . $pid);
+					Springbot_Cli::spawn('kill ' . $pid);
 				}
 			} else {
 				Springbot_Log::debug("No active workers found, skipping");

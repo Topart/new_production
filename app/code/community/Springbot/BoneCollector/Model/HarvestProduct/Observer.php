@@ -1,17 +1,5 @@
 <?php
-/**
- * BoneCollector Event Listener (Product Harvest)
- *
- * @version		v1.0.0 - 12/28/2012
- *
- * @category    Magento Integrations
- * @package     springbot
- * @author 		William Seitz
- * @division	SpringBot Integration Team
- * @support		magentosupport@springbot.com
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- */
+
 class Springbot_BoneCollector_Model_HarvestProduct_Observer extends Springbot_BoneCollector_Model_HarvestAbstract
 {
 	protected $_product;
@@ -32,44 +20,43 @@ class Springbot_BoneCollector_Model_HarvestProduct_Observer extends Springbot_Bo
 		'price',
 		'special_price',
 		'image_label',
+		'name',
 	);
 
-	public function harvestProduct($observer)
+	public function onProductSaveAfter($observer)
 	{
 		try {
 			$this->_product = $observer->getEvent()->getProduct();
 
 			if ($this->_entityChanged($this->_product)) {
 				$this->_initObserver($observer);
-				Springbot_Boss::scheduleJob('post:product', array('i' => $this->_product->getId()), Springbot_Services_Priority::LISTENER, 'listener');
+				Springbot_Boss::scheduleJob('post:product', array('i' => $this->_product->getId()), Springbot_Services::LISTENER, 'listener');
 			}
 
 		} catch (Exception $e) {
-			Mage::logException($e);
+			Springbot_Log::error($e);
 		}
 	}
 
-	public function deleteProduct($observer)
+	public function onProductDeleteBefore($observer)
 	{
 		$this->_initObserver($observer);
-
 		try{
 			$this->_product   = $observer->getEvent()->getProduct();
-			$entity_id = $this->_product->getId();
-			$storeIds  = $this->_product->getStoreIds();
-
-			foreach(Mage::helper('combine/harvest')->mapStoreIds($this->_product) as $mapped) {
+			$entityId = $this->_product->getId();
+			$helper = Mage::helper('combine/harvest');
+			foreach($helper->mapStoreIds($this->_product) as $mapped) {
+				$sbId = $helper->getSpringbotStoreId($mapped->getStoreId());
 				$post[] = array(
-					'store_id' => $mapped->getStoreId(),
-					'entity_id' => $entity_id,
+					'store_id' => $sbId,
+					'entity_id' => $entityId,
 					'sku' => $this->_getSkuFailsafe($this->_product),
 					'is_deleted' => true,
 				);
 			}
-
 			Mage::helper('combine/harvest')->deleteRemote($post, 'products');
 		} catch (Exception $e) {
-			Mage::logException($e);
+			Springbot_Log::error($e);
 		}
 	}
 

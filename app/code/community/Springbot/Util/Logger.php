@@ -65,9 +65,11 @@ class Springbot_Util_Logger
 		}
 
 		$format = $this->_format . PHP_EOL;
+
 		$formatter = new Zend_Log_Formatter_Simple($format);
 		$writer = new Zend_Log_Writer_Stream($logFile);
 		$writer->setFormatter($formatter);
 		self::$_loggers[$file] = new Zend_Log($writer);
+
 	}
 }

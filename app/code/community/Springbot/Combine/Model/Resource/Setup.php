@@ -34,18 +34,12 @@ class Springbot_Combine_Model_Resource_Setup extends Mage_Core_Model_Resource_Se
 	public function resendInstallLog()
 	{
 		$this->getSiteDetails();
-		$this->setDefaultPhpPath();
 		$this->submit();
 	}
 
 	public function getData()
 	{
 		return $this->_data;
-	}
-
-	public function bugOut()
-	{
-		echo Zend_Json::prettyPrint($this->toJson());
 	}
 
 	public function getSiteDetails()
@@ -58,19 +52,6 @@ class Springbot_Combine_Model_Resource_Setup extends Mage_Core_Model_Resource_Se
 				->_setData('error', 'General failure on install.');
 		}
 		return true;
-	}
-
-	public function setDefaultPhpPath()
-	{
-		$phpPaths = $this->_getPhpExecutablePaths();
-		if(isset($phpPaths['php-cli']) && ($phpPaths['php-cli'])) {
-			Springbot_Log::debug('Setting default php path to ' . $phpPaths['php-cli']);
-			Mage::getModel('core/config')->saveConfig('springbot/config/php_exec', $phpPaths['php-cli'] );
-		}
-		elseif(isset($phpPaths['php5']) && ($phpPaths['php5'])) {
-			Springbot_Log::debug('Setting default php path to ' . $phpPaths['php5']);
-			Mage::getModel('core/config')->saveConfig('springbot/config/php_exec', $phpPaths['php5'] );
-		}
 	}
 
 	public function fetchConfig()
@@ -167,7 +148,6 @@ class Springbot_Combine_Model_Resource_Setup extends Mage_Core_Model_Resource_Se
 				)
 			),
 			'phpinfo' => $this->_phpinfoArray(true),
-			'php_executable_paths' => $this->_getPhpExecutablePaths(),
 		);
 	}
 
@@ -231,19 +211,6 @@ class Springbot_Combine_Model_Resource_Setup extends Mage_Core_Model_Resource_Se
 		$check = system("/usr/bin/php -r \"echo 'ok';\"");
 		ob_end_clean();
 		return $check == "ok" ? "ok" : "could not execute php as shell";
-	}
-
-	protected function _getPhpExecutablePaths()
-	{
-		$returnVar = null;
-		ob_start();
-		$outputs = array(
-			'php' => Springbot_Boss::spawn("which -a php", $returnVar),
-			'php5' => Springbot_Boss::spawn("which -a php5", $returnVar),
-			'php-cli' => Springbot_Boss::spawn("which -a php-cli", $returnVar),
-		);
-		ob_end_clean();
-		return $outputs;
 	}
 
 	protected function _phpinfoArray($return=false){

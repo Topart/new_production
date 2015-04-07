@@ -1,4 +1,5 @@
 <?php
+
 class Springbot_Bmbleb_Block_Adminhtml_Index extends Mage_Adminhtml_Block_Template
 {
     public function __construct()
@@ -7,14 +8,13 @@ class Springbot_Bmbleb_Block_Adminhtml_Index extends Mage_Adminhtml_Block_Templa
 		$this->setTemplate("bmbleb/index.phtml");
     }
     
-    public function didSyncThisSession(){
- 
+    public function didSyncThisSession()
+	{
     	return false;
-
     }
     
-    public function autoLauchSync(){
-
+    public function autoLauchSync()
+	{
     	return false;
     }
 }

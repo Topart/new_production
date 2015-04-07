@@ -1,11 +1,29 @@
 <?php
 
-class Springbot_Services_Cmd_Update extends Springbot_Services_Abstract
+class Springbot_Services_Cmd_Update extends Springbot_Services
 {
 	public function run()
 	{
-		if(Mage::getStoreConfig('springbot/config/remote_update') || $this->getForce()) {
+		if (Mage::getStoreConfig('springbot/config/remote_update') || $this->getForce()) {
 			try {
+				// Compilation includes configuration file
+				define('MAGENTO_ROOT', getcwd());
+
+				$compilerConfig = MAGENTO_ROOT . '/includes/config.php';
+				if (file_exists($compilerConfig)) {
+					include $compilerConfig;
+				}
+
+				// Exit if compilation enabled
+				if (defined('COMPILER_INCLUDE_PATH')) {
+					$msg = "Compilation appears to be enabled... exiting.";
+					Springbot_Log::remote($msg);
+					echo $msg . PHP_EOL;
+					exit("Compilation appears to be enabled... exiting.");
+				} else {
+					Springbot_Log::info("Compilation Status: Disabled");
+				}
+
 				Springbot_Log::info("Updating Springbot extension");
 
 				$connect = new Springbot_Services_Update_Connect;
@@ -32,7 +50,6 @@ class Springbot_Services_Cmd_Update extends Springbot_Services_Abstract
 				Mage::app()->cleanCache();
 			} catch (Exception $e) {
 				Springbot_Log::error($e);
-				die($e->getMessage() . PHP_EOL);
 			}
 			$msg = "Updated to version $version successfully!";
 			Springbot_Log::remote($msg);

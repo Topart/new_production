@@ -2,12 +2,6 @@
 
 class Springbot_BoneCollector_Model_HarvestAbstract
 {
-	const BOT_SERVICES           = 'SpringbotServices.php';
-	const SPRINGBOT_DIRECTORY    = '/app/code/community/Springbot/';
-	const LOG_DIRECTORY          = '/var/log/';
-	const BOT_SERVICES_DIRECTORY = '/app/code/community/Springbot/DataServices/';
-	const BACKGROUND_MODE        = '&';
-
 	/**
 	 * The attributes which we want to listen for changes on
 	 *
@@ -20,11 +14,6 @@ class Springbot_BoneCollector_Model_HarvestAbstract
 		if($event = $observer->getEvent()) {
 			Springbot_Log::debug($event->getName());
 		}
-	}
-
-	public function getPhpExec()
-	{
-		return Mage::helper('combine/harvest')->getPhpExec();
 	}
 
 	/**
@@ -43,17 +32,6 @@ class Springbot_BoneCollector_Model_HarvestAbstract
 	{
 		$product = $observer->getEvent()->getProduct();
 		return Mage::helper('combine/parser')->getTopLevelSku($product);
-	}
-
-	public function getCommand($method)
-	{
-		return $this->getPhpExec() . ' '
-			. $magentoRootDir
-			. self::SPRINGBOT_DIRECTORY
-			. self::BOT_SERVICES_DIRECTORY
-			. self::BOT_SERVICES . ' '
-			. $method . ' '
-			;
 	}
 
 	public function doSend($object, $sessionKey)
@@ -99,7 +77,7 @@ class Springbot_BoneCollector_Model_HarvestAbstract
 	{
 		$newData = $model->getData($field);
 		$origData = $model->getOrigData($field);
-		return $newData!=$origData;
+		return $newData != $origData;
 	}
 
 }

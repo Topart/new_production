@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Guest extends Springbot_Combine_Model_Parser_Abstract
+class Springbot_Combine_Model_Parser_Guest extends Springbot_Combine_Model_Parser
 {
 	const TYPE = 'GUEST';
 	const OFFSET = 100000000;
@@ -12,14 +12,6 @@ class Springbot_Combine_Model_Parser_Guest extends Springbot_Combine_Model_Parse
 		$this->_order = $order;
 		$this->_address = $this->_order->getShippingAddress();
 		$this->_parse();
-	}
-
-	public function parse($order)
-	{
-		$this->_order = $order;
-		$this->_address = $this->_order->getShippingAddress();
-		$this->_parse();
-		return $this;
 	}
 
 	protected function _parse()

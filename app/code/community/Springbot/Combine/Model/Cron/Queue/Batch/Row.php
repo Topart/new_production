@@ -3,13 +3,13 @@
 class Springbot_Combine_Model_Cron_Queue_Batch_Row extends Varien_Object
 {
 	protected $_schema = array(
-			'method',
-			'args',
-			'priority',
-			'command_hash',
-			'queue',
-			'store_id',
-		);
+		'method',
+		'args',
+		'priority',
+		'command_hash',
+		'queue',
+		'store_id',
+	);
 
 	public function getSchema()
 	{
@@ -21,11 +21,11 @@ class Springbot_Combine_Model_Cron_Queue_Batch_Row extends Varien_Object
 		return '`' . implode('`,`', $this->getSchema()) . '`';
 	}
 
-	public function __toString()
+	public function toString($format='')
 	{
 		$res = $this->_getResource();
-
-		foreach($this->getSchema() as $column) {
+		$quoted = array();
+		foreach ($this->getSchema() as $column) {
 			$value = $this->getData($column);
 			$quoted[] = !empty($value) ? $res->quote($value) : 'NULL';
 		}

@@ -15,14 +15,12 @@ class Springbot_Combine_Model_Cron_Worker extends Mage_Core_Model_Abstract
 			}
 			else {
 				$count = 0;
-				$sleepInterval = $this->getSleepInterval();
 				$maxJobs = $this->getMaxJobs();
 				do {
 					if($job = $this->getNextJob($isForeman)) {
 						Springbot_Log::debug("Running job #$count for pid => " . getmypid());
 						$job->run();
 						$count++;
-						sleep($sleepInterval);
 					} else {
 						Springbot_Log::debug("No more jobs found");
 					}
@@ -41,14 +39,6 @@ class Springbot_Combine_Model_Cron_Worker extends Mage_Core_Model_Abstract
 				$this->run(true);
 			}
 		}
-	}
-
-	public function getSleepInterval()
-	{
-		if (!$sleepInterval = Mage::getStoreConfig('springbot/advanced/sleep_interval')) {
-			$sleepInterval = 1;
-		}
-		return $sleepInterval;
 	}
 
 	public function getMaxJobs()

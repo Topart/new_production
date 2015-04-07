@@ -1,30 +1,32 @@
 <?php
 
-class Springbot_Services_Cmd_Forecast extends Springbot_Services_Abstract
+class Springbot_Services_Cmd_Forecast extends Springbot_Services
 {
 	public function run()
 	{
-		if($storeId = $this->getStoreId()) {
+		if ($storeId = $this->getStoreId()) {
 			$harvestId = Mage::helper('combine/harvest')->initRemoteHarvest($storeId);
-			self::forecastStore($storeId, $harvestId);
+			$this->forecastStore($storeId, $harvestId);
 		}
 		else {
-			self::forecastAllStores();
+			$this->forecastAllStores();
 		}
 	}
 
-	public static function forecastAllStores() {
-		foreach(Mage::helper('combine/harvest')->getStoresToHarvest() as $store) {
+	public function forecastAllStores() {
+		foreach (Mage::helper('combine/harvest')->getStoresToHarvest() as $store) {
 			$harvestId = Mage::helper('combine/harvest')->initRemoteHarvest($store->getStoreId());
-			self::forecastStore($store->getStoreId(), $harvestId);
+			$this->forecastStore($store->getStoreId(), $harvestId);
 		}
 	}
 
-	public static function forecastStore($storeId, $harvestId)
+	public function forecastStore($storeId, $harvestId)
 	{
-		foreach(Springbot_Services_Cmd_Harvest::getClasses() as $key) {
+		foreach (Springbot_Services_Cmd_Harvest::getClasses() as $key) {
 			$keyUpper = ucwords($key);
-			$collection = call_user_func(array('Springbot_Services_Harvest_' . $keyUpper, 'getCollection'), $storeId);
+			$harvestClassName =  'Springbot_Services_Harvest_' . $keyUpper;
+			$harvestObject = new $harvestClassName;
+			$collection = $harvestObject->getCollection($storeId);
 			Mage::helper('combine/harvest')->forecast($collection, $storeId, $keyUpper, $harvestId);
 		}
 	}
