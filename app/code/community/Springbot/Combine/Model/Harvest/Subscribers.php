@@ -1,16 +1,35 @@
 <?php
 
-class Springbot_Combine_Model_Harvest_Subscribers extends Springbot_Combine_Model_Harvest_Abstract implements Springbot_Combine_Model_Harvester
+class Springbot_Combine_Model_Harvest_Subscribers extends Springbot_Combine_Model_Harvest
 {
-	protected $_mageModel = 'newsletter/subscriber';
-	protected $_parserModel = 'combine/parser_subscriber';
-	protected $_apiController = 'customers';
-	protected $_apiModel = 'customers';
-	protected $_rowId = 'subscriber_id';
+	public function getMageModel()
+	{
+		return 'newsletter/subscriber';
+	}
+
+	public function getParserModel()
+	{
+		return 'combine/parser_subscriber';
+	}
+
+	public function getApiController()
+	{
+		return 'customers';
+	}
+
+	public function getApiModel()
+	{
+		return 'customers';
+	}
+
+	public function getRowId()
+	{
+		return 'subscriber_id';
+	}
 
 	public function parse($model)
 	{
-		if($this->_delete) {
+		if ($this->getDelete()) {
 			$model->setSubscriberStatus(Mage_Newsletter_Model_Subscriber::STATUS_UNSUBSCRIBED);
 		}
 		return parent::parse($model);

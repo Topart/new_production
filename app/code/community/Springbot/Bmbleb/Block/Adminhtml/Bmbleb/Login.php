@@ -19,20 +19,19 @@ class Springbot_Bmbleb_Block_Adminhtml_Bmbleb_Login extends Mage_Adminhtml_Block
         $this->_removeButton('back');
 		$this->_removeButton('reset');
 		$this->_removeButton('save');
-		//$this->_updateButton('save', 'label', Mage::helper('bmbleb')->__('Login'));
-		
+
 		$this->_addButton('login', array(
             'label'     => Mage::helper('bmbleb')->__('Login'),
             'onclick'   => 'login_form.submit();',
-            //'class'     => 'go'	// could use class of 'save' for checkmark
         ), 0, 100, 'footer');		
 		
     }
-/* 
-NOTE: the issue with sumitting is being caused because of this html 
-		editForm = new varienForm('edit_form', '');
-		this is also the reason js validation is not working
-*/
+
+	/*
+	NOTE: the issue with submitting is being caused because of this html
+		  editForm = new varienForm('edit_form', '');
+		  this is also the reason js validation is not working
+	*/
     public function getHeaderText()
     {
     	return Mage::helper('bmbleb')->__('Log In');

@@ -124,14 +124,13 @@
 							<comment>Comma separated list of Classes for the frontend field where a user enters their email address.</comment>
 						</email_selector>
 						<security_token translate="label">
-						    <label>Security Token</label>
-						    <frontend_type>text</frontend_type>
-						    <sort_order>110</sort_order>
-						    <show_in_default>1</show_in_default>
-						    <show_in_website>0</show_in_website>
-						    <comment>Springbot supplied security token.</comment>
+							<label>Security Token</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>110</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<comment>Springbot supplied security token.</comment>
 						</security_token>
-
 					</fields>
 				</config>
 				<images translate="label">
@@ -183,6 +182,16 @@
 							<show_in_store>0</show_in_store>
 							<comment>&lt;strong style="color:red"&gt;Warning!&lt;/strong&gt; Please monitor disk space if setting to Debug level, filesize may grow rapidly.</comment>
 						</log_http>
+						<pretty_print translate="label">
+							<label>Pretty Print HTTP Requests in Log</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>15</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<depends><log_http>1</log_http></depends>
+						</pretty_print>
 						<log_level translate="label">
 							<label>Log Level</label>
 							<frontend_type>select</frontend_type>
@@ -219,33 +228,6 @@
 						</filesize_limit>
 					</fields>
 				</debug>
-				<cron translate="label">
-					<label>Cron</label>
-					<frontend_type>text</frontend_type>
-					<sort_order>450</sort_order>
-					<show_in_default>1</show_in_default>
-					<show_in_website>0</show_in_website>
-					<show_in_store>0</show_in_store>
-					<fields>
-						<enabled translate="label">
-							<label>Run in Cron Mode</label>
-							<frontend_type>select</frontend_type>
-							<source_model>adminhtml/system_config_source_yesno</source_model>
-							<sort_order>10</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>0</show_in_website>
-							<show_in_store>0</show_in_store>
-						</enabled>
-						<max_jobs translate="label">
-							<label>Max jobs to run per instance</label>
-							<frontend_type>text</frontend_type>
-							<sort_order>20</sort_order>
-							<show_in_default>1</show_in_default>
-							<show_in_website>0</show_in_website>
-							<comment>This is the maximum number of jobs the cron worker will attempt to run each time it is called. Leave blank for unlimited.</comment>
-						</max_jobs>
-					</fields>
-				</cron>
 				<advanced translate="label">
 					<label>Advanced Config</label>
 					<frontend_type>text</frontend_type>
@@ -254,6 +236,24 @@
 					<show_in_website>0</show_in_website>
 					<show_in_store>0</show_in_store>
 					<fields>
+						<harvester_type translate="label">
+							<label>Harvester Type</label>
+							<frontend_type>select</frontend_type>
+							<source_model>combine/system_config_source_harvestertype</source_model>
+							<sort_order>19</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+							<size>2</size>
+						</harvester_type>
+						<max_jobs translate="label">
+							<label>Max cron jobs to run per instance</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<comment>This is the maximum number of jobs the cron worker will attempt to run each time it is called. Leave blank for unlimited.</comment>
+						</max_jobs>
 						<nohup translate="label">
 							<label>Nohup</label>
 							<frontend_type>select</frontend_type>
@@ -272,14 +272,14 @@
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>
 						</nice>
-                        <worker_count translate="label">
-                            <label>Worker Count</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>90</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>0</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </worker_count>
+						<worker_count translate="label">
+							<label>Worker Count</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>90</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</worker_count>
 						<sleep_interval translate="label">
 							<label>Sleep Interval</label>
 							<frontend_type>text</frontend_type>
@@ -306,6 +306,14 @@
 							<show_in_website>0</show_in_website>
 							<show_in_store>0</show_in_store>
 						</product_url_type>
+						<max_job_time translate="label">
+							<label>Max job execution time</label>
+							<frontend_type>text</frontend_type>
+							<sort_order>130</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</max_job_time>
 					</fields>
 				</advanced>
 				<cart_restore>
@@ -340,4 +348,3 @@
 		</springbot>
 	</sections>
 </config>
-

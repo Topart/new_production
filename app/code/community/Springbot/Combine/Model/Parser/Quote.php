@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Quote extends Springbot_Combine_Model_Parser_Abstract
+class Springbot_Combine_Model_Parser_Quote extends Springbot_Combine_Model_Parser
 {
 	protected $_quote;
 	protected $_accessor = '_quote';
@@ -13,14 +13,6 @@ class Springbot_Combine_Model_Parser_Quote extends Springbot_Combine_Model_Parse
 		$this->_parse();
 	}
 
-	public function parse(Mage_Sales_Model_Quote $quote)
-	{
-		$this->_items = array();
-		$this->_quote = $quote;
-		$this->_parse();
-		return $this;
-	}
-
 	public function getItemsCount()
 	{
 		return count($this->_items);
@@ -28,7 +20,13 @@ class Springbot_Combine_Model_Parser_Quote extends Springbot_Combine_Model_Parse
 
 	public function hasCustomerData()
 	{
-		return $this->_getEmail();
+		// Explicitly return true for test suite
+		if ($this->_getEmail()) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	protected function _parse()
@@ -48,10 +46,10 @@ class Springbot_Combine_Model_Parser_Quote extends Springbot_Combine_Model_Parse
 			'customer_lastname' => $this->_quote->getCustomerLastname(),
 			'customer_suffix' => $this->_quote->getCustomerSuffix(),
 			'json_data' => array(
-					'checkout_method' => $this->_quote->getCheckoutMethod(),
-					'customer_is_guest' => $this->_quote->getCustomerIsGuest(),
-					'remote_ip' => $this->_quote->getRemoteIp(),
-				),
+				'checkout_method' => $this->_quote->getCheckoutMethod(),
+				'customer_is_guest' => $this->_quote->getCustomerIsGuest(),
+				'remote_ip' => $this->_quote->getRemoteIp(),
+			),
 			'line_items' => $this->_getLineItems(),
 		));
 
@@ -77,4 +75,5 @@ class Springbot_Combine_Model_Parser_Quote extends Springbot_Combine_Model_Parse
 	{
 		return Mage::helper('combine/trackable')->getTrackablesHashByQuote($quoteId);
 	}
+
 }

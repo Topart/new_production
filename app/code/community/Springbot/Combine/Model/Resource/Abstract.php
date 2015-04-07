@@ -7,9 +7,10 @@ abstract class Springbot_Combine_Model_Resource_Abstract extends Mage_Core_Model
 		try {
 			$table = $this->getMainTable();
 			$bind = $this->_prepareDataForSave($object);
+			$bind = $this->_convertDatetimesToString($bind);
 			$this->_insertIgnore($table, $bind);
 		} catch (Exception $e) {
-			Mage::logException($e);
+			Springbot_Log::error($e);
 		}
 	}
 
@@ -32,11 +33,22 @@ abstract class Springbot_Combine_Model_Resource_Abstract extends Mage_Core_Model
 			. 'VALUES (' . implode(', ', $vals) . ')';
 
 		Springbot_Log::debug($sql);
+
 		Springbot_Log::debug('BIND : '.implode(', ', $bind));
 
 		// execute the statement and return the number of affected rows
 		$stmt = $adapter->query($sql, array_values($bind));
 		return $stmt->rowCount();
+	}
+
+	// Fixes issue with Magento converting DateTimes to an object and inserting extra quotes
+	protected function _convertDatetimesToString($bind) {
+		foreach ($bind as $key => $value) {
+			if (is_object($value)) {
+				$bind[$key] = trim((string)$value, "'");
+			}
+		}
+		return $bind;
 	}
 
 	protected function _getHelper()

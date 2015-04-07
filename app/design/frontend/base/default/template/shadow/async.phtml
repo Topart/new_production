@@ -1,0 +1,13 @@
+<?php if ($publicId = $this->getPublicId()) : ?>
+	<script type="text/javascript">
+		var _sbparams = _sbparams || [];
+		_sbparams.push({'action': 'view'});
+		(function() {
+			var sb = document.createElement('script');
+			var fs = document.getElementsByTagName('script')[0];
+			sb.type = 'text/javascript'; sb.async = true;
+			sb.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + '<?php echo $this->getAssetsDomain()?>/async/preload/<?php echo $publicId ?>.js';
+			fs.parentNode.insertBefore(sb, fs);
+		})();
+	</script>
+<?php endif ?>

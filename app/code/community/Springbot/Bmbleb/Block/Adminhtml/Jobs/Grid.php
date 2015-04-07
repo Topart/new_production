@@ -19,7 +19,8 @@ class Springbot_Bmbleb_Block_Adminhtml_Jobs_Grid extends Mage_Adminhtml_Block_Wi
 		return parent::_prepareCollection();
 	}
 
-	protected function _prepareColumns() {
+	protected function _prepareColumns()
+	{
 		$this->addColumn('id', array(
 			'header'    => $this->__('Id'),
 			'width'     => '80',
@@ -62,7 +63,7 @@ class Springbot_Bmbleb_Block_Adminhtml_Jobs_Grid extends Mage_Adminhtml_Block_Wi
 		));
 
 		$this->addColumn('created_at', array(
-			'header'    => $this->__('locked_at'),
+			'header'    => $this->__('created_at'),
 			'index'     => 'created_at',
 			'type'      => 'datetime'
 		));

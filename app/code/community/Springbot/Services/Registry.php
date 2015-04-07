@@ -6,10 +6,11 @@ class Springbot_Services_Registry
 	{
 		$classname = self::_constantize($method);
 		Springbot_Log::debug("Creating instance of $classname");
-		try {
+
+		if(class_exists($classname)) {
 			return new $classname();
-		} catch (Exception $e) {
-			throw new Exception("$classname not found!");
+		} else {
+			return false;
 		}
 	}
 

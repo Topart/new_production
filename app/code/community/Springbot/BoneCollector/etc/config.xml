@@ -1,14 +1,5 @@
 <?xml version="1.0"?>
-<!--
-/**
- * @category   springbot
- * @package    springbot_BoneCollector
- * @author     springbot integration team
- * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
- -->
 <config>
-
 	<global>
 		<models>
 			<bonecollector>
@@ -21,7 +12,7 @@
 					<springbot_bonecollector_product_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestProduct_Observer</class>
-						<method>harvestProduct</method>
+						<method>onProductSaveAfter</method>
 					</springbot_bonecollector_product_observer>
 				</observers>
 			</catalog_product_save_after>
@@ -30,7 +21,7 @@
 					<springbot_bonecollector_productdelete_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestProduct_Observer</class>
-						<method>deleteProduct</method>
+						<method>onProductDeleteBefore</method>
 					</springbot_bonecollector_productdelete_observer>
 				</observers>
 			</catalog_product_delete_before>
@@ -39,17 +30,17 @@
 					<springbot_bonecollector_categorysave_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestCategory_Observer</class>
-						<method>saveCategory</method>
+						<method>onCategorySaveAfter</method>
 					</springbot_bonecollector_categorysave_observer>
 				</observers>
 			</catalog_category_save_after>
 			<catalog_category_delete_after>
 				<observers>
-					<springbot_bonecollector_categorysave_observer>
+					<springbot_bonecollector_categorydelete_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestCategory_Observer</class>
-						<method>deleteCategory</method>
-					</springbot_bonecollector_categorysave_observer>
+						<method>onCategoryDeleteAfter</method>
+					</springbot_bonecollector_categorydelete_observer>
 				</observers>
 			</catalog_category_delete_after>
 			<customer_save_after>
@@ -57,35 +48,35 @@
 					<springbot_bonecollector_customersave_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestCustomer_Observer</class>
-						<method>saveCustomer</method>
+						<method>onCustomerSaveAfter</method>
 					</springbot_bonecollector_customersave_observer>
 				</observers>
 			</customer_save_after>
 			<customer_delete_before>
 				<observers>
-					<springbot_bonecollector_customersave_observer>
+					<springbot_bonecollector_customerdelete_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestCustomer_Observer</class>
-						<method>deleteCustomer</method>
-					</springbot_bonecollector_customersave_observer>
+						<method>onCustomerDeleteBefore</method>
+					</springbot_bonecollector_customerdelete_observer>
 				</observers>
 			</customer_delete_before>
 			<newsletter_subscriber_save_after>
 				<observers>
-					<springbot_bonecollector_customersave_observer>
+					<springbot_bonecollector_subscribersave_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestSubscriber_Observer</class>
-						<method>saveSubscriber</method>
-					</springbot_bonecollector_customersave_observer>
+						<method>onSubscriberSaveAfter</method>
+					</springbot_bonecollector_subscribersave_observer>
 				</observers>
 			</newsletter_subscriber_save_after>
 			<newsletter_subscriber_delete_before>
 				<observers>
-					<springbot_bonecollector_customersave_observer>
+					<springbot_bonecollector_subscriberdelete_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestSubscriber_Observer</class>
-						<method>deleteSubscriber</method>
-					</springbot_bonecollector_customersave_observer>
+						<method>onSubscriberDeleteBefore</method>
+					</springbot_bonecollector_subscriberdelete_observer>
 				</observers>
 			</newsletter_subscriber_delete_before>
 		</events>
@@ -94,11 +85,11 @@
 		<events>
 			<sales_order_place_after>
 				<observers>
-					<springbot_bonecollector_purchase_observer>
+					<springbot_bonecollector_purchase_action_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestPurchase_Observer</class>
-						<method>purchaseLogAction</method>
-					</springbot_bonecollector_purchase_observer>
+						<method>onFrontendOrderPlaceAfter</method>
+					</springbot_bonecollector_purchase_action_observer>
 				</observers>
 			</sales_order_place_after>
 			<sales_order_save_after>
@@ -106,7 +97,7 @@
 					<springbot_bonecollector_purchase_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestPurchase_Observer</class>
-						<method>purchaseHarvest</method>
+						<method>onFrontendOrderSaveAfter</method>
 					</springbot_bonecollector_purchase_observer>
 				</observers>
 			</sales_order_save_after>
@@ -115,39 +106,39 @@
 					<springbot_bonecollector_addtocart_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestCart_Observer</class>
-						<method>addToCartHarvest</method>
+						<method>onFrontendQuoteSaveAfter</method>
 					</springbot_bonecollector_addtocart_observer>
 				</observers>
 			</sales_quote_save_after>
-			<catalog_controller_product_view>
-				<observers>
-					<springbot_bonecollector_capturesku_observer>
-						<type>singleton</type>
-						<class>Springbot_BoneCollector_Model_HarvestCaptureSKU_Observer</class>
-						<method>captureskuharvest</method>
-					</springbot_bonecollector_capturesku_observer>
-				</observers>
-			</catalog_controller_product_view>
 			<checkout_cart_add_product_complete>
 				<observers>
 					<springbot_bonecollector_addskutocart_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestCart_Observer</class>
-						<method>captureSku</method>
+						<method>onFrontendCartAddProduct</method>
 					</springbot_bonecollector_addskutocart_observer>
 				</observers>
 			</checkout_cart_add_product_complete>
+			<checkout_cart_update_items_before>
+				<observers>
+					<springbot_bonecollector_updatecart_observer>
+						<type>singleton</type>
+						<class>Springbot_BoneCollector_Model_HarvestCart_Observer</class>
+						<method>onFrontendCartUpdate</method>
+					</springbot_bonecollector_updatecart_observer>
+				</observers>
+			</checkout_cart_update_items_before>
 		</events>
 	</frontend>
 	<adminhtml>
 		<events>
 			<sales_order_save_after>
 				<observers>
-					<springbot_bonecollector_purchase_observer>
+					<springbot_bonecollector_purchase_admin_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestPurchase_Observer</class>
-						<method>purchaseHarvestAdmin</method>
-					</springbot_bonecollector_purchase_observer>
+						<method>onAdminOrderSaveAfter</method>
+					</springbot_bonecollector_purchase_admin_observer>
 				</observers>
 			</sales_order_save_after>
 			<catalog_entity_attribute_save_commit_after>
@@ -155,19 +146,37 @@
 					<springbot_bonecollector_attribute_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestAttribute_Observer</class>
-						<method>attributeSave</method>
+						<method>onAdminAttributeSaveAfter</method>
 					</springbot_bonecollector_attribute_observer>
 				</observers>
 			</catalog_entity_attribute_save_commit_after>
 			<eav_entity_attribute_save_commit_after>
 				<observers>
-					<springbot_bonecollector_attribute_observer>
+					<springbot_bonecollector_attribute_set_observer>
 						<type>singleton</type>
 						<class>Springbot_BoneCollector_Model_HarvestAttribute_Observer</class>
-						<method>attributeSetSave</method>
-					</springbot_bonecollector_attribute_observer>
+						<method>onAdminAttributeSetSaveAfter</method>
+					</springbot_bonecollector_attribute_set_observer>
 				</observers>
 			</eav_entity_attribute_save_commit_after>
+			<salesrule_rule_save_after>
+				<observers>
+					<springbot_bonecollector_rulesave_observer>
+						<type>singleton</type>
+						<class>Springbot_BoneCollector_Model_HarvestRule_Observer</class>
+						<method>onSalesruleRuleSaveAfter</method>
+					</springbot_bonecollector_rulesave_observer>
+				</observers>
+			</salesrule_rule_save_after>
+			<salesrule_rule_delete_before>
+				<observers>
+					<springbot_bonecollector_coupondelete_observer>
+						<type>singleton</type>
+						<class>Springbot_BoneCollector_Model_HarvestCoupon_Observer</class>
+						<method>onSalesruleRuleDeleteBefore</method>
+					</springbot_bonecollector_coupondelete_observer>
+				</observers>
+			</salesrule_rule_delete_before>
 		</events>
 	</adminhtml>
 </config>

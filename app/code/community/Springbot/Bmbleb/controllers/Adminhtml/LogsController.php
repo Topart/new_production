@@ -10,7 +10,7 @@ class Springbot_Bmbleb_Adminhtml_LogsController extends Mage_Adminhtml_Controlle
 
 	public function downloadAction() {
 		$logName = $this->getRequest()->getParam('name');;
-		$logPath = Mage::getBaseDir('log') . '/' . $logName;
+		$logPath = Mage::getBaseDir('log') . DS . $logName;
 		if (!is_file($logPath) || !is_readable($logPath)) {
 			throw new Exception();
 		}

@@ -2,33 +2,33 @@
 
 class Springbot_Services_Harvest_Categories extends Springbot_Services_Harvest
 {
-	protected $_type = 'categories';
-
 	public function run()
 	{
-		$collection = self::getCollection($this->getStoreId())
-			->addFieldToFilter('entity_id', array('gt' => $this->getStartId()));
-		$stopId = $this->getStopId();
-		if ($stopId !== null) {
-			$collection->addFieldToFilter('entity_id', array('lteq' => $this->getStopId()));
+		if ($this->getStoreId()) {
+			$collection = $this->getCollection($this->getStoreId());
+			$api = Mage::getModel('combine/api');
+			$harvester = new Springbot_Combine_Model_Harvest_Categories($api, $collection, $this->getDataSource());
+			$harvester->setStoreId($this->getStoreId());
+			$harvester->harvest();
+			return $this->reportCount($harvester);
 		}
-
-		$this->_harvester = Mage::getModel('combine/harvest_categories')
-			->setCollection($collection)
-			->setStoreId($this->getStoreId())
-			->setDataSource($this->getDataSource())
-			->harvest();
-
-		return parent::run();
+		else {
+			throw new Exception('Store id missing for category harvest');
+		}
 	}
 
-	public static function getCollection($storeId, $partition = null)
+	public function getCollection($storeId, $partition = null)
 	{
 		$rootCategory = Mage::app()->getStore($storeId)->getRootCategoryId();
-
-		$collection = Mage::getModel('catalog/category')
-			->getCollection()
-			->addAttributeToFilter(array(
+		$collection = Mage::getModel('catalog/category')->getCollection();
+		if ($this->getStopId() !== null) {
+			$collection->addFieldToFilter('entity_id', array('lteq' => $this->getStopId()));
+		}
+		if ($this->getStartId() !== null) {
+			$collection->addFieldToFilter('entity_id', array('gt' => $this->getStartId()));
+		}
+		$collection->addAttributeToFilter(
+			array(
 				array(
 					'attribute' => 'entity_id',
 					'eq' => $rootCategory
@@ -37,11 +37,13 @@ class Springbot_Services_Harvest_Categories extends Springbot_Services_Harvest
 					'attribute' => 'path',
 					'like' => "1/{$rootCategory}/%"
 				),
-			));
+			)
+		);
 
-		if($partition) {
+		if ($partition) {
 			$collection = parent::limitCollection($collection, $partition);
 		}
+
 		return $collection;
 	}
 }

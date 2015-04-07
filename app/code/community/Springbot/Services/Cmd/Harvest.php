@@ -1,11 +1,11 @@
 <?php
-class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
+class Springbot_Services_Cmd_Harvest extends Springbot_Services
 {
 	const SEGMENT_SIZE = 2000;
 
 	protected $_harvestId;
 
-	// Defines order when all
+	// Defines order which entities are harvested during a full harvest
 	protected static $_classes = array(
 		'categories',
 		'attributeSets',
@@ -15,15 +15,29 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 		'customers',
 		'guests',
 		'subscribers',
+		'coupons',
+		'rules',
 		//'carts',
 	);
+
+
+	public static function getClasses()
+	{
+		// 1.3 does not have salesrule module
+		if(!mageFindClassFile('Mage_SalesRule_Model_Coupons')) {
+			self::$_classes = array_merge(array_diff(
+				self::$_classes, array('coupons', 'rules')
+			));
+		}
+		return self::$_classes;
+	}
 
 	protected function _init()
 	{
 		$service = new Springbot_Services_Store_Register;
 
 		// Init all stores upfront
-		foreach($this->getHelper()->getStoresToHarvest() as $store) {
+		foreach ($this->getHelper()->getStoresToHarvest() as $store) {
 			$service->setStoreId($store->getStoreId())->run();
 		}
 
@@ -36,13 +50,13 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 	{
 		Springbot_Log::debug(__METHOD__);
 
-		if($this->getIsResume()) {
+		if ($this->getIsResume()) {
 			$this->_resumeHarvest();
 		}
-		else if($this->hasClass() && $this->hasRange()) {
+		else if ($this->hasClass() && $this->hasRange()) {
 			$this->_harvest($this->getClass(), $this->getStoreId());
 		}
-		else if($this->hasClass()) {
+		else if ($this->hasClass()) {
 			$this->_segmentHarvest($this->getClass(), $this->getStoreId());
 		}
 		else {
@@ -52,13 +66,16 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 
 	protected function _fullHarvest()
 	{
-		if(!$this->getHelper()->isHarvestRunning()) {
-			$this->_init();
-			//Iterate all stores
-			foreach($this->getHelper()->getStoresToHarvest() as $store) {
-				$this->_harvestId = Mage::helper('combine/harvest')->initRemoteHarvest($store->getStoreId());
-				$this->_harvestStore($store, self::$_classes, $this->_harvestId);
-			}
+		if($this->getHelper()->isHarvestRunning()) {
+			throw new Exception('Harvest is running already!');
+		}
+
+		$this->_init();
+
+		//Iterate all stores
+		foreach ($this->getHelper()->getStoresToHarvest() as $store) {
+			$this->_harvestId = Mage::helper('combine/harvest')->initRemoteHarvest($store->getStoreId());
+			$this->_harvestStore($store, self::getClasses(), $this->_harvestId);
 		}
 	}
 
@@ -81,15 +98,15 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 				}
 				else if ($store->getStoreId() > $storeId) {
 					// Harvest has not begun for this store so harvest all classes
-					$this->_harvestStore($store, self::$_classes, $this->_harvestId);
+					$this->_harvestStore($store, self::getClasses(), $this->_harvestId);
 				}
 			}
 		}
 	}
 
-	protected function _partialHarvestClass($store, $class, $partition, $harvestId)
+	protected function _partialHarvestClass(Mage_Core_Model_Store $store, $class, $partition, $harvestId)
 	{
-		Springbot_Log::debug("Partial harvest started {$store->getStoreId()} | $lastClassCompleted | $lastFailedPartition | $harvestId");
+		Springbot_Log::debug("Partial harvest started {$store->getStoreId()} | $class | {$harvestId}");
 		Springbot_Boss::scheduleJob(
 			'cmd:harvest',
 			array(
@@ -98,17 +115,17 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 				'v' => $harvestId,
 				'i' => $partition,
 			),
-			Springbot_Services_Priority::CATEGORY,
+			Springbot_Services::CATEGORY,
 			'default',
 			$store->getStoreId()
 		);
 	}
 
-	protected function _harvestStore($store, $classes, $harvestId) {
-		$this->_setActive($store->getStoreId());
+	protected function _harvestStore(Mage_Core_Model_Store $store, array $classes, $harvestId) {
 		$this->_logStoreHeader($store);
 
-		Springbot_Services_Cmd_Forecast::forecastStore($store->getStoreId(), $this->_harvestId);
+		$forecastService = new Springbot_Services_Cmd_Forecast;
+		$forecastService->forecastStore($store->getStoreId(), $this->_harvestId);
 
 		foreach ($classes as $class) {
 			Springbot_Boss::scheduleJob(
@@ -118,7 +135,7 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 					'c' => $class,
 					'v' => $harvestId,
 				),
-				Springbot_Services_Priority::CATEGORY,
+				Springbot_Services::CATEGORY,
 				'default',
 				$store->getStoreId()
 			);
@@ -129,7 +146,7 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 					'c' => $class,
 					'v' => $harvestId,
 				),
-				Springbot_Services_Priority::CATEGORY,
+				Springbot_Services::CATEGORY,
 				'default',
 				$store->getStoreId()
 			);
@@ -137,7 +154,7 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 		Springbot_Boss::scheduleJob(
 			'store:finalize',
 			array('s' => $store->getStoreId()),
-			Springbot_Services_Priority::CATEGORY,
+			Springbot_Services::CATEGORY,
 			'default',
 			$store->getStoreId()
 		);
@@ -165,8 +182,6 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 
 		$collection = $this->_getCollection($keyUpper, $storeId);
 
-		$this->getHelper()->forecast($collection, $storeId, $keyUpper, $this->getHarvestId());
-
 		$scheduler = Mage::getModel('combine/cron_queue_batch');
 
 		foreach(Mage::helper('combine/harvest')->partitionCollection($collection) as $partition) {
@@ -179,7 +194,7 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 					'c' => $key,
 					'v' => $this->getHarvestId(),
 				),
-				Springbot_Services_Priority::PARTITION,
+				Springbot_Services::PARTITION,
 				'partition', // Partition queue
 				$storeId
 			);
@@ -198,8 +213,9 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 		Springbot_Log::harvest("Segmenting {$keyUpper}");
 		$scheduler = Mage::getModel('combine/cron_queue_batch');
 
-
 		$this->_reportHarvestStartTime($this->getHarvestId(), $storeId, $key);
+
+		$this->getHelper()->forecast($collection, $storeId, $keyUpper, $this->getHarvestId());
 
 		$count = 0;
 		foreach(Mage::helper('combine/harvest')->partitionCollection($collection, self::SEGMENT_SIZE) as $partition) {
@@ -212,7 +228,7 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 					'i' => (string) $partition,
 					'v' => $this->getHarvestId(),
 				),
-				Springbot_Services_Priority::SEGMENT,
+				Springbot_Services::SEGMENT,
 				'default',
 				$storeId
 			);
@@ -223,7 +239,7 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 
 	private function _reportHarvestStartTime($harvestId, $storeId, $type)
 	{
-		$cronCount =Mage::getModel('combine/cron_count');
+		$cronCount = Mage::getModel('combine/cron_count');
 
 		// Create the cron count row for the entity if it doesn't exist already.
 		$cronCount->increaseCount($storeId, $harvestId, $type, 0);
@@ -236,7 +252,7 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 		);
 		$api = Mage::getModel('combine/api');
 		$payload = $api->wrap('harvest_segments', array($params));
-		if(!is_null($harvestId)) {
+		if (!is_null($harvestId)) {
 			return $api->put("harvests/{$harvestId}", $payload);
 		}
 	}
@@ -247,31 +263,11 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 	protected function _getCollection($type, $storeId)
 	{
 		Springbot_Log::debug("Building collection $type for partition => {$this->getPartition()}");
-		return call_user_func_array(
-			array('Springbot_Services_Harvest_' . $type, 'getCollection'),
-			array($storeId, $this->getPartition())
-		);
+		$harvestServiceClassName = 'Springbot_Services_Harvest_' . $type;
+		$harvestServiceObject = new $harvestServiceClassName;
+		return $harvestServiceObject->getCollection($storeId,  $this->getPartition());
 	}
 
-	/**
-	 * When resuming a harvest, get all class types that have not been fully or partially harvested yet
-	 *
-	 * @param $lastClassCompleted
-	 * @return array
-	 */
-	private function _getClassesSubset($lastClassCompleted) {
-		$classesLeft = array();
-		$foundLastClass = false;
-		foreach (self::$_classes as $class) {
-			if ($foundLastClass) {
-				$classesLeft[] = $class;
-			}
-			if ($class == $lastClassCompleted) {
-				$foundLastClass = true;
-			}
-		}
-		return $classesLeft;
-	}
 
 	public function getPartition()
 	{
@@ -288,18 +284,27 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 		return Mage::helper('combine/harvest');
 	}
 
-	protected function _setActive($storeId)
-	{
-		Springbot_Boss::setActive($storeId);
-		return $this;
+	/**
+	 * When resuming a harvest, get all class types that have not been fully or partially harvested yet
+	 *
+	 * @param $lastClassCompleted
+	 * @return array
+	 */
+	private function _getClassesSubset($lastClassCompleted) {
+		$classesLeft = array();
+		$foundLastClass = false;
+		foreach (self::getClasses() as $class) {
+			if ($foundLastClass) {
+				$classesLeft[] = $class;
+			}
+			if ($class == $lastClassCompleted) {
+				$foundLastClass = true;
+			}
+		}
+		return $classesLeft;
 	}
 
-	protected function _getDate()
-	{
-		return date("Y-m-d H:i:s");
-	}
-
-	protected function _logStoreHeader($store)
+	private function _logStoreHeader(Mage_Core_Model_Store $store)
 	{
 		$helper = Mage::helper('combine/store')->setStore($store);
 
@@ -309,8 +314,4 @@ class Springbot_Services_Cmd_Harvest extends Springbot_Services_Abstract
 		Springbot_Log::printLine(true);
 	}
 
-	public static function getClasses()
-	{
-		return self::$_classes;
-	}
 }

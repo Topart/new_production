@@ -1,16 +1,22 @@
 <?php
 
+/**
+ * Class: Springbot_Boss
+ *
+ * @author Springbot Magento Integration Team <magento@springbot.com>
+ * @version 1.4.0.6
+ * @license http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Springbot_Boss
 {
-	private static $_loggers;
-	private static $_currentStore;
-
-	const EVENT_FILENAME      = 'Springbot-EventHistory.csv';
-	const SOURCE_BULK_HARVEST = 'BH';
-	const SOURCE_OBSERVER     = 'OB';
-	const DATE_FORMAT         = 'Y-m-d H:i:s';
-	const NO_SKU_PREFIX		  = '_sbentity-';
-
+	const SOURCE_BULK_HARVEST  = 'BH';
+	const SOURCE_OBSERVER      = 'OB';
+	const DATE_FORMAT          = 'Y-m-d H:i:s';
+	const NO_SKU_PREFIX        = '_sbentity-';
+	const TOKEN_DELIMITER      = '%7';
+	const COOKIE_NAME          = 'springbot_redirect_queue';
+	const SB_TRACKABLES_COOKIE = '_sbtk';
+	const MAXIMUM_IDS_SAVED    = 32;
 
 	/**
 	 * Schedule cron job
@@ -20,157 +26,181 @@ class Springbot_Boss
 	 * @param int $priority
 	 * @param string $queue
 	 * @param int $storeId
-	 * @param bool $requiresAuth
+	 * @param int $minutesInFuture
 	 */
-	public static function scheduleJob($method, $args, $priority, $queue = 'default', $storeId = null, $requiresAuth = true)
+	public static function scheduleJob($method, array $args, $priority, $queue = 'default', $storeId = null, $minutesInFuture = 0)
 	{
-		if($requiresAuth && !self::storeIdsExist()) {
-			Springbot_Log::debug('Not authenticated, job not queued');
-		}
-		else {
-			$cronner = Mage::getModel('combine/cron_queue');
-			$cronner->setData(array(
+		if(self::active() && !empty($method)) {
+
+			if (is_int($minutesInFuture) && ($minutesInFuture > 0)) {
+				$nextRunAt = date("Y-m-d H:i:s", strtotime("+{$minutesInFuture} minutes"));
+			}
+			else {
+				$nextRunAt = date("Y-m-d H:i:s");
+			}
+
+			$cronModel = Mage::getModel('combine/cron_queue');
+			$cronModel->setData(array(
 				'method' => $method,
 				'args' => json_encode($args),
 				'priority' => $priority,
 				'command_hash' => sha1($method . json_encode($args)),
 				'queue' => $queue,
-				'store_id' => $storeId
+				'store_id' => $storeId,
+				'next_run_at' => $nextRunAt
 			));
 
-			$cronner->insertIgnore();
+			$cronModel->insertIgnore();
 			self::startWorkManager();
+		}
+	}
+
+	public static function insertEvent($data)
+	{
+		if(self::active()) {
+			if(!isset($data['type']) || !isset($data['store_id'])) {
+				Springbot_Log::error(new Exception("Invalid action attempted to log"));
+				return;
+			}
+			$event = Mage::getModel('combine/action');
+			$event->setData($data);
+			$event->setVisitorIp(Mage::helper('core/http')->getRemoteAddr(true));
+			$event->save();
+
+			Springbot_Log::debug($event->getData());
+		}
+	}
+
+	public static function addTrackable($type, $value, $quoteId, $customerId, $customerEmail = '', $orderId = null)
+	{
+		if(self::active()) {
+			$trackableModel = Mage::getModel('combine/trackable');
+			$trackableModel->setData(array(
+				'type' => $type,
+				'value' => $value,
+				'quote_id' => $quoteId,
+				'customer_id' => $customerId,
+				'email' => $customerEmail,
+				'order_id' => $orderId
+			));
+			$trackableModel->createOrUpdate();
+
+			// Ensure that trackables in cookie are processed
+			foreach($trackableModel->getTrackables() as $type => $value) {
+				Springbot_Log::debug("Ensure trackable $type => $value");
+				$trackableModel->setData(array(
+					'type' => $type,
+					'value' => $value,
+					'quote_id' => $quoteId,
+					'customer_id' => $customerId,
+					'email' => $customerEmail,
+					'order_id' => $orderId
+				));
+				$trackableModel->createOrUpdate();
+			}
 		}
 	}
 
 	public static function startWorkManager()
 	{
-		$status = Mage::getModel('combine/cron_manager_status');
-		if(
-			!$status->isBlocked() &&
-			!$status->isActive()
-		) {
-			Springbot_Boss::internalCallback('work:manager');
-		}
-	}
-
-	/**
-	 *
-	 *
-	 * @param string $method
-	 * @param array $args
-	 * @param bool $background
-	 */
-	public static function internalCallback($method, $args = array(), $background = true)
-	{
-		$bkg = $background ? '&' : '';
-		$fmt = self::buildFlags($args);
-		$php = Mage::helper('combine/harvest')->getPhpExec();
-		$dir = Mage::getBaseDir();
-		$err = Mage::helper('combine')->getSpringbotErrorLog();
-		$log = Mage::helper('combine')->getSpringbotLog();
-		$nohup = Mage::helper('combine')->nohup();
-		$nice = Mage::helper('combine')->nice();
-
-		$cmd = "{$nohup} {$nice} {$php} {$dir}/shell/springbot.php {$fmt} {$method} >> {$log} 2>> {$err} {$bkg}";
-		return self::spawn($cmd);
-	}
-
-	/**
-	 * Build cli flags from arg array
-	 *
-	 * @param array $args
-	 * @return string
-	 */
-	public static function buildFlags($args)
-	{
-		$fmt = array();
-
-		foreach($args as $flag => $arg) {
-			if(is_int($flag)) {
-				$flag = $arg;
-				$arg = '';
+		if(self::active() && !self::isCron() && !self::isPrattler()) {
+			$status = Mage::getModel('combine/cron_manager_status');
+			if(
+				!$status->isBlocked() &&
+				!$status->isActive()
+			) {
+				Springbot_Cli::internalCallback('work:manager');
 			}
-			$fmt[] = "-$flag $arg";
 		}
-		return implode(' ', $fmt);
 	}
 
 	/**
-	 * Spawn system callback with any available system command
+	 * Schedule all jobs intended to run in the future
 	 *
-	 * @param string $command
-	 * @param int $return_var
+	 * @param integer $storeId
 	 */
-	public static function spawn($command, &$return_var = 0)
+	public static function scheduleFutureJobs($storeId = null)
 	{
-		Springbot_Log::debug($command);
-		if(function_exists('system')) {
-			$ret = system($command, $return_var);
-		} else if(function_exists('exec')) {
-			$ret = exec($command, $return_var);
-		} else if(function_exists('passthru')) {
-			$ret = passthru($command, $return_var);
-		} else if(function_exists('shell_exec')) {
-			$ret = shell_exec($command);
-		} else {
-			throw new Exception('Program execution function not found!');
+		if (is_null($storeId)) {
+			$storeId = Mage::app()->getStore()->getStoreId();
 		}
-		Springbot_Log::debug($ret);
-		return $ret;
-	}
 
-	public static function launchHarvest()
-	{
-		Mage::helper('combine/harvest')->truncateEngineLogs();
-		Springbot_Boss::internalCallback('cmd:harvest');
+		// Healthcheck uses default query interval
+		Springbot_Boss::scheduleJob('cmd:healthcheck', array('s' => $storeId), 5, 'listener', $storeId, 5);
+
+		// Send event log every minute
+		Springbot_Boss::scheduleJob('tasks:deliverEventLog', array('s' => $storeId), 5, 'listener', $storeId, 1);
+
+		// Run this in real time, but only every 30 min
+		Springbot_Boss::scheduleJob('work:cleanup', array('s' => $storeId), 5, 'listener', $storeId, 30);
 	}
 
 	/**
-	 * This method kills all processes which contain 'Harvest' in the command by default.
-	 * Use carefully!
+	 * Removes all harvest jobs from the queue
 	 *
-	 * @param string $toHalt
+	 * @param integer $storeId
 	 */
-	public static function halt()
-	{
-        $queueDb = new Springbot_Combine_Model_Mysql4_Cron_Queue;
-        $queueDb->removeHarvestRows();
-	}
-
-	public static function haltStore($storeId)
+	public static function halt($storeId = null)
 	{
 		$queueDb = new Springbot_Combine_Model_Mysql4_Cron_Queue;
-		$queueDb->removeStoreHarvestRows($storeId);
-	}
-
-	public static function setActive($storeId)
-	{
-		self::$_currentStore = $storeId;
-	}
-
-	public static function getEventHistoryFilename()
-	{
-		return Mage::getBaseDir('var') . DS . 'log' . DS . self::EVENT_FILENAME;
+		$queueDb->removeHarvestRows($storeId);
 	}
 
 	public static function isCron()
 	{
-		return Mage::getStoreConfig('springbot/cron/enabled');
+		if (Mage::getStoreConfig('springbot/advanced/harvester_type') == "cron") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+
+	public static function isPrattler()
+	{
+		if (Mage::getStoreConfig('springbot/advanced/harvester_type') == "prattler") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static function harvesterType()
+	{
+		return Mage::getStoreConfig('springbot/advanced/harvester_type');
 	}
 
 	public static function storeIdsExist()
 	{
-		$configValues = Mage::getStoreConfig('springbot/config');
-		$storeIdStr = 'store_id_';
-		foreach ($configValues as $configName => $configValue) {
-			if(substr($configName, 0, strlen($storeIdStr)) == $storeIdStr) {
-				if (!is_numeric($configValue)) {
-					return false;
-				}
+		foreach (Mage::app()->getStores() as $store) {
+			if (!Mage::getStoreConfig('springbot/config/store_id_' . $store->getId())) {
+				return false;
 			}
 		}
 		return true;
 	}
 
+	/**
+	 * Check if plugin is active and should function properly
+	 */
+	public static function active()
+	{
+		$token = Mage::getStoreConfig('springbot/config/security_token');
+		return !empty($token);
+	}
+
+	public static function setCookie($name, $value)
+	{
+		Springbot_Log::debug("Saving cookie $name : $value");
+
+		Mage::getModel('core/cookie')->set(
+			$name,
+			$value,
+			strtotime('+365 days'),
+			'/', // path
+			null, // domain
+			null, // secure
+			false // httpOnly
+		);
+	}
 }

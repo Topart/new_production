@@ -129,7 +129,7 @@ class Springbot_Services_Update_Package extends Springbot_Services_Update_Abstra
 
 	protected function _cmdTar($file, $out)
 	{
-		Springbot_Boss::spawn("tar -zxf $file -C $out");
+		Springbot_Cli::spawn("tar -zxf $file -C $out");
 		if($this->_empty($out)) {
 			throw new Exception('Tar empty!');
 		}

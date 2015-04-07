@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_CustomerAttributeSet extends Springbot_Combine_Model_Parser_AttributeSet implements Springbot_Combine_Model_Parser
+class Springbot_Combine_Model_Parser_CustomerAttributeSet extends Springbot_Combine_Model_Parser_AttributeSet
 {
 	protected $_type = 'customer';
 

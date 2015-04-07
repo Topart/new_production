@@ -3,6 +3,10 @@
     clear: both;
 }
 
+.bmbleb-adminhtml-jobs-index #id {
+  float:left;
+}
+
 #bmbleb-sync-now {
 	height:170px;
 	width:170px;

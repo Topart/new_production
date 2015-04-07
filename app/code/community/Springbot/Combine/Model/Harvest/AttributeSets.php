@@ -1,24 +1,52 @@
 <?php
 
-class Springbot_Combine_Model_Harvest_AttributeSets extends Springbot_Combine_Model_Harvest_Abstract implements Springbot_Combine_Model_Harvester
+class Springbot_Combine_Model_Harvest_AttributeSets extends Springbot_Combine_Model_Harvest
 {
-	protected $_parserModel = 'combine/parser_attributeSet';
-	protected $_apiController = 'attribute_sets';
-	protected $_apiModel = 'attribute_sets';
-	protected $_rowId = 'attribute_set_id';
 	protected $_helper;
 
+
+	public function getMageModel()
+	{
+		return 'eav/entity_attribute_set';
+	}
+
+	public function getParserModel()
+	{
+		return 'combine/parser_attributeSet';
+	}
+
+	public function getApiController()
+	{
+		return 'attribute_sets';
+	}
+
+	public function getApiModel()
+	{
+		return 'attribute_sets';
+	}
+
+	public function getRowId()
+	{
+		return 'attribute_set_id';
+	}
+
+	/**
+	 * Parse caller for dependent parser method
+	 *
+	 * @param Mage_Core_Model_Abstract $model
+	 * @return Zend_Json_Expr
+	 */
 	public function parse($model)
 	{
-		$parser = $this->_getParser($model)->setMageStoreId($this->_storeId);
-		$parsed = $parser->parse($model);
+		$parser = Mage::getModel($this->getParserModel(), $model);
+		$parser->setMageStoreId($this->getStoreId());
+		$parser->setStoreId($this->getStoreId());
+		$parser->parse();
 
-		if($this->_delete) {
-			$parsed->setIsDeleted(true);
+		if ($this->getDelete()) {
+			$parser->setIsDeleted(true);
 		}
-		$parsed->setDataSource($this->getDataSource());
-		$json = $parsed->toJson();
-		return $parsed->getData();
+		return $parser->getData();
 	}
 
 	public function loadMageModel($id)

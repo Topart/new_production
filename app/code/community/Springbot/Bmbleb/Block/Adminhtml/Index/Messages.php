@@ -1,7 +1,6 @@
 <?php
 class Springbot_Bmbleb_Block_Adminhtml_Index_Messages extends Mage_Adminhtml_Block_Template
 {
-
     /**
      * Block constructor
      */
@@ -11,8 +10,4 @@ class Springbot_Bmbleb_Block_Adminhtml_Index_Messages extends Mage_Adminhtml_Blo
 		$this->setTemplate("bmbleb/index/messages.phtml");
     }
 
-    
-
-    
-    
 }
