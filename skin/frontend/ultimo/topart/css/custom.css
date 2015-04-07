@@ -108,9 +108,9 @@
 /* Material
 -------------------------------------------------------------- */
 .product-options dd.material { margin-bottom: 0; }
-.product-options dd.material ul.options-list li { margin: 0 4% 5% 0; width: auto; }
+.product-options dd.material ul.options-list li { margin: 0 2% 5% 0; width: auto; }
 .product-options dd.material .background_border { margin-bottom: 5px; width: auto; height: auto; }
-.product-options dd.material .background_border img { max-width: 240px; max-height: 128px; }
+.product-options dd.material .background_border img { max-width: 219px; max-height: 128px; }
 .product-options dd.material #custom_option_material_canvas_background { border: none; }
 .product-options dd.material .custom_option_viewport { cursor: default; }
 .product-options dd.material .background_border { border: none; }
