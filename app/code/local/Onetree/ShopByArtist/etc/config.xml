@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Onetree_ShopByArtist>
+            <version>0.1.0</version>
+        </Onetree_ShopByArtist>
+    </modules>
+    <global>
+        <blocks>
+            <onetree_shopbyartist>
+                <class>Onetree_ShopByArtist_Block</class>
+            </onetree_shopbyartist>
+        </blocks>
+    </global>
+    <frontend>
+        <layout>
+            <updates>
+                <onetree_shopbyartist>
+                    <file>shopbyartist.xml</file>
+                </onetree_shopbyartist>
+            </updates>
+        </layout>
+        <routers>
+            <onetree_shopbyartist>
+                <use>standard</use>
+                <args>
+                    <module>Onetree_ShopByArtist</module>
+                    <frontName>shopbyartist</frontName>
+                </args>
+            </onetree_shopbyartist>
+        </routers>
+    </frontend>
+</config>
