@@ -12,3 +12,5 @@ skin/frontend/ultimo/default/css/_config/*
 /.idea/
 .DS_Store
 .htaccess
+.buildpath
+/.settings/
