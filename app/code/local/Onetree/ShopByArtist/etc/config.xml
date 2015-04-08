@@ -11,6 +11,11 @@
                 <class>Onetree_ShopByArtist_Block</class>
             </onetree_shopbyartist>
         </blocks>
+        <helpers>
+            <onetree_shopbyartist>
+                <class>Onetree_ShopByArtist_Helper</class>
+            </onetree_shopbyartist>
+        </helpers>
     </global>
     <frontend>
         <layout>
@@ -30,4 +35,11 @@
             </onetree_shopbyartist>
         </routers>
     </frontend>
+    <default>
+    	<shopbyartist>
+    		<shopbyartist_config>
+    			<category_id>1598</category_id>
+    		</shopbyartist_config>
+    	</shopbyartist>
+    </default>
 </config>
