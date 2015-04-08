@@ -1,0 +1,16 @@
+app/etc/local.xml
+downloader/connect.cfg
+includes/stat
+tmp/
+var/*
+media/*
+sitemap.xml
+downloader/*
+.project
+wordpress/wp-content/uploads/*
+skin/frontend/ultimo/default/css/_config/*
+/.idea/
+.DS_Store
+.htaccess
+.buildpath
+/.settings/
