@@ -2,19 +2,19 @@
 <config>
     <modules>
 	   <Springbot_Bmbleb>
-            <active>false</active>
+            <active>true</active>
             <codePool>community</codePool>
         </Springbot_Bmbleb>
         <Springbot_BoneCollector>
-            <active>false</active>
+            <active>true</active>
             <codePool>community</codePool>
         </Springbot_BoneCollector>
-	    <Springbot_Combine>
-            <active>false</active>
+        <Springbot_Combine>
+            <active>true</active>
             <codePool>community</codePool>
         </Springbot_Combine>
-	    <Springbot_Shadow>
-            <active>false</active>
+        <Springbot_Shadow>
+            <active>true</active>
             <codePool>community</codePool>
         </Springbot_Shadow>
     </modules>
