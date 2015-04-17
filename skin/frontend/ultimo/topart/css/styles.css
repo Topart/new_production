@@ -3068,6 +3068,7 @@ body.cms-index-index .breadcrumbs { display:none; }
 	top: 85%;
 }
 #nav li.level0 { margin-right: 4.17%; }
+#nav li.level0:last-child { margin-right: 0; }
 #nav .level0-wrapper, #nav.classic ul.level0{top: 94% !important;}
 .nav-container > .nav {box-shadow: none;-webkit-box-shadow: none;}
 
