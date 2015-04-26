@@ -2708,8 +2708,8 @@ var globals = {};
                          */
                         
                         jQuery(document).on("click","input[name=size]",function(){
-                            clicked_image_index = jQuery(this).parent().index();
-                            jQuery("dd.size ul li:eq(" + clicked_image_index + ") input").trigger("click");
+                            var optionSku = jQuery(this).closest('li').attr('id').replace('custom_option_', '');
+                            jQuery('dd.size li input[data-option-sku="' + optionSku + '"]').trigger("click");
 
                             // Make the currently selected size background dark green and deselect all the others
                             if ( jQuery(this).parent().attr("id") != "custom_size_button_background" )

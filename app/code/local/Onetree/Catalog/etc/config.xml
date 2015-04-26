@@ -37,5 +37,12 @@
                 </rewrite>
             </customer>
         </helpers>
+        <models>
+            <catalog>
+                <rewrite>
+                    <product_type_price>Onetree_Catalog_Model_Product_Type_Price</product_type_price>
+                </rewrite>
+            </catalog>
+        </models>
     </global>
 </config>
