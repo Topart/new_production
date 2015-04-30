@@ -4,9 +4,10 @@
 		<img align=left  src="<?php echo $this->getSkinUrl('bmbleb/images/plugin_dashboard_syncing.jpg'); ?>" alt="springbot logo" />&nbsp;</a>
 	<?php
 		try {
-			Springbot_Boss::launchHarvest();
-		} catch (Exception $e) {
-			Mage::logException($e);
+			Springbot_Cli::launchHarvestInline();
+		}
+		catch (Exception $e) {
+			Springbot_Log::error($e);
 		}
 	?>
 	</div>

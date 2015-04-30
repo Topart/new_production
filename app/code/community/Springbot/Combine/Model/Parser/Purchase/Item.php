@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Purchase_Item extends Springbot_Combine_Model_Parser_Abstract implements Springbot_Combine_Model_Parser
+class Springbot_Combine_Model_Parser_Purchase_Item extends Springbot_Combine_Model_Parser
 {
 	protected $_item;
 	protected $_accessor = '_item';
@@ -13,15 +13,6 @@ class Springbot_Combine_Model_Parser_Purchase_Item extends Springbot_Combine_Mod
 		$this->_actualProduct = null;
 		$this->_parentProduct = null;
 		$this->_parse();
-	}
-
-	public function parse($item)
-	{
-		$this->_item = $item;
-		$this->_actualProduct = null;
-		$this->_parentProduct = null;
-		$this->_parse();
-		return $this;
 	}
 
 	public function _parse()
@@ -59,19 +50,16 @@ class Springbot_Combine_Model_Parser_Purchase_Item extends Springbot_Combine_Mod
 
 		if(!isset($this->_parentProduct))
 		{
-			if($config = $item->getProductOptionByCode('super_product_config'))
-			{
+			if($config = $item->getProductOptionByCode('super_product_config')) {
 				$parentProductId = isset($config['product_id']) ? $config['product_id'] : null;
 			}
-			else if($item->hasParentItemId())
-			{
+			else if($item->hasParentItemId()) {
 				$parentProductId = $item->getParentItem()->getProductId();
 			}
-			if(!isset($parentProductId))
-			{
+			if(!isset($parentProductId)) {
 				$parentProductId = $item->getProductId();
 			}
-			$this->_parentProduct = $this->_getProduct($parentProductId);
+			$this->_parentProduct = Mage::getModel('catalog/product')->load($parentProductId);
 		}
 		return $this->_parentProduct;
 	}
@@ -99,7 +87,6 @@ class Springbot_Combine_Model_Parser_Purchase_Item extends Springbot_Combine_Mod
 
 	protected function _getProductAttributes()
 	{
-		$collection = array();
 		return $this->_getHelper()->getCustomAttributes($this->getActualProduct(), 50);
 	}
 

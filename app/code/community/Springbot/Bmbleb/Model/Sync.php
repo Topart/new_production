@@ -2,7 +2,6 @@
 
 class Socketware_Bmbleb_Model_Sync extends Mage_Core_Model_Abstract
 {
-	
     const STATUS_STARTED = 0;
     const STATUS_PROCESSING = 1;
     const STATUS_PARTIALLY_COMPLETE = 2;

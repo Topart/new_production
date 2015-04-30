@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<layout>
+	<default>
+		<reference name="before_body_end">
+			<block type="shadow/async" name="shadow.async" template="shadow/async.phtml"/>
+		</reference>
+	</default>
+
+	<shadow_frontend_index_index>
+		<block type="core/template" name="root"/>
+	</shadow_frontend_index_index>
+
+	<checkout_onepage_success>
+		<reference name="before_body_end">
+			<block type="core/template" template="shadow/conversion.phtml" name="shadow.conversion" />
+		</reference>
+	</checkout_onepage_success>
+
+	<catalog_product_view>
+		<reference name="before_body_end">
+			<block type="shadow/action_view" name="shadow.action.view" />
+		</reference>
+	</catalog_product_view>
+</layout>
+
+

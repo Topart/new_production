@@ -8,15 +8,6 @@
  */
 class Springbot_Bmbleb_Helper_Account extends Mage_Core_Helper_Abstract
 {
-	public function getResyncOption()
-	{
-		return Mage::getSingleton('core/session')->getSpringbotResyncOption();
-	}
-
-	public function setResyncOption($value)
-	{
-		Mage::getSingleton('core/session')->setSpringbotResyncOption($value);
-	}
 	public function setAccount($account = array())
 	{
 		Mage::getSingleton('core/session')->setBmblebAccount($account);
@@ -53,26 +44,6 @@ class Springbot_Bmbleb_Helper_Account extends Mage_Core_Helper_Abstract
 		return false;
 	}
 
-	protected function checkCredentials($email = '', $password = '')
-	{
-		$account = array('valid' => false);
-
-		$apiResponse = Mage::helper('bmbleb/ApiCall')->call("login", array('email' => $email,'password' => $password));
-		if ($apiResponse->getResponsecode() == "200"){
-			$account['valid'] = true;
-			$account['email'] = $email;
-		} elseif ($apiResponse->getResponsecode() == "400"){
-			$account['message'] = Mage::helper('bmbleb')->__('Unable to login with the email and password provided.');
-		} elseif ($apiResponse->getResponsecode() == "401"){
-			$account['message'] = Mage::helper('bmbleb')->__('Unable to login with the email and password provided.');
-		} else {
-			$account['message'] = Mage::helper('bmbleb')->__('Unable to check your login.');
-		}
-		$this->setAccount($account);
-
-		return $account;
-	}
-
 	public function authenticate($email = '', $password = '')
 	{
 		$result = false;
@@ -82,7 +53,7 @@ class Springbot_Bmbleb_Helper_Account extends Mage_Core_Helper_Abstract
 			if ($email == '' && $password == ''){
 				return false;
 			}
-			$account = $this->checkCredentials($email, $password);
+			$account = Mage::helper('combine')->checkCredentials($email, $password);
 			if ($account['valid']) {
 				$result = true;
 				if ($saveCredentials){
@@ -131,14 +102,10 @@ class Springbot_Bmbleb_Helper_Account extends Mage_Core_Helper_Abstract
 
 	public function setSavedAccountInformation($email='', $password='', $secToken='')
 	{
-		$prevOwner=$this->getSavedEmail();
-
 		$config = new Mage_Core_Model_Config();
-
 		$config->saveConfig('springbot/config/account_email', $email, 'default', 0);
 		$config->saveConfig('springbot/config/account_password', Mage::helper('core')->encrypt($password), 'default', 0);
 		$config->saveConfig('springbot/config/security_token', $secToken, 'default', 0);
-
 		Mage::getConfig()->cleanCache();
 		Mage::getConfig()->reinit();
 	}

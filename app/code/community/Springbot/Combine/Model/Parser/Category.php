@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_Category extends Springbot_Combine_Model_Parser_Abstract
+class Springbot_Combine_Model_Parser_Category extends Springbot_Combine_Model_Parser
 {
 	protected $_accessor = '_category';
 	protected $_category;
@@ -10,14 +10,6 @@ class Springbot_Combine_Model_Parser_Category extends Springbot_Combine_Model_Pa
 	{
 		$this->_category = $category;
 		$this->_parse();
-	}
-
-	public function parse($category)
-	{
-		$this->_category = $category;
-		$this->_parse();
-
-		return $this;
 	}
 
 	protected function _parse()

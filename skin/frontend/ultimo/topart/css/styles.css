@@ -3028,7 +3028,7 @@ body.cms-index-index .breadcrumbs { display:none; }
 }
 .header-top-container .header-top .top-text span{color: #B19D68!important;}
 
-#nav{margin-left: 0;}
+#nav{margin-left: 0;width: 100%;}
 /*#nav li#nav-home, #nav li.nav-custom-link, #nav li:last-child{display: none;}*/
 #nav a.level-top .caret{
 	border-bottom: 8px solid #2F2F2F!important;
@@ -3056,11 +3056,9 @@ body.cms-index-index .breadcrumbs { display:none; }
     font-style: normal;
     font-weight: bold;
     line-height: 19px;
-    margin-right: 50px;
     padding: 0;
     text-decoration: none;
 }
-#nav ul{}
 #nav ul li{display: inline-block !important; float:left!important;line-height: 24px; width: 158px;}
 #nav ul li a:hover{color:#000;}
 #nav a.level-top:hover .caret{display: inline-block!important;}
@@ -3069,6 +3067,8 @@ body.cms-index-index .breadcrumbs { display:none; }
 	box-shadow: none;
 	top: 85%;
 }
+#nav li.level0 { margin-right: 4.17%; }
+#nav li.level0:last-child { margin-right: 0; }
 #nav .level0-wrapper, #nav.classic ul.level0{top: 94% !important;}
 .nav-container > .nav {box-shadow: none;-webkit-box-shadow: none;}
 
@@ -4046,3 +4046,32 @@ ul.create-art-list li div:nth-child(3){
     /**/
     .catalog-category-view .category-top .category-image img{float:left;}
     div.product-image-wrapper a img{max-width: 260px;}
+    /**** Artist List  *****/
+
+    .artist-list h4 {
+        border-bottom: 1px solid #b19d68;
+    }
+
+    .columns-list
+    {
+        -moz-column-width: 11.5em; /* Firefox */
+        -webkit-column-width: 11.5em; /* webkit, Safari, Chrome */
+        column-width: 11.5em;
+    }
+    .index-container {
+        text-align: center;
+        font-size: 1.5em;
+    }
+
+    .index-container li {
+        display: inline
+    }
+
+    .index-container a {
+        color: #060606;
+    }
+    .index-container a:hover {
+       color: #b19d68;
+    }
+
+    /**** Artist List End *****/

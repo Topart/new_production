@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Services_Store_Finalize extends Springbot_Services_Abstract
+class Springbot_Services_Store_Finalize extends Springbot_Services
 {
 
 	public function run()
@@ -12,7 +12,7 @@ class Springbot_Services_Store_Finalize extends Springbot_Services_Abstract
 			$helper = Mage::helper('combine/store')->setStore($store);
 
 			Springbot_Log::printLine();
-			Springbot_Log::harvest('Store level harvesting complete for Store->'. $storeId .'/'. $helper->getSpringbotStoreId(), true);
+			Springbot_Log::harvest('Store level harvesting complete for Store->'. $storeId .'/'. $helper->getSpringbotStoreId(), true, $storeId);
 			Springbot_Log::printLine();
 
 			$api = Mage::getModel('combine/api');

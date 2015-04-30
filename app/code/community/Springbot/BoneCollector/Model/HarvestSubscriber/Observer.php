@@ -2,7 +2,7 @@
 
 class Springbot_BoneCollector_Model_HarvestSubscriber_Observer extends Springbot_BoneCollector_Model_HarvestAbstract
 {
-	public function saveSubscriber($observer)
+	public function onSubscriberSaveAfter($observer)
 	{
 		try {
 			$this->_initObserver($observer);
@@ -11,16 +11,17 @@ class Springbot_BoneCollector_Model_HarvestSubscriber_Observer extends Springbot
 			Springbot_Boss::scheduleJob(
 				'post:subscriber',
 				array('i' => $subscriberId),
-				Springbot_Services_Priority::LISTENER,
+				Springbot_Services::LISTENER,
 				'listener'
 			);
 
-		} catch (Exception $e) {
+		}
+		catch (Exception $e) {
 			Springbot_Log::error($e);
 		}
 	}
 
-	public function deleteSubscriber($observer)
+	public function onSubscriberDeleteBefore($observer)
 	{
 		try {
 			// Runs blocking in session to guarantee record existence
@@ -29,7 +30,8 @@ class Springbot_BoneCollector_Model_HarvestSubscriber_Observer extends Springbot
 				'start_id' => $observer->getEvent()->getSubscriber()->getId(),
 				'delete' => true,
 			))->run();
-		} catch (Exception $e) {
+		}
+		catch (Exception $e) {
 			Springbot_Log::error($e);
 		}
 	}

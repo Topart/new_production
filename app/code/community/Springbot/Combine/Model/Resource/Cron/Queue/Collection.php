@@ -19,7 +19,11 @@ class Springbot_Combine_Model_Resource_Cron_Queue_Collection extends Mage_Core_M
 	{
 		$this->getSelect()
 			->where('locked_at IS NULL')
-			->where('attempts < ?', $this->getAttemptLimit());
+			->where('attempts < ?', $this->getAttemptLimit())
+			->where(
+				"(next_run_at IS NULL OR next_run_at < ?)",
+				date("Y-m-d H:i:s")
+			);
 
 		// Only foreman can process the default queue
 		if(!$isForeman) {
@@ -36,8 +40,6 @@ class Springbot_Combine_Model_Resource_Cron_Queue_Collection extends Mage_Core_M
 		if ($queue) {
 			$this->getSelect()->where('queue = "' . $queue .'" ');
 		}
-
-		Springbot_Log::debug((string) $this->getSelect());
 
 		return $this;
 	}
@@ -65,6 +67,6 @@ class Springbot_Combine_Model_Resource_Cron_Queue_Collection extends Mage_Core_M
 
 	public function getActiveCount()
 	{
-		return $this->addFieldToFilter('locked_at', array('notnull' => true))->getSize();
+		return $this->getPriorityJobs(1)->getSize();
 	}
 }

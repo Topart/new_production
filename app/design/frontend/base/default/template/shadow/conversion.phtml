@@ -1,0 +1,17 @@
+<?php
+	$total = 0.0;
+	$escapedOrderId = '';
+	try {
+		$lastOrderId = Mage::getSingleton('checkout/session')->getLastOrderId();
+		$order = Mage::getModel('sales/order')->load($lastOrderId);
+		$total = $order->getGrandTotal();
+		$escapedOrderId = $this->escapeHtml($lastOrderId);
+	} catch (Exception $e) {
+		Springbot_Log::error($e);
+	}
+?>
+
+<script type="text/javascript">
+	adroll_conversion_value_in_dollars = <?php echo $total ?>;
+	adroll_custom_data = {"ORDER_ID": "<?php echo $escapedOrderId ?>"};
+</script>

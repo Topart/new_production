@@ -15,10 +15,13 @@ class Springbot_Combine_Model_Resource_Redirect_Collection extends Mage_Core_Mod
 
 	public function loadByEmail($email)
 	{
-		$this->getSelect()->order('id DESC');
-
 		$this->addFieldToFilter('email', $email);
+		return $this;
+	}
 
+	public function loadByQuoteId($quoteId)
+	{
+		$this->addFieldToFilter('quote_id', $quoteId);
 		return $this;
 	}
 

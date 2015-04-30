@@ -8,8 +8,19 @@ class Springbot_Combine_Model_Cron_Manager_Status extends Varien_Object
 
 	public function isActive()
 	{
-		$pid = $this->getPid();
-		return !empty($pid) && file_exists("/proc/$pid");
+		if (is_readable('/proc')) {
+			$pid = $this->getPid();
+			return !empty($pid) && file_exists("/proc/$pid");
+		}
+		else {
+			$filename = Mage::getBaseDir('tmp') . DS . Springbot_Services_Work_Manager::WORKMANAGER_FILENAME;
+			if(file_exists($filename)) {
+				list($pid, $startTime) = explode('-', file_get_contents($filename));
+				return ((time() - $startTime) < Springbot_Services_Work_Manager::WORKER_TIMEOUT);
+			} else {
+				return false;
+			}
+		}
 	}
 
 	public function toggle()
@@ -17,7 +28,7 @@ class Springbot_Combine_Model_Cron_Manager_Status extends Varien_Object
 		if($this->isActive()) {
 			Springbot_Log::debug('Work manager active, halting');
 			$this->issueWorkBlocker();
-			$this->haltManager();
+			$this->haltManager($this->getPid());
 		} else {
 			Springbot_Log::debug('Work manager inactive, starting');
 			$this->removeWorkBlocker();
@@ -30,10 +41,6 @@ class Springbot_Combine_Model_Cron_Manager_Status extends Varien_Object
 		return file_exists($this->_getBlockFile());
 	}
 
-	public function haltManager()
-	{
-		Springbot_Boss::internalCallback('work:stop', array('p' => $this->getPid()));
-	}
 
 	public function issueWorkBlocker()
 	{
@@ -80,22 +87,6 @@ class Springbot_Combine_Model_Cron_Manager_Status extends Varien_Object
 			return file_get_contents($filename);
 		} else {
 			return null;
-		}
-	}
-
-	public function getSched()
-	{
-		if($pid = $this->getPid()) {
-			$sched = array();
-			$handler = fopen('/proc/' . $pid . '/sched', 'r');
-			while($line = fgets($handler)) {
-				$pieces = array();
-				if(preg_match('/^(\S+)\s+:\s+([0-9.]+)$/', $line, $pieces)) {
-					$sched[$pieces[1]] = $pieces[2];
-				}
-			}
-			fclose($handler);
-			return $sched;
 		}
 	}
 

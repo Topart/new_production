@@ -2,28 +2,34 @@
 
 class Springbot_Services_Harvest_AttributeSets extends Springbot_Services_Harvest
 {
-	protected $_type = 'attributes';
-
 	public function run()
 	{
-		$collection = self::getCollection($this->getStoreId())
-			->addFieldToFilter('attribute_set_id', array('gt' => $this->getStartId()));
-		$stopId = $this->getStopId();
-		if ($stopId !== null) {
+		if ($this->getStoreId()) {
+			$collection = $this->getCollection($this->getStoreId());
+			$api = Mage::getModel('combine/api');
+			$harvester =  new Springbot_Combine_Model_Harvest_AttributeSets($api, $collection, $this->getDataSource());
+			$harvester->setStoreId($this->getStoreId());
+			$harvester->harvest();
+			$this->reportCount($harvester);
+		}
+		else {
+			throw new Exception("Missing store id for Attribute Sets harvest");
+		}
+
+	}
+
+	public function getCollection($storeId, $partition = null)
+	{
+		$collection = Mage::helper('combine/attributes')->getAttributeSets();
+		//self::getCollection($this->getStoreId())
+
+		$collection->addFieldToFilter('attribute_set_id', array('gt' => $this->getStartId()));
+
+		if ($this->getStopId() !== null) {
 			$collection->addFieldToFilter('attribute_set_id', array('lteq' => $this->getStopId()));
 		}
 
-		$this->_harvester = Mage::getModel('combine/harvest_attributeSets')
-			->setDataSource($this->getDataSource())
-			->setStoreId($this->getStoreId())
-			->setCollection($collection)
-			->harvest();
-
-		return parent::run();
+		return $collection;
 	}
 
-	public static function getCollection()
-	{
-		return Mage::helper('combine/attributes')->getAttributeSets();
-	}
 }

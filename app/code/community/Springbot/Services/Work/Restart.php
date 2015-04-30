@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Services_Work_Restart extends Springbot_Services_Abstract
+class Springbot_Services_Work_Restart extends Springbot_Services
 {
 	public function run()
 	{
@@ -13,7 +13,7 @@ class Springbot_Services_Work_Restart extends Springbot_Services_Abstract
 		if($status->isActive()) {
 			$status->haltManager();
 		}
-		Springbot_Boss::startWorkManager();
+		Springbot_Cli::startWorkManager();
 	}
 
 }

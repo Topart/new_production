@@ -95,7 +95,7 @@
 
 /* 1st level only
 -------------------------------------------------------------- */
-#nav > li { float:left; }
+#nav > li { position: relative; float:left; }
 #nav > li.last { padding-right:0; }
 #nav > li > a { display:block; padding:0 12px; -webkit-tap-highlight-color: transparent; }
 #nav > li > a > span { display: inline-block; }
@@ -104,11 +104,12 @@
 	wide:    2nd-level category drop-down box + custom block drop-down box
 	classic: custom block drop-down box
 -------------------------------------------------------------- */
+#nav ul li { width: 170px; }
 #nav .level0-wrapper {
 	position:absolute;	
 	left:-10000px;
 	background-color:#fff;
-	width:96%;
+	width:365px;
 	padding:2%;
 	-webkit-transform: translateZ(0); /* Fix: possible glitches during animation */
 }
@@ -406,11 +407,7 @@ padding-top: 6px !important;
 	text-transform: capitalize !important;
 }
 @media only screen and (min-width : 980px) {
-	#nav .level0 .level0-wrapper{
-		max-width: 345px;
-	}
 	#nav .level0.nav-5 .level0-wrapper{
-		left: 150px !important;
         display:none;
 	}
 }

@@ -5,14 +5,13 @@ $installer = $this;
 
 $installer->startSetup();
 
-try
-{
+try {
 	$installer->getSiteDetails();
-	$installer->setDefaultPhpPath();
 	if(!Mage::getStoreConfig('springbot/debug/skip_install_log')) {
 		$installer->submit();
 	}
-} catch (Exception $e) {
-	Mage::logException($e);
+}
+catch (Exception $e) {
+	Springbot_Log::error($e);
 }
 $installer->endSetup();

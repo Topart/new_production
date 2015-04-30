@@ -49,7 +49,8 @@ class Springbot_Util_Log_Rollover
 		if(!isset($this->_globbed[$filename])) {
 			$filename = $this->_qualify($filename);
 			$pattern = $filename . '.*';
-			$this->_globbed[$filename] = glob($pattern);
+			$glob = glob($pattern);
+			$this->_globbed[$filename] = isset($glob) ? $glob : array();
 			Springbot_Log::debug("Checking glob for $pattern, returns " . count($this->_globbed[$filename]) . " results");
 		}
 		return $this->_globbed[$filename];

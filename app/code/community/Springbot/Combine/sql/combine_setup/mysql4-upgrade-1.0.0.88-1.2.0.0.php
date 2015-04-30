@@ -10,7 +10,7 @@ $installer->getConnection()->beginTransaction();
 $session = Mage::getSingleton('core/session');
 
 try {
-$installer->run("
+	$installer->run("
 	CREATE TABLE IF NOT EXISTS `{$installer->getTable('combine/trackable')}`
 	(
 		`id` INT(11) unsigned NOT NULL auto_increment,
@@ -28,8 +28,8 @@ $installer->run("
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ");
 } catch (Exception $e) {
-	Mage::log('Install failed clear and retry');
-	if(!$session->getSbReinstall()) {
+	Springbot_Log::error(new Exception('Install failed clear and retry'));
+	if (!$session->getSbReinstall()) {
 		$session->setSbReinstall(true);
 		$installer->reinstallSetupScript('1.0.0.70', '1.2.0.0');
 	}

@@ -1,11 +1,12 @@
 <?php
 
-class Springbot_Services_Work_Manager extends Springbot_Services_Abstract
+class Springbot_Services_Work_Manager extends Springbot_Services
 {
 	const WORKMANAGER_FILENAME = 'springbot-workmanager';
 	const WORKER_PREFIX = 'springbotworker-';
 	const SPAWN_WORKER_SECONDS = 2;
 	const WORKMANAGER_MAX_TIME = 50;
+	const WORKER_TIMEOUT = 600;	// 10 minutes
 
 	protected $_foremanQueued = false;
 
@@ -15,7 +16,7 @@ class Springbot_Services_Work_Manager extends Springbot_Services_Abstract
 		if (!$this->_managerRunning()) {
 
 			$filename = Mage::getBaseDir('tmp') . DS . self::WORKMANAGER_FILENAME;
-			file_put_contents($filename, getmypid());
+			file_put_contents($filename, getmypid() . '-' . time());
 
 			if (file_exists($filename)) {
 				if (!$maxWorkers = Mage::getStoreConfig('springbot/advanced/worker_count')) {
@@ -27,10 +28,10 @@ class Springbot_Services_Work_Manager extends Springbot_Services_Abstract
 					$currentWorkerCount = $this->_getWorkerCount();
 					if(!$this->_foremanRunning()) {
 						$this->_foremanQueued = true;
-						Springbot_Boss::internalCallback('work:runner', array('o' => true));
+						Springbot_Cli::internalCallback('work:runner', array('o' => true));
 					}
 					else if($currentWorkerCount < $maxWorkers) {
-						Springbot_Boss::internalCallback('work:runner');
+						Springbot_Cli::internalCallback('work:runner');
 					}
 					sleep(self::SPAWN_WORKER_SECONDS);
 					$this->_verifyWorkersRunning();
@@ -42,7 +43,7 @@ class Springbot_Services_Work_Manager extends Springbot_Services_Abstract
 
 			if($this->_hasJobs()) {
 				Springbot_Log::debug("Jobs still queued, restarting manager");
-				Springbot_Boss::startWorkManager();
+				Springbot_Cli::startWorkManager();
 			} else {
 				Springbot_Log::debug("No more jobs found. Exiting. Manager will restart on next checkin.");
 			}
@@ -65,14 +66,15 @@ class Springbot_Services_Work_Manager extends Springbot_Services_Abstract
 	{
 		$filename = Mage::getBaseDir('tmp') . DS . self::WORKMANAGER_FILENAME;
 		if (file_exists($filename)) {
-			$pid = file_get_contents($filename);
-			if (!file_exists("/proc/{$pid}")) {
-				unlink($filename);
-				return false;
+			list($pid, $startTime) = explode('-', file_get_contents($filename));
+			if (is_readable('/proc')) {
+				$exists = file_exists("/proc/{$pid}");
 			}
 			else {
-				return true;
+				$exists = ((time() - $startTime) < self::WORKER_TIMEOUT);
 			}
+			if (!$exists) unlink($filename);
+			return $exists;
 		}
 		return false;
 	}
@@ -82,15 +84,22 @@ class Springbot_Services_Work_Manager extends Springbot_Services_Abstract
 		if($this->_foremanQueued) { return true; }
 
 		$files = @glob(Mage::getBaseDir('tmp') . DS . 'springbotworkerforeman*');
-		return count($files) > 0;
+		if ($files === false) return false;
+		else return count($files) > 0;
 	}
 
 	private function _verifyWorkersRunning()
 	{
 		foreach ($this->_getWorkerFiles() as $workerFile) {
-			list($frontName, $pid) = explode('-', basename($workerFile));
-			if (!file_exists("/proc/{$pid}")) {
-				Springbot_Log::debug("Procfile not found, removing work file for pid => $pid");
+			if (is_readable('/proc')) {
+				list($frontName, $pid) = explode('-', basename($workerFile));
+				if (!file_exists("/proc/{$pid}")) {
+					Springbot_Log::debug("Procfile not found, removing work file for pid => $pid");
+					unlink($workerFile);
+				}
+			}
+			else if ((time() - file_get_contents($workerFile)) > self::WORKER_TIMEOUT) {
+				Springbot_Log::debug("/proc not readable and process timed out for pid => $pid");
 				unlink($workerFile);
 			}
 		}
@@ -103,7 +112,8 @@ class Springbot_Services_Work_Manager extends Springbot_Services_Abstract
 
 	private function _getWorkerFiles()
 	{
-		return glob(Mage::getBaseDir('tmp') . DS . 'springbotworker*');
+		$glob = glob(Mage::getBaseDir('tmp') . DS . 'springbotworker*');
+		return $glob ? $glob : array();
 	}
 
 	private function _hasJobs()

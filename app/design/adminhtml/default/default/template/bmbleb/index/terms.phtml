@@ -1,9 +1,8 @@
-	                <div id="tc-content" class="tc-content">
-	                	<div class="tc-content-inner">
-		                	<p class="close-btn"><a href="#" title="Close window" onclick="Modalbox.hide(); return false;">Close</a></p>
-		                	<h3>springbot Terms &amp; Conditions</h3>
-		                	<?php
-		                	print nl2br(Mage::helper('bmbleb/GetTermsOfService')->getTermsOfService()); 
-		                	?>
-		                </div>
-	                </div>
+<div id="tc-content" class="tc-content">
+	<div class="tc-content-inner">
+		<p class="close-btn"><a href="#" title="Close window" onclick="Modalbox.hide(); return false;">Close</a></p>
+
+		<h3>springbot Terms &amp; Conditions</h3>
+		<?php echo nl2br(Mage::helper('bmbleb/GetTermsOfService')->getTermsOfService()); ?>
+	</div>
+</div>

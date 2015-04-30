@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Services_Work_Cleanup extends Springbot_Services_Abstract
+class Springbot_Services_Work_Cleanup extends Springbot_Services
 {
 	const UNLOCK_AFTER_X_HOURS = 24;
 

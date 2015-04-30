@@ -1,6 +1,6 @@
 <?php
 
-class Springbot_Combine_Model_Parser_AttributeSet extends Springbot_Combine_Model_Parser_Abstract implements Springbot_Combine_Model_Parser
+class Springbot_Combine_Model_Parser_AttributeSet extends Springbot_Combine_Model_Parser
 {
 	protected $_helper;
 	protected $_set;
@@ -12,14 +12,6 @@ class Springbot_Combine_Model_Parser_AttributeSet extends Springbot_Combine_Mode
 	{
 		$this->_set = $set;
 		$this->_parse();
-	}
-
-	public function parse($set)
-	{
-		$this->_set = $set;
-		$this->_parse();
-
-		return $this;
 	}
 
 	protected function _parse()
