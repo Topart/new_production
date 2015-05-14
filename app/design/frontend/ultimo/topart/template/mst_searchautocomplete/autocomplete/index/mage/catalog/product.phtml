@@ -8,8 +8,8 @@ $site_base_url = "http://" . $_SERVER["SERVER_NAME"];
 ?>
 <li data-url="<?php echo $_product->getProductUrl() ?>">
     <?php if ($_configHelper->isShowImage()): ?>
-    <div class="searchautocomlete-image">
-        <img src="<?php echo $helpImg->getImg($_product, 0, 0, 'thumbnail'); ?>" width="<?php echo $_configHelper->getImageWidth() ?>px"/>
+    <div class="searchautocomlete-image" style="width:<?php echo $_configHelper->getImageWidth(),"px";?>;height:<?php echo $_configHelper->getImageHeight(),"px";?>  ">
+        <img src="<?php echo $helpImg->getImg($_product, 0, 0, 'thumbnail'); ?>"/>
     </div>
     <?php endif ?>
 
