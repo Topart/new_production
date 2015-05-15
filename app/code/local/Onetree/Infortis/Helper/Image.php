@@ -60,7 +60,6 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 		}
 		else
 		{
-
 			$url = Mage::helper('catalog/image')
 				->init($product, $imgVersion, $file)
 				->resize($w, $h);
