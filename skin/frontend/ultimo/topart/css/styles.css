@@ -4050,6 +4050,7 @@ ul.create-art-list li div:nth-child(3){
 
     .artist-list h4 {
         border-bottom: 1px solid #b19d68;
+        margin: 10px 0px;
     }
 
     .columns-list
@@ -4061,10 +4062,12 @@ ul.create-art-list li div:nth-child(3){
     .index-container {
         text-align: center;
         font-size: 1.5em;
+        margin: 20px 0px 0px;
     }
 
     .index-container li {
-        display: inline
+        display: inline;
+        margin: 0px 5px;
     }
 
     .index-container a {
@@ -4073,5 +4076,17 @@ ul.create-art-list li div:nth-child(3){
     .index-container a:hover {
        color: #b19d68;
     }
+    .page-title {
+        border-bottom: 1px solid #ddd !important;
+        margin-bottom: 20px;
+    }
+    .page-title h1 {
+        /*padding: 0px;
+        margin: 0 0 20px 0!important;*/
+        font-size: 18px;
+        font-weight: 400;
+        color: #000;
+        text-transform: uppercase;
 
+    }
     /**** Artist List End *****/
