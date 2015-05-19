@@ -17,24 +17,6 @@
             </onetree_shopbyartist>
         </helpers>
     </global>
-    <frontend>
-        <layout>
-            <updates>
-                <onetree_shopbyartist>
-                    <file>shopbyartist.xml</file>
-                </onetree_shopbyartist>
-            </updates>
-        </layout>
-        <routers>
-            <onetree_shopbyartist>
-                <use>standard</use>
-                <args>
-                    <module>Onetree_ShopByArtist</module>
-                    <frontName>shopbyartist</frontName>
-                </args>
-            </onetree_shopbyartist>
-        </routers>
-    </frontend>
     <default>
     	<shopbyartist>
     		<shopbyartist_config>
