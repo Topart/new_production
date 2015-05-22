@@ -8,9 +8,9 @@
                         <children>
                             <config>
                                 <children>
-                                    <shopbyartist>
+                                    <onetree_relatedproducts>
                                         <title>Related Products Configuration</title>
-                                    </shopbyartist>
+                                    </onetree_relatedproducts>
                                 </children>
                             </config>
                         </children>
