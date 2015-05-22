@@ -7,6 +7,7 @@
  */
 ?>
 <?php
+$helpImg = $this->helper('infortis/image');
 $_helper = $this->helper('catalog/output');
 $_product = $this->getProduct();
 
@@ -650,7 +651,6 @@ if ($info_tabs_html)
 </div> <!-- end: box-tabs -->
 
 
-
 <?php /* if (isset($p['collatSecondaryCol'])): */ ?>
 <?php if (false): ?>
     <div class="box-additional box-sidebar custom-sidebar-right <?php echo $collatSecondaryColGridClass; ?>">
@@ -662,6 +662,10 @@ if ($info_tabs_html)
 <?php if (false): ?>
     <div class="box-additional box-up-sell <?php echo $collatPrimaryColGridClass; ?>"><?php echo $section['upsell']; ?></div>
 <?php endif; ?>
+<?php echo $this->getChildHtml('onetree_relatedproducts'); ?>
+
+
+
 
 </div> <!-- end: product-view -->
 
