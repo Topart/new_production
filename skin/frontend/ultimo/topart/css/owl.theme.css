@@ -81,7 +81,7 @@
 .owl-theme .item {
     /*height: 200px;
     width: 200px;*/
-    margin: 20px 25px;
+    margin: 20px auto;
     position: relative;
 
 }
