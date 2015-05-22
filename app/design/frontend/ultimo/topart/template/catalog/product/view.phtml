@@ -37,33 +37,39 @@ if ($productTypeId === 'grouped') {
     <?php $site_base_url = "http://" . $_SERVER["SERVER_NAME"]; ?>
 
     <?php
-
-    function endsWith($str, $sub) {
-        return ( substr($str, strlen($str) - strlen($sub)) === $sub );
+    if(!function_exists('endsWith')){
+        function endsWith($str, $sub) {
+            return ( substr($str, strlen($str) - strlen($sub)) === $sub );
+        }
     }
 
-    function get_first_number_index($text) {
-        preg_match('/^\D*(?=\d)/', $text, $m);
-        return strlen($m[0]);
+    if(!function_exists('get_first_number_index')) {
+        function get_first_number_index($text)
+        {
+            preg_match('/^\D*(?=\d)/', $text, $m);
+            return strlen($m[0]);
+        }
     }
+    if(!function_exists('compute_size_initial')) {
+        function compute_size_initial($size_ui)
+        {
+            if ($size_ui < 40)
+                return "xs";
 
-    function compute_size_initial($size_ui) {
-        if ($size_ui < 40)
-            return "xs";
+            if ($size_ui >= 40 and $size_ui < 50)
+                return "s";
 
-        if ($size_ui >= 40 and $size_ui < 50)
-            return "s";
+            if ($size_ui >= 50 and $size_ui < 60)
+                return "m";
 
-        if ($size_ui >= 50 and $size_ui < 60)
-            return "m";
+            if ($size_ui >= 60 and $size_ui < 70)
+                return "l";
 
-        if ($size_ui >= 60 and $size_ui < 70)
+            if ($size_ui >= 70)
+                return "xl";
+
             return "l";
-
-        if ($size_ui >= 70)
-            return "xl";
-
-        return "l";
+        }
     }
     ?>
 

@@ -7,8 +7,10 @@
  */
 class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
 {
-   private $total_items;
-
+    private $total_items;
+    protected $_productsSameCategory = null;
+    protected $_productsSameArtist = null;
+    protected $_categories = null;
 
    public function _construct(){
        $this->total_items = Mage::helper('onetree_relatedproducts/data')->getTotalItems();
@@ -16,8 +18,9 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
    }
 
     public function getProductsSameCategory(){
+        $products = null;
         if(Mage::registry('product')){
-            $categories = Mage::registry('product')->getCategoryCollection()->load();
+            $categories = $this->_getCategories();;
             $category =  $categories->getFirstItem();
             $total_products = $category->getProductCount();
             $total_pages = floor($total_products / $this->total_items);
@@ -27,49 +30,62 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     }
 
     public function getProductsSameArtist(){
-        if(Mage::registry('product')){
-            $categories = Mage::registry('product')->getCategoryCollection()->load();
-            $category = $categories->getItemsByColumnValue('parent_id',1580);
-            if(!empty($category)){
-                $category = $category[0];
+
+        if(is_null($this->_productsSameArtist)){
+            $categories = $this->_getCategories();
+            $category = $categories->getItemByColumnValue('parent_id',$this->getArtistCategoryId());
+            if($category instanceof Mage_Catalog_Model_Category && $category->getId()){
                 $total_products = $category->getProductCount();
                 $total_pages = floor($total_products / $this->total_items);
-                $products = $category->getProductCollection()->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));;
+                $this->_productsSameArtist = $category->getProductCollection()->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
             }
         }
-        return $products;
+
+        return $this->_productsSameArtist;
+    }
+
+    protected function _getCategories(){
+
+        if(is_null($this->_categories)){
+            $this->_categories = Mage::registry('product')->getCategoryCollection()->load();
+        }
+        return $this->_categories;
     }
 
     public function showProductsSameCategory(){
-        return Mage::helper('onetree_relatedproducts/data')->showProductsSameCategory();
+        return Mage::helper('onetree_relatedproducts')->showProductsSameCategory();
     }
 
     public function showProductsSameArtist(){
-        return Mage::helper('onetree_relatedproducts/data')->showProductsSameArtist();
+        return Mage::helper('onetree_relatedproducts')->showProductsSameArtist();
     }
 
     public function getAutoPlay(){
-        $time = Mage::helper('onetree_relatedproducts/data')->getAutoPlay();
+        $time = Mage::helper('onetree_relatedproducts')->getAutoPlay();
         return ($time == 0) ? 'false' : $time ;
     }
 
     public function getItemsPerPage(){
-        return Mage::helper('onetree_relatedproducts/data')->getItemsPerPage();
+        return Mage::helper('onetree_relatedproducts')->getItemsPerPage();
     }
 
     public function getItemsPerPageMobile(){
-        return Mage::helper('onetree_relatedproducts/data')->getItemsPerPageMobile();
+        return Mage::helper('onetree_relatedproducts')->getItemsPerPageMobile();
     }
 
     public function getImageWidth()
     {
-       return  Mage::helper('onetree_relatedproducts/data')->getImageWidth();
+       return  Mage::helper('onetree_relatedproducts')->getImageWidth();
 
     }
 
     public function getImageHeight()
     {
-       return Mage::helper('onetree_relatedproducts/data')->getImageHeight();
+       return Mage::helper('onetree_relatedproducts')->getImageHeight();
 
+    }
+
+    public function getArtistCategoryId(){
+        return Mage::helper('onetree_relatedproducts')->getArtistCategoryId();
     }
 }

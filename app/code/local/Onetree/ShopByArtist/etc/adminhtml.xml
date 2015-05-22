@@ -8,9 +8,9 @@
                         <children>
                             <config>
                                 <children>
-                                    <shopbyartist>
+                                    <related_products>
                                         <title>Shop By Artist Configuration</title>
-                                    </shopbyartist>
+                                    </related_products>
                                 </children>
                             </config>
                         </children>
