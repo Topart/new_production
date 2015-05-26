@@ -11,6 +11,9 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     protected $_productsSameCategory = null;
     protected $_productsSameArtist = null;
     protected $_categories = null;
+    protected $_category = null;
+    protected $_artist = null ;
+    protected $_product = null;
 
    public function _construct(){
        $this->total_items = Mage::helper('onetree_relatedproducts/data')->getTotalItems();
@@ -24,7 +27,8 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
             $category =  $categories->getFirstItem();
             $total_products = $category->getProductCount();
             $total_pages = floor($total_products / $this->total_items);
-            $products = $categories->getFirstItem()->getProductCollection()->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
+            $products = $category->getProductCollection()->addAttributeToFilter('entity_id', array('neq' => $this->_product->getId()))->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
+            $this->_category = $category;
         }
         return $products;
     }
@@ -37,8 +41,10 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
             if($category instanceof Mage_Catalog_Model_Category && $category->getId()){
                 $total_products = $category->getProductCount();
                 $total_pages = floor($total_products / $this->total_items);
-                $this->_productsSameArtist = $category->getProductCollection()->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
+                $this->_productsSameArtist = $category->getProductCollection()->addAttributeToFilter('entity_id', array('neq' => $this->_product->getId()))->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
+                $this->_artist = $category;
             }
+
         }
 
         return $this->_productsSameArtist;
@@ -47,9 +53,18 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     protected function _getCategories(){
 
         if(is_null($this->_categories)){
-            $this->_categories = Mage::registry('product')->getCategoryCollection()->load();
+            $this->_categories = Mage::registry('product')->getCategoryCollection()->addAttributeToSelect('name')->load();
+            $this->_product = Mage::registry('product');
         }
         return $this->_categories;
+    }
+
+    public function getCategory(){
+        return $this->_category;
+    }
+
+    public function getArtist() {
+        return $this->_artist;
     }
 
     public function showProductsSameCategory(){
