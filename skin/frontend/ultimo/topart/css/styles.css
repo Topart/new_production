@@ -4176,7 +4176,13 @@ ul.create-art-list li div:nth-child(3){
 
 @media only screen and (max-width : 380px) {
     .box-center h2{
-        font-size: 15px;
+        font-size: 20px;
+    }
+    .second-line{
+        font-size: 25px !important;
+    }
+    .box-center p{
+        font-size: 15px
     }
 }
 
@@ -4184,10 +4190,22 @@ ul.create-art-list li div:nth-child(3){
     .box-center h2{
         font-size: 30px;
     }
+    .second-line{
+        font-size: 40px !important;
+    }
+    .box-center p{
+        font-size: 20px
+    }
 }
 
 @media only screen and (max-width : 480px) {
     .box-center h2{
-        font-size: 18px;
+        font-size: 20px;
+    }
+    .second-line{
+        font-size: 25px !important;
+    }
+    .box-center p{
+        font-size: 15px
     }
 }
