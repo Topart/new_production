@@ -1,5 +1,6 @@
 <?php
     $helpImg = $helpImg = $this->helper('infortis/image');
+    $category = $this->getCategory();
     //$helpRelated = $this->helper('onetree_relatedproducts/data');
 ?>
 <div>
@@ -7,7 +8,7 @@
     <?php if($this->showProductsSameCategory()):?>
         <?php if( null !== $this->getProductsSameCategory()): ?>
             <div class="related_products">
-                <h4><?php echo $this->__('From the same category') ?></h4>
+                <h4><a href="<?php echo $this->getCategory()->getUrl() ?>"><?php echo $this->__('More in ').$this->getCategory()->getName() ?></a></h4>
             </div>
             <div id="same-category" class="owl-carousel owl-theme">
                 <?php foreach($this->getProductsSameCategory() as $product): ?>
@@ -20,7 +21,7 @@
     <?php if($this->showProductsSameArtist()): ?>
         <?php if( null !== $this->getProductsSameArtist()): ?>
             <div class="related_products">
-                <h4><?php echo $this->__('From the same artist') ?></h4>
+                <h4><a class="" href="<?php echo $this->getArtist()->getUrl() ?>"><?php echo $this->__('More from ').$this->getArtist()->getName() ?></a></h4>
             </div>
             <div id="owl-demo" class="owl-carousel owl-theme">
                 <?php foreach($this->getProductsSameArtist() as $product): ?>
