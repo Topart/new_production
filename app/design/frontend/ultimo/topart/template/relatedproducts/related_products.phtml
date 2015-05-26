@@ -6,7 +6,7 @@
 <div>
 
     <?php if($this->showProductsSameCategory()):?>
-        <?php if( null !== $this->getProductsSameCategory()): ?>
+        <?php if( null !== $this->getProductsSameCategory() && $this->getProductsSameCategory()->count() > 0): ?>
             <div class="related_products">
                 <h4><a href="<?php echo $this->getCategory()->getUrl() ?>"><?php echo $this->__('More in ').$this->getCategory()->getName() ?></a></h4>
             </div>
@@ -19,7 +19,7 @@
     <?php endif; ?>
 
     <?php if($this->showProductsSameArtist()): ?>
-        <?php if( null !== $this->getProductsSameArtist()): ?>
+        <?php if( null !== $this->getProductsSameArtist() && $this->getProductsSameArtist()->count() > 0): ?>
             <div class="related_products">
                 <h4><a class="" href="<?php echo $this->getArtist()->getUrl() ?>"><?php echo $this->__('More from ').$this->getArtist()->getName() ?></a></h4>
             </div>
