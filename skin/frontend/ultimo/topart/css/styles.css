@@ -4091,7 +4091,7 @@ ul.create-art-list li div:nth-child(3){
     }
     /**** Artist List End *****/
 
-/****SliderShow********/
+/****SlideShow********/
 @import url(http://fonts.googleapis.com/css?family=Raleway);
 .box-slider-table{
     display:table;
@@ -4184,6 +4184,26 @@ ul.create-art-list li div:nth-child(3){
     .box-center p{
         font-size: 15px
     }
+    .owl-prev {
+        display: none !important;
+    }
+    .owl-next {
+        display: none !important;
+    }
+    .btn-slider {
+        font-size: 12px;
+        padding: 5px 10px 5px 10px;
+        margin-top: 15px;
+        /*display:none;*/
+    }
+
+    .box-center p {
+        margin: 5px 0px;
+    }
+
+    .hover-effect-slider img {
+        opacity: 0.6;
+    }
 }
 
 @media only screen and (max-width : 640px) {
@@ -4208,4 +4228,28 @@ ul.create-art-list li div:nth-child(3){
     .box-center p{
         font-size: 15px
     }
+    .owl-prev {
+        display: none !important;
+    }
+    .owl-next {
+        display: none !important;
+    }
+    .btn-slider {
+        display:none;
+    }
+    .box-center p {
+        margin: 5px 0px;
+    }
+    .hover-effect-slider img {
+        opacity: 0.6;
+    }
+    .btn-slider {
+        font-size: 12px;
+        padding: 5px 10px 5px 10px;
+        margin-top: 15px;
+        /*display:none;*/
+    }
+
 }
+
+/****END SlideShow********/
