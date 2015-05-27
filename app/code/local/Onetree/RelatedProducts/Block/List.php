@@ -23,11 +23,10 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     public function getProductsSameCategory(){
         $products = null;
         if(Mage::registry('product')){
-            $categories = $this->_getCategories();;
-            $category =  $categories->getFirstItem();
+            $category =  Mage::registry('current_category');
             $total_products = $category->getProductCount();
             $total_pages = floor($total_products / $this->total_items);
-            $products = $category->getProductCollection()->addAttributeToFilter('entity_id', array('neq' => $this->_product->getId()))->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
+            $products = $category->getProductCollection()->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
             $this->_category = $category;
         }
         return $products;
@@ -64,6 +63,10 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     }
 
     public function getArtist() {
+        if(is_null($this->_artist)){
+            $categories = $this->_getCategories();
+            $this->_artist = $categories->getItemByColumnValue('parent_id',$this->getArtistCategoryId());
+        }
         return $this->_artist;
     }
 
@@ -103,4 +106,10 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     public function getArtistCategoryId(){
         return Mage::helper('onetree_relatedproducts')->getArtistCategoryId();
     }
+
+    public function getCurrentCategory(){
+        return Mage::registry('current_category');
+    }
+
+
 }
