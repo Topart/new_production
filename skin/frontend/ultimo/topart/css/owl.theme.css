@@ -1,0 +1,143 @@
+/*
+* 	Owl Carousel Owl Demo Theme 
+*	v1.3.3
+*/
+
+.owl-theme .owl-controls{
+	margin-top: 10px;
+	text-align: center;
+}
+
+/* Styling Next and Prev buttons */
+
+.owl-theme .owl-controls .owl-buttons div{
+	color: #FFF;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;/*IE7 life-saver */
+	margin: 5px;
+	padding: 3px 10px;
+	font-size: 12px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+	background: #869791;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	opacity: 0.5;
+}
+/* Clickable class fix problem with hover on touch devices */
+/* Use it for non-touch hover action */
+.owl-theme .owl-controls.clickable .owl-buttons div:hover{
+	filter: Alpha(Opacity=100);/*IE7 fix*/
+	opacity: 1;
+	text-decoration: none;
+}
+
+/* Styling Pagination*/
+
+.owl-theme .owl-controls .owl-page{
+	display: inline-block;
+	zoom: 1;
+	*display: inline;/*IE7 life-saver */
+}
+.owl-theme .owl-controls .owl-page span{
+	display: block;
+	width: 12px;
+	height: 12px;
+	margin: 5px 7px;
+	filter: Alpha(Opacity=50);/*IE7 fix*/
+	opacity: 0.5;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	background: #869791;
+}
+
+.owl-theme .owl-controls .owl-page.active span,
+.owl-theme .owl-controls.clickable .owl-page:hover span{
+	filter: Alpha(Opacity=100);/*IE7 fix*/
+	opacity: 1;
+}
+
+/* If PaginationNumbers is true */
+
+.owl-theme .owl-controls .owl-page span.owl-numbers{
+	height: auto;
+	width: auto;
+	color: #FFF;
+	padding: 2px 10px;
+	font-size: 12px;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+}
+
+/* preloading images */
+.owl-item.loading{
+	min-height: 150px;
+	background: url(AjaxLoader.gif) no-repeat center center
+}
+/*-----CUSTOM CSS TOPART-----*/
+.owl-theme .item {
+    /*height: 200px;
+    width: 200px;*/
+    margin: 20px auto;
+    position: relative;
+    border-left:none;
+    border-right:none;
+    zoom:1;
+
+    padding-top:2%;
+    padding-left:1%;
+    padding-right:1%;
+    background-color:#fff;
+
+    transition:			box-shadow 0ms ease-in;
+    -moz-transition:	box-shadow 0ms ease-in;
+    -webkit-transition:	box-shadow 0ms ease-in;
+    -o-transition:		box-shadow 0ms ease-in;
+
+}
+
+.owl-theme .item:hover {
+    z-index:10;
+    box-shadow:0 0 20px rgba(0,0,0,0.2);
+    border-color:transparent;
+
+    transition:			box-shadow 400ms ease-out;
+    -moz-transition:	box-shadow 400ms ease-out;
+    -webkit-transition:	box-shadow 400ms ease-out;
+    -o-transition:		box-shadow 400ms ease-out;
+}
+.owl-theme .item img{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.related_products{
+    font-size: 15px;
+    border-bottom: 1px solid #b19d68;
+    font-weight: 700!important;
+    text-transform: uppercase!important;
+}
+
+.related_products a {
+    color: #AAA;
+    transition: color 450ms ease-in-out, background-color 450ms ease-in-out;
+    -moz-transition: color 450ms ease-in-out, background-color 450ms ease-in-out;
+    -webkit-transition: color 450ms ease-in-out, background-color 450ms ease-in-out;
+    -o-transition: color 450ms ease-in-out, background-color 450ms ease-in-out;
+}
+
+.related_products a:hover {
+    color: #000;
+   }
+/****END CUSTOM CSS TOPART*****/
+
