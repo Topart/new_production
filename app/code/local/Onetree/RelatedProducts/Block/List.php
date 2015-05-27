@@ -23,7 +23,12 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     public function getProductsSameCategory(){
         $products = null;
         if(Mage::registry('product')){
-            $category =  Mage::registry('current_category');
+            if(is_null(Mage::registry('current_category'))) {
+                $category = $this->_getCategories()->getFirstItem();
+            }
+            else {
+                $category = Mage::registry('current_category');
+            }
             $total_products = $category->getProductCount();
             $total_pages = floor($total_products / $this->total_items);
             $products = $category->getProductCollection()->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
@@ -108,7 +113,13 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
     }
 
     public function getCurrentCategory(){
-        return Mage::registry('current_category');
+        if(is_null(Mage::registry('current_category'))) {
+            $category = $this->_getCategories()->getFirstItem();
+        }
+        else {
+            $category = Mage::registry('current_category');
+        }
+        return $category;
     }
 
 
