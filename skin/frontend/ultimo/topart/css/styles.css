@@ -4194,7 +4194,7 @@ ul.create-art-list li div:nth-child(3){
         font-size: 12px;
         padding: 5px 10px 5px 10px;
         margin-top: 15px;
-        /*display:none;*/
+        display:none;
     }
 
     .box-center p {
@@ -4203,6 +4203,10 @@ ul.create-art-list li div:nth-child(3){
 
     .hover-effect-slider img {
         opacity: 0.6;
+    }
+
+    .the-slideshow{
+        display: none;
     }
 }
 
@@ -4247,7 +4251,11 @@ ul.create-art-list li div:nth-child(3){
         font-size: 12px;
         padding: 5px 10px 5px 10px;
         margin-top: 15px;
-        /*display:none;*/
+        display:none;
+    }
+
+    .the-slideshow {
+        display: none;
     }
 
 }
