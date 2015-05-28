@@ -1,0 +1,52 @@
+<?php
+    $helpImg = $helpImg = $this->helper('infortis/image');
+    $category = $this->getCategory();
+    //$helpRelated = $this->helper('onetree_relatedproducts/data');
+?>
+<div>
+    <?php //print_r($this->getProductsSameCategory())?>
+    <?php if($this->showProductsSameCategory()):?>
+        <?php if( null !== $this->getProductsSameCategory() && $this->getProductsSameCategory()->count() > 0 && $this->getArtist()->getId() != $this->getCurrentCategory()->getId()): ?>
+            <div class="related_products">
+                <h4><a href="<?php echo $this->getCategory()->getUrl() ?>"><?php echo $this->__('More in ').$this->getCategory()->getName() ?></a></h4>
+            </div>
+            <div id="same-category" class="owl-carousel owl-theme">
+                <?php foreach($this->getProductsSameCategory() as $product): ?>
+                    <div class="item" style="width: <?php echo $this->getImageWidth()?>px; height: <?php echo $this->getImageHeight()?>px;"><a href="<?php echo $product->getProductUrl() ?>"><img src="<?php echo $helpImg->getImg($product, 0, 0, 'thumbnail');?>" alt="Owl Image"></a></div>
+                <?php endforeach;?>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if($this->showProductsSameArtist()): ?>
+        <?php if( null !== $this->getProductsSameArtist() && $this->getProductsSameArtist()->count() > 0): ?>
+            <div class="related_products">
+                <h4><a class="" href="<?php echo $this->getArtist()->getUrl() ?>"><?php echo $this->__('More from ').$this->getArtist()->getName() ?></a></h4>
+            </div>
+            <div id="owl-demo" class="owl-carousel owl-theme">
+                <?php foreach($this->getProductsSameArtist() as $product): ?>
+                    <div class="item" style="width: <?php echo $this->getImageWidth()?>px; height: <?php echo $this->getImageHeight()?>px;"><a href="<?php echo $product->getProductUrl() ?>"><img src="<?php echo $helpImg->getImg($product, 0, 0, 'thumbnail');?>" alt="Owl Image"></a></div>
+                <?php endforeach;?>
+            </div>
+        <?php endif;?>
+    <?php endif; ?>
+</div>
+
+<script>
+    jQuery(document).ready(function(){
+
+        jQuery("#same-category,#owl-demo").owlCarousel({
+                autoPlay: <?php echo $this->getAutoPlay()?>,
+                items:<?php echo $this->getItemsPerPage() ?>,
+                itemsMobile : [479,<?php echo $this->getItemsPerPageMobile() ?>],
+                itemsScaleUp:true,
+                stopOnHover:true
+            }
+        );
+    })
+</script>
+
+/*
+
+*/
+
