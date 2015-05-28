@@ -7,5 +7,6 @@ jQuery(window).load(function(){
         var owl = jQuery(".slides").data('owlCarousel');
         owl.removeItem(0);
         owl.removeItem(1);
+       jQuery(".the-slideshow").show();
     }
 });

@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Springbot_Imageoverride>
-            <active>true</active>
+            <active>false</active>
             <codePool>local</codePool>
             <depends>
                 <Springbot_Combine/>
