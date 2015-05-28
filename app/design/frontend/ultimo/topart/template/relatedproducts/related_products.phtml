@@ -4,9 +4,9 @@
     //$helpRelated = $this->helper('onetree_relatedproducts/data');
 ?>
 <div>
-
+    <?php //print_r($this->getProductsSameCategory())?>
     <?php if($this->showProductsSameCategory()):?>
-        <?php if( null !== $this->getProductsSameCategory() && $this->getProductsSameCategory()->count() > 0): ?>
+        <?php if( null !== $this->getProductsSameCategory() && $this->getProductsSameCategory()->count() > 0 && $this->getArtist()->getId() != $this->getCurrentCategory()->getId()): ?>
             <div class="related_products">
                 <h4><a href="<?php echo $this->getCategory()->getUrl() ?>"><?php echo $this->__('More in ').$this->getCategory()->getName() ?></a></h4>
             </div>
