@@ -29,7 +29,7 @@ class Onetree_RelatedProducts_Block_List extends Mage_Core_Block_Template
             else {
                 $category = Mage::registry('current_category');
             }
-            $total_products = $category->getProductCount();
+            $total_products = $category->getProductCollection()->count();
             $total_pages = floor($total_products / $this->total_items);
             $products = $category->getProductCollection()->setPageSize($this->total_items)->setCurPage(rand(1,$total_pages));
             $this->_category = $category;
