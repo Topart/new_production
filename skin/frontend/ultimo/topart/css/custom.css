@@ -350,7 +350,7 @@
     .user-menu.clearer.v-grid.grid12-4 {
         position: absolute;
         top: 50px;
-        right: 22px;
+        right: 39px;
         width: 92px!important;
     }
     .header .logo-wrapper {
@@ -380,7 +380,16 @@
 
 
 }
-@media only screen and (max-width: 1024px/*375px*/) {
+@media only screen and (max-width: 375px) {
+    div#mobnav {
+        right: 11px;
+    }
+    .user-menu.clearer.v-grid.grid12-4 {
+        right: 23px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
     div#mobnav {
         right: 4px;
     }
