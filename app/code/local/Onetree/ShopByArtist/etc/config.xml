@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Onetree_ShopByArtist>
+            <version>0.1.0</version>
+        </Onetree_ShopByArtist>
+    </modules>
+    <global>
+        <blocks>
+            <onetree_shopbyartist>
+                <class>Onetree_ShopByArtist_Block</class>
+            </onetree_shopbyartist>
+        </blocks>
+        <helpers>
+            <onetree_shopbyartist>
+                <class>Onetree_ShopByArtist_Helper</class>
+            </onetree_shopbyartist>
+        </helpers>
+        <resources>
+            <onetree_shopbyartist_setup>
+                <setup>
+                    <module>Onetree_ShopByArtist</module>
+                    <class>Mage_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </onetree_shopbyartist_setup>
+        </resources>
+    </global>
+    <default>
+    	<shopbyartist>
+    		<shopbyartist_config>
+    			<category_id>1598</category_id>
+    		</shopbyartist_config>
+    	</shopbyartist>
+    </default>
+</config>

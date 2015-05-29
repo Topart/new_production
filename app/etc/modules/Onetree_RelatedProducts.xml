@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Onetree_RelatedProducts>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Onetree_RelatedProducts>
+    </modules>
+</config>

@@ -9,11 +9,11 @@
             <active>true</active>
             <codePool>community</codePool>
         </Springbot_BoneCollector>
-	    <Springbot_Combine>
+        <Springbot_Combine>
             <active>true</active>
             <codePool>community</codePool>
         </Springbot_Combine>
-	    <Springbot_Shadow>
+        <Springbot_Shadow>
             <active>true</active>
             <codePool>community</codePool>
         </Springbot_Shadow>

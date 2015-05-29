@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Onetree_SearchAutocomplete>
+            <version>0.1.0</version>
+        </Onetree_SearchAutocomplete>
+    </modules>
+    <global>
+        <models>
+            <onetree_searchautocomplete>
+                <class>Onetree_SearchAutocomplete_Model</class>
+            </onetree_searchautocomplete>
+        </models>
+        <blocks>
+            <onetree_searchautocomplete>
+                <class>Onetree_SearchAutocomplete_Block</class>
+            </onetree_searchautocomplete>
+            <searchautocomplete>
+                <rewrite>
+                    <result>Onetree_SearchAutocomplete_Block_Result</result>
+                </rewrite>
+            </searchautocomplete>
+        </blocks>
+        <helpers>
+            <onetree_searchautocomplete>
+                <class>Onetree_SearchAutocomplete_Helper</class>
+            </onetree_searchautocomplete>
+            <searchautocomplete>
+                <rewrite>
+                    <config>Onetree_SearchAutocomplete_Helper_Config</config>
+                </rewrite>
+            </searchautocomplete>
+        </helpers>
+    </global>
+</config>

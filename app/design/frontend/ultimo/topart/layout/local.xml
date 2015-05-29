@@ -31,7 +31,9 @@
 							<action method="addItem"><type>skin_js</type><name>js/jquery.prettyPhoto.js</name></action>
                             <action method="addJs"><script>topart/purl.js</script></action>
                             <action method="addJs"><script>topart/product_view.js</script></action>
-                        
+                            <!-- TOPART JS -->
+                            <action method="addItem"><type>skin_js</type><name>js/app.js</name></action>
+
                         <!-- CSS: -->
 			
 			<!-- CSS base -->

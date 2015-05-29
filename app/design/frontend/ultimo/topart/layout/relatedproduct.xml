@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <catalog_product_view>
+        <reference name="head">
+            <action method="addJs">
+                <script>owl-carousel/owlcarousel.min.js</script>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/owl.carousel.css</name>
+                <params/>
+            </action>
+            <action method="addItem">
+                <type>skin_css</type>
+                <name>css/owl.theme.css</name>
+                <params/>
+            </action>
+        </reference>
+        <reference name="product.info">
+            <block type="onetree_relatedproducts/list" name="onetree_relatedproducts"
+                   template="relatedproducts/related_products.phtml"/>
+        </reference>
+    </catalog_product_view>
+</layout>
