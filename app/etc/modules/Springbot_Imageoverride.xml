@@ -5,7 +5,7 @@
             <active>false</active>
             <codePool>local</codePool>
             <depends>
-	            <Springbot_Combine />
+                <Springbot_Combine/>
             </depends>
         </Springbot_Imageoverride>
     </modules>
