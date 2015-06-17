@@ -402,3 +402,13 @@
 }
 /* End  Header and footer
   ~~~~~~~~~~~~~~~~~~~~~~~*/
+
+/* product
+~~~~~~~~~~*/
+
+.container2-wrapper .product-options dd.material .background_border img {
+    max-width: 205px;
+}
+
+/* End product
+~~~~~~~~~~~~~~*/
