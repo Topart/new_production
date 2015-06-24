@@ -417,6 +417,16 @@
   clear: none !important;
 }
 
+.products-list .product-image img, .category-products-grid .product-image img {
+    max-height: 300px !important;
+}
+.catalog-category-view .category-products .category-products-grid .item, .catalogsearch-result-index .category-products .category-products-grid .item {
+    height: 363px;
+}
+.catalog-category-view .category-products div.product-image-wrapper a, .catalogsearch-result-index .category-products div.product-image-wrapper a {
+    height: 300px;
+}
+
 /* End Category view
 ~~~~~~~~~~~~~~~~~~~~*/
 
