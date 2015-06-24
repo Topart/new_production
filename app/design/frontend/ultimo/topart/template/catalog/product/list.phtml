@@ -110,7 +110,52 @@
             <div class="product-image-wrapper grid12-4 mobile-grid-half">
 
                 <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image" style="max-width:<?php echo $imgWidth; ?>px;">
-                    <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
+                    <?php
+
+                    $name_artist = $_product->getUdfArtistName();
+                    $canvas_available = $_product->getUdfCanvas();
+                    $poster_available = $_product->getUdfPoster();
+                    $paper_available = $_product->getUdfPhotoPaper();
+
+                    $details = '';
+                    $unique = 0;
+
+                    if($canvas_available){
+                        $details = $details.' canvas';
+                        $unique = $unique +1;
+                    }
+                    if($poster_available){
+                        if($unique > 0){
+                            $details = $details.' and poster';
+                        }else{
+                            $details = $details.' poster';
+                        }
+                        $unique = $unique +1;
+                    }
+                    if($paper_available){
+                        if($unique > 0){
+                            $details = $details.' and paper';
+                        }else{
+                            $details = $details.' paper';
+                        }
+                        $unique = $unique +1;
+                    }
+                    $categories = '';
+                    $categoryIds = $_product->getCategoryIds();
+
+                    if(count($categoryIds) ){
+                        foreach ($categoryIds as $category_id) {
+                            $_cat = Mage::getModel('catalog/category')->load($category_id);
+                            if($_cat->getName() != $name_artist){
+                                $categories = $categories .' '. $_cat->getName();
+                            }
+
+                        }
+
+                    }
+                    ?>
+                    <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>"
+                         alt="<?php echo $name_artist.' | '.$categories.' | '.$details.' | '.$this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" />
                     
                     <?php if ($theme->getCfg('category/alt_image')): ?>
                         <?php echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight); ?>
@@ -229,7 +274,54 @@
                         <?php
                             $img_1 = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image',null,true);
                         ?>
-                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
+                        <?php
+
+
+                        $name_artist = $_product->getUdfArtistName();
+                        $canvas_available = $_product->getUdfCanvas();
+                        $poster_available = $_product->getUdfPoster();
+                        $paper_available = $_product->getUdfPhotoPaper();
+
+                        $details = '';
+                        $unique = 0;
+
+                        if($canvas_available){
+                            $details = $details.' canvas';
+                            $unique = $unique +1;
+                        }
+                        if($poster_available){
+                            if($unique > 0){
+                                $details = $details.' and poster';
+                            }else{
+                                $details = $details.' poster';
+                            }
+                            $unique = $unique +1;
+                        }
+                        if($paper_available){
+                            if($unique > 0){
+                                $details = $details.' and paper';
+                            }else{
+                                $details = $details.' paper';
+                            }
+                            $unique = $unique +1;
+                        }
+                        $categories = '';
+                        $categoryIds = $_product->getCategoryIds();
+
+                        if(count($categoryIds) ){
+                            foreach ($categoryIds as $category_id) {
+                                $_cat = Mage::getModel('catalog/category')->load($category_id);
+                                if($_cat->getName() != $name_artist){
+                                    $categories = $categories .' '. $_cat->getName();
+                                }
+
+                            }
+
+                        }
+
+                        ?>
+                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>"
+                             alt="<?php echo $name_artist.' | '.$categories.' | '.$details.' | '. $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
 
                         <?php if ($theme->getCfg('category/alt_image')): ?>
                             <?php echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight); ?>   
