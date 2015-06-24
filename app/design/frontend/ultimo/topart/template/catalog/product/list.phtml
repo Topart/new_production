@@ -130,7 +130,7 @@
                         }else{
                             $details = $details.' poster';
                         }
-
+                        $unique = $unique +1;
                     }
                     if($paper_available){
                         if($unique > 0){
@@ -138,6 +138,7 @@
                         }else{
                             $details = $details.' paper';
                         }
+                        $unique = $unique +1;
                     }
                     $categories = '';
                     $categoryIds = $_product->getCategoryIds();
@@ -294,7 +295,7 @@
                             }else{
                                 $details = $details.' poster';
                             }
-
+                            $unique = $unique +1;
                         }
                         if($paper_available){
                             if($unique > 0){
@@ -302,6 +303,7 @@
                             }else{
                                 $details = $details.' paper';
                             }
+                            $unique = $unique +1;
                         }
                         $categories = '';
                         $categoryIds = $_product->getCategoryIds();
