@@ -43,14 +43,24 @@ class Fishpig_Wordpress_Adminhtml_Wordpress_AssociationsController extends Mage_
 					
 				return false;
 			}
-	
-			if (!Mage::helper('wordpress/database')->connect()) {
-				return $this->_forward('noWordPressDatabase');;
-			}
-			
 			if ($this->_initObject() === false) {
 				return $this->_forward('noRoute');
 			}
+
+/*
+			$storeIds = $this->_initObject()->getStoreId();
+		
+			if (count($storeIds) === 1) {
+				$appEmulation = Mage::getSingleton('core/app_emulation');
+				$initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation(array_shift($storeIds));
+			}
+*/
+
+			if (Mage::helper('wordpress/app')->getDbConnection() === false) {
+				return $this->_forward('noWordPressDatabase');;
+			}
+			
+#			$appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
 	
 			$handle = 'adminhtml_wordpress_association_' . $this->_getMagentoEntity() . '_' . $this->_getWpEntity() . $handlePostfix;
 			

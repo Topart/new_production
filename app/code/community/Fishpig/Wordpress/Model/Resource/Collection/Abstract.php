@@ -7,8 +7,6 @@
  * @info			http://fishpig.co.uk/wordpress-integration.html
  */
 
-Mage::helper('wordpress')->applyLegacyHacks();
-
 abstract class Fishpig_Wordpress_Model_Resource_Collection_Abstract extends Mage_Core_Model_Resource_Db_Collection_Abstract
 {
 	/**

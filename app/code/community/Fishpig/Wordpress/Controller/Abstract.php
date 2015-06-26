@@ -14,13 +14,6 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	 * @var string
 	 */
 	 protected $_feedBlock = false;
-
-	/**
-	 * Root templates to be used
-	 *
-	 * @var array
-	 */
-	protected $_rootTemplates = array('default');
 	
 	/**
 	 * Storage for breadcrumbs
@@ -92,20 +85,14 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 			return false;
 		}
 
-		$helper = Mage::helper('wordpress/database');
-		
-		if (!$helper->isConnected() || !$helper->isQueryable()) {
+		if (Mage::helper('wordpress/app')->getDbConnection() === false) {
 			return false;
-		}
-		
-		if ($helper->isSameDatabase()) {
-			$helper->getReadAdapter()->query('SET NAMES UTF8');
 		}
 
 		if (($object = $this->getEntityObject()) === false) {
 			return false;
 		}
-
+		
 		Mage::dispatchEvent($this->getFullActionName() . '_init_after', array('object' => $object, $this->getRequest()->getControllerName() => $object, 'action' => $this));
 
 		return true;
@@ -136,15 +123,6 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 			);
 		}
 
-		$rootTemplates = array_reverse($this->_rootTemplates);
-		
-		foreach($rootTemplates as $rootTemplate) {
-			if ($template = Mage::getStoreConfig('wordpress/template/' . $rootTemplate)) {
-				$this->getLayout()->helper('page/layout')->applyTemplate($template);
-				break;
-			}
-		}
-
 		Mage::dispatchEvent('wordpress_render_layout_before', array('object' => $this->getEntityObject(), 'action' => $this));
 
 		if (($headBlock = $this->getLayout()->getBlock('head')) !== false) {
@@ -165,6 +143,11 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 			}
 		}
 		
+		$this->_renderTitles();
+
+
+		Mage::helper('wordpress/social')->addCodeToHead();
+		
 		return parent::renderLayout($output);
 	}
 
@@ -177,7 +160,7 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 		if (!$this->_isLayoutLoaded) {
 			$this->loadLayout();
 		}
-		
+
 		$this->_title()->_title(Mage::helper('wordpress')->getWpOption('blogname'));
 
 		$this->addCrumb('home', array('link' => Mage::getUrl(), 'label' => $this->__('Home')));
@@ -222,6 +205,21 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	}
 
 	/**
+	 * Remove a breadcrumb by it's name
+	 *
+	 * @param string $crumbName
+	 * @return $this
+	 */
+	public function removeCrumb($crumbName)
+	{
+		if (isset($this->_crumbs[$crumbName])) {
+			unset($this->_crumbs[$crumbName]);
+		}
+		
+		return $this;
+	}
+	
+	/**
 	 * Retrieve a breadcrumb
 	 *
 	 * @param string $crumbName
@@ -230,6 +228,16 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	public function getCrumb($crumbName)
 	{
 		return isset($this->_crumbs[$crumbName]) ? $this->_crumbs[$crumbName] : false;
+	}
+	
+	/**
+	 * Get the breadcrumbs array
+	 *
+	 * @return array
+	 */
+	public function getCrumbs()
+	{
+		return $this->_crumbs;	
 	}
 	
 	/**
@@ -303,7 +311,8 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 	 */
 	public function isEnabledForStore()
 	{
-		return !Mage::getStoreConfigFlag('advanced/modules_disable_output/Fishpig_Wordpress');
+		return (!Mage::getStoreConfigFlag('advanced/modules_disable_output/Fishpig_Wordpress')
+			&& Mage::getStoreConfigFlag('wordpress/module/enabled'));
 	}
 	
 	/**
@@ -403,4 +412,24 @@ abstract class Fishpig_Wordpress_Controller_Abstract extends Mage_Core_Controlle
 					->toHtml()
 			);
 	}
+	
+	/**
+	 * Allows for legacy methods to be catered for
+	 *
+	 * @param string $method
+	 * @param array $args
+	 * @return mixed
+	 */
+	public function __call($method, $args)
+	{
+		$transport = new Varien_Object(array());
+		
+		Mage::dispatchEvent('wordpress_controller_method_invalid', array('method' => $method, 'args' => $args, 'object' => $this, 'transport' => $transport));
+		
+		if (!$transport->hasReturnValue()) {
+			throw new Varien_Exception("Invalid method ".get_class($this)."::".$method."(".print_r($args,1).")");
+		}
+		
+		return $transport->getReturnValue();
+	}    
 }

@@ -14,45 +14,11 @@ class Fishpig_Wordpress_Model_Post_Comment extends Fishpig_Wordpress_Model_Abstr
 	 * @var const string
 	 */
 	const GRAVATAR_BASE_URL = 'http://www.gravatar.com/avatar/';
+	const GRAVATAR_BASE_URL_SECURE = 'https://secure.gravatar.com/avatar/';
 	
 	public function _construct()
 	{
 		$this->_init('wordpress/post_comment');
-	}
-
-	/**
-	  * Returns a collection of comments for a certain post
-	  *
-	  * @param int $postId
-	  * @param bool $isApproved
-	  * @return Fishpig_Wordpress_Model_Mysql4_Post_Comment_Collection
-	  */
-	public function loadByPostId($postId, $isApproved = true)
-	{
-		$comments = Mage::getResourceModel('wordpress/post_comment_collection')
-			->addPostIdFilter($postId);
-								
-		if ($isApproved) {
-			$comments->addCommentApprovedFilter();
-		}
-		
-		return $comments;
-	}
-	
-	/**
-	 * Set the post this comment is associated to
-	 *
-	 * @param mixed $post
-	 * @return Fishpig_Wordpress_Model_Post_Comment
-	 */
-	public function setPost($post)
-	{
-		if ($post instanceof Fishpig_Wordpress_Model_Post_Abstract) {
-			$this->setPostId($post->getId());
-			$this->setData('comment_post_ID', $post->getId());
-		}
-
-		return $this->setData('post', $post);
 	}
 
 	/**
@@ -63,20 +29,16 @@ class Fishpig_Wordpress_Model_Post_Comment extends Fishpig_Wordpress_Model_Abstr
 	public function getPost()
 	{
 		if (!$this->hasPost()) {
-			$this->setPost(new Varien_Object());
+			$this->setPost(false);
 
-			$post = Mage::getModel('wordpress/post')->load($this->getData('comment_post_ID'));
-
-			if ($post->getId()) {
-
-				$this->setPost($post);
-			}
-			else {
-				$page = Mage::getModel('wordpress/page')->load($this->getData('comment_post_ID'));
+			$posts = Mage::getResourceModel('wordpress/post_collection')
+				->addPostTypeFilter(array('post', 'page'))
+				->addFieldToFilter('ID', $this->getData('comment_post_ID'))
+				->setPageSize(1)
+				->load();
 				
-				if ($page->getId()) {
-					$this->setPost($page);
-				}
+			if (count($posts) > 0) {
+				$this->setPost($posts->getFirstItem());
 			}
 		}
 		
@@ -149,8 +111,8 @@ class Fishpig_Wordpress_Model_Post_Comment extends Fishpig_Wordpress_Model_Abstr
 				}
 				
 				$fragment = '#comment-' . $this->getId();
-					
-				if (Mage::helper('wordpress/post')->permalinkHasTrainingSlash()) {
+
+				if ($post->getTypeInstance()->permalinkHasTrainingSlash()) {
 					$fragment = '/' . $fragment;
 				}
 
@@ -172,7 +134,7 @@ class Fishpig_Wordpress_Model_Post_Comment extends Fishpig_Wordpress_Model_Abstr
 			$this->setCommentPageId(1);
 			if ($post = $this->getPost()) {
 				$totalComments = count($post->getComments());
-				$commentsPerPage = Mage::helper('wordpress/post')->getCommentsPerPage();
+				$commentsPerPage = Mage::helper('wordpress')->getWpOption('comments_per_page', 50);
 
 				if ($commentsPerPage > 0 && $totalComments > $commentsPerPage) {
 					$it = 0;
@@ -202,19 +164,10 @@ class Fishpig_Wordpress_Model_Post_Comment extends Fishpig_Wordpress_Model_Abstr
 	 */
 	public function getChildrenComments()
 	{
-		if ($this->getPost()) {
-			$postId = $this->getPost()->getId()
-				? $this->getPost()->getId()
-				: $this->getData('comment_post_ID');
-
-			return $this->getCollection()
-				->addPostIdFilter($postId)
-				->addCommentApprovedFilter()
-				->addParentCommentFilter($this->getId())
-				->addOrderByDate();
-		}
-		
-		return new Varien_Data_Collection();
+		return $this->getCollection()
+			->addCommentApprovedFilter()
+			->addParentCommentFilter($this->getId())
+			->addOrderByDate();
 	}
 	
 	/**
@@ -234,7 +187,11 @@ class Fishpig_Wordpress_Model_Post_Comment extends Fishpig_Wordpress_Model_Abstr
 						'v' => 45345
 					);
 
-					$url = self::GRAVATAR_BASE_URL
+					$baseUrl = Mage::app()->getStore()->isCurrentlySecure()
+						? self::GRAVATAR_BASE_URL_SECURE
+						: self::GRAVATAR_BASE_URL;
+						
+					$url = $baseUrl
 						. md5(strtolower($this->getCommentAuthorEmail()))
 						. '/?' . http_build_query($params);
 

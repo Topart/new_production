@@ -6,23 +6,50 @@
  * @author		Ben Tideswell <help@fishpig.co.uk>
  */
 
-class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_Router_Abstract
+class Fishpig_Wordpress_Controller_Router extends Mage_Core_Controller_Varien_Router_Abstract
 {
+	/**
+	 * Callback methods used to generate possible routes
+	 *
+	 * @var array
+	 */
+	protected $_routeCallbacks = array();
+
+	/**
+	 * Stores the static routes used by WordPress
+	 *
+	 * @var array
+	 */
+	protected $_staticRoutes = array();
+	
 	/**
 	 * Create an instance of the router and add it to the queue
 	 *
 	 * @param Varien_Event_Observer $observer
 	 * @return bool
-	 */
-    public function initControllerObserver(Varien_Event_Observer $observer)
-    {
-    	if (Mage::helper('wordpress')->isEnabled()) {
-    		return parent::initControllerObserver($observer);
-        }
-        
-        return false;
-    }
+	 */	
+	public function initControllerObserver(Varien_Event_Observer $observer)
+	{
+		try {
+#			Mage::helper('wordpress/app')->init();
+			
+			if ($this->isEnabled()) {
+				$routerClass = get_class($this);
+		
+		   	    $observer->getEvent()
+		   	    	->getFront()
+		   	    		->addRouter('wordpress', new $routerClass);
+			}
+			
+			return true;
+	   	}
+	   	catch (Exception $e) {
+		   	Mage::helper('wordpress')->log($e);
+	   	}
 
+   	    return false;
+	}
+	
 	/**
 	 * Remove the AW_Blog route to stop conflicts
 	 *
@@ -31,7 +58,9 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 	 */
     public function initControllerBeforeObserver(Varien_Event_Observer $observer)
     {
-    	if (Mage::helper('wordpress')->isEnabled() && Mage::getDesign()->getArea() === 'frontend') {
+	    return $this;
+	    /*
+    	if (Mage::getDesign()->getArea() === 'frontend') {
 	    	$node = Mage::getConfig()->getNode('global/events/controller_front_init_routers/observers');
     	
 	    	if (isset($node->blog)) {
@@ -41,30 +70,54 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 		    	Mage::getConfig()->setNode('frontend/routers/blog', null, true);
 		    }
         }
+        */
 
         return false;
     }
-    	
-	/**
-	 * Initialize the static routes used by WordPress
+ 
+ 	/**
+	 * Attempt to match the current URI to this module
+	 * If match found, set module, controller, action and dispatch
 	 *
-	 * @return $this
+	 * @param Zend_Controller_Request_Http $request
+	 * @return bool
 	 */
-	protected function _beforeMatch($uri)
+	public function match(Zend_Controller_Request_Http $request)
 	{
-		parent::_beforeMatch($uri);
+		try {
+			Mage::helper('wordpress/app')->init();
+			
+			if (!Mage::helper('wordpress')->isFullyIntegrated() || Mage::app()->getStore()->getCode() === 'admin') {
+				return false;
+			}
+			
+			if (($uri = Mage::helper('wordpress/router')->getBlogUri()) === null) {
+				return false;	
+			}
 
-		if (!$uri) {
-			$this->addRouteCallback(array($this, '_getHomepageRoutes'));	
+			Mage::dispatchEvent('wordpress_match_routes_before', array('router' => $this, 'uri' => $uri));
+
+			if (!$uri) {
+				$this->addRouteCallback(array($this, '_getHomepageRoutes'));	
+			}
+			
+			$this->addRouteCallback(array($this, '_getSimpleRoutes'));
+			$this->addRouteCallback(array($this, '_getPostRoutes'));
+			$this->addRouteCallback(array($this, '_getTaxonomyRoutes'));
+
+			if (($route = $this->_matchRoute($uri)) !== false) {
+				return $this->setRoutePath($route['path'], $route['params']);
+			}
+
+			Mage::dispatchEvent('wordpress_match_routes_after', array('router' => $this, 'uri' => $uri));
 		}
-		
-		$this->addRouteCallback(array($this, '_getSimpleRoutes'));
-		$this->addRouteCallback(array($this, '_getPostCategoryRoutes'));
-		$this->addRouteCallback(array($this, '_getPageRoutes'));
-		$this->addRouteCallback(array($this, '_getPostRoutes'));
-		$this->addRouteCallback(array($this, '_getCustomTaxonomyUris'));
-		
-		return $this;	
+		catch (Exception $e) { 
+			Mage::helper('wordpress')->log($e->getMessage());
+		}
+
+		return !is_null(Mage::app()->getRequest()->getModuleName())
+			&& !is_null(Mage::app()->getRequest()->getControllerName())
+			&& !is_null(Mage::app()->getRequest()->getActionName());
 	}
 
 	/**
@@ -75,17 +128,12 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 	 */
 	protected function _getHomepageRoutes($uri = '')
 	{
-		// NextGEN Gallery fix
-		if (Mage::app()->getRequest()->getParam('format') === 'json') {
-			return $this->addRoute('', '*/index/forward');
-		}
-
 		if ($postId = Mage::app()->getRequest()->getParam('p')) {
 			return $this->addRoute('', '*/post/view', array('p' => $postId, 'id' => $postId));
 		}
 
 		if (($pageId = $this->_getHomepagePageId()) !== false) {
-			return $this->addRoute('', '*/page/view', array('id' => $pageId, 'is_home' => 1));
+			return $this->addRoute('', '*/post/view', array('id' => $pageId, 'post_type' => 'page', 'home' => 1));
 		}
 	
 		$this->addRoute('', '*/index/index');
@@ -104,13 +152,13 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 		if (strpos($uri, 'ajax/') === 0) {
 			$this->_getAjaxRoutes($uri);
 		}
-
-		$this->addRoute(array('/^' . Mage::getSingleton('wordpress/post_tag')->getUriPrefix() . '\/(.*)$/' => array('tag')), '*/post_tag/view');
+		
 		$this->addRoute(array('/^author\/([^\/]{1,})/' => array('author')), '*/author/view');
 		$this->addRoute(array('/^([1-2]{1}[0-9]{3})\/([0-1]{1}[0-9]{1})$/' => array('year', 'month')), '*/archive/view');
 		$this->addRoute(array('/^([1-2]{1}[0-9]{3})\/([0-1]{1}[0-9]{1})$/' => array('year', 'month')), '*/archive/view');
 		$this->addRoute(array('/^([1-2]{1}[0-9]{3})\/([0-1]{1}[0-9]{1})\/([0-3]{1}[0-9]{1})$/' => array('year', 'month', 'day')), '*/archive/view');
 		$this->addRoute(array('/^search\/(.*)$/' => array('s')), '*/search/index');
+		$this->addRoute('search', '*/search/index', array('redirect_broken_url' => 1)); # Fix broken search URLs
 		$this->addRoute('/^index.php/i', '*/index/forward');
 		$this->addRoute('/^wp-content\/(.*)/i', '*/index/forwardFile');
 		$this->addRoute('/^wp-includes\/(.*)/i', '*/index/forwardFile');
@@ -118,11 +166,9 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 		$this->addRoute('/^wp-admin[\/]{0,1}$/', '*/index/wpAdmin');
 		$this->addRoute('/^wp-pass.php.*/', '*/index/applyPostPassword');
 		$this->addRoute('robots.txt', '*/index/robots');
-		$this->addRoute('sitemap.xml', '*/index/sitemap');
-		$this->addRoute('/^[^\/]{0,}sitemap[^\/]{0,}.xml$/', '*/index/legacySitemap');
 		$this->addRoute('comments', '*/index/commentsFeed');
 		$this->addRoute(array('/^newbloguser\/(.*)$/' => array('code')), '*/index/forwardNewBlogUser');
-		
+
 		return $this;
 	}
 
@@ -142,58 +188,6 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 	}
 
 	/**
-	 * Generate the post category routes
-	 *
-	 * @param string $uri = ''
-	 * @return false|$this
-	 */
-	protected function _getPostCategoryRoutes($uri = '')
-	{
-		$categoryModel = Mage::getSingleton('wordpress/post_category');
-
-		if (($base = $categoryModel->getUriPrefix()) !== '') {
-			$base = ltrim($base . '/', '/');
-
-			if (strpos(Mage::helper('wordpress/router')->getBlogUri(), $base) !== 0) {
-				return false;
-			}
-		}
-
-		if (($routes = $categoryModel->getAllUris()) !== false) {
-			foreach($routes as $routeId => $route) {
-				$this->addRoute($base . $route, '*/post_category/view', array('id' => $routeId));
-			}
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Generate the page routers
-	 *
-	 * @param string $uri = ''
-	 * @return false|$this
-	 */
-	protected function _getPageRoutes($uri = '')
-	{
-		if (($routes = Mage::getResourceSingleton('wordpress/page')->getAllUris()) !== false) {
-			$homepagePageId = $this->_getHomepagePageId();
-			
-			foreach($routes as $routeId => $route) {
-				$redirectTo = $homepagePageId && $homepagePageId == $routeId
-					? Mage::helper('wordpress')->getUrl()
-					: null;
-					
-				$this->addRoute($route, '*/page/view', array('id' => $routeId, '__redirect_to' => $redirectTo));
-			}
-			
-			return $this;
-		}
-		
-		return false;
-	}
-
-	/**
 	 * Generate the post routes
 	 *
 	 * @param string $uri = ''
@@ -201,9 +195,7 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 	 */
 	protected function _getPostRoutes($uri = '')
 	{
-		$routes = Mage::getResourceSingleton('wordpress/post')->getPermalinksByUri($uri);
-
-		if ($routes === false) {
+		if (($routes = Mage::getResourceSingleton('wordpress/post')->getPermalinksByUri($uri)) === false) {
 			return false;
 		}
 
@@ -216,7 +208,7 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 
 		return $this;
 	}
-
+	
 	/**
 	 * Get the custom taxonomy URI's
 	 * First check whether a valid taxonomy exists in $uri
@@ -224,39 +216,19 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 	 * @param string $uri = ''
 	 * @return $this
 	 */
-	protected function _getCustomTaxonomyUris($uri = '')
+	protected function _getTaxonomyRoutes($uri = '')
 	{
-		$parts = explode('/', $uri);
+		foreach(Mage::helper('wordpress/app')->getTaxonomies() as $taxonomy) {
+			if (($routes = $taxonomy->getUris($uri)) !== false) {
 
-		$term = Mage::getModel('wordpress/term')->setTaxonomy(array_shift($parts));
-
-		if (($routes = $term->getAllUris()) !== false) {
-			foreach($routes as $routeId => $route) {
-				$this->addRoute($term->getTaxonomyType() . '/' . $route, '*/term/view', array('id' => $routeId));
+				foreach($routes as $routeId => $route) {
+					$this->addRoute($route, '*/term/view', array('id' => $routeId, 'taxonomy' => $taxonomy->getTaxonomyType()));
+					$this->addRoute(rtrim($route, '/') . '/feed', '*/term/feed', array('id' => $routeId, 'taxonomy' => $taxonomy->getTaxonomyType()));
+				}
 			}
 		}
-		
-		return $this;
-	}
 
-	/**
-	 * Adds redirects from attachment pages to parent post
-	 * This stops 404 errors showing up in Google Analytics
-	 *
-	 * @param string $uri
-	 * @return bool
-	 */
-	protected function _redirectFromAttachmentUriToPost($uri)
-	{
-		if (strpos($uri, '/') !== false) {
-			$postUri = substr($uri, 0, strrpos($uri, '/'));
-			
-			header("HTTP/1.1 301 Moved Permanently");
-			header('Location: ' . Mage::helper('wordpress')->getUrl($postUri));
-			exit;
-		}
-		
-		return false;
+		return $this;
 	}
 	
 	/**
@@ -267,5 +239,157 @@ class Fishpig_Wordpress_Controller_Router extends Fishpig_Wordpress_Controller_R
 	protected function _getHomepagePageId()
 	{
 		return Mage::helper('wordpress/router')->getHomepagePageId();
+	}
+	
+	/**
+	 * Determine whether to add routes
+	 *
+	 * @return bool
+	 */
+	public function isEnabled()
+	{
+		return (int)Mage::app()->getStore()->getId() !== 0;
+	}
+	
+	/**
+	 * Set the path and parameters ready for dispatch
+	 *
+	 * @param array $path
+	 * @param array $params = array
+	 * @return $this
+	 */
+	public function setRoutePath($path, array $params = array())
+	{
+		if (is_string($path)) {
+			// Legacy
+			$path = explode('/', $path);
+
+			$path = array(
+				'module' => $path[0] === '*' ? 'wordpress' : $path[0],
+				'controller' => $path[1],
+				'action' => $path[2],
+			
+			);
+		}
+
+		$request = Mage::app()->getRequest();
+
+		$request->setModuleName($path['module'])
+			->setRouteName($path['module'])
+			->setControllerName($path['controller'])
+			->setActionName($path['action']);
+
+		foreach($params as $key => $value) {
+			$request->setParam($key, $value);
+		}
+
+		$helper = Mage::helper('wordpress/router');
+		
+		$request->setAlias(
+			Mage_Core_Model_Url_Rewrite::REWRITE_REQUEST_PATH_ALIAS,
+			ltrim($helper->getBlogRoute() . '/' . $helper->getBlogUri(), '/')
+		);
+
+		return true;
+	}
+	
+	/**
+	 * Execute callbacks and match generated routes against $uri
+	 *
+	 * @param string $uri = ''
+	 * @return false|array
+	 */
+	protected function _matchRoute($uri = '')
+	{
+		$encodedUri = strtolower(str_replace('----slash----', '/', urlencode(str_replace('/', '----slash----', $uri))));
+		
+		foreach($this->_routeCallbacks as $callback) {
+			$this->_staticRoutes = array();
+
+			if (call_user_func($callback, $uri, $this) !== false) {
+				foreach($this->_staticRoutes as $route => $data) {
+					$match = false;
+
+					if (substr($route, 0, 1) !== '/') {
+						$match = $route === $encodedUri || $route === $uri;
+					}
+					else {
+						if (preg_match($route, $uri, $matches)) {
+							$match = true;
+							
+							if (isset($data['pattern_keys']) && is_array($data['pattern_keys'])) {
+								array_shift($matches);
+								
+								if (!isset($data['params'])) {
+									$data['params'] = array();
+								}
+
+								foreach($matches as $match) {
+									if (($pkey = array_shift($data['pattern_keys'])) !== null) {
+										$data['params'][$pkey] = $match;
+									}
+								}	
+							}
+						}
+					}
+					
+					if ($match) {
+						if (isset($data['params']['__redirect_to'])) {
+							header('Location: ' . $data['params']['__redirect_to']);
+							exit;	
+						}
+						
+						return $data;
+					}
+				}	
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Add a callback method to generate new routes
+	 *
+	 * @param array
+	 */
+	public function addRouteCallback(array $callback)
+	{
+		$this->_routeCallbacks[] = $callback;
+		
+		return $this;
+	}
+	
+	/**
+	 * Add a generated route and it's details
+	 *
+	 * @param array|string $pattern
+	 * @param string $path
+	 * @param array|null $params = array()
+	 * @return $this
+	 */
+	public function addRoute($pattern, $path, $params = array())
+	{
+		if (is_array($pattern)) {
+			$keys = $pattern[key($pattern)];
+			$pattern = key($pattern);
+		}
+		else {
+			$keys = array();
+		}
+
+		$path = array_combine(array('module', 'controller', 'action'), explode('/', $path));
+		
+		if ($path['module'] === '*') {
+			$path['module'] = 'wordpress';
+		}
+
+		$this->_staticRoutes[$pattern] = array(
+			'path' => $path,
+			'params' => $params,
+			'pattern_keys' => $keys,
+		);
+		
+		return $this;
 	}
 }

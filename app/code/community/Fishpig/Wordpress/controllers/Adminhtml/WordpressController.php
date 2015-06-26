@@ -32,15 +32,13 @@ class Fishpig_Wordpress_Adminhtml_WordpressController extends Mage_Adminhtml_Con
 			}
 			
 			Mage::helper('wordpress/system')->loginToWordPress($username, $password, Mage::helper('wordpress')->getAdminUrl());
+			exit;
 
 			$this->_redirectUrl(Mage::helper('wordpress')->getAdminUrl('index.php'));
 		}
 		catch (Exception $e) {
 			Mage::helper('wordpress')->log($e);
-
-			Mage::getSingleton('adminhtml/session')->addError(
-				$this->__('Unable to login.'). ' ' . $this->__('Check your WordPress Admin login details below.')
-			);
+			Mage::getSingleton('adminhtml/session')->addError($e->getMessage());
 			
 			$this->_redirect('adminhtml/system_config/edit', array('section' => 'wordpress'));
 		}
@@ -57,7 +55,7 @@ class Fishpig_Wordpress_Adminhtml_WordpressController extends Mage_Adminhtml_Con
 
 		try {
 			if (($latest = Mage::app()->getCache()->load($cacheKey)) === false) {
-				$response = Mage::helper('wordpress/system')->makeHttpPostRequest(
+				$response = Mage::helper('wordpress/system')->makeHttpGetRequest(
 					self::URL_RELEASES
 				);
 				

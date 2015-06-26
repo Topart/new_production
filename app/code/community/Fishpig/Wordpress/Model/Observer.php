@@ -63,7 +63,7 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 		if (is_null($menuId)) {
 			$menuId = Mage::getStoreConfig('wordpress/menu/id');
 		}
-		
+
 		if (!$menuId) {
 			return false;
 		}
@@ -73,8 +73,75 @@ class Fishpig_Wordpress_Model_Observer extends Varien_Object
 		if (!$menu->getId()) {
 			return false;
 		}
-		
+
 		return $menu->applyToTreeNode($topmenu);
+	}
+
+	/**
+	 * Inject links into the Magento XML sitemap
+	 *
+	 * @param Varien_Data_Tree_Node $topmenu
+	 * @return bool
+	 */	
+	public function injectXmlSitemapLinksObserver(Varien_Event_Observer $observer)
+	{
+		$sitemap = $observer
+			->getEvent()
+				->getSitemap();
+
+		if (!$this->_observerCanRun(__METHOD__ . $sitemap->getStoreId())) {
+			return false;
+		}
+
+		$appEmulation = Mage::getSingleton('core/app_emulation');
+		$initialEnvironmentInfo = $appEmulation->startEnvironmentEmulation($sitemap->getStoreId());
+
+		if (!Mage::getStoreConfigFlag('wordpress/module/enabled', $sitemap->getStoreId())) {
+			return false;
+		}
+
+		$sitemapFilename = Mage::getBaseDir() . '/' . ltrim($sitemap->getSitemapPath() . $sitemap->getSitemapFilename(), '/' . DS);
+		
+		if (!file_exists($sitemapFilename)) {
+			return $this;
+		}
+		
+		$xml = trim(file_get_contents($sitemapFilename));
+		
+		// Trim off trailing </urlset> tag so we can add more
+		$xml = substr($xml, 0, -strlen('</urlset>'));
+
+		// Add the blog homepage
+		$xml .= sprintf(
+			'<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq><priority>%.1f</priority></url>',
+			htmlspecialchars(Mage::helper('wordpress')->getUrl()),
+			Mage::getSingleton('core/date')->gmtDate('Y-m-d'),
+			'daily',
+			'1.0'
+		);
+
+		$posts = Mage::getResourceModel('wordpress/post_collection')
+			->addIsViewableFilter()
+			->setOrderByPostDate()
+			->load();
+		
+		foreach($posts as $post) {
+			$xml .= sprintf(
+				'<url><loc>%s</loc><lastmod>%s</lastmod><changefreq>%s</changefreq><priority>%.1f</priority></url>',
+				htmlspecialchars($post->getUrl()),
+				$post->getPostModifiedDate('Y-m-d'),
+				'monthly',
+				'0.5'
+			);
+		}
+
+		$xml .= '</urlset>';
+		
+		@file_put_contents($sitemapFilename, $xml);
+
+		$appEmulation->stopEnvironmentEmulation($initialEnvironmentInfo);
+
+		return $this;
 	}
 	
 	/**

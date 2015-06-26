@@ -11,59 +11,8 @@
                 <h4><a href="<?php echo $this->getCategory()->getUrl() ?>"><?php echo $this->__('More in ').$this->getCategory()->getName() ?></a></h4>
             </div>
             <div id="same-category" class="owl-carousel owl-theme">
-                <?php foreach($this->getProductsSameCategory() as $product):
-
-                    $_product_rel = Mage::getModel('catalog/product')->load($product->getId());
-                    $name_artist = $_product_rel->getUdfArtistName();
-                    $name_picture = $_product_rel->getName();
-
-                    $canvas_available = $_product_rel->getUdfCanvas();
-                    $poster_available = $_product_rel->getUdfPoster();
-                    $paper_available = $_product_rel->getUdfPhotoPaper();
-
-                    $details = '';
-                    $unique = 0;
-
-                    if($canvas_available){
-                        $details = $details.' canvas';
-                        $unique = $unique +1;
-                    }
-                    if($poster_available){
-                        if($unique > 0){
-                            $details = $details.' and poster';
-                        }else{
-                            $details = $details.' poster';
-                        }
-                        $unique = $unique +1;
-                    }
-                    if($paper_available){
-                        if($unique > 0){
-                            $details = $details.' and paper';
-                        }else{
-                            $details = $details.' paper';
-                        }
-                        $unique = $unique +1;
-                    }
-                    $categories = '';
-                    $categoryIds = $_product_rel->getCategoryIds();
-
-                    if(count($categoryIds) ){
-                        foreach ($categoryIds as $category_id) {
-                            $_cat = Mage::getModel('catalog/category')->load($category_id);
-                            if($_cat->getName() != $name_artist){
-                                $categories = $categories .' '. $_cat->getName();
-                            }
-
-                        }
-
-                    }
-                    ?>
-                    <div class="item" style="width: <?php echo $this->getImageWidth()?>px; height: <?php echo $this->getImageHeight()?>px;">
-                        <a href="<?php echo $product->getProductUrl() ?>">
-                            <img src="<?php echo $helpImg->getImg($product, 0, 0, 'thumbnail');?>"
-                                 alt="<?php echo $name_artist.' | '.$categories.' | '.$details.' | '.$name_picture ?>">
-                        </a>
-                    </div>
+                <?php foreach($this->getProductsSameCategory() as $product): ?>
+                    <div class="item" style="width: <?php echo $this->getImageWidth()?>px; height: <?php echo $this->getImageHeight()?>px;"><a href="<?php echo $product->getProductUrl() ?>"><img src="<?php echo $helpImg->getImg($product, 0, 0, 'thumbnail');?>" alt="Owl Image"></a></div>
                 <?php endforeach;?>
             </div>
         <?php endif; ?>
@@ -75,58 +24,8 @@
                 <h4><a class="" href="<?php echo $this->getArtist()->getUrl() ?>"><?php echo $this->__('More from ').$this->getArtist()->getName() ?></a></h4>
             </div>
             <div id="owl-demo" class="owl-carousel owl-theme">
-                <?php foreach($this->getProductsSameArtist() as $product):
-                    $_product_rel2 = Mage::getModel('catalog/product')->load($product->getId());
-                    $name_artist = $_product_rel2->getUdfArtistName();
-                    $name_picture = $_product_rel2->getName();
-
-                    $canvas_available = $_product_rel2->getUdfCanvas();
-                    $poster_available = $_product_rel2->getUdfPoster();
-                    $paper_available = $_product_rel2->getUdfPhotoPaper();
-
-                    $details = '';
-                    $unique = 0;
-
-                    if($canvas_available){
-                        $details = $details.' canvas';
-                        $unique = $unique +1;
-                    }
-                    if($poster_available){
-                        if($unique > 0){
-                            $details = $details.' and poster';
-                        }else{
-                            $details = $details.' poster';
-                        }
-                        $unique = $unique +1;
-                    }
-                    if($paper_available){
-                        if($unique > 0){
-                            $details = $details.' and paper';
-                        }else{
-                            $details = $details.' paper';
-                        }
-                        $unique = $unique +1;
-                    }
-                    $categories = '';
-                    $categoryIds = $_product_rel2->getCategoryIds();
-
-                    if(count($categoryIds) ){
-                        foreach ($categoryIds as $category_id) {
-                            $_cat = Mage::getModel('catalog/category')->load($category_id);
-                            if($_cat->getName() != $name_artist){
-                                $categories = $categories .' '. $_cat->getName();
-                            }
-
-                        }
-
-                    }
-                    ?>
-                    <div class="item" style="width: <?php echo $this->getImageWidth()?>px; height: <?php echo $this->getImageHeight()?>px;">
-                        <a href="<?php echo $product->getProductUrl() ?>">
-                            <img src="<?php echo $helpImg->getImg($product, 0, 0, 'thumbnail');?>"
-                                 alt="<?php echo $name_artist.' | '.$categories.' | '.$details.' | '.$name_picture ?>">
-                        </a>
-                    </div>
+                <?php foreach($this->getProductsSameArtist() as $product): ?>
+                    <div class="item" style="width: <?php echo $this->getImageWidth()?>px; height: <?php echo $this->getImageHeight()?>px;"><a href="<?php echo $product->getProductUrl() ?>"><img src="<?php echo $helpImg->getImg($product, 0, 0, 'thumbnail');?>" alt="Owl Image"></a></div>
                 <?php endforeach;?>
             </div>
         <?php endif;?>
