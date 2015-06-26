@@ -5,7 +5,6 @@
  * @license     http://fishpig.co.uk/license.txt
  * @author      Ben Tideswell <help@fishpig.co.uk>
  */
-
 class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abstract
 {
 	/**
@@ -26,9 +25,17 @@ class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abst
 	 */
 	public function preDispatch()
 	{
+		parent::preDispatch();
+		
 		$this->_handlePostedComment();
+		
+		$post = $this->getEntityObject();
 
-		return parent::preDispatch();
+		if ($post->isBlogListingPage()) {
+			return $this->_forward('index', 'index', 'wordpress');
+		}
+
+		return $this;
 	}
 
 	/**
@@ -37,52 +44,107 @@ class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abst
 	 */
 	public function viewAction()
 	{
-		$post = Mage::registry('wordpress_post');
-		
-		$this->_rootTemplates[] = 'post_view';
+		$post = $this->getEntityObject();
 
-		$this->_addCustomLayoutHandles(array(
+		$layoutHandles = array(
 			'wordpress_post_view',
-			'wordpress_post_view_' . strtoupper($post->getPostType()),
-			'wordpress_post_view_' . $post->getId(),
-		));
+			'wordpress_' . $post->getPostType() . '_view',
+			'wordpress_' . $post->getPostType() . '_view_' . $post->getId(),
+		);
 		
-		$this->_initLayout();
+		$isHomepage = (bool)$this->getRequest()->getParam('is_homepage');
+		
+		if ($post->isHomepagePage() && !$isHomepage) {
+			if (Mage::getUrl('', array('_current' => true, '_use_rewrite' => true)) !== Mage::helper('wordpress')->getUrl()) {
+				return $this->_redirectUrl(Mage::helper('wordpress')->getUrl());
+			}
+		}
 
+		if ($post->getTypeInstance()->isHierarchical()) {
+			$buffer = $post->getParentPost();
+	
+			while ($buffer) {
+				$layoutHandles[] = 'wordpress_' . $post->getPostType() . '_view_parent_' . $buffer->getId();
+				
+				// Legacy
+				if ($post->isType('page')) {
+					$layoutHandles[] = 'wordpress_' . $post->getPostType() . '_parent_' . $buffer->getId();
+				}
+
+				$buffer = $buffer->getParentPost();
+			}
+		}
+
+		$this->_addCustomLayoutHandles($layoutHandles);
+		$this->_initLayout();
 		$this->_title(strip_tags($post->getPostTitle()));
 		
 		if (($headBlock = $this->getLayout()->getBlock('head')) !== false) {
-			$feedTitle = sprintf('%s %s %s Comments Feed', Mage::helper('wordpress')->getWpOption('blogname'), '&raquo;', $post->getPostTitle());
-
-			$headBlock->addItem('link_rel', 
+			$headBlock->addItem(
+				'link_rel', 
 				$post->getCommentFeedUrl(), 
-				'rel="alternate" type="application/rss+xml" title="' . $feedTitle . '"'
+				sprintf('rel="alternate" type="application/rss+xml" title="%s &raquo; %s Comments Feed"', 
+					Mage::helper('wordpress')->getWpOption('blogname'), 
+					$post->getPostTitle()
+				)
 			);
 
-			$headBlock->setDescription($post->getMetaDescription());
-			
-			$canPing = Mage::helper('wordpress')->getWpOption('default_ping_status') === 'open';
-
-			if ($canPing && $post->getPingStatus() == 'open') {
+			if (Mage::helper('wordpress')->getWpOption('default_ping_status') === 'open' && $post->getPingStatus() == 'open') {
 				$headBlock->addItem('link_rel', Mage::helper('wordpress')->getBaseUrl() . 'xmlrpc.php', 'rel="pingback"');				
 			}
 		}
-			
-		if ($post->hasParentCategory()) {
-			$categories = array();
-			$category = $post->getParentCategory();
 
-			while($category) {
-				array_unshift($categories, $category);
-				$category = $category->getParentTerm();
+		if ($post->getTypeInstance()->hasArchive()) {
+			$this->addCrumb($post->getPostType() . '_archive', array('label' => $post->getTypeInstance()->getName(), 'link' => $post->getTypeInstance()->getArchiveUrl()));
+		}
+		
+		if ($isHomepage) {
+			$post->setCanonicalUrl(Mage::helper('wordpress')->getUrl());
+
+			if (Mage::helper('wordpress')->getBlogRoute() === '') {
+				$this->_crumbs = array();
 			}
+			else {
+				array_pop($this->_crumbs);
+			}
+		}
+		else if ($post->getTypeInstance()->isHierarchical()) {
+			$posts = array();
+			$buffer = $post;
+	
+			while ($buffer) {
+				$this->_title(strip_tags($buffer->getPostTitle()));
+				$posts[] = $buffer;
+				$buffer = $buffer->getParentPost();
+			}
+
+			$posts = array_reverse($posts);
 			
-			foreach($categories as $category) {
-				$this->addCrumb('post_category_' . $category->getId(), array('label' => $category->getName(), 'link' => $category->getUrl()));
+			// Remove current post from end array
+			array_pop($posts);
+			
+			foreach($posts as $buffer) {
+				$this->addCrumb('post_' . $buffer->getId(), array('label' => $buffer->getPostTitle(), 'link' => $buffer->getUrl()));
+			}
+		}
+		else if ($post->getTypeInstance()->isTaxonomySupported('category')) {
+			if ($term = $post->getParentTerm('category')) {
+				$terms = array();
+	
+				while($term) {
+					array_unshift($terms, $term);
+					$term = $term->getParentTerm();
+				}
+				
+				foreach($terms as $term) {
+					$this->addCrumb('post_' . $term->getTaxonomyType() . '_' . $term->getId(), array('label' => $term->getName(), 'link' => $term->getUrl()));
+				}
 			}
 		}
 		
-		$this->addCrumb('post', array('label' => $post->getPostTitle()));
+		if (!$isHomepage) {
+			$this->addCrumb('post', array('label' => $post->getPostTitle()));
+		}
 
 		$this->renderLayout();
 	}
@@ -122,16 +184,36 @@ class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abst
 	protected function _initPost()
 	{
 		if (($post = Mage::registry('wordpress_post')) !== null) {
+			$previewId = $this->getRequest()->getParam('preview_id');
+
+			if ($previewId === $post->getId()) {
+				$posts = Mage::getResourceModel('wordpress/post_collection')
+					->addFieldToFilter('post_parent', $post->getId())
+					->addPostTypeFilter('revision')
+					->setPageSize(1)
+					->setOrder('post_modified', 'desc')
+					->load();
+				
+				if (count($posts) > 0) {
+					$post = $posts->getFirstItem();
+					
+					Mage::unregister('wordpress_post');
+					Mage::register('wordpress_post', $post);
+					
+					return $post;	
+				}
+			}
+			
 			return $post;
 		}
 
-		$isPreview = $this->getRequest()->getParam('preview', false);;
+		$isPreview = $this->getRequest()->getParam('preview', false);
 
 		if ($postId = $this->getRequest()->getParam('p')) {
 			$post = Mage::getModel('wordpress/post')->load($postId);
 
 			if ($post->getId()) {
-				if ($isPreview || Mage::helper('wordpress/post')->useGuidLinks()) {
+				if ($isPreview || $post->getTypeInstance() && $post->getTypeInstance()->useGuidLinks()) {
 					Mage::register('wordpress_post', $post);
 
 					return $post;
@@ -145,7 +227,9 @@ class Fishpig_Wordpress_PostController extends Fishpig_Wordpress_Controller_Abst
 			}
 		}
 		else if ($postId = $this->getRequest()->getParam('id')) {
-			$post = Mage::getModel('wordpress/post')->load($postId);
+			$post = Mage::getModel('wordpress/post')
+				->setPostType($this->getRequest()->getParam('post_type', '*'))
+				->load($postId);
 			
 			if ($post->getId() && ($post->canBeViewed() || $isPreview)) {
 				Mage::register('wordpress_post', $post);

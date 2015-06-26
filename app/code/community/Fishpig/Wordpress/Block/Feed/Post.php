@@ -28,6 +28,12 @@ class Fishpig_Wordpress_Block_Feed_Post extends Fishpig_Wordpress_Block_Feed_Abs
 				continue;
 			}
 
+			if (!($postDate = strtotime($post->getData('post_date_gmt')))) {
+				continue;
+			}
+
+			$entry->setDateModified($postDate);
+			
 			$entry->setTitle($post->getPostTitle());
 			$entry->setLink($post->getPermalink());
 
@@ -36,15 +42,15 @@ class Fishpig_Wordpress_Block_Feed_Post extends Fishpig_Wordpress_Block_Feed_Abs
 				'email' => $post->getAuthor()->getUserEmail(),
 			));
 			
-			$entry->setDescription($this->displayExceprt() ? $post->getPostExcerpt() : $post->getPostContent());
+			$description = $this->displayExceprt() ? $post->getPostExcerpt() : $post->getPostContent();
+
+			$entry->setDescription($description ? $description : '&nbsp;');
 			
 			foreach($post->getParentCategories() as $category) {
 				$entry->addCategory(array(
 					'term' => $category->getUrl(),
 				));
 			}
-
-			$entry->setDateModified(strtotime($post->getData('post_date_gmt')));
 			
 			$feed->addEntry($entry);
 		}

@@ -14,18 +14,6 @@ class Fishpig_Wordpress_Block_Post_Associated extends Fishpig_Wordpress_Block_Ab
 	 * @param null|Fishpig_Wordpress_Model_Resource_Post_Collection
 	 */
 	protected $_postCollection = null;
-
-	/**
-	 * Ensure the DB details are set
-	 *
-	 * @return $this
-	 */
-	protected function _prepareLayout()
-	{
-		$this->helper('wordpress/database')->connect();
-		
-		return parent::_prepareLayout();
-	}
 	
 	/**
 	 * Retrieve the association entity type
@@ -98,6 +86,8 @@ class Fishpig_Wordpress_Block_Post_Associated extends Fishpig_Wordpress_Block_Ab
 					$collection->getSelect()->order($this->getOrder() . ' ' . $dir);
 				}
 			}
+
+			Mage::dispatchEvent('wordpress_association_post_collection_load_before', array('collection' => $collection));
 			
 			$this->_postCollection = $collection;
 		}

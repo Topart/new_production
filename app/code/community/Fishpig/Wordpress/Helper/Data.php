@@ -119,7 +119,7 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function getTableName($table)
 	{
-		return Mage::helper('wordpress/database')->getTableName($table);
+		return Mage::getSingleton('core/resource')->getTableName($table);
 	}
 	
 	/**
@@ -130,8 +130,8 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function isEnabled()
 	{
-		return Mage::getStoreConfigFlag('wordpress/module/enabled')
-			&& !Mage::getStoreConfig('advanced/modules_disable_output/Fishpig_Wordpress');
+		return Mage::getStoreConfigFlag('wordpress/module/enabled', Mage::helper('wordpress/app')->getStore()->getId())
+			&& !Mage::getStoreConfig('advanced/modules_disable_output/Fishpig_Wordpress', Mage::helper('wordpress/app')->getStore()->getId());
 	}
 	
 	/**
@@ -217,7 +217,6 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function isPluginEnabled($name)
 	{
-		$name = Mage::getSingleton('catalog/product_url')->formatUrlKey($name);
 		$plugins = array();
 
 		if ($plugins = $this->getWpOption('active_plugins')) {
@@ -240,7 +239,37 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 
 		return false;
 	}
-
+	
+	public function enablePlugin($plugin)
+	{
+		if ($this->isPluginEnabled($plugin)) {
+			return true;
+		}
+		
+		if ($db = Mage::helper('wordpress/app')->getDbConnection()) {
+			if ($plugins = $this->getWpOption('active_plugins')) {
+				$db->update(
+					Mage::getSingleton('core/resource')->getTableName('wordpress/option'),
+					array('option_value' => serialize(array_merge(unserialize($plugins), array($plugin)))),
+					$db->quoteInto('option_name=?', 'active_plugins')
+				);
+			}
+			else {
+				$db->insert(
+					Mage::getSingleton('core/resource')->getTableName('wordpress/option'),
+					array(
+						'option_name' => 'active_plugins',
+						'option_value' => serialize(array($plugin))
+					)
+				);
+			}
+			
+			return true;			
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Determine whether to force single store
 	 *
@@ -248,7 +277,7 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function forceSingleStore()
 	{
-		return Mage::getStoreConfigFlag('wordpress/integration/force_single_store');
+		return Mage::getStoreConfigFlag('wordpress/integration/force_single_store', Mage::helper('wordpress/app')->getStore()->getId());
 	}
 	
 	/**
@@ -359,7 +388,7 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	public function getRawWordPressPath()
 	{
-		$path = rtrim($this->getConfigValue('wordpress/integration/path'), DS);
+		$path = rtrim(Mage::getStoreConfig('wordpress/integration/path', Mage::helper('wordpress/app')->getStore()->getId()), DS);
 
 		if ($path === '') {
 			return false;
@@ -388,22 +417,32 @@ class Fishpig_Wordpress_Helper_Data extends Fishpig_Wordpress_Helper_Abstract
 	}
 	
 	/**
-	 * Apply Legacy Hacks
+	 * Provides backwards compatibility for older Magento versions running Legacy
 	 *
-	 * @return $this
+	 * @param string $data
+	 * @param array $allowedTags = null
+	 * @return string
 	 */
-	public function applyLegacyHacks()
+	public function escapeHtml($data, $allowedTags = null)
 	{
-		if (!Mage::registry('wordpress_legacy_hacks')) {
-			Mage::register('wordpress_legacy_hacks', true);
-
-			$version = Mage::getVersion();
+		return Mage::helper('core')->htmlEscape($data, $allowedTags);
+	}
 	
-			if (version_compare($version, '1.6.0.0', '<') && version_compare($version, '1.3.0.0', '>')) {
-				require_once(Mage::getModuleDir('', 'Fishpig_Wordpress') . DS . 'legacy.php');
-			}
+	/**
+	 * Determine wether the Legacy add-on is installed
+	 *
+	 * @return bool
+	 */
+	public function isLegacy()
+	{
+		if ($this->_isCached('is_legacy')) {
+			return $this->_cached('is_legacy');
 		}
 		
-		return $this;
+		$isLegacy = is_file(Mage::getBaseDir() . DS . 'app' . DS . 'etc' . DS . 'modules' . DS . 'Fishpig_Wordpress_Addon_Legacy.xml');
+		
+		$this->_cache('is_legacy', $isLegacy);
+		
+		return $isLegacy;
 	}
 }

@@ -23,8 +23,8 @@ class Fishpig_Wordpress_IndexController extends Fishpig_Wordpress_Controller_Abs
 	 */
 	public function getEntityObject()
 	{
-		if (Mage::registry('wordpress_page')) {
-			return Mage::registry('wordpress_page');
+		if (Mage::registry('wordpress_post')) {
+			return Mage::registry('wordpress_post');
 		}
 
 		return new Varien_Object(array(
@@ -39,15 +39,27 @@ class Fishpig_Wordpress_IndexController extends Fishpig_Wordpress_Controller_Abs
 	 */
 	public function indexAction()
 	{
+		/**
+		 * If configured to display page as homepage,
+		 * forward to post controller and set request variables
+		 **/
+		if (($post = Mage::registry('wordpress_post')) === null) {
+			if (($postId = Mage::helper('wordpress/router')->getHomepagePageId()) !== false) {
+				$this->getRequest()
+					->setParam('id', $postId)
+					->setParam('post_type', 'page')
+					->setParam('is_homepage', 1);
+	
+				return $this->_forward('view', 'post');
+			}
+		}
+		
 		$this->_addCustomLayoutHandles(array(
 			'wordpress_homepage',
 			'wordpress_post_list',
 		));
-		
-		$this->_initLayout();
 
-		$this->_rootTemplates[] = 'homepage';
-		
+		$this->_initLayout();
 		$this->renderLayout();
 	}
 	
@@ -111,8 +123,6 @@ class Fishpig_Wordpress_IndexController extends Fishpig_Wordpress_Controller_Abs
 	 */
 	public function newBlogUserAction()
 	{
-
-
 	}
 	
 	/**
@@ -122,9 +132,7 @@ class Fishpig_Wordpress_IndexController extends Fishpig_Wordpress_Controller_Abs
 	 */
 	public function applyPostPasswordAction()
 	{
-		$password = $this->getRequest()->getPost('post_password');
-		
-		Mage::getSingleton('wordpress/session')->setPostPassword($password);
+		Mage::getSingleton('core/session')->setPostPassword($this->getRequest()->getPost('post_password'));
 		
 		if ($redirectTo = $this->getRequest()->getPost('redirect_to')) {
 			$this->_redirectUrl($redirectTo);	
@@ -143,47 +151,5 @@ class Fishpig_Wordpress_IndexController extends Fishpig_Wordpress_Controller_Abs
 	protected function _redirectTo($url)
 	{
 		return $this->getResponse()->setRedirect($url)->sendResponse();
-	}
-
-	/**
-	 * Forward to sitemap.xml in the WP root
-	 *
-	 * @return void
-	 */
-	public function sitemapAction()
-	{
-		if ($options = Mage::helper('wordpress')->getWpOption('sm_options')) {
-			$options = new Varien_Object(unserialize($options));
-			
-			if ($options->getData('sm_b_location_mode') === 'manual') {
-				$file = $options->getData('sm_b_filename_manual');
-				
-				if (is_file($file) && is_readable($file) && ($xml = @file_get_contents($file))) {
-					$this->getResponse()->setHeader('Content-Type', 'text/xml; charset=UTF-8')
-						->setBody($xml);
-				}
-				else {
-					return $this->_forwardToWordPress($options->getData('sm_b_filename'));
-				}
-			}
-			else {
-				return $this->_forwardToWordPress($options->getData('sm_b_filename'));
-			}
-		}
-		else {
-			return $this->_forwardToWordPress('sitemap.xml');			
-		}
-	}
-	
-	/**
-	 * Redirect to the Yoast SEO Sitemap (deprecated. use Google XML Sitemaps)
-	 *
-	 * @return void
-	 */
-	public function legacySitemapAction()
-	{
-		return $this->_forwardToWordPress(
-			'index.php/' . basename($this->getRequest()->getRequestUri())
-		);
 	}
 }

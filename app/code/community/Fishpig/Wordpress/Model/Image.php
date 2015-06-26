@@ -125,7 +125,11 @@ class Fishpig_Wordpress_Model_Image extends Fishpig_Wordpress_Model_Post_Attachm
 	 */
 	protected function _getThisImageUrl()
 	{
-		return $this->getFileUploadUrl() . dirname($this->getFile()) . '/';
+		$url = $this->getFileUploadUrl() . dirname($this->getFile()) . '/';
+		
+		return Mage::app()->getStore()->isCurrentlySecure()
+			? str_replace('http://', 'https://', $url)
+			: $url;
 	}
 	
 	/**
