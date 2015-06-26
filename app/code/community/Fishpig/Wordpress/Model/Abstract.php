@@ -63,7 +63,7 @@ abstract class Fishpig_Wordpress_Model_Abstract extends Mage_Core_Model_Abstract
 	public function load($id, $field=null)
 	{
 		if (!is_null($field)) {
-			$id = urlencode($id);
+			$id = $this->_encodeLoadingValue($id, $field);
 		}
 
 		if ($this->getSkipObjectCache()) {
@@ -83,7 +83,7 @@ abstract class Fishpig_Wordpress_Model_Abstract extends Mage_Core_Model_Abstract
 		if (is_null($field) && isset(self::$_objectCache[$class][$id])) {
 			return self::$_objectCache[$class][$id];
 		}
-		
+
 		parent::load($id, $field);
 		
 		if ($this->getId()) {
@@ -93,6 +93,20 @@ abstract class Fishpig_Wordpress_Model_Abstract extends Mage_Core_Model_Abstract
 		return $this;
 	}
 	
+	/**
+	 * Encode the loading value
+	 *
+	 * @param mixed $value
+	 * @param string $field
+	 * @return string
+	 */
+	protected function _encodeLoadingValue($value, $field)
+	{
+		return strpos($field, 'email') === false
+			? urlencode($value)
+			: $value;
+	}
+
 	/**
 	 * Retrieve the name of the meta database table
 	 *
@@ -229,7 +243,7 @@ abstract class Fishpig_Wordpress_Model_Abstract extends Mage_Core_Model_Abstract
 	protected function _getRealMetaKey($key)
 	{
 		if ($this->_metaHasPrefix) {
-			$tablePrefix = Mage::helper('wordpress/database')->getTablePrefix();
+			$tablePrefix = Mage::helper('wordpress/app')->getTablePrefix();
 
 			if ($tablePrefix !== 'wp_') {
 				if (preg_match('/^(wp_)(.*)$/', $key, $matches)) {
@@ -283,5 +297,16 @@ abstract class Fishpig_Wordpress_Model_Abstract extends Mage_Core_Model_Abstract
 	public function getEventObject()
 	{
 		return $this->_eventObject;
+	}
+	
+	/**
+	 * Get a collection of posts
+	 * Child class should filter posts accordingly
+	 *
+	 * @return Fishpig_Wordpress_Model_Resource_Post_Collection
+	 */
+	public function getPostCollection()
+	{
+		return Mage::getResourceModel('wordpress/post_collection')->setFlag('source', $this);
 	}
 }

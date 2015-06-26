@@ -14,6 +14,9 @@
             <!--JP: Ticket 125 - remove blog title-->
             <!--<h1 class="blog-title">Blog</h1>-->
 		<?php echo $this->getBeforePostContentHtml() ?>
+        <!-- active buttons sharethis-->
+        <?php echo Mage::helper('wordpress/social')->getButtons($post) ?>
+        <!-- active buttons sharethis-->
 		<div class="post-entry entry std<?php if ($post->getFeaturedImage()): ?> post-entry-with-image<?php endif; ?>">
 			<?php if ($post->isViewableForVisitor()): ?>
 				<?php if ($featuredImage = $post->getFeaturedImage()): ?>

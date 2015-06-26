@@ -16,6 +16,7 @@
 	<div class="post-view">
 		<p class="post-date when"><?php echo stripslashes($this->__('This entry was posted on %s<span class=\"by-author\"> by %s</span>.', $post->getPostDate(), $post->getAuthor()->getDisplayName())) ?></p>
 		<?php echo $this->getBeforePostContentHtml() ?>
+        <?php if (function_exists('sharethis_button')) { sharethis_button(); } ?>
 		<div class="post-entry entry std<?php if ($post->getFeaturedImage()): ?> post-entry-with-image<?php endif; ?>">
 			<?php if ($post->isViewableForVisitor()): ?>
 				<?php if ($featuredImage = $post->getFeaturedImage()): ?>
