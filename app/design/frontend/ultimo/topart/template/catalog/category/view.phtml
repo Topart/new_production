@@ -172,6 +172,18 @@ if (!empty($_imgUrl)) {
 </div>
 <?php if ($this->isContentMode()): ?>
     <?php echo $this->getCmsBlockHtml() ?>
+    <style>
+        .create-art-content{
+            float:left;
+        }
+        .create-art-list-container > ul > li.middle-li {
+            margin: 0 4% 2em !important;
+        }
+        ul.create-art-list li:nth-child(3) {
+            width: 31.4%;
+        }
+    </style>
+
 <?php elseif ($this->isMixedMode()): ?>
     <?php echo $this->getCmsBlockHtml() ?>
     <?php echo $this->getProductListHtml() ?>
