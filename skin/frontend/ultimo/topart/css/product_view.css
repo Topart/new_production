@@ -1509,6 +1509,7 @@ a
 .box-tabs {
 	font-size: 12px;
 	margin-top: 30px;
+    margin-bottom: 50px;
 }
 .product-view .btn-cart span {
 	background-color: #333333;
