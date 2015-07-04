@@ -35,6 +35,11 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 				$version = 'large_images';
 			break;
 		}
+
+		if($file =="alternative")
+			$sku = $sku."_alternative";
+
+
                 $cpath = $cloudFontBaseUrl .DS. $version . DS;
 		$imgSku = $this->cleanSkuImg($sku,'DG',$cpath);
 		$url = $cloudFontBaseUrl .DS. $version . DS. $imgSku;
@@ -87,5 +92,8 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
                 }
                 
 		return $imgSku;
+	}
+	function isMobile() {
+		return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
 	}
 }
