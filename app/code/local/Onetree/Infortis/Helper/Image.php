@@ -96,4 +96,23 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 	function isMobile() {
 		return preg_match("/(android|avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
 	}
+
+	function file_exists_remote($url) {
+		$curl = curl_init($url);
+		curl_setopt($curl, CURLOPT_NOBODY, true);
+		//Check connection only
+		$result = curl_exec($curl);
+		//Actual request
+		$ret = false;
+		if ($result !== false) {
+			$statusCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+			//Check HTTP status code
+			if ($statusCode == 200) {
+				$ret = true;
+			}
+		}
+		curl_close($curl);
+		return $ret;
+	}
+
 }
