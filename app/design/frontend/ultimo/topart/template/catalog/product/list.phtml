@@ -244,7 +244,11 @@
                                 else
                                     $urlimg_alter = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image','alternative');
                             ?>
-                            <img class="alt-img" src="<?php echo $urlimg_alter; ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
+                            <?php
+                            $exist = $helpImg->file_exists_remote($urlimg_alter);
+                            if($exist): ?>
+                                <img class="alt-img" src="<?php echo $urlimg_alter; ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
+                            <?php endif; ?>
                         <?php endif; ?>
 
                         <?php echo $helpLabels->getLabels($_product); //Product labels ?>
@@ -310,7 +314,8 @@
                     </div> <!-- end: actions -->
                 </div>
             </li>
-        <?php endforeach; ?>    
+        <?php endforeach; ?>
+        
     </ul>
     <?php endif; //end: if grid mode ?>
 
