@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <menu>
+        <mycustomtab  translate="title" module="onetree_seo">
+            <title>SEO</title>
+            <sort_order>60</sort_order>
+            <children>
+                <index module="onetree_seo">
+                    <title>Settings</title>
+                    <action>adminhtml/onetree_seo_setting</action>
+                </index>
+                <list module="onetree_seo" translate="title">
+                    <title>List Action</title>
+                    <sort_order>2</sort_order>
+                    <action>adminhtml/custom/list</action>
+                </list>
+            </children>
+        </mycustomtab>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <custom translate="title" module="onetree_seo">
+                        <title>My Controller</title>
+                        <sort_order>-100</sort_order>
+                        <children>
+                            <index translate="title">
+                                <title>Index Action</title>
+                                <sort_order>1</sort_order>
+                            </index>
+                            <list translate="title">
+                                <title>List Action</title>
+                                <sort_order>2</sort_order>
+                            </list>
+                        </children>
+                    </custom>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

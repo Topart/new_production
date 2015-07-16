@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<layout>
+    <!--
+    this provides the layout for the grid. normally layout handles in magento
+    have much more content than this however the admin works in such a way
+    that the layout handles only deal with the high level parents, so here
+    we are creating a grid container and that is it - the grid container
+    class code then creates the grid as a child of itself, and the grid
+    creates headers, rows, columns etc - basically layout is done
+    programmatically rather than via xml
+-->
+    <adminhtml_onetree_seo_setting_index>
+        <reference name="content">
+            <block type="onetree_seo/adminhtml_setting" name="setting" />
+        </reference>
+    </adminhtml_onetree_seo_setting_index>
+
+    <!--
+        this is for the edit form, same deal as the layout handle above
+    -->
+    <adminhtml_onetree_seo_setting_edit>
+        <reference name="content">
+            <block type="onetree_seo/adminhtml_setting_edit" name="setting.edit" />
+        </reference>
+    </adminhtml_onetree_seo_setting_edit>
+
+
+</layout>

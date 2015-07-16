@@ -1,0 +1,303 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+
+$collection = Mage::getModel('seo/information')->getCollection();
+$meta_content = '';
+
+$meta_description = htmlspecialchars($this->getDescription());
+
+$category_key = 'CATEGORY';
+
+$subject_key = 'SUBJECT';
+$artist_key = 'ARTIST';
+$collection_key = 'COLLECTION';
+
+$style_key = 'STYLE';
+$room_key = 'ROOMS';
+
+$product_key = 'PRODUCT';
+
+$name_key = 'NAME';
+
+/******************************************************************/
+
+
+if (Mage::app()->getFrontController()->getRequest()->getRouteName() == 'cms') {
+    $current_page = Mage::getSingleton('cms/page')->getIdentifier();
+    $title = Mage::getSingleton('cms/page')->getTitle();
+} else {
+    $current_page = Mage::app()->getFrontController()->getRequest()->getRouteName();
+    $title = Mage::registry('current_category')->getName();
+}
+
+if ($current_page != 'home') {
+    $id_category = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getId();
+    $category = Mage::getModel('catalog/category')->load($id_category);
+
+    $names = array();
+    foreach ($category->getParentCategories() as $parent) {
+        $names[] = $parent->getName();
+    }
+
+    $current_category = Mage::getSingleton('catalog/layer')->getCurrentCategory()->getName();
+
+
+    $product = Mage::registry('current_product');
+
+    $product_name = '';
+    $product_artist = '';
+    $product_room = '';
+    $product_style = '';
+
+    if ($product != null) {
+        $product_name = $product->getName();
+        $product_artist = $product->getUdfArtistName();
+        $product_room_id = $product->getUdfRooms();
+        $product_room_id = explode(",", $product_room_id);
+        $product_room_list = array();
+
+        if (is_array($product_room_id)) {
+
+            $rooms_details = Mage::getSingleton("eav/config")->getAttribute("catalog_product", 'udf_rooms');
+            foreach ($product_room_id as $room_id) {
+                if ($room_id != null && $room_id != '') {
+                    $room_title = $rooms_details->getSource()->getOptionText($room_id);
+                    array_push($product_room_list, $room_title);
+                }
+
+            }
+            $product_room = implode(",", $product_room_list);
+        }
+
+        $product_style_id = $product->getUdfPristyle();
+        $style_details = Mage::getSingleton("eav/config")->getAttribute("catalog_product", 'udf_pristyle');
+        $product_style = $style_details->getSource()->getOptionText($product_style_id);
+    }
+
+
+    if ($current_category == 'Subjects' || $current_category == 'Artists' || $current_category == 'Collections') {
+        foreach ($collection as $info) {
+            //$firstItem = $collection->getFirstItem();
+            if ($info->getName() == 'CATEGORIES') {
+                $meta_content = $info->getSeoInformation();
+                $meta_description .= ' ' . preg_replace("/\[$category_key\]/", $current_category, $meta_content);
+            }
+
+        }
+    } else {
+        if (isset($names[0]) && $names[0] != null && $names[0] != '') {
+            switch ($names[0]) {
+                case 'Subjects':
+                    foreach ($collection as $info) {
+                        //$firstItem = $collection->getFirstItem();
+
+                        if ($product_name != '' && $product_name != null) {
+                            if ($info->getName() == 'PRODUCT') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_product = ' ' . preg_replace("/\[$name_key\]/", $product_name, $meta_content);
+                                $meta_product = ' ' . preg_replace("/\[$artist_key\]/", $product_artist, $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$category_key\]/", $names[0], $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$style_key\]/", $product_style, $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$room_key\]/", $product_room, $meta_product);
+                                $meta_description = $meta_product;
+                            }
+                        } else {
+                            if ($info->getName() == 'CATEGORIES') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_description .= ' ' . preg_replace("/\[$category_key\]/", $names[0], $meta_content);
+                            }
+                            if ($info->getName() == 'SUBJECTS') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_description .= ' ' . preg_replace("/\[$subject_key\]/", $names[1], $meta_content);
+                            }
+                        }
+
+                    }
+
+                    break;
+                case 'Artists':
+                    foreach ($collection as $info) {
+                        //$firstItem = $collection->getFirstItem();
+                        if ($product_name != '' && $product_name != null) {
+                            if ($info->getName() == 'PRODUCT') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_product = ' ' . preg_replace("/\[$name_key\]/", $product_name, $meta_content);
+                                $meta_product = ' ' . preg_replace("/\[$artist_key\]/", $product_artist, $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$category_key\]/", $names[0], $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$style_key\]/", $product_style, $meta_product);
+
+                                $meta_product = ' ' . preg_replace("/\[$room_key\]/", $product_room, $meta_product);
+
+                                $meta_description = $meta_product;
+                            }
+                        } else {
+                            if ($info->getName() == 'CATEGORIES') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_description .= ' ' . preg_replace("/\[$category_key\]/", $names[0], $meta_content);
+                            }
+                            if ($info->getName() == 'ARTIST') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_description .= ' ' . preg_replace("/\[$artist_key\]/", $names[1], $meta_content);
+                            }
+                        }
+
+                    }
+                    break;
+                case 'Collections':
+                    foreach ($collection as $info) {
+                        //$firstItem = $collection->getFirstItem();
+                        if ($product_name != '' && $product_name != null) {
+                            if ($info->getName() == 'PRODUCT') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_product = ' ' . preg_replace("/\[$name_key\]/", $product_name, $meta_content);
+                                $meta_product = ' ' . preg_replace("/\[$artist_key\]/", $product_artist, $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$category_key\]/", $names[0], $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$style_key\]/", $product_style, $meta_product);
+                                $meta_product = ' ' . preg_replace("/\[$room_key\]/", $product_room, $meta_product);
+                                $meta_description = $meta_product;
+                            }
+                        } else {
+                            if ($info->getName() == 'CATEGORIES') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_description .= ' ' . preg_replace("/\[$category_key\]/", $names[0], $meta_content);
+                            }
+                            if ($info->getName() == 'COLLECTIONS') {
+                                $meta_content = $info->getSeoInformation();
+                                $meta_description .= ' ' . preg_replace("/\[$collection_key\]/", $names[1], $meta_content);
+                            }
+                        }
+
+                    }
+                    break;
+            }
+
+        }
+    }
+
+    /******************************************************************/
+
+//get request rooms
+    $room_id = $this->getRequest()->getParam('udf_rooms');
+    $room_value = null;
+    if ($room_id != null) {
+        $rooms_details = Mage::getSingleton("eav/config")->getAttribute("catalog_product", 'udf_rooms');
+        $room_value = $rooms_details->getSource()->getOptionText($room_id);
+    }
+//get request style
+    $style_id = $this->getRequest()->getParam('udf_pristyle');
+    $style_value = null;
+    if ($style_id != null) {
+        $style_details = Mage::getSingleton("eav/config")->getAttribute("catalog_product", 'udf_pristyle');
+        $style_value = $style_details->getSource()->getOptionText($style_id);
+    }
+
+    if ($style_value != null || $room_value != null) {
+        //is a search page
+        if ($style_value != null) {
+            foreach ($collection as $info) {
+                //$firstItem = $collection->getFirstItem();
+                if ($info->getName() == $style_key) {
+                    $meta_content = $info->getSeoInformation();
+                    $meta_description .= ' ' . preg_replace("/\[$style_key\]/", $style_value, $meta_content);
+                }
+
+            }
+        }
+        if ($room_value != null) {
+            foreach ($collection as $info) {
+                //$firstItem = $collection->getFirstItem();
+                if ($info->getName() == $room_key) {
+                    $meta_content = $info->getSeoInformation();
+                    $meta_description .= ' ' . preg_replace("/\[$room_key\]/", $room_value, $meta_content);
+                }
+
+            }
+        }
+    }
+}
+
+$theme = Mage::helper('ultimo');
+?>
+
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>"/>
+<title><?php echo $this->getTitle() ?></title>
+<?php if ($theme->getCfgLayout('responsive/responsive')): ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<?php endif; ?>
+<meta name="description" content="<?php echo htmlspecialchars($meta_description) ?>"/>
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>"/>
+<meta name="robots" content="<?php echo htmlspecialchars($this->getRobots()) ?>"/>
+<?php // Add Facebook meta ?>
+<?php echo $this->getLayout()->createBlock('core/template', 'facebook.meta')->setTemplate('page/html/facebook_meta.phtml')->toHtml(); ?>
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon"/>
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon"/>
+<?php
+$skinUrl = $this->getSkinUrl('');
+?>
+
+<!--[if lt IE 7]>
+<script type="text/javascript">
+    //<![CDATA[
+    var BLANK_URL = '<?php echo $this->helper('core/js')->getJsUrl('blank.html') ?>';
+    var BLANK_IMG = '<?php echo $this->helper('core/js')->getJsUrl('spacer.gif') ?>';
+//]]>
+</script>
+<![endif]-->
+
+<?php echo $this->getCssJsHtml() ?>
+<?php echo $this->getLayout()->createBlock('core/template', 'head.theme.scripts')->setTemplate('page/html/head_theme_scripts.phtml')->toHtml(); ?>
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>
+
+
+
+<?php //Include Google Fonts
+$amp = '&amp;';
+$charSubset = '';
+if ($subsets = $theme->getCfgDesign('font/primary_char_subset')) {
+    $charSubset = "{$amp}subset={$subsets}";
+}
+
+$fontWeight = '';
+if ($weight = $theme->getCfgDesign('font/primary_font_weight')) {
+    $fontWeight = ':' . $weight;
+}
+?>
+<?php if ($theme->getCfgDesign('font/primary_font_family_group') == 'google'): ?>
+    <link
+        href='//fonts.googleapis.com/css?family=<?php echo str_replace(' ', '+', $theme->getCfgDesign('font/primary_font_family'));
+        echo $fontWeight;
+        echo $charSubset; ?>' rel='stylesheet' type='text/css'/>
+<?php endif; ?>
+
+<!-- Go to www.addthis.com/dashboard to customize your tools -->
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-543c3660526ece98" async></script>
+
+<?php // Add Facebook conversion pixel ?>
+<?php echo $this->getLayout()->createBlock('core/template', 'facebook.conversion.pixel')->setTemplate('page/html/facebook_conversion_pixel_script.phtml')->toHtml(); ?>
