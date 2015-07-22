@@ -236,11 +236,15 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 		//end
 
         //parallel_write
+        $source_line = 2;
         $destination_line = 2;
 
         $template = PHPExcel_IOFactory::load($templatePath);
         $template->setActiveSheetIndex(0);
         $templateSheet = $template->getActiveSheet();
+
+        //keep array of items to be imported
+        $importItems = array();
 
         /*** BEGIN MAIN PARALLEL WRITE FOR ***/
         while($source_line <= $last_source_row)
@@ -270,6 +274,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 ->getCellByColumnAndRow($source_dictionary["Item Code"], $source_line)->getValue();
             $udf_entity_type = $source->getActiveSheet()
                 ->getCellByColumnAndRow($source_dictionary["UDF_ENTITYTYPE"], $source_line)->getValue();
+
 
             # If the current sku is an alternate size of a sku we have already met, then skip it and go to the next item number
 		    if (in_array($item_code, $global_alternate_size_array))
@@ -323,12 +328,13 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             if ($special_character_index !== false)
                 $description = str_replace("^", "'", $description);
 
-            $udf_pricecode = $this->getSheetValue($source, $source_dictionary["UDF_PRICECODE"], $source_line);
+            $sourceSheet = $source->getActiveSheet();
+            $udf_pricecode = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PRICECODE"], $source_line);
 
-            $udf_paper_size_cm = $this->getSheetValue($source, $source_dictionary["UDF_PAPER_SIZE_CM"], $source_line);
-            $udf_paper_size_in = $this->getSheetValue($source, $source_dictionary["UDF_PAPER_SIZE_IN"], $source_line);
-            $udf_image_size_cm = $this->getSheetValue($source, $source_dictionary["UDF_IMAGE_SIZE_CM"], $source_line);
-            $udf_image_size_in = $this->getSheetValue($source, $source_dictionary["UDF_IMAGE_SIZE_IN"], $source_line);
+            $udf_paper_size_cm = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PAPER_SIZE_CM"], $source_line);
+            $udf_paper_size_in = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PAPER_SIZE_IN"], $source_line);
+            $udf_image_size_cm = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_IMAGE_SIZE_CM"], $source_line);
+            $udf_image_size_in = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_IMAGE_SIZE_IN"], $source_line);
 
             if (empty($udf_paper_size_in) && !empty($udf_paper_size_cm))
                 $udf_paper_size_in = round($this->compute_image_size_width($udf_paper_size_cm) / 2.54, 2) . " x " .
@@ -343,10 +349,10 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                     $udf_image_size_in = $udf_paper_size_in;
             }
 
-            $udf_alt_size_1 = str_replace(' ', '', $this->getSheetValue($source, $source_dictionary["UDF_ALTS1"], $source_line));
-            $udf_alt_size_2 = str_replace(' ', '', $this->getSheetValue($source, $source_dictionary["UDF_ALTS2"], $source_line));
-            $udf_alt_size_3 = str_replace(' ', '', $this->getSheetValue($source, $source_dictionary["UDF_ALTS3"], $source_line));
-            $udf_alt_size_4 = str_replace(' ', '', $this->getSheetValue($source, $source_dictionary["UDF_ALTS4"], $source_line));
+            $udf_alt_size_1 = str_replace(' ', '', $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ALTS1"], $source_line));
+            $udf_alt_size_2 = str_replace(' ', '', $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ALTS2"], $source_line));
+            $udf_alt_size_3 = str_replace(' ', '', $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ALTS3"], $source_line));
+            $udf_alt_size_4 = str_replace(' ', '', $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ALTS4"], $source_line));
 
             # Array containing the alternate sizes, to be used later in the code
 			$alternate_size_array = array();
@@ -371,44 +377,44 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 $global_alternate_size_array[] = $udf_alt_size_4;
             }
 
-            $udf_oversize = $this->getSheetValue($source, $source_dictionary["UDF_OVERSIZE"], $source_line);
-			$udf_serigraph = $this->getSheetValue($source, $source_dictionary["UDF_SERIGRAPH"], $source_line);
-			$udf_embossed = $this->getSheetValue($source, $source_dictionary["UDF_EMBOSSED"], $source_line);
-			$udf_foil = $this->getSheetValue($source, $source_dictionary["UDF_FOIL"], $source_line);
-			$udf_metallic_ink = $this->getSheetValue($source, $source_dictionary["UDF_METALLICINK"], $source_line);
-			$udf_specpaper = $this->getSheetValue($source, $source_dictionary["UDF_SPECPAPER"], $source_line);
+            $udf_oversize = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_OVERSIZE"], $source_line);
+			$udf_serigraph = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_SERIGRAPH"], $source_line);
+			$udf_embossed = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_EMBOSSED"], $source_line);
+			$udf_foil = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FOIL"], $source_line);
+			$udf_metallic_ink = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_METALLICINK"], $source_line);
+			$udf_specpaper = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_SPECPAPER"], $source_line);
 
-			$udf_orientation = $this->getSheetValue($source, $source_dictionary["UDF_ORIENTATION"], $source_line);
-			$udf_new = $this->getSheetValue($source, $source_dictionary["UDF_NEW"], $source_line);
-			$udf_dnd = $this->getSheetValue($source, $source_dictionary["UDF_DND"], $source_line);
-			$udf_imsource = $this->getSheetValue($source, $source_dictionary["UDF_IMSOURCE"], $source_line);
+			$udf_orientation = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ORIENTATION"], $source_line);
+			$udf_new = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_NEW"], $source_line);
+			$udf_dnd = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_DND"], $source_line);
+			$udf_imsource = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_IMSOURCE"], $source_line);
 
-			$udf_canvas = $this->getSheetValue($source, $source_dictionary["UDF_CANVAS"], $scan_line);
-			$udf_rag = $this->getSheetValue($source, $source_dictionary["UDF_RAG"], $scan_line);
-			$udf_photopaper = $this->getSheetValue($source, $source_dictionary["UDF_PHOTOPAPER"], $scan_line);
-			$udf_poster = $this->getSheetValue($source, $source_dictionary["UDF_POSTER"], $source_line);
+			$udf_canvas = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_CANVAS"], $scan_line);
+			$udf_rag = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_RAG"], $scan_line);
+			$udf_photopaper = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PHOTOPAPER"], $scan_line);
+			$udf_poster = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_POSTER"], $source_line);
 			
-			$total_quantity_on_hand = $this->getSheetValue($source, $source_dictionary["TotalQuantityOnHand"], $source_line);
-			$udf_decal = $this->getSheetValue($source, $source_dictionary["UDF_DECAL"], $scan_line);
-			$udf_embellished = $this->getSheetValue($source, $source_dictionary["UDF_EMBELLISHED"], $scan_line);
-            $udf_framed = $this->getSheetValue($source, $source_dictionary["UDF_FRAMED"], $source_line);
+			$total_quantity_on_hand = $this->getSheetValue($sourceSheet, $source_dictionary["TotalQuantityOnHand"], $source_line);
+			$udf_decal = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_DECAL"], $scan_line);
+			$udf_embellished = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_EMBELLISHED"], $scan_line);
+            $udf_framed = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FRAMED"], $source_line);
 
-            $udf_a4pod = $this->getSheetValue($source, $source_dictionary["UDF_A4POD"], $scan_line);
-			$udf_custom_size = $this->getSheetValue($source, $source_dictionary["UDF_CUSTOMSIZE"], $scan_line);
-			$udf_petite = $this->getSheetValue($source, $source_dictionary["UDF_PETITE"], $scan_line);
-			$udf_small = $this->getSheetValue($source, $source_dictionary["UDF_SMALL"], $scan_line);
-			$udf_medium = $this->getSheetValue($source, $source_dictionary["UDF_MEDIUM"], $scan_line);
-			$udf_large = $this->getSheetValue($source, $source_dictionary["UDF_LARGE"], $scan_line);
-			$udf_osdp = $this->getSheetValue($source, $source_dictionary["UDF_OSDP"], $scan_line);
+            $udf_a4pod = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_A4POD"], $scan_line);
+			$udf_custom_size = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_CUSTOMSIZE"], $scan_line);
+			$udf_petite = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PETITE"], $scan_line);
+			$udf_small = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_SMALL"], $scan_line);
+			$udf_medium = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_MEDIUM"], $scan_line);
+			$udf_large = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_LARGE"], $scan_line);
+			$udf_osdp = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_OSDP"], $scan_line);
 
-			$udf_limited = $this->getSheetValue($source, $source_dictionary["UDF_LIMITED"], $source_line);
-			$udf_copyright = $this->getSheetValue($source, $source_dictionary["UDF_COPYRIGHT"], $source_line);
-			$udf_crline = $this->getSheetValue($source, $source_dictionary["UDF_CRLINE"], $source_line);
-			$udf_crimage = $this->getSheetValue($source, $source_dictionary["UDF_CRIMAGE"], $source_line);
-			$udf_anycustom = $this->getSheetValue($source, $source_dictionary["UDF_ANYCUSTOM"], $scan_line);
+			$udf_limited = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_LIMITED"], $source_line);
+			$udf_copyright = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_COPYRIGHT"], $source_line);
+			$udf_crline = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_CRLINE"], $source_line);
+			$udf_crimage = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_CRIMAGE"], $source_line);
+			$udf_anycustom = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ANYCUSTOM"], $scan_line);
 
-			$udf_maxsfcm = $this->getSheetValue($source, $source_dictionary["UDF_MAXSFCM"], $source_line);
-			$udf_maxsfin = $this->getSheetValue($source, $source_dictionary["UDF_MAXSFIN"], $source_line);
+			$udf_maxsfcm = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_MAXSFCM"], $source_line);
+			$udf_maxsfin = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_MAXSFIN"], $source_line);
 
             /*
             if (!empty($udf_maxsfin))
@@ -416,51 +422,1271 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 end
              */
 
-            $udf_attributes = $this->getSheetValue($source, $source_dictionary["UDF_ATTRIBUTES"], $source_line);
-			$udf_ratio_dec = $this->getSheetValue($source, $source_dictionary["UDF_RATIODEC"], $source_line);
+            $udf_attributes = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ATTRIBUTES"], $source_line);
+			$udf_ratio_dec = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_RATIODEC"], $source_line);
 
-			$udf_largeos = $this->getSheetValue($source, $source_dictionary["UDF_LARGEOS"], $scan_line);
+			$udf_largeos = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_LARGEOS"], $scan_line);
 
-			$suggested_retail_price = $this->getSheetValue($source, $source_dictionary["SuggestedRetailPrice"], $source_line);
-			$udf_eco = $this->getSheetValue($source, $source_dictionary["UDF_ECO"], $source_line);
-			$udf_fmaxslscm = $this->getSheetValue($source, $source_dictionary["UDF_FMAXSLSCM"], $source_line);
-			$udf_fmaxslsin = $this->getSheetValue($source, $source_dictionary["UDF_FMAXSLSIN"], $source_line);
-			$udf_fmaxsssin = $this->getSheetValue($source, $source_dictionary["UDF_FMAXSSSIN"], $source_line);
-			$udf_fmaxssxcm = $this->getSheetValue($source, $source_dictionary["UDF_FMAXSSXCM"], $source_line);
-
-
-			$df_colorcode = $this->getSheetValue($source, $source_dictionary["UDF_COLORCODE"], $source_line);
-			$udf_framecat = $this->getSheetValue($source, $source_dictionary["UDF_FRAMECAT"], $source_line);
-			$udf_prisubnsubcat = $this->getSheetValue($source, $source_dictionary["UDF_PRISUBNSUBCAT"], $source_line);
-			$udf_pricolor = $this->getSheetValue($source, $source_dictionary["UDF_PRICOLOR"], $source_line);
-			$udf_pristyle = $this->getSheetValue($source, $source_dictionary["UDF_PRISTYLE"], $source_line);
-			$udf_rooms = $this->getSheetValue($source, $source_dictionary["UDF_ROOMS"], $source_line);
+			$suggested_retail_price = $this->getSheetValue($sourceSheet, $source_dictionary["SuggestedRetailPrice"], $source_line);
+			$udf_eco = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ECO"], $source_line);
+			$udf_fmaxslscm = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FMAXSLSCM"], $source_line);
+			$udf_fmaxslsin = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FMAXSLSIN"], $source_line);
+			$udf_fmaxsssin = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FMAXSSSIN"], $source_line);
+			$udf_fmaxssxcm = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FMAXSSXCM"], $source_line);
 
 
-			$udf_artshop = $this->getSheetValue($source, $source_dictionary["UDF_ARTSHOP"], $source_line);
-			$udf_artshopi = $this->getSheetValue($source, $source_dictionary["UDF_ARTSHOPI"], $source_line);
-			$udf_artshopl = $this->getSheetValue($source, $source_dictionary["UDF_ARTSHOPL"], $source_line);
-			$udf_nollcavail = $this->getSheetValue($source, $source_dictionary["UDF_NOLLCAVAIL"], $source_line);
-			$udf_llcroy = $this->getSheetValue($source, $source_dictionary["UDF_LLCROY"], $source_line);
-			$udf_royllcval = $this->getSheetValue($source, $source_dictionary["UDF_ROYLLCVAL"], $source_line);
+			$df_colorcode = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_COLORCODE"], $source_line);
+			$udf_framecat = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FRAMECAT"], $source_line);
+			$udf_prisubnsubcat = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PRISUBNSUBCAT"], $source_line);
+			$udf_pricolor = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PRICOLOR"], $source_line);
+			$udf_pristyle = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PRISTYLE"], $source_line);
+			$udf_rooms = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ROOMS"], $source_line);
 
 
-			$udf_f_m_avail_4_paper = $this->getSheetValue($source, $source_dictionary["UDF_FMAVAIL4PAPER"], $source_line);
-			$udf_f_m_avail_4_canvas = $this->getSheetValue($source, $source_dictionary["UDF_FMAVAIL4CANVAS"], $source_line);
-			$udf_moulding_width = $this->getSheetValue($source, $source_dictionary["UDF_MOULDINGWIDTH"], $source_line);
-			$udf_ratiocode = $this->getSheetValue($source, $source_dictionary["UDF_RATIOCODE"], $source_line);
-			$udf_marketattrib = $this->getSheetValue($source, $source_dictionary["UDF_MARKETATTRIB"], $source_line);
-			$udf_artist_name = $this->getSheetValue($source, $source_dictionary["UDF_ARTIST_NAME"], $source_line);
+			$udf_artshop = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ARTSHOP"], $source_line);
+			$udf_artshopi = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ARTSHOPI"], $source_line);
+			$udf_artshopl = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ARTSHOPL"], $source_line);
+			$udf_nollcavail = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_NOLLCAVAIL"], $source_line);
+			$udf_llcroy = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_LLCROY"], $source_line);
+			$udf_royllcval = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ROYLLCVAL"], $source_line);
 
-			
+
+			$udf_f_m_avail_4_paper = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FMAVAIL4PAPER"], $source_line);
+			$udf_f_m_avail_4_canvas = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FMAVAIL4CANVAS"], $source_line);
+			$udf_moulding_width = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_MOULDINGWIDTH"], $source_line);
+			$udf_ratiocode = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_RATIOCODE"], $source_line);
+			$udf_marketattrib = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_MARKETATTRIB"], $source_line);
+			$udf_artist_name = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_ARTIST_NAME"], $source_line);
+
+
+            //echo 'doing item ' . $item_code . "<br/>";
 
             ### End of Fields variables assignments ###
             /***LINE 612***/
 
+            if (!isset($importItems[$destination_line]))
+                $importItems[$destination_line] = array();
+            $importItems[$destination_line] = array(
+                'sku' => $item_code,
+                '_attribute_set' => "Topart - Products",
+                '_type' => "simple"
+            );
+
+            $collections_count = 0;
+
+            if (!isset($importItems[$destination_line + $collections_count]))
+                $importItems[$destination_line + $collections_count] = array();
+
+            $importItems[$destination_line + $collections_count]["_category"] = "Artists/" . $udf_artist_name;
+			$importItems[$destination_line + $collections_count]["_root_category"] = "Root Category";
+				
+            $collections_count++;
+
+
+            # Category structure: categories and subcategories
+			# Example: x(a;b;c).y.z(f).
+            $category_array = explode(".", $udf_prisubnsubcat);
+
+            for ($i = 0; $i < count($category_array); $i++)
+            {
+                if (!isset($importItems[$destination_line + $collections_count]))
+                    $importItems[$destination_line + $collections_count] = array();
+
+                $open_brace_index = stripos($category_array[$i], "(");
+                $close_brace_index = stripos($category_array[$i], ")");
+
+                /*** LINE 637 ***/
+
+                # Category name
+                if ($open_brace_index !== FALSE)
+                {
+                    $category_name = ucwords(substr($category_array[$i], 0, $open_brace_index));
+
+                    # Subcategory list
+                    $subcategory_array = explode(";", substr($category_array[$i], $open_brace_index + 1, $close_brace_index - ($open_brace_index + 1)));
+
+                    for ($j = 0; $j < count($subcategory_array); $j++)
+                    {
+                        # This if block is only used once to comput the unique list of categories/subcategories
+						#if !written_categories.include?(category_name + "/" + subcategory_array[j].capitalize)
+						#if !written_categories.include?(category_name)
+							#p category_name + "/" + subcategory_array[j].capitalize
+							#written_categories << (category_name + "/" + subcategory_array[j].capitalize)
+							#written_categories << (category_name)
+						#end
+
+                        $importItems[$destination_line + $collections_count]["_category"] = "Subjects/" . $category_name . "/" . ucwords($subcategory_array[$j]);
+						$importItems[$destination_line + $collections_count]["_root_category"] = "Root Category";
+
+                        $collections_count++;
+                    }
+                }
+                else
+                {
+                    $category_name = substr($category_array[$i], 0, strlen($category_array[$i]));
+
+                    # This if block is only used once to comput the unique list of categories/subcategories
+					#if !written_categories.include?(category_name)
+						#p category_name
+						#written_categories << category_name
+					#end
+
+					$importItems[$destination_line + $collections_count]["_category"] = "Subjects/" . $category_name;
+					$importItems[$destination_line + $collections_count]["_root_category"] = "Root Category";
+
+                    $collections_count++;
+                }
+            }
+
+            /*** LINE 680 ***/
+
+            # Collections
+            $collections_array = explode(".", $udf_marketattrib);
+
+            for ($i = 0; $i < count($collections_array); $i++)
+            {
+                if (!isset($importItems[$destination_line + $collections_count]))
+                    $importItems[$destination_line + $collections_count] = array();
+
+				$collection_name = substr($collections_array[$i], 0, strlen($collections_array[$i]));
+
+				$importItems[$destination_line + $collections_count]["_category"] = "Collections/" . $collection_name;
+				$importItems[$destination_line + $collections_count]["_root_category"] = "Root Category";
+
+                $collections_count++;
+            }
+
+            # Rooms
+			$rooms_array = explode(".", $udf_rooms);
+
+            for ($i = 0; $i < count($rooms_array); $i++)
+            {
+                if (!isset($importItems[$destination_line + $i]))
+                    $importItems[$destination_line + $i] = array();
+
+                $room_name = substr($rooms_array[$i], 0, strlen($rooms_array[$i]));
+                $importItems[$destination_line + $i]["udf_rooms"] = $room_name;
+            }
+
+            if (!isset($importItems[$destination_line]))
+                $importItems[$destination_line] = array();
+
+            /*** LINE 705 ***/
+
+            $importItems[$destination_line]["_product_websites"] = "base";
+			
+			# Alt Size 1, Alt Size 2, Alt Size 3, Alt Size 4
+			$importItems[$destination_line]["alt_size_1"] = $udf_alt_size_1;
+			$importItems[$destination_line]["alt_size_2"] = $udf_alt_size_2;
+			$importItems[$destination_line]["alt_size_3"] = $udf_alt_size_3;
+			$importItems[$destination_line]["alt_size_4"] = $udf_alt_size_4;
+
+            # ItemCodeDesc
+			$importItems[$destination_line]["description"] = $description;
+
+			$importItems[$destination_line]["enable_googlecheckout"] = "1";
+			$importItems[$destination_line]["udf_orientation"] = $udf_orientation;
+
+			$importItems[$destination_line]["udf_image_size_cm"] = $udf_image_size_cm;
+			$importItems[$destination_line]["udf_image_size_in"] = $udf_image_size_in;
+			$importItems[$destination_line]["udf_ratiocode"] = $udf_ratiocode;
+			
+			$importItems[$destination_line]["meta_description"] = $description;
+			$keywords_list = strtolower($udf_attributes);
+			$importItems[$destination_line]["meta_keyword"] = $keywords_list;
+            $importItems[$destination_line]["meta_title"] = $description;
+
+            /*** LINE 733 ***/
+
+            $importItems[$destination_line]["msrp_display_actual_price_type"] = "Use config";
+			$importItems[$destination_line]["msrp_enabled"] = "Use config";
+
+			$importItems[$destination_line]["name"] = $description;
+			$importItems[$destination_line]["options_container"] = "Block after Info Column";
+
+			if ($udf_oversize == "Y")
+				$importItems[$destination_line]["udf_oversize"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_oversize"] = "No";
+
+            /*** LINE 746 ***/
+
+            $importItems[$destination_line]["udf_paper_size_cm"] = $udf_paper_size_cm;
+			$importItems[$destination_line]["udf_paper_size_in"] = $udf_paper_size_in;
+
+			if ($udf_a4pod == "Y")
+				$importItems[$destination_line]["udf_a4pod"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_a4pod"] = "No";
+
+			$importItems[$destination_line]["price"] = "0.0";
+
+			if ($udf_entity_type == "Image")
+				$importItems[$destination_line]["required_options"] = "1";
+			else
+				$importItems[$destination_line]["required_options"] = "0";
+
+			$importItems[$destination_line]["short_description"] = $description;
+
+            /*** LINE 765 ***/
+
+            #Status: enabled (1), disabled (2)
+            if ($udf_entity_type == "Image")
+            {
+                $importItems[$destination_line]["status"] = "1";
+                $importItems[$destination_line]["total_quantity_on_hand"] = 0;
+            }
+            else
+            {
+                $importItems[$destination_line]["status"] = "1";
+                $importItems[$destination_line]["total_quantity_on_hand"] = $total_quantity_on_hand;
+            }
+
+			$importItems[$destination_line]["tax_class_id"] = "2";
+
+            /*** LINE 777 ***/
+
+            #udf_anycustom
+			if ($udf_anycustom == "Y")
+				$importItems[$destination_line]["udf_anycustom"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_anycustom"] = "No";
+
+			#udf_maxsfcm
+			$importItems[$destination_line]["udf_maxsfcm"] = $udf_maxsfcm;
+			#udf_maxsfin
+			$importItems[$destination_line]["udf_maxsfin"] = $udf_maxsfin;
+
+			#udf_largeos
+			if ($udf_largeos == "Y")
+				$importItems[$destination_line]["udf_largeos"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_largeos"] = "No";
+
+            /*** LINE 796 ***/
+
+            #udf_eco
+			if ($udf_eco == "Y")
+				$importItems[$destination_line]["udf_eco"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_eco"] = "No";
+
+			$importItems[$destination_line]["udf_fmaxslscm"] = $udf_fmaxslscm;
+			$importItems[$destination_line]["udf_fmaxslsin"] = $udf_fmaxslsin;
+			$importItems[$destination_line]["udf_fmaxsssin"] = $udf_fmaxsssin;
+			$importItems[$destination_line]["udf_fmaxssxcm"] = $udf_fmaxssxcm;
+
+
+			$importItems[$destination_line]["udf_colorcode"] = $udf_colorcode;
+			$importItems[$destination_line]["udf_framecat"] = $udf_framecat;
+			$importItems[$destination_line]["udf_pricolor"] = $udf_pricolor;
+			$importItems[$destination_line]["udf_pristyle"] = $udf_pristyle;
+			#$importItems[$destination_line]["udf_rooms"] = $udf_rooms;
+
+            /*** LINE 816 ***/
+
+            $importItems[$destination_line]["udf_artshopi"] = $udf_artshopi;
+			$importItems[$destination_line]["udf_artshopl"] = $udf_artshopl;
+			$importItems[$destination_line]["udf_royllcval"] = $udf_royllcval;
+
+			if ($udf_artshop == "Y")
+				$importItems[$destination_line]["udf_artshop"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_artshop"] = "No";
+
+			if ($udf_nollcavail == "Y")
+				$importItems[$destination_line]["udf_nollcavail"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_nollcavail"] = "No";
+
+			if ($udf_llcroy == "Y")
+				$importItems[$destination_line]["udf_llcroy"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_llcroy"] = "No";
+
+            /*** LINE 839 ***/
+
+            if ($udf_f_m_avail_4_paper == "Y")
+                $importItems[$destination_line]["udf_f_m_avail_4_paper"] = "Yes";
+            else
+                $importItems[$destination_line]["udf_f_m_avail_4_paper"] = "No";
+
+            if ($udf_f_m_avail_4_canvas == "Y")
+                $importItems[$destination_line]["udf_f_m_avail_4_canvas"] = "Yes";
+            else
+                $importItems[$destination_line]["udf_f_m_avail_4_canvas"] = "No";
+
+			$importItems[$destination_line]["udf_moulding_width"] = $udf_moulding_width;
+			$importItems[$destination_line]["primary_vendor_no"] = $primary_vendor_no;
+
+            /*** LINE 856 ***/
+
+            #udf_canvas
+			if ($udf_canvas == "Y")
+				$importItems[$destination_line]["udf_canvas"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_canvas"] = "No";
+
+			#udf_rag
+			if ($udf_rag == "Y")
+				$importItems[$destination_line]["udf_rag"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_rag"] = "No";
+
+			#udf_photopaper
+			if ($udf_photopaper == "Y")
+				$importItems[$destination_line]["udf_photo_paper"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_photo_paper"] = "No";
+
+			#udf_poster
+			if ($udf_poster == "Y")
+				$importItems[$destination_line]["udf_poster"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_poster"] = "No";
+
+			#udf_decal
+			if ($udf_decal == "Y")
+				$importItems[$destination_line]["udf_decal"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_decal"] = "No";
+
+            /*** LINE 892 ***/
+
+            #Artist name
+			$importItems[$destination_line]["udf_artist_name"] = $udf_artist_name;
+
+			#Copyright
+			if ($udf_copyright == "Y")
+				$importItems[$destination_line]["udf_copyright"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_copyright"] = "No";
+
+			#udf_crimage
+			$importItems[$destination_line]["udf_crimage"] = $udf_crimage;
+
+			#udf_crline
+			$importItems[$destination_line]["udf_crline"] = $udf_crline;
+
+			#udf_dnd
+			if ($udf_dnd == "Y")
+				$importItems[$destination_line]["udf_dnd"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_dnd"] = "No";
+
+			#udf_embellished
+			if ($udf_embellished == "Y")
+				$importItems[$destination_line]["udf_embellished"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_embellished"] = "No";
+
+			#udf_framed
+			if ($udf_framed == "Y")
+				$importItems[$destination_line]["udf_framed"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_framed"] = "No";
+
+			#udf_imsource
+			$importItems[$destination_line]["udf_imsource"] = $udf_imsource;
+
+			#udf_new
+			if ($udf_new == "Y")
+				$importItems[$destination_line]["udf_new"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_new"] = "No";
+
+			#udf_custom_size
+			if ($udf_custom_size == "Y")
+				$importItems[$destination_line]["udf_custom_size"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_custom_size"] = "No";
+
+			#udf_petite
+			if ($udf_petite == "Y")
+				$importItems[$destination_line]["udf_petite"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_petite"] = "No";
+
+			#udf_small
+			if ($udf_small == "Y")
+				$importItems[$destination_line]["udf_small"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_small"] = "No";
+
+			#udf_medium
+			if ($udf_medium == "Y")
+				$importItems[$destination_line]["udf_medium"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_medium"] = "No";
+
+			#udf_large
+			if ($udf_large == "Y")
+				$importItems[$destination_line]["udf_large"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_large"] = "No";
+
+			#udf_osdp
+			if ($udf_osdp == "Y")
+				$importItems[$destination_line]["udf_osdp"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_osdp"] = "No";
+
+            /*** LINE 981 ***/
+
+            #udf_limited
+			if ($udf_limited == "Y")
+				$importItems[$destination_line]["udf_limited"] = "Yes";
+			else
+				$importItems[$destination_line]["udf_limited"] = "No";
+
+			#udf_pricecode
+			$importItems[$destination_line]["udf_pricecode"] = $udf_pricecode;
+
+			#udf_ratio_dec
+			$importItems[$destination_line]["udf_ratiodec"] = $udf_ratio_dec;  //TODO: was converted to string in Ruby, necessary?
+
+			$importItems[$destination_line]["udf_tar"] = "Yes";
+			$importItems[$destination_line]["status"] = "1";
+
+			#URL Key, with the SKU as suffix to keep it unique among products
+			$importItems[$destination_line]["url_key"] = str_replace(' ', '-', $description) . "-" . $item_code;
+
+			$importItems[$destination_line]["visibility"] = "4";
+			$importItems[$destination_line]["weight"] = "1";
+
+            /*** LINE 1005 ***/
+
+            $importItems[$destination_line]["min_qty"] = "0";
+			$importItems[$destination_line]["use_config_min_qty"] = "1";
+			$importItems[$destination_line]["is_qty_decimal"] = "0";
+			$importItems[$destination_line]["backorders"] = "0";
+
+			$importItems[$destination_line]["use_config_backorders"] = "1";
+			$importItems[$destination_line]["min_sale_qty"] = "1";
+			$importItems[$destination_line]["use_config_min_sale_qty"] = "1";
+			$importItems[$destination_line]["max_sale_qty"] = "0";
+			$importItems[$destination_line]["use_config_max_sale_qty"] = "1";
+
+            /*** LINE 1019 ***/
+
+            if ($udf_entity_type == "Image")
+            {
+				$importItems[$destination_line]["is_in_stock"] = "0";
+				$importItems[$destination_line]["use_config_notify_stock_qty"] = "0";
+				$importItems[$destination_line]["manage_stock"] = "0";
+				$importItems[$destination_line]["use_config_manage_stock"] = "0";
+				$importItems[$destination_line]["qty"] = "0";
+                $importItems[$destination_line]["has_options"] = "1";
+            }
+            else
+            {
+				$importItems[$destination_line]["is_in_stock"] = "1";
+				$importItems[$destination_line]["use_config_notify_stock_qty"] = "1";
+				$importItems[$destination_line]["manage_stock"] = "0";
+				$importItems[$destination_line]["use_config_manage_stock"] = "0";
+				$importItems[$destination_line]["qty"] = $total_quantity_on_hand;
+                $importItems[$destination_line]["has_options"] = "0";
+            }
+
+            /*** LINE 1038 ***/
+
+            $importItems[$destination_line]["stock_status_changed_auto"] = "0";
+			$importItems[$destination_line]["use_config_qty_increments"] = "1";
+			$importItems[$destination_line]["qty_increments"] = "0";
+			$importItems[$destination_line]["use_config_enable_qty_inc"] = "1";
+			$importItems[$destination_line]["enable_qty_increments"] = "0";
+			$importItems[$destination_line]["is_decimal_divided"] = "0";
+
+            /*** LINE 1048 ***/
+
+            if ($udf_entity_type == "Poster" && ( (($udf_imsource == "San Diego" || $udf_imsource == "Italy") && $total_quantity_on_hand > -1) || $udf_imsource == "Old World"))
+            {
+				$image_size_width = $this->compute_image_size_width($udf_image_size_in);
+				$image_size_length = $this->compute_image_size_length($udf_image_size_in);
+
+				$poster_size_ui = $this->compute_poster_size_ui($image_size_width, $image_size_length);
+				$poster_size = $this->compute_poster_size($image_size_width, $image_size_length);
+
+				$importItems[$destination_line]["size_category"] = $this->compute_poster_size_category($poster_size_ui);
+
+
+				# Embellishments
+				if ($udf_metallic_ink == "Y")
+					$importItems[$destination_line]["udf_metallic_ink"] = "Yes";
+				else
+					$importItems[$destination_line]["udf_metallic_ink"] = "No";
+				if ($udf_foil == "Y")
+					$importItems[$destination_line]["udf_foil"] = "Yes";
+				else
+					$importItems[$destination_line]["udf_foil"] = "No";
+				if ($udf_serigraph == "Y")
+					$importItems[$destination_line]["udf_serigraph"] = "Yes";
+				else
+					$importItems[$destination_line]["udf_serigraph"] = "No";
+				if ($udf_embossed == "Y")
+					$importItems[$destination_line]["udf_embossed"] = "Yes";
+				else
+					$importItems[$destination_line]["udf_embossed"] = "No";
+				if ($udf_specpaper == "Y")
+					$importItems[$destination_line]["udf_specpaper"] = "Yes";
+				else
+					$importItems[$destination_line]["udf_specpaper"] = "No";
+            }
+
+            /*** LINE 1092 ***/
+
+            ########## Custom options columns ##########
+
+			# MATERIAL: paper and canvas are static hard-coded options.
+
+			########### Material ###############
+
+			$importItems[$destination_line]["_custom_option_type"] = "radio";
+			$importItems[$destination_line]["_custom_option_title"] = "Material";
+			$importItems[$destination_line]["_custom_option_is_required"] = "1";
+			$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+			$importItems[$destination_line]["_custom_option_sort_order"] = "0";
+
+
+			# Each material option is displayed according to the corresponding udf values
+            if ($udf_entity_type == "Poster" && ( (($udf_imsource == "San Diego" || $udf_imsource == "Italy") && $total_quantity_on_hand > -1) || $udf_imsource == "Old World"))
+            {
+				if ($udf_limited == "Y")
+					$importItems[$destination_line]["_custom_option_row_title"] = "Art Paper";
+				else
+					$importItems[$destination_line]["_custom_option_row_title"] = "Poster";
+
+				$importItems[$destination_line]["_custom_option_row_price"] = "0.00";
+				$importItems[$destination_line]["_custom_option_row_sku"] = "material_posterpaper";
+				$importItems[$destination_line]["_custom_option_row_sort"] = "0";
+
+                $destination_line++;
+                if (!isset($importItems[$destination_line]))
+                    $importItems[$destination_line] = array();
+            }
+
+            /*** LINE 1123 ***/
+
+            if ($udf_photopaper == "Y")
+            {
+				$importItems[$destination_line]["_custom_option_row_title"] = "Paper";
+				$importItems[$destination_line]["_custom_option_row_price"] = "0.00";
+				$importItems[$destination_line]["_custom_option_row_sku"] = "material_photopaper";
+				$importItems[$destination_line]["_custom_option_row_sort"] = "1";
+
+                $destination_line++;
+                if (!isset($importItems[$destination_line]))
+                    $importItems[$destination_line] = array();
+            }
+
+			# If not available as poster only
+            if ($udf_canvas == "Y")
+            {
+				$importItems[$destination_line]["_custom_option_row_title"] = "Canvas";
+				$importItems[$destination_line]["_custom_option_row_price"] = "0.00";
+				$importItems[$destination_line]["_custom_option_row_sku"] = "material_canvas";
+				$importItems[$destination_line]["_custom_option_row_sort"] = "2";
+
+                $destination_line++;
+                if (!isset($importItems[$destination_line]))
+                    $importItems[$destination_line] = array();
+            }
+
+			########### End of Material ###############
+
+            /*** LINE 1149 ***/
+
+            #############SIZE#############
+			$importItems[$destination_line]["_custom_option_type"] = "radio";
+			$importItems[$destination_line]["_custom_option_title"] = "Size";
+			$importItems[$destination_line]["_custom_option_is_required"] = "1";
+			$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+			$importItems[$destination_line]["_custom_option_sort_order"] = "1";
+			
+			# We need to extract the right prices, looking them up by (i.e. matching) the ratio column
+
+			# Extract and map the border treatments:
+			# 1) Scan for every row into the master paper and master canvas sheets
+			# 2) check if the ratio matches the one contained in the product attribute 
+			# 3) If the 2 ratios match, then copy the specific retail price option
+
+			$match_index = 0;
+
+            /*** LINE 1166 ***/
+
+            ########## IF POSTER IS IN STOCK ####################
+			# Change the minimum total quantity on hand when it is ready in MAS, from -1 to 0
+			# The poster is available only when it is in stock
+            if ($udf_entity_type == "Poster" && ( (($udf_imsource == "San Diego" || $udf_imsource == "Italy") && $total_quantity_on_hand > -1) || $udf_imsource == "Old World"))
+            {
+				$size_name = "Poster Paper";
+
+				$image_size_width = $this->compute_image_size_width($udf_image_size_in);
+				$image_size_length = $this->compute_image_size_length($udf_image_size_in);
+
+				$poster_size = $this->compute_poster_size($image_size_width, $image_size_length);
+				$poster_size_ui = $this->compute_poster_size_ui($image_size_width, $image_size_length);
+
+
+				$importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $poster_size;
+				if ($suggested_retail_price != 0)
+					$importItems[$destination_line]["_custom_option_row_price"] = $suggested_retail_price;
+				else
+					$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+
+				$size_category = strtolower($this->compute_poster_size_category($poster_size_ui));
+
+                $importItems[$destination_line]["_custom_option_row_sku"] = "size_posterpaper_" . $size_category . "_ui_" . intval($poster_size_ui) .
+                    "_width_" . intval($image_size_width) . "_length_" . intval($image_size_length);
+				$importItems[$destination_line]["_custom_option_row_sort"] = $match_index;
+
+				$destination_line++;
+                if (!isset($importItems[$destination_line]))
+                    $importItems[$destination_line] = array();
+
+				$match_index++;
+
+
+
+				# Extract the alternate sizes here
+                if (!empty($alternate_size_array))
+                {
+                    foreach($alternate_size_array as $i_th_alt_size)
+                    {
+						$alternate_size_line = $item_source_line[$i_th_alt_size];
+                        $alternate_size = $source->getActiveSheet()
+                            ->getCellByColumnAndRow($source_dictionary["UDF_IMAGE_SIZE_IN"], $alternate_size_line)->getValue();
+
+                        if (empty($alternate_size))
+                        {
+                            $alternate_size = $source->getActiveSheet()
+                                ->getCellByColumnAndRow($source_dictionary["UDF_PAPER_SIZE_IN"], $alternate_size_line)->getValue();
+                        }
+
+						# Alternate size parameters: to be passed later in a dedicated function
+						$size_name = "Poster Paper";
+						
+						$image_size_width = $this->compute_image_size_width($alternate_size);
+						$image_size_length = $this->compute_image_size_length($alternate_size);
+
+						$poster_size = $this->compute_poster_size($image_size_width, $image_size_length);
+						$poster_size_ui = $this->compute_poster_size_ui($image_size_width, $image_size_length);
+						
+                        $suggested_retail_price = $source->getActiveSheet()
+                                ->getCellByColumnAndRow($source_dictionary["SuggestedRetailPrice"], $alternate_size_line)->getValue();
+
+						$size_category = strtolower($this->compute_poster_size_category($poster_size_ui));
+
+						$importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $poster_size;
+						if ($suggested_retail_price != 0)
+							$importItems[$destination_line]["_custom_option_row_price"] = $suggested_retail_price;
+						else
+							$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+                        $importItems[$destination_line]["_custom_option_row_sku"] = "size_posterpaper_" . $size_category . "_altsize_" . strtolower($i_th_alt_size) .
+                            "_ui_" . intval($poster_size_ui) . "_width_" . intval($image_size_width) . "_length_" . intval($image_size_length);
+						$importItems[$destination_line]["_custom_option_row_sort"] = $match_index;
+
+						$destination_line++;
+                        if (!isset($importItems[$destination_line]))
+                            $importItems[$destination_line] = array();
+
+						$match_index++;
+
+                    }
+                }
+            }
+
+			########## end of IF POSTER IS IN STOCK ####################
+
+            /*** LINE 1246 ***/
+
+
+            ########## IF UDF_PHOTOPAPER == Y ####################
+            if ($udf_photopaper == "Y")
+            {
+				# If not available as poster only
+                if ($poster_only_hash_table[$item_code] != "true")
+                {
+					$custom_size_ui_to_skip = 0;
+					$min_delta = 1000;
+
+                    # First pass: scan all the available UI sizes
+                    for ($i = 2; $i <= $retail_photo_paper->getHighestRow(); $i++)
+                    {
+                        $retail_ratio_dec = floatval($retail_photo_paper
+                                ->getCellByColumnAndRow($retail_photo_paper_dictionary["Decimal Ratio"], $i)->getValue());
+
+                        if ($udf_ratio_dec == $retail_ratio_dec)
+                        {
+                            $size_paper_ui = intval($retail_photo_paper
+                                ->getCellByColumnAndRow($retail_photo_paper_dictionary["UI"], $i)->getValue());
+
+							$delta = $poster_size_ui - $size_paper_ui;
+							$delta = abs($delta);
+
+                            if ($delta < $min_delta)
+                            {
+								$custom_size_ui_to_skip = $size_paper_ui;
+								$min_delta = $delta;
+                            }
+                        }
+                    }
+
+                    # Master Photo Paper Sheet
+                    for ($i = 2; $i <= $retail_photo_paper->getHighestRow(); $i++)
+                    {
+                        $retail_ratio_dec = floatval($retail_photo_paper
+                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Decimal Ratio"], $i)->getValue());
+                        $size_photopaper_ui = intval($retail_photo_paper
+                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["UI"], $i)->getValue());
+                        $image_source = $retail_photo_paper
+                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Image Source"], $i)->getValue();
+
+                        $image_length = floatval($retail_photo_paper
+                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Length"], $i)->getValue());
+                        $image_width = floatval($retail_photo_paper
+                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Width"], $i)->getValue());
+
+						$short_side = 0;
+						if ($image_length < $image_width)
+							$short_side = $image_length;
+						else
+							$short_side = $image_width;
+
+
+						# Check for available sizes: the poster size replaces the closes photo paper digital size
+                        if ($udf_ratio_dec == $retail_ratio_dec && $size_photopaper_ui != $custom_size_ui_to_skip && $udf_imsource == $image_source && (empty($udf_maxsfin) || $short_side <= $udf_maxsfin))
+                        {
+							#retail_ratio_dec = "#{$retail_photo_paper.cell(i, $retail_photo_paper_dictionary["Decimal Ratio"])}"
+                            //$retail_ratio_dec = $retail_photo_paper
+                            //    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Decimal Ratio"], $i)->getValue();
+                            $size_name = $retail_photo_paper
+                                ->getCellByColumnAndRow($retail_photo_paper_dictionary["Size Description"], $i)->getValue();
+
+							$allowed_size = "false";
+							
+							# Match the right sizes
+                            if (($udf_petite == "Y" && $size_name == "Petite") || ($udf_small == "Y" && $size_name == "Small") ||
+                                ($udf_medium == "Y" && $size_name == "Medium") || ($udf_large == "Y" && $size_name == "Large") ||
+                                ($udf_osdp == "Y" && $size_name == "Oversize") || ($udf_largeos == "Y" && $size_name == "Oversize Large"))
+                            {
+                                $allowed_size = "true";
+                            }
+
+							# If the size is allowed, then create the corresponding option
+                            if ($allowed_size == "true")
+                            {
+                                $size_price = $retail_photo_paper
+                                    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Rolled Paper - Estimated Retail"], $i)->getValue();
+                                $size_photopaper_length = intval($retail_photo_paper
+                                    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Length"], $i)->getValue());
+                                $size_photopaper_width = intval($retail_photo_paper
+                                    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Width"], $i)->getValue());
+
+								$orientation = strtolower($udf_orientation);
+                                if ($orientation == "landscape")
+                                {
+                                    if ($size_photopaper_width < $size_photopaper_length)
+                                    {
+										$temp = $size_photopaper_width;
+										$size_photopaper_width = $size_photopaper_length;
+                                        $size_photopaper_length = $temp;
+                                    }
+                                }
+                                else if ($orientation == "portrait")
+                                {
+                                    if ($size_photopaper_width > $size_photopaper_length)
+                                    {
+										$temp = $size_photopaper_width;
+										$size_photopaper_width = $size_photopaper_length;
+                                        $size_photopaper_length = $temp;
+                                    }
+                                }
+                                else
+                                {
+                                    # Do nothing, Square Images are set already
+                                }
+
+								$size_photopaper_width = (string)$size_photopaper_width;
+								$size_photopaper_length = (string)$size_photopaper_length;
+
+								$importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $size_photopaper_width . "\""  . "x" . $size_photopaper_length . "\"";
+								$importItems[$destination_line]["_custom_option_row_price"] = $size_price;
+
+								if (strtolower($size_name) == "oversize large")
+									$size_name = "Oversize_Large";
+
+				
+                                $importItems[$destination_line]["_custom_option_row_sku"] = "size_photopaper_" . strtolower($size_name) . "_ui_" . $size_photopaper_ui .
+                                    "_width_" . $size_photopaper_width . "_length_" . $size_photopaper_length;
+								$importItems[$destination_line]["_custom_option_row_sort"] = $match_index;
+
+                                $destination_line++;
+                                if (!isset($importItems[$destination_line]))
+                                    $importItems[$destination_line] = array();
+
+								$match_index++;
+                            }
+                        }
+                    }
+                }
+            }
+
+			########## end IF UDF_PHOTOPAPER == Y ####################
+
+            /*** LINE 1367 ***/
+
+            ########## IF UDF_CANVAS == Y ####################
+            if ($udf_canvas == "Y")
+            {
+                # Master Canvas Sheet
+                for ($i = 2; $i <= $retail_canvas->getHighestRow(); $i++)
+                { 
+                    $retail_ratio_dec = floatval($retail_canvas
+                        ->getCellByColumnAndRow($retail_canvas_dictionary["Decimal Ratio"], $i)->getValue());
+                    $image_source = $retail_photo_paper
+                        ->getCellByColumnAndRow($retail_photo_paper_dictionary["Image Source"], $i)->getValue();
+					
+                    $size_canvas_length_1 = intval($retail_canvas
+                        ->getCellByColumnAndRow($retail_canvas_dictionary["WH_Length"], $i)->getValue());
+                    $size_canvas_width_1 = intval($retail_canvas
+                        ->getCellByColumnAndRow($retail_canvas_dictionary["WH_Width"], $i)->getValue());
+
+					$short_side = 0;
+					if ($size_canvas_length_1 < $size_canvas_width_1)
+						$short_side = $size_canvas_length_1;
+					else
+						$short_side = $size_canvas_width_1;
+					
+					$count = 0;
+
+					# Check for available sizes and border treatments prices
+                    if ($udf_ratio_dec == $retail_ratio_dec && $udf_imsource == $image_source && (empty($udf_maxsfin) || $short_side <= $udf_maxsfin))
+                    {
+                        $size_name = $retail_canvas
+                            ->getCellByColumnAndRow($retail_canvas_dictionary["Size Description"], $i)->getValue();
+
+                        $size_canvas_length_2 = intval($retail_canvas
+                            ->getCellByColumnAndRow($retail_canvas_dictionary["BL_Length"], $i)->getValue());
+                        $size_canvas_width_2 = intval($retail_canvas
+                            ->getCellByColumnAndRow($retail_canvas_dictionary["BL_Width"], $i)->getValue());
+						
+                        $size_canvas_length_3 = intval($retail_canvas
+                            ->getCellByColumnAndRow($retail_canvas_dictionary["MR_Length"], $i)->getValue());
+                        $size_canvas_width_3 = intval($retail_canvas
+                            ->getCellByColumnAndRow($retail_canvas_dictionary["MR_Width"], $i)->getValue());
+
+						$allowed_size = "false";
+							
+						# Match the right sizes
+                        if (($udf_petite == "Y" && $size_name == "Petite") || ($udf_small == "Y" && $size_name == "Small") ||
+                            ($udf_medium == "Y" && $size_name == "Medium") || ($udf_large == "Y" && $size_name == "Large") || 
+                            ($udf_osdp == "Y" && $size_name == "Oversize") || ($udf_largeos == "Y" && $size_name == "Oversize Large"))
+                        {
+                            $allowed_size = "true";
+                        }
+
+						# If the size is allowed, then create the corresponding option
+                        if ($allowed_size == "true")
+                        {
+                            $size_price_treatment_1 = $retail_canvas
+                                ->getCellByColumnAndRow($retail_canvas_dictionary["Rolled Canvas White Border -  Estimated Retail"], $i)->getValue();
+                            $size_price_treatment_2 = $retail_canvas
+                                ->getCellByColumnAndRow($retail_canvas_dictionary['Rolled Canvas 2" Black Border - Estimated Retail'], $i)->getValue();
+                            $size_price_treatment_3 = $retail_canvas
+                                ->getCellByColumnAndRow($retail_canvas_dictionary['Rolled Canvas 2" Mirror Border -  Estimated Retail'], $i)->getValue();
+
+                            $size_canvas_ui_1 = intval($retail_canvas
+                                ->getCellByColumnAndRow($retail_canvas_dictionary["WH_UI"], $i)->getValue());
+                            $size_canvas_ui_2 = intval($retail_canvas
+                                ->getCellByColumnAndRow($retail_canvas_dictionary["BL_UI"], $i)->getValue());
+                            $size_canvas_ui_3 = intval($retail_canvas
+                                ->getCellByColumnAndRow($retail_canvas_dictionary["MR_UI"], $i)->getValue());
+
+							$orientation = strtolower($udf_orientation);
+                            if ($orientation == "landscape")
+                            {
+                                if ($size_canvas_width_1 < $size_canvas_length_1)
+                                {
+									$this->swap($size_canvas_width_1, $size_canvas_length_1);
+									$this->swap($size_canvas_width_2, $size_canvas_length_2);
+									$this->swap($size_canvas_width_3, $size_canvas_length_3);
+                                }
+                            }
+                            else if ($orientation == "portrait")
+                            {
+                                if ($size_canvas_width_1 > $size_canvas_length_1)
+                                {
+									$this->swap($size_canvas_width_1, $size_canvas_length_1);
+									$this->swap($size_canvas_width_2, $size_canvas_length_2);
+                                    $this->swap($size_canvas_width_3, $size_canvas_length_3);
+                                }
+                            }
+                            else
+                            {
+                                # Do nothing, Square Images are set already
+                            }
+
+							$size_canvas_width_1 = (string)$size_canvas_width_1;
+							$size_canvas_length_1 = (string)$size_canvas_length_1;
+
+							$size_canvas_width_2 = (string)$size_canvas_width_2;
+							$size_canvas_length_2 = (string)$size_canvas_length_2;
+
+							$size_canvas_width_3 = (string)$size_canvas_width_3;
+							$size_canvas_length_3 = (string)$size_canvas_length_3;
+						
+
+							$size_prices = array(
+							    $size_price_treatment_1, $size_price_treatment_2, $size_price_treatment_3 );
+
+							$size_canvas_width = array(
+							    $size_canvas_width_1, $size_canvas_width_2, $size_canvas_width_3 );
+
+							$size_canvas_length = array(
+							    $size_canvas_length_1, $size_canvas_length_2, $size_canvas_length_3 );
+
+							$size_canvas_ui = array(
+							    $size_canvas_ui_1, $size_canvas_ui_2, $size_canvas_ui_3 );
+
+
+                            for ($count = 0; $count <= 2; $count++)
+                            {
+                                $importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $size_canvas_width[$count] . "\""  . "x" . $size_canvas_length[$count] . "\"";
+								$importItems[$destination_line]["_custom_option_row_price"] = $size_prices[$count];
+
+								if (strtolower($size_name) == "oversize large")
+									$size_name = "Oversize_Large";
+
+								#_custom_option_row_sku
+                                $importItems[$destination_line]["_custom_option_row_sku"] = "size_canvas_" . strtolower($size_name) . "_treatment_" .
+                                    ((string)($count+1)) . "_ui_" . (string)$size_canvas_ui[$count] . "_width_" . (string)$size_canvas_width[$count] . "_length_" . (string)$size_canvas_length[$count];
+								#_custom_option_row_sort
+								$importItems[$destination_line]["_custom_option_row_sort"] = $match_index + $count;
+
+								$destination_line++;
+                                if (!isset($importItems[$destination_line]))
+                                    $importItems[$destination_line] = array();
+
+								$count = $count;
+							
+                            }
+
+							$match_index = $match_index + 1 + $count;
+                        }
+                    }
+                }
+
+
+				# BORDER TREATMENTS for canvas
+				# If not available as poster only
+                if ($poster_only_hash_table[$item_code] != "true")
+                {
+
+					########### Border Treatments ###############
+					# Border Treatments and Stretching options (including names) are static
+
+					$importItems[$destination_line]["_custom_option_type"] = "radio";
+					$importItems[$destination_line]["_custom_option_title"] = "Borders";
+					$importItems[$destination_line]["_custom_option_is_required"] = "1";
+					$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+					$importItems[$destination_line]["_custom_option_sort_order"] = "2";
+					
+					$importItems[$destination_line]["_custom_option_row_title"] = "None";
+					$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+					$importItems[$destination_line]["_custom_option_row_sku"] = "treatments_none";
+					$importItems[$destination_line]["_custom_option_row_sort"] = "0";
+
+					$destination_line++;
+                    if (!isset($importItems[$destination_line]))
+                        $importItems[$destination_line] = array();
+					
+
+					$importItems[$destination_line]["_custom_option_row_title"] = "2\" White Border";
+					$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+					$importItems[$destination_line]["_custom_option_row_sku"] = "border_treatment_3_inches_of_white";
+					$importItems[$destination_line]["_custom_option_row_sort"] = "1";
+
+					$destination_line++;
+                    if (!isset($importItems[$destination_line]))
+                        $importItems[$destination_line] = array();
+
+
+					$importItems[$destination_line]["_custom_option_row_title"] = "2\" Black Border";
+					$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+					$importItems[$destination_line]["_custom_option_row_sku"] = "border_treatment_2_inches_of_black_and_1_inch_of_white";
+					$importItems[$destination_line]["_custom_option_row_sort"] = "2";
+
+					$destination_line++;
+                    if (!isset($importItems[$destination_line]))
+                        $importItems[$destination_line] = array();
+
+					$importItems[$destination_line]["_custom_option_row_title"] = "2\" Mirrored Border";
+					$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+					$importItems[$destination_line]["_custom_option_row_sku"] = "border_treatment_2_inches_mirrored_and_1_inch_of_white";
+					$importItems[$destination_line]["_custom_option_row_sort"] = "3";
+
+					$destination_line++;
+                    if (!isset($importItems[$destination_line]))
+                        $importItems[$destination_line] = array();
+                }
+
+
+				########### Canvas Stretching ###############
+                for ($i = 0; $i <= (count($retail_framing_table) - 2); $i++)
+                { 
+
+					$udf_entity_type = $retail_framing_table[$i]["UDF_ENTITYTYPE"];
+
+                    if ($udf_entity_type == "Stretch")
+                    {
+						$stretch_item_number = strtolower($retail_framing_table[$i]["Item Code"]);
+						$stretch_ui_price = $retail_framing_table[$i]["United Inch TAR Retail"];
+
+						$importItems[$destination_line]["_custom_option_type"] = "checkbox";
+						$importItems[$destination_line]["_custom_option_title"] = "Canvas Stretching";
+						$importItems[$destination_line]["_custom_option_is_required"] = "0";
+						$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+						$importItems[$destination_line]["_custom_option_sort_order"] = "3";
+						
+						$stretching_index = 0;
+
+						$importItems[$destination_line]["_custom_option_row_title"] = "1.5\" Canvas Gallery Stretching";
+						$importItems[$destination_line]["_custom_option_row_price"] = (string)$stretch_ui_price;
+						$importItems[$destination_line]["_custom_option_row_sku"] = $stretch_item_number;
+						$importItems[$destination_line]["_custom_option_row_sort"] = $stretching_index;
+
+						$destination_line++;
+                        if (!isset($importItems[$destination_line]))
+                            $importItems[$destination_line] = array();
+						$stretching_index++;
+                    }
+                }
+            }
+			########## end of IF UDF_CANVAS == Y ####################
+
+            /*** LINE 1573 ***/
+
+            ########### FRAMING ###########
+			
+			########## if UDF_FRAMED == Y ####################
+            if ($udf_framed == "Y")
+            {
+				$importItems[$destination_line]["_custom_option_type"] = "drop_down";
+				$importItems[$destination_line]["_custom_option_title"] = "Frame";
+				$importItems[$destination_line]["_custom_option_is_required"] = "1";
+				$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+				$importItems[$destination_line]["_custom_option_sort_order"] = "4";
+
+				$frame_count = 0;
+				$mats_count = 0;
+
+				# Add the No Frame option
+				$importItems[$destination_line]["_custom_option_row_sku"] = "frame_none";
+				$importItems[$destination_line]["_custom_option_row_title"] = "No Frame";
+				$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+				$importItems[$destination_line]["_custom_option_row_sort"] = $frame_count;
+
+				$destination_line++;
+                if (!isset($importItems[$destination_line]))
+                    $importItems[$destination_line] = array();
+				$frame_count++;
+
+                # Only scan the framing options
+                for ($i = 0; $i <= (count($retail_framing_table) - 2); $i++)
+                {
+					$udf_entity_type = $retail_framing_table[$i]["UDF_ENTITYTYPE"];
+					
+                    if ($udf_entity_type == "Frame")
+                    {
+						$frame_name = $retail_framing_table[$i]["Description"];
+
+						$frame_item_number = strtolower($retail_framing_table[$i]["Item Code"]);
+						$frame_ui_price = $retail_framing_table[$i]["United Inch TAR Retail"];
+						$frame_flat_mounting_price = $retail_framing_table[$i]["Flat Mounting Cost"];
+
+						$frame_for_paper = $retail_framing_table[$i]["UDF_FMAVAIL4PAPER"];
+						$frame_for_canvas = $retail_framing_table[$i]["UDF_FMAVAIL4CANVAS"];
+
+						# Scan the category names and add each of them to an array, used to add it only once
+						$category_name = strtolower($retail_framing_table[$i]["UDF_FRAMECAT"]);
+				
+
+						# Each framing option has a different price for each size (UI) available
+
+						# Available for Paper
+                        if ($frame_for_paper == "Y")
+                        {
+							$importItems[$destination_line]["_custom_option_row_sku"] = $frame_item_number;
+							$importItems[$destination_line]["_custom_option_row_title"] = $frame_name;
+							$importItems[$destination_line]["_custom_option_row_price"] = (string)$frame_ui_price;
+							$importItems[$destination_line]["_custom_option_row_sort"] = $frame_count;
+
+							$destination_line++;
+                            if (!isset($importItems[$destination_line]))
+                                $importItems[$destination_line] = array();
+							$frame_count++;
+                        }
+
+						# Available for Canvas
+						# Removed for now: framing is not available for canvas for now
+                        #if ($frame_for_canvas == "Y")
+                        #{
+
+						#	$importItems[$destination_line]["_custom_option_row_sku"] = $frame_item_number;
+						#	$importItems[$destination_line]["_custom_option_row_title"] = $frame_name;
+						#	$importItems[$destination_line]["_custom_option_row_price"] = (string)$frame_ui_price;
+						#	$importItems[$destination_line]["_custom_option_row_sort"] = $frame_count;
+
+						#	$destination_line++;
+                        #   if (!isset($importItems[$destination_line]))
+                        #      $importItems[$destination_line] = array();
+						#	$frame_count++;
+
+						#}
+
+                    }
+
+
+                }
+
+
+				
+
+
+				########### MATTING ###########
+				$importItems[$destination_line]["_custom_option_type"] = "radio";
+				$importItems[$destination_line]["_custom_option_title"] = "Mat";
+				$importItems[$destination_line]["_custom_option_is_required"] = "1";
+				$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+				$importItems[$destination_line]["_custom_option_sort_order"] = "5";
+
+
+                for ($i = 0; $i <= (count($retail_framing_table) - 2); $i++)
+                {
+					$udf_entity_type = $retail_framing_table[$i]["UDF_ENTITYTYPE"];
+
+                    if ($udf_entity_type == "Mat")
+                    {
+						$mat_name = $retail_framing_table[$i]["Description"];
+						$mat_item_number = strtolower($retail_framing_table[$i]["Item Code"]);
+
+						$mat_ui_price = $retail_framing_table[$i]["United Inch TAR Retail"];
+						$mats_for_paper = $retail_framing_table[$i]["UDF_FMAVAIL4PAPER"];
+						$mats_for_canvas = $retail_framing_table[$i]["UDF_FMAVAIL4CANVAS"];
+						$mats_color = $retail_framing_table[$i]["UDF_COLORCODE"];
+						$category_name = strtolower($retail_framing_table[$i]["UDF_FRAMECAT"]);
+
+
+						# Available for Paper
+                        if ($mats_for_paper == "Y")
+                        {
+
+							$importItems[$destination_line]["_custom_option_row_sku"] = $mat_item_number;
+							$importItems[$destination_line]["_custom_option_row_title"] = $mat_name;
+							$importItems[$destination_line]["_custom_option_row_price"] = (string)$mat_ui_price;
+							$importItems[$destination_line]["_custom_option_row_sort"] = $mats_count;
+
+                            $destination_line++;
+                            if (!isset($importItems[$destination_line]))
+                                $importItems[$destination_line] = array();
+							$mats_count++;
+                        }
+
+                    }
+                }
+
+				$importItems[$destination_line]["_custom_option_row_sku"] = "mats_none";
+				$importItems[$destination_line]["_custom_option_row_title"] = "No Mat";
+				$importItems[$destination_line]["_custom_option_row_price"] = "0.0";
+				$importItems[$destination_line]["_custom_option_row_sort"] = $mats_count;
+
+				$destination_line++;
+                if (!isset($importItems[$destination_line]))
+                    $importItems[$destination_line] = array();
+				$mats_count++;
+
+            }
+			########## end of if UDF_FRAMED == Y ####################
+
+            /*** LINE 1709 ***/
+
+            ####### CUSTOM SIZE: HEIGHT #########
+			$importItems[$destination_line]["_custom_option_type"] = "field";
+			#_custom_option_title
+			$importItems[$destination_line]["_custom_option_title"] = "Height";
+			#_custom_option_is_required
+			$importItems[$destination_line]["_custom_option_is_required"] = "0";
+			#_custom_option_max_characters
+			$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+			#_custom_option_sort_order
+			$importItems[$destination_line]["_custom_option_sort_order"] = "6";
+
+			$destination_line++;
+            if (!isset($importItems[$destination_line]))
+                $importItems[$destination_line] = array();
+
+			####### CUSTOM SIZE: WIDTH #########
+			$importItems[$destination_line]["_custom_option_type"] = "field";
+			#_custom_option_title
+			$importItems[$destination_line]["_custom_option_title"] = "Width";
+			#_custom_option_is_required
+			$importItems[$destination_line]["_custom_option_is_required"] = "0";
+			#_custom_option_max_characters
+			$importItems[$destination_line]["_custom_option_max_characters"] = "0";
+			#_custom_option_sort_order
+			$importItems[$destination_line]["_custom_option_sort_order"] = "7";
+
+			$destination_line++;
+            if (!isset($importItems[$destination_line]))
+                $importItems[$destination_line] = array();
+
+            /*** LINE 1746 ***/
+
+            # Compute the maximum count among all the multi select options
+			# then add it to the destination line count for the next product to be written
+			$custom_options_array_size = 0;
+
+			$multi_select_options = array( $collections_count );
+
+			if ($udf_entity_type == "Image")
+				$multi_select_options[] = $custom_options_array_size;
+
+			$max_count =  max( $multi_select_options );
+			
+			# Increase the destination line to the correct number
+			$destination_line = $destination_line + $max_count;
+			$destination_line = $destination_line + 1;
+            if (!isset($importItems[$destination_line]))
+                $importItems[$destination_line] = array();
+
+			//p source_line.to_s + "/" + $source.last_row.to_s
+            /*
+			if ( ( $source_line % 800 == 0 or ((source_line + 1) % 800 == 0) ) or source_line == last_row - 1 )
+
+				# Finally, fill the template
+				template_file_name = "csv/new_inventory_" + $template_counter.to_s + ".csv"
+				p "Creating " + template_file_name + "..."
+				template.to_csv(template_file_name)
+
+				puts "The running time for the current .csv file has been #{Time.now - $beginning} seconds."
+
+				$template_counter = $template_counter + 1
+				destination_line = 2
+
+				# Reset the template file to store the new rows
+				template = Openoffice.new("Template_2013_05_10/template.ods")
+				template.default_sheet = template.sheets.first
+                end
+             */
+
+            /***LINE 1785***/
+            $source_line = $scan_line + 1;
 	
         }
         /*** END MAIN PARALLEL WRITE FOR ***/
 
+        print_r($importItems[array_keys($importItems)[0]]);
         
     }
 
@@ -484,14 +1710,13 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 		else
 			$image_size_width += substr($original_image_size_width, 0, 2);
 
-		return $image_size_width
+		return $image_size_width;
     }
 
     # Example image size = "23 5/8 x 47 1/4"
     protected function compute_image_size_length($original_size_value)
     {
-		$image_size_length = 0
-
+		$image_size_length = 0;
         if (($xpos = stripos($original_size_value, 'x')) !== false)
             $original_image_size_length = substr($original_size_value, $xpos + 2);
 
@@ -508,8 +1733,52 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 		else
 			$image_size_length += substr($original_image_size_length, 0, 2);
 
-        return $image_size_length
+        return $image_size_length;
     }
+
+    protected function compute_poster_size($a, $b)
+    {
+        return intval($a) . "\"" . "x" . intval($b) . "\"";
+    }
+
+    protected function compute_poster_size_ui($a, $b)
+    {
+        return intval($a + $b);
+    }
+
+    protected function compute_poster_size_category($x)
+    {
+        if ($x != 0)
+        {
+			if ($x < 30) 
+				return "XS";
+
+			if ($x >= 30 && $x <  40)
+				return "S";
+
+			if ($x >= 40 && $x < 50)
+				return "M";
+
+			if ($x >= 50 && $x < 60)
+				return "L";
+
+			if ($x >= 60)
+				return "XL";
+        }
+
+        return "";
+    }
+
+    protected function swap(&$x,&$y)
+    {
+        $tmp=$x;
+        $x=$y;
+        $y=$tmp;
+    }
+
+
+
+
 
     protected function getSheetValue($sheet, $col, $row)
     {
