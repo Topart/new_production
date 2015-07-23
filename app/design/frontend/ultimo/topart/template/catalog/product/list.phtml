@@ -228,11 +228,27 @@
                     <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" class="product-image">
                         <?php
                             $img_1 = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image',null,true);
+                            if($helpImg->isMobile())
+                                $urlimg = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail');
+                            else
+                                $urlimg = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image');
+
                         ?>
-                        <img src="<?php echo $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail'); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
+
+                        <img src="<?php echo $urlimg; ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
 
                         <?php if ($theme->getCfg('category/alt_image')): ?>
-                            <?php echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight); ?>   
+                            <?php //echo $theme->getAltImgHtml($_product, $imgWidth, $imgHeight);
+                                if($helpImg->isMobile())
+                                    $urlimg_alter = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'thumbnail','alternative');
+                                else
+                                    $urlimg_alter = $helpImg->getImg($_product, $imgWidth, $imgHeight, 'small_image','alternative');
+                            ?>
+                            <?php
+                            $exist = $helpImg->file_exists_remote($urlimg_alter);
+                            if($exist): ?>
+                                <img class="alt-img" src="<?php echo $urlimg_alter; ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
+                            <?php endif; ?>
                         <?php endif; ?>
 
                         <?php echo $helpLabels->getLabels($_product); //Product labels ?>
@@ -298,7 +314,8 @@
                     </div> <!-- end: actions -->
                 </div>
             </li>
-        <?php endforeach; ?>    
+        <?php endforeach; ?>
+        
     </ul>
     <?php endif; //end: if grid mode ?>
 
