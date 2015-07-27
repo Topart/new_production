@@ -71,7 +71,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
     public function process()
     {
-        //TODO
+        echo "START TIME: " . microtime(true) . "\r\n<br />";
 
         /***
          * Load/Upload Files
@@ -106,6 +106,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         //load into Excel parser
         $source = PHPExcel_IOFactory::load($sourcePath);
         $source->setActiveSheetIndex(0);
+        $sourceSheet = $source->getActiveSheet();
         //load template file
         $template = PHPExcel_IOFactory::load($templatePath);
         $template->setActiveSheetIndex(0);
@@ -116,25 +117,29 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         $retail_canvas = $retail->getSheet(2);
         $retail_framing = $retail->getSheet(3);
 
+
         //process headers from each sheet
         $template_dictionary = $this->getHeaderDictionaryFromSheet($template->getActiveSheet());
-        $source_dictionary = $this->getHeaderDictionaryFromSheet($source->getActiveSheet());
+        $source_dictionary = $this->getHeaderDictionaryFromSheet($sourceSheet);
         $retail_photo_paper_dictionary = $this->getHeaderDictionaryFromSheet($retail_photo_paper);
         $retail_canvas_dictionary  = $this->getHeaderDictionaryFromSheet($retail_canvas);
         $retail_framing_dictionary  = $this->getHeaderDictionaryFromSheet($retail_framing);
 
+        //parse into arrays for speed
+        $retail_photo_paper_arr = $this->parseSheetIntoArray($retail_photo_paper, $retail_photo_paper_dictionary);
+        $retail_canvas_arr = $this->parseSheetIntoArray($retail_canvas, $retail_canvas_dictionary);
+        $sourceSheet_arr = $this->parseSheetIntoArray($sourceSheet, $source_dictionary);
 
         # FRAMING, STRETCHING, MATTING
 		# Automatically scan the source column names and store them in an associative array
 		# Declare and fill the retail framing table
         $retail_framing_table = array();
-        $last_source_row = $source->getActiveSheet()->getHighestRow();
+        $last_source_row = $sourceSheet->getHighestRow();
         $i = 0;
         # Scan all the source rows and process the F21066 items only, and only once at the beginning for efficiency
         for($source_line = 2; $source_line <= $last_source_row; $source_line++)
         {
-            $primary_vendor_no = $source->getActiveSheet()
-                ->getCellByColumnAndRow($source_dictionary["PrimaryVendorNo"],$source_line)->getValue();
+            $primary_vendor_no = $sourceSheet_arr[$source_line][$source_dictionary["PrimaryVendorNo"]];
             if ($primary_vendor_no != "F21066" && $primary_vendor_no != "S73068")
                 continue;
 
@@ -142,8 +147,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             # Store all the MAS specific fields, which means the majority of them
             foreach($retail_framing_dictionary as $header => $column)
             {
-                $retail_framing_table[$i][$header] = $source->getActiveSheet()
-                    ->getCellByColumnAndRow($source_dictionary[$header], $source_line)->getValue();
+                $retail_framing_table[$i][$header] = $sourceSheet_arr[$source_line][$source_dictionary[$header]];
             }
 
             # Store the spreadsheet retail prices only
@@ -173,8 +177,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         $item_source_line = array();
         for($source_line = 2; $source_line <= $last_source_row; $source_line++)
         {
-            $item_code = $source->getActiveSheet()
-                ->getCellByColumnAndRow($source_dictionary["Item Code"], $source_line)->getValue();
+            $item_code = $sourceSheet_arr[$source_line][$source_dictionary["Item Code"]];
             $item_source_line[$item_code] = $source_line;
         }
 
@@ -192,12 +195,12 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
         while ($temp_i <= $temp_x)
         {
-            $item_code = $source->getActiveSheet()
+            $item_code = $sourceSheet
                 ->getCellByColumnAndRow($source_dictionary["Item Code"], $temp_i)->getValue();
 
             for($i = 1; $i <= 4; $i++)
             {
-                $a = str_replace(" ", "", $source->getActiveSheet()
+                $a = str_replace(" ", "", $sourceSheet
                     ->getCellByColumnAndRow($source_dictionary["UDF_ALTS$i"], $temp_i)->getValue());
                 if (!empty($a))
                     $global_alternate_size_array[] = $a;
@@ -247,11 +250,15 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         $importItems = array();
 
         /*** BEGIN MAIN PARALLEL WRITE FOR ***/
+        //TODO: TEMPORARILY ONLY DO SUBSET
+        ///echo "ORIGINAL LAST SOURCE ROW:" . $last_source_row . "\r\n<br />";
+        //$last_source_row = 20;
         while($source_line <= $last_source_row)
         {
+            ///echo "$source_line TIME: " . microtime(true) . "\r\n<br />";
+
             ### Fields variables for each product are all assigned here ###
-            $udf_tar = $source->getActiveSheet()
-                ->getCellByColumnAndRow($source_dictionary["UDF_TAR"], $source_line)->getValue();
+            $udf_tar = $sourceSheet_arr[$source_line][$source_dictionary["UDF_TAR"]];
 
             # Skip importing items where udf_tar = N
             if ($udf_tar == "N")
@@ -260,8 +267,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 				continue;
             }
 
-            $primary_vendor_no = $source->getActiveSheet()
-                ->getCellByColumnAndRow($source_dictionary["PrimaryVendorNo"], $source_line)->getValue();
+            $primary_vendor_no = $sourceSheet_arr[$source_line][$source_dictionary["PrimaryVendorNo"]];
 
             # Skip importing the framing related items
             if ($primary_vendor_no == "F21066")
@@ -270,10 +276,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 				continue;
             }
 
-            $item_code = $source->getActiveSheet()
-                ->getCellByColumnAndRow($source_dictionary["Item Code"], $source_line)->getValue();
-            $udf_entity_type = $source->getActiveSheet()
-                ->getCellByColumnAndRow($source_dictionary["UDF_ENTITYTYPE"], $source_line)->getValue();
+            $item_code = $sourceSheet_arr[$source_line][$source_dictionary["Item Code"]];
+            $udf_entity_type = $sourceSheet_arr[$source_line][$source_dictionary["UDF_ENTITYTYPE"]];
 
 
             # If the current sku is an alternate size of a sku we have already met, then skip it and go to the next item number
@@ -321,14 +325,12 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             }
 
             /***LINE 469***/
-            $description = $source->getActiveSheet()
-                ->getCellByColumnAndRow($source_dictionary["Description"], $source_line)->getValue();
+            $description = $sourceSheet_arr[$source_line][$source_dictionary["Description"]];
 
 			$special_character_index = stripos($description, "^");
             if ($special_character_index !== false)
                 $description = str_replace("^", "'", $description);
 
-            $sourceSheet = $source->getActiveSheet();
             $udf_pricecode = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PRICECODE"], $source_line);
 
             $udf_paper_size_cm = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PAPER_SIZE_CM"], $source_line);
@@ -994,6 +996,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
 			########### End of Material ###############
 
+            ///echo "$source_line TIME check A: " . microtime(true) . "\r\n<br />";
+
             /*** LINE 1149 ***/
 
             #############SIZE#############
@@ -1054,13 +1058,11 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                     foreach($alternate_size_array as $i_th_alt_size)
                     {
 						$alternate_size_line = $item_source_line[$i_th_alt_size];
-                        $alternate_size = $source->getActiveSheet()
-                            ->getCellByColumnAndRow($source_dictionary["UDF_IMAGE_SIZE_IN"], $alternate_size_line)->getValue();
+                        $alternate_size = $sourceSheet_arr[$alternate_size_line][$source_dictionary["UDF_IMAGE_SIZE_IN"]];
 
                         if (empty($alternate_size))
                         {
-                            $alternate_size = $source->getActiveSheet()
-                                ->getCellByColumnAndRow($source_dictionary["UDF_PAPER_SIZE_IN"], $alternate_size_line)->getValue();
+                            $alternate_size = $sourceSheet_arr[$alternate_size_line][$source_dictionary["UDF_PAPER_SIZE_IN"]];
                         }
 
 						# Alternate size parameters: to be passed later in a dedicated function
@@ -1072,8 +1074,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 						$poster_size = $this->compute_poster_size($image_size_width, $image_size_length);
 						$poster_size_ui = $this->compute_poster_size_ui($image_size_width, $image_size_length);
 						
-                        $suggested_retail_price = $source->getActiveSheet()
-                                ->getCellByColumnAndRow($source_dictionary["SuggestedRetailPrice"], $alternate_size_line)->getValue();
+                        $suggested_retail_price = $sourceSheet_arr[$alternate_size_line][$source_dictionary["SuggestedRetailPrice"]];
 
 						$size_category = strtolower($this->compute_poster_size_category($poster_size_ui));
 
@@ -1100,6 +1101,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
             /*** LINE 1246 ***/
 
+            ///echo "$source_line TIME check B: " . microtime(true) . "\r\n<br />";
 
             ########## IF UDF_PHOTOPAPER == Y ####################
             if ($udf_photopaper == "Y")
@@ -1110,16 +1112,15 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 					$custom_size_ui_to_skip = 0;
 					$min_delta = 1000;
 
+                    ///echo "$source_line TIME check B.1: " . microtime(true) . "\r\n<br />";
                     # First pass: scan all the available UI sizes
                     for ($i = 2; $i <= $retail_photo_paper->getHighestRow(); $i++)
                     {
-                        $retail_ratio_dec = floatval($retail_photo_paper
-                                ->getCellByColumnAndRow($retail_photo_paper_dictionary["Decimal Ratio"], $i)->getValue());
+                        $retail_ratio_dec = floatval($retail_photo_paper_arr[$retail_photo_paper_dictionary["Decimal Ratio"]]);
 
                         if ($udf_ratio_dec == $retail_ratio_dec)
                         {
-                            $size_paper_ui = intval($retail_photo_paper
-                                ->getCellByColumnAndRow($retail_photo_paper_dictionary["UI"], $i)->getValue());
+                            $size_paper_ui = intval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["UI"]]);
 
 							$delta = $poster_size_ui - $size_paper_ui;
 							$delta = abs($delta);
@@ -1131,21 +1132,20 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                             }
                         }
                     }
+                    ///echo "$source_line TIME check B.2: " . microtime(true) . "\r\n<br />";
 
                     # Master Photo Paper Sheet
-                    for ($i = 2; $i <= $retail_photo_paper->getHighestRow(); $i++)
+                    $maxRow = $retail_photo_paper->getHighestRow();
+                    for ($i = 2; $i <= $maxRow; $i++)
                     {
-                        $retail_ratio_dec = floatval($retail_photo_paper
-                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Decimal Ratio"], $i)->getValue());
-                        $size_photopaper_ui = intval($retail_photo_paper
-                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["UI"], $i)->getValue());
-                        $image_source = $retail_photo_paper
-                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Image Source"], $i)->getValue();
+                        $retail_ratio_dec = floatval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Decimal Ratio"]]);
+                        //$retail_ratio_dec = (float)($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Decimal Ratio"]]);
+                        //continue;
+                        $size_photopaper_ui = intval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["UI"]]);
+                        $image_source = $retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Image Source"]];
 
-                        $image_length = floatval($retail_photo_paper
-                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Length"], $i)->getValue());
-                        $image_width = floatval($retail_photo_paper
-                            ->getCellByColumnAndRow($retail_photo_paper_dictionary["Width"], $i)->getValue());
+                        $image_length = floatval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Length"]]);
+                        $image_width = floatval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Width"]]);
 
 						$short_side = 0;
 						if ($image_length < $image_width)
@@ -1158,10 +1158,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                         if ($udf_ratio_dec == $retail_ratio_dec && $size_photopaper_ui != $custom_size_ui_to_skip && $udf_imsource == $image_source && (empty($udf_maxsfin) || $short_side <= $udf_maxsfin))
                         {
 							#retail_ratio_dec = "#{$retail_photo_paper.cell(i, $retail_photo_paper_dictionary["Decimal Ratio"])}"
-                            //$retail_ratio_dec = $retail_photo_paper
-                            //    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Decimal Ratio"], $i)->getValue();
-                            $size_name = $retail_photo_paper
-                                ->getCellByColumnAndRow($retail_photo_paper_dictionary["Size Description"], $i)->getValue();
+                            //$retail_ratio_dec = $retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Decimal Ratio"]];
+                            $size_name = $retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Size Description"]];
 
 							$allowed_size = "false";
 							
@@ -1176,12 +1174,9 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 							# If the size is allowed, then create the corresponding option
                             if ($allowed_size == "true")
                             {
-                                $size_price = $retail_photo_paper
-                                    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Rolled Paper - Estimated Retail"], $i)->getValue();
-                                $size_photopaper_length = intval($retail_photo_paper
-                                    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Length"], $i)->getValue());
-                                $size_photopaper_width = intval($retail_photo_paper
-                                    ->getCellByColumnAndRow($retail_photo_paper_dictionary["Width"], $i)->getValue());
+                                $size_price = $retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Rolled Paper - Estimated Retail"]];
+                                $size_photopaper_length = intval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Length"]]);
+                                $size_photopaper_width = intval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Width"]]);
 
 								$orientation = strtolower($udf_orientation);
                                 if ($orientation == "landscape")
@@ -1229,12 +1224,14 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                             }
                         }
                     }
+                    ///echo "$source_line TIME check B.3: " . microtime(true) . "\r\n<br />";
                 }
             }
 
 			########## end IF UDF_PHOTOPAPER == Y ####################
 
             /*** LINE 1367 ***/
+            ///echo "$source_line TIME check C: " . microtime(true) . "\r\n<br />";
 
             ########## IF UDF_CANVAS == Y ####################
             if ($udf_canvas == "Y")
@@ -1242,15 +1239,11 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 # Master Canvas Sheet
                 for ($i = 2; $i <= $retail_canvas->getHighestRow(); $i++)
                 { 
-                    $retail_ratio_dec = floatval($retail_canvas
-                        ->getCellByColumnAndRow($retail_canvas_dictionary["Decimal Ratio"], $i)->getValue());
-                    $image_source = $retail_photo_paper
-                        ->getCellByColumnAndRow($retail_photo_paper_dictionary["Image Source"], $i)->getValue();
+                    $retail_ratio_dec = floatval($retail_canvas_arr[$i][$retail_canvas_dictionary["Decimal Ratio"]]);
+                    $image_source = $retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Image Source"]];
 					
-                    $size_canvas_length_1 = intval($retail_canvas
-                        ->getCellByColumnAndRow($retail_canvas_dictionary["WH_Length"], $i)->getValue());
-                    $size_canvas_width_1 = intval($retail_canvas
-                        ->getCellByColumnAndRow($retail_canvas_dictionary["WH_Width"], $i)->getValue());
+                    $size_canvas_length_1 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["WH_Length"]]);
+                    $size_canvas_width_1 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["WH_Width"]]);
 
 					$short_side = 0;
 					if ($size_canvas_length_1 < $size_canvas_width_1)
@@ -1263,18 +1256,13 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 					# Check for available sizes and border treatments prices
                     if ($udf_ratio_dec == $retail_ratio_dec && $udf_imsource == $image_source && (empty($udf_maxsfin) || $short_side <= $udf_maxsfin))
                     {
-                        $size_name = $retail_canvas
-                            ->getCellByColumnAndRow($retail_canvas_dictionary["Size Description"], $i)->getValue();
+                        $size_name = $retail_canvas_arr[$i][$retail_canvas_dictionary["Size Description"]];
 
-                        $size_canvas_length_2 = intval($retail_canvas
-                            ->getCellByColumnAndRow($retail_canvas_dictionary["BL_Length"], $i)->getValue());
-                        $size_canvas_width_2 = intval($retail_canvas
-                            ->getCellByColumnAndRow($retail_canvas_dictionary["BL_Width"], $i)->getValue());
+                        $size_canvas_length_2 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["BL_Length"]]);
+                        $size_canvas_width_2 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["BL_Width"]]);
 						
-                        $size_canvas_length_3 = intval($retail_canvas
-                            ->getCellByColumnAndRow($retail_canvas_dictionary["MR_Length"], $i)->getValue());
-                        $size_canvas_width_3 = intval($retail_canvas
-                            ->getCellByColumnAndRow($retail_canvas_dictionary["MR_Width"], $i)->getValue());
+                        $size_canvas_length_3 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["MR_Length"]]);
+                        $size_canvas_width_3 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["MR_Width"]]);
 
 						$allowed_size = "false";
 							
@@ -1289,19 +1277,13 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 						# If the size is allowed, then create the corresponding option
                         if ($allowed_size == "true")
                         {
-                            $size_price_treatment_1 = $retail_canvas
-                                ->getCellByColumnAndRow($retail_canvas_dictionary["Rolled Canvas White Border -  Estimated Retail"], $i)->getValue();
-                            $size_price_treatment_2 = $retail_canvas
-                                ->getCellByColumnAndRow($retail_canvas_dictionary['Rolled Canvas 2" Black Border - Estimated Retail'], $i)->getValue();
-                            $size_price_treatment_3 = $retail_canvas
-                                ->getCellByColumnAndRow($retail_canvas_dictionary['Rolled Canvas 2" Mirror Border -  Estimated Retail'], $i)->getValue();
+                            $size_price_treatment_1 = $retail_canvas_arr[$i][$retail_canvas_dictionary["Rolled Canvas White Border -  Estimated Retail"]];
+                            $size_price_treatment_2 = $retail_canvas_arr[$i][$retail_canvas_dictionary['Rolled Canvas 2" Black Border - Estimated Retail']];
+                            $size_price_treatment_3 = $retail_canvas_arr[$i][$retail_canvas_dictionary['Rolled Canvas 2" Mirror Border -  Estimated Retail']];
 
-                            $size_canvas_ui_1 = intval($retail_canvas
-                                ->getCellByColumnAndRow($retail_canvas_dictionary["WH_UI"], $i)->getValue());
-                            $size_canvas_ui_2 = intval($retail_canvas
-                                ->getCellByColumnAndRow($retail_canvas_dictionary["BL_UI"], $i)->getValue());
-                            $size_canvas_ui_3 = intval($retail_canvas
-                                ->getCellByColumnAndRow($retail_canvas_dictionary["MR_UI"], $i)->getValue());
+                            $size_canvas_ui_1 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["WH_UI"]]);
+                            $size_canvas_ui_2 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["BL_UI"]]);
+                            $size_canvas_ui_3 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["MR_UI"]]);
 
 							$orientation = strtolower($udf_orientation);
                             if ($orientation == "landscape")
@@ -1686,6 +1668,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         }
         /*** END MAIN PARALLEL WRITE FOR ***/
 
+        echo "END TIME: " . microtime(true) . "\r\n<br />";
+
         print_r($importItems[array_keys($importItems)[0]]);
         
     }
@@ -1799,6 +1783,22 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         }
 
         return $template_dictionary;
+    }
+
+
+    protected function parseSheetIntoArray($sheet, $dictionary)
+    {
+        $result = array();
+        for($i = 1; $i <= $sheet->getHighestRow(); $i++)
+        {
+            $result[$i] = array();
+            foreach($dictionary as $name => $col)
+            {
+                $value = $sheet->getCellByColumnAndRow($col, $i)->getValue();
+                $result[$i][$col] = $value;
+            }
+        }
+        return $result;
     }
 
 }
