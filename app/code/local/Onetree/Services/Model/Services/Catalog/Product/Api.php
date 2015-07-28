@@ -62,6 +62,9 @@ class Onetree_Services_Model_Services_Catalog_Product_Api extends GoDataFeed_Ser
             $baseUrl = Mage::getModel('core/store')->load($store)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
             $imageBaseURL = Mage::getModel('core/store')->load($store)->getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA)."catalog/product";
         }
+        //Add helper
+        $helperservice = Mage::helper('onetree_services');
+        $helpImg = Mage::helper('infortis/image');
 
         $resultItems = array();
 
@@ -124,9 +127,8 @@ class Onetree_Services_Model_Services_Catalog_Product_Api extends GoDataFeed_Ser
 
                 // PRODUCT PRICE SCRUBBING
                 if(in_array('price', $attributes)) {
-                    $helperservice = Mage::helper('onetree_services');
-                    $productName = $helperservice->getBasePrice($productToRetrieve);
-                    $resultItem['price'] = $this->scrubData($productName);
+                    $productPrice = $helperservice->getBasePrice($productToRetrieve);
+                    $resultItem['price'] = $this->scrubData($productPrice);
                 }
 
                 // PRODUCT NAME SCRUBBING
@@ -280,11 +282,11 @@ class Onetree_Services_Model_Services_Catalog_Product_Api extends GoDataFeed_Ser
                     }
 
                     //if($absoluteImageUrlRequested && !empty($productImage) && $productImage != $noSelectionValue) {
-
-                    if(true){
+                    $urlimage = $helpImg->getImg($productToRetrieve, 500, 500, 'small_image',null,true);
+                    $exist = $helpImg->file_exists_remote($urlimage);
+                    if( $exist ){
                         $responseField = $absoluteImageUrlConfig[1];
-                        $helpImg = Mage::helper('infortis/image');
-                        $resultItem[$responseField] = $helpImg->getImg($productToRetrieve, $imgWidth, $imgHeight, 'small_image',null,true);
+                        $resultItem[$responseField] = $urlimage;
                     }
                 }
 

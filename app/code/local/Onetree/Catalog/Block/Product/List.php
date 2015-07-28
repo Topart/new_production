@@ -55,28 +55,4 @@ class Onetree_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_List
         return $this->__("from") . ' ' . $cheapestPrice;
     }
 
-    public function getPriceBase($product) {
-        $loadProductOptionCollection = $this->_getProductOptionsCollection();
-        $option = $loadProductOptionCollection->getItemByColumnValue('product_id', $product->getId());
-        $cheapestPrice = $this->getPriceHtml($product, true);
-
-        if (!is_null($option)) {
-            $optionValues = $option->getValues();
-            $aPrices = array();
-
-            foreach ($optionValues as $value) {
-                if ($value->getPrice() > 0) {
-                    $aPrices[] = $value->getPrice();
-                }
-            }
-
-            if (count($aPrices)) {
-                sort($aPrices);
-                $cheapestPrice = $this->helper('core')->formatCurrency($aPrices[0]);
-            }
-        }
-
-        return $cheapestPrice;
-    }
-
 }
