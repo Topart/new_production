@@ -3,6 +3,22 @@
 /** Include PHPExcel_IOFactory */
 require_once dirname(__FILE__) . '/../ext/PHPExcel-1.8/Classes/PHPExcel/IOFactory.php';
 
+/** Include Magmi **/
+require_once (dirname(__FILE__) . "/../ext/magmi-git-master/magmi/inc/magmi_defs.php");
+require_once (dirname(__FILE__) . "/../ext/magmi-git-master/magmi/integration/inc/magmi_datapump.php");
+
+/**
+ * Define a logger class that will receive all magmi logs *
+ */
+class MagmiLogger
+{
+    public function log($data, $type)
+    {
+        echo "$type:$data\n";
+    }
+}
+
+
 class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstract
 {
     
@@ -154,7 +170,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             $last_retail_framing_row = $retail_framing->getHighestRow();
             for($k = 2; $k <= $last_retail_framing_row; $k++)
             {
-                for($col = 3; $col <= 6; $col++)
+                //TODO: these columns are hard coded - cols C - F
+                for($col = 2; $col <= 5; $col++)
                 {
                     $cell_content = $retail_framing->getCellByColumnAndRow($col, 1)->getValue();
 
@@ -195,13 +212,11 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
         while ($temp_i <= $temp_x)
         {
-            $item_code = $sourceSheet
-                ->getCellByColumnAndRow($source_dictionary["Item Code"], $temp_i)->getValue();
+            $item_code = $sourceSheet_arr[$temp_i][$source_dictionary["Item Code"]];
 
             for($i = 1; $i <= 4; $i++)
             {
-                $a = str_replace(" ", "", $sourceSheet
-                    ->getCellByColumnAndRow($source_dictionary["UDF_ALTS$i"], $temp_i)->getValue());
+                $a = str_replace(" ", "", $sourceSheet_arr[$temp_i][$source_dictionary["UDF_ALTS$i"]]);
                 if (!empty($a))
                     $global_alternate_size_array[] = $a;
             }
@@ -252,7 +267,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         /*** BEGIN MAIN PARALLEL WRITE FOR ***/
         //TODO: TEMPORARILY ONLY DO SUBSET
         ///echo "ORIGINAL LAST SOURCE ROW:" . $last_source_row . "\r\n<br />";
-        //$last_source_row = 20;
+        $last_source_row = 6;
         while($source_line <= $last_source_row)
         {
             ///echo "$source_line TIME: " . microtime(true) . "\r\n<br />";
@@ -491,6 +506,9 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
             for ($i = 0; $i < count($category_array); $i++)
             {
+                if (empty($category_array[$i]))
+                    continue;
+
                 if (!isset($importItems[$destination_line + $collections_count]))
                     $importItems[$destination_line + $collections_count] = array();
 
@@ -547,6 +565,9 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
             for ($i = 0; $i < count($collections_array); $i++)
             {
+                if (empty($collections_array[$i]))
+                    continue;
+
                 if (!isset($importItems[$destination_line + $collections_count]))
                     $importItems[$destination_line + $collections_count] = array();
 
@@ -1668,10 +1689,177 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         }
         /*** END MAIN PARALLEL WRITE FOR ***/
 
-        echo "END TIME: " . microtime(true) . "\r\n<br />";
+        echo "END INITIAL PROCESS TIME: " . microtime(true) . "\r\n<br />";
 
-        print_r($importItems[array_keys($importItems)[0]]);
-        
+        /*
+        for ($i=0; $i <= 100; $i++)
+        {
+            print_r($importItems[array_keys($importItems)[$i]]);
+        }
+         */
+        //
+
+        /*** POST PROCESS INTO MAGMI FORMAT ***/
+        echo "START POST PROCESS TIME: " . microtime(true) . "\r\n<br />";
+        $magmiData = array();
+        $currentSku = null;
+        $currentSkuRow = array();
+
+        $currentOptionTitle = null;
+        $currentOptionColumn = null;
+        foreach ($importItems as $line => $row)
+        {
+            //echo "LINE $line<br/>\r\n";
+            if (isset($row['sku']) && !empty($row['sku']))
+            {
+                $currentSku = $row['sku'];
+                //echo "NEW SKU: $currentSku<br/>\r\n";
+                $currentSkuRow = $row;
+                $magmiData[$currentSku] = $row;
+
+                //categories
+                $magmiData[$currentSku]['categories'] = '';
+                if (isset($row['_root_category']) && isset($row['_category']))
+                {
+                    $magmiData[$currentSku]['categories'] .= $row['_root_category'] . '/' . $row['_category'];
+                }
+
+                //custom options
+                $currentOptionTitle = null;
+                $currentOptionColumn = null;
+                if (isset($row['_custom_option_type']) && !empty($row['_custom_option_type']) &&
+                    isset($row['_custom_option_title']) && !empty($row['_custom_option_title']))
+                {
+                    $currentOptionTitle = $row['_custom_option_title'];
+                    $currentOptionColumn = $row['_custom_option_title'] . ':' . $row['_custom_option_type'];
+                    if (isset($row['_custom_option_is_required']))
+                        $currentOptionColumn .= ':' . $row['_custom_option_is_required'];
+                    if (isset($row['_custom_option_sort_order']))
+                        $currentOptionColumn .= ':' . $row['_custom_option_sort_order'];
+                    $magmiData[$currentSku][$currentOptionColumn] = '';
+
+                    //record the first row
+                    if (isset($row['_custom_option_row_title']) && !empty($row['_custom_option_row_title']))
+                    {
+                        $magmiData[$currentSku][$currentOptionColumn] .= $row['_custom_option_row_title'] . ':fixed'; //HACK hardcoded fixed
+
+                        if (isset($row['_custom_option_row_price']))
+                            $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_price'];
+                        else
+                            $magmiData[$currentSku][$currentOptionColumn] .= ':0.00';
+
+                        if (isset($row['_custom_option_row_sku']) && !empty($row['_custom_option_row_sku']))
+                            $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_sku'];
+
+                        if (isset($row['_custom_option_row_sort']))
+                            $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_sort'];
+                    }
+                }
+
+            }
+            else
+            {
+                //categories
+                if (isset($row['_root_category']) && isset($row['_category']))
+                {
+                    if (!empty($magmiData[$currentSku]['categories']))
+                        $magmiData[$currentSku]['categories'] .= ';;';
+                    $magmiData[$currentSku]['categories'] .= $row['_root_category'] . '/' . $row['_category'];
+                }
+
+                //handle new options
+                if (isset($row['_custom_option_type']) && !empty($row['_custom_option_type']) &&
+                    isset($row['_custom_option_title']) && !empty($row['_custom_option_title']))
+                {
+                    $currentOptionTitle = $row['_custom_option_title'];
+                    $currentOptionColumn = $row['_custom_option_title'] . ':' . $row['_custom_option_type'];
+                    if (isset($row['_custom_option_is_required']))
+                        $currentOptionColumn .= ':' . $row['_custom_option_is_required'];
+                    if (isset($row['_custom_option_sort_order']))
+                        $currentOptionColumn .= ':' . $row['_custom_option_sort_order'];                          
+                    $magmiData[$currentSku][$currentOptionColumn] = '';
+                }
+
+                //custom option row
+                if (!empty($currentOptionColumn) && isset($row['_custom_option_row_title']) && !empty($row['_custom_option_row_title']))
+                {
+                    if (!empty($magmiData[$currentSku][$currentOptionColumn]))
+                        $magmiData[$currentSku][$currentOptionColumn] .= "|";
+
+                    $magmiData[$currentSku][$currentOptionColumn] .= $row['_custom_option_row_title'] . ':fixed'; //HACK hardcoded fixed
+
+                    if (isset($row['_custom_option_row_price']))
+                        $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_price'];
+                    else
+                        $magmiData[$currentSku][$currentOptionColumn] .= ':0.00';
+
+                    if (isset($row['_custom_option_row_sku']) && !empty($row['_custom_option_row_sku']))
+                        $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_sku'];
+
+                    if (isset($row['_custom_option_row_sort']) && !empty($row['_custom_option_row_sort']))
+                        $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_sort'];
+                }         
+                
+            }
+
+            //clear out the unparsed option data from magmi
+            unset($magmiData[$currentSku]['_custom_option_type']);
+            unset($magmiData[$currentSku]['_custom_option_title']);
+            unset($magmiData[$currentSku]['_custom_option_is_required']);
+            unset($magmiData[$currentSku]['_custom_option_max_characters']);
+            unset($magmiData[$currentSku]['_custom_option_sort_order']);
+
+            unset($magmiData[$currentSku]['_custom_option_row_title']);
+            unset($magmiData[$currentSku]['_custom_option_row_price']);
+            unset($magmiData[$currentSku]['_custom_option_row_sku']);
+            unset($magmiData[$currentSku]['_custom_option_row_sort']);
+
+            unset($magmiData[$currentSku]['_category']);
+            unset($magmiData[$currentSku]['_root_category']);
+        }
+
+        echo "END POST PROCESS TIME: " . microtime(true) . "\r\n<br />";
+
+        //print_r($magmiData);
+        //
+
+
+        //do the actual import
+        $this->magmiImport($magmiData);
+    }
+
+    protected function magmiImport($magmiData)
+    {
+        /**
+         * create a Product import Datapump using Magmi_DatapumpFactory
+         */
+        $dp = Magmi_DataPumpFactory::getDataPumpInstance("productimport");
+        /**
+         * Start import session
+         * with :
+         * - profile : test_ptj
+         * - mode : create
+         * - logger : an instance of the class defined above
+         */
+
+        /**
+         * FOR THE SAMPLE TO WORK CORRECTLY , YOU HAVE TO DEFINE A test_ptj profile with :
+         * UPSELL/CROSS SELL, ITEM RELATER, CATEGORIES IMPORTER/CREATOR selected
+         * ON THE FLY INDEXER IS RECOMMENDED (better endimport performance)
+         * Reindexer needed also to have products show up on front : select all but "catalog_category_product" & "url_rewrite" (both are handled by on the fly indexer)
+         */
+        $dp->beginImportSession("TopArt-Products", "create", new MagmiLogger());
+
+        foreach($magmiData as $sku => $item)
+        {
+            //debug append test to item sku
+            $item['sku'] .= '-TEST-MAGMI';
+
+            $dp->ingest($item);
+        }
+
+        /* end import session, will run post import plugins */
+        $dp->endImportSession();
     }
 
     # Example image size = "23 5/8 x 47 1/4"
