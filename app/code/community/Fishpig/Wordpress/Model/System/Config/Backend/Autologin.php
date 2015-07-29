@@ -50,7 +50,13 @@ class Fishpig_Wordpress_Model_System_Config_Backend_Autologin extends Mage_Admin
     protected function _afterLoad()
     {
         if ((string)$this->getValue()) {
+        	$originalValue = $this->getValue();
+        	
         	parent::_afterLoad();
+        	
+        	if ($this->_isValidString($originalValue) && !$this->_isValidString($this->getValue())) {
+	        	$this->setValue($originalValue);
+        	}
         }
         
         return $this;
@@ -109,5 +115,18 @@ class Fishpig_Wordpress_Model_System_Config_Backend_Autologin extends Mage_Admin
 			->setValue('')
 			->afterLoad()
 			->getValue();
+	}
+	
+	/**
+	 * Check whether $s is a valid string
+	 * Some Magento instances don't encrypt the string so when we decrypt
+	 * it breaks the string
+	 *
+	 * @param string $s
+	 * @return bool
+	 */
+	protected function _isValidString($s)
+	{
+		return (bool)preg_match('//u', $s);
 	}
 }

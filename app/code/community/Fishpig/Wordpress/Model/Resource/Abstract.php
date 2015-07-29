@@ -7,8 +7,6 @@
  * @info			http://fishpig.co.uk/wordpress-integration.html
  */
 
-Mage::helper('wordpress')->applyLegacyHacks();
-
 abstract class Fishpig_Wordpress_Model_Resource_Abstract extends Mage_Core_Model_Resource_Db_Abstract
 {
 	/**
@@ -18,7 +16,7 @@ abstract class Fishpig_Wordpress_Model_Resource_Abstract extends Mage_Core_Model
 	 */
 	protected function _getReadAdapter()
 	{
-		return Mage::helper('wordpress/database')->getReadAdapter();
+		return Mage::helper('wordpress/app')->getDbConnection();
 	}
 
 	/**
@@ -28,7 +26,7 @@ abstract class Fishpig_Wordpress_Model_Resource_Abstract extends Mage_Core_Model
 	 */	
 	protected function _getWriteAdapter()
 	{
-		return Mage::helper('wordpress/database')->getWriteAdapter();
+		return Mage::helper('wordpress/app')->getDbConnection();
 	}
 	
 	/**

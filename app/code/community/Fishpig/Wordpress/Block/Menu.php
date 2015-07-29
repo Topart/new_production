@@ -66,7 +66,7 @@ class Fishpig_Wordpress_Block_Menu extends Mage_Page_Block_Html_Topmenu
 		}
 		
 		return is_null($this->getIncludeWrapper())
-			? true
+			? false
 			: $this->getIncludeWrapper();
 	}
 
@@ -146,4 +146,16 @@ class Fishpig_Wordpress_Block_Menu extends Mage_Page_Block_Html_Topmenu
     	
     	return '';
     }
+
+    /**
+     * Escape the HTML. Allows for legacy
+     *
+     * @param string $data
+     * @param array $allowedTags = null
+     * @return string
+     */
+	public function escapeHtml($data, $allowedTags = null)
+	{
+		return Mage::helper('wordpress')->escapeHtml($data, $allowedTags);
+	}
 }
