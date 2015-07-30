@@ -267,7 +267,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         /*** BEGIN MAIN PARALLEL WRITE FOR ***/
         //TODO: TEMPORARILY ONLY DO SUBSET
         ///echo "ORIGINAL LAST SOURCE ROW:" . $last_source_row . "\r\n<br />";
-        $last_source_row = 6;
+        //$last_source_row = 10;
         while($source_line <= $last_source_row)
         {
             ///echo "$source_line TIME: " . microtime(true) . "\r\n<br />";
@@ -486,7 +486,9 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             $importItems[$destination_line] = array(
                 'sku' => $item_code,
                 '_attribute_set' => "Topart - Products",
-                '_type' => "simple"
+                '_type' => "simple",
+                //for Magmi:
+                'attribute_set' => "Topart - Products",
             );
 
             $collections_count = 0;
@@ -1721,7 +1723,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 $magmiData[$currentSku]['categories'] = '';
                 if (isset($row['_root_category']) && isset($row['_category']))
                 {
-                    $magmiData[$currentSku]['categories'] .= $row['_root_category'] . '/' . $row['_category'];
+                    //$magmiData[$currentSku]['categories'] .= $row['_root_category'] . '/' . $row['_category'];
+                    $magmiData[$currentSku]['categories'] .= $row['_category'];
                 }
 
                 //custom options
@@ -1764,7 +1767,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 {
                     if (!empty($magmiData[$currentSku]['categories']))
                         $magmiData[$currentSku]['categories'] .= ';;';
-                    $magmiData[$currentSku]['categories'] .= $row['_root_category'] . '/' . $row['_category'];
+                    //$magmiData[$currentSku]['categories'] .= $row['_root_category'] . '/' . $row['_category'];
+                    $magmiData[$currentSku]['categories'] .= $row['_category'];
                 }
 
                 //handle new options
@@ -1825,7 +1829,9 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
 
         //do the actual import
+        echo "START IMPORT TIME: " . microtime(true) . "\r\n<br />";
         $this->magmiImport($magmiData);
+        echo "END IMPORT TIME: " . microtime(true) . "\r\n<br />";
     }
 
     protected function magmiImport($magmiData)
