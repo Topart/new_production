@@ -387,6 +387,20 @@
     .user-menu.clearer.v-grid.grid12-4 {
         right: 23px;
     }
+    #s3_file_input {
+        left: 0!important;
+        width: 100px !important;
+
+    }
+    .custom-upload-button {
+        width: 250px;
+    }
+    .create-art-list-container > ul > li {
+        width: 80%!important;
+    }
+    .create-art-list-container .create-art-list > ul > li.middle-li {
+        margin: auto !important;
+    }
 }
 
 @media only screen and (max-width: 320px) {
@@ -402,7 +416,6 @@
 }
 /* End  Header and footer
   ~~~~~~~~~~~~~~~~~~~~~~~*/
-
 
 /* Category view
 ~~~~~~~~~~~~~~~~*/
@@ -462,3 +475,41 @@
 /* End product
 ~~~~~~~~~~~~~~*/
 
+/*Category view
+~~~~~~~~~~~~~~~*/
+
+.create-art-content{
+    float:left;
+}
+.create-art-list-container > ul > li.middle-li {
+    margin: 0 4% 2em !important;
+}
+ul.create-art-list li:nth-child(3) {
+    width: 31.4%;
+}
+
+@media only screen and (max-width: 375px) {
+    #s3_file_input {
+        left: 0!important;
+        width: 100px !important;
+
+    }
+    .custom-upload-button {
+        width: 100%;
+    }
+    .create-art-list-container > ul > li {
+        width: 80%!important;
+    }
+    .create-art-list-container .create-art-list > ul > li.middle-li {
+        margin: auto !important;
+    }
+    .create-art-list-container > ul > li.middle-li {
+        margin: auto!important;
+    }
+    .create-art-list-container .category-collections .category-isotope img.image-isotope{
+        width: 580px!important;
+        height: 250px!important;
+    }
+}
+/* End Category view
+~~~~~~~~~~~~~~~~~~~*/

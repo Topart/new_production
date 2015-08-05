@@ -5,6 +5,216 @@
 # URL:  http://fishpig.co.uk/magento/wordpress-integration/
 ##
 
+24/06/2015 - 4.0.0.24
+- Minor bug fixes for Root compatibility
+
+19/06/2015 - 4.0.0.23
+- Fixed WordPress menu issue
+
+16/06/2015 - 4.0.0.18
+- Fixed issue with category and tag prefixes
+
+15/06/2015 - 4.0.0.17
+- Added automatic setting of custom templates for post archive pages. Simply create a file at wordpress/post/list/renderer/%postyype%.phtml and it will be used automatically.
+
+15/06/2015 - 4.0.0.16
+- Minor bug fixes
+
+13/06/2015 - 4.0.0.10
+- Added support for the Post Types Order plugin
+
+12/06/2015 - 4.0.0.9
+- Fixed issue that broke Multisite
+
+12/06/2015 - 4.0.0.8
+- Fixed URL's for 'page' post type
+
+12/06/2015 - 4.0.0.7
+- Fixed URL's for 'post' post type
+
+11/06/2015 - 4.0.0.6
+ - Added improvements to post types that have hierarchies
+ 
+11/06/2015 - 4.0.0.4
+- Fixed issue when using default permalinks
+
+10/06/2015 - 4.0.0.3
+- Fixed issue with sub-categories not displaying in sidebar widget
+- Fixed WordPress SEO issue
+
+09/06/2015 - 4.0.0.2
+- Fixed XML sitemap generation error
+
+09/06/2015 - 4.0.0.0
+- Game on! Big changes!
+- The Page model has been removed and is now served via the Post model.
+- The Post_Category and Post_Tag models have been removed and can be accessed via the Term model
+- For more information, please see http://fishpig.co.uk/magento/wordpress-integration/upgrading-to-version-4/
+
+26/05/2015 - 3.1.1.30
+- Added social media share buttons to extension
+
+21/05/2015 - 3.1.1.29
+- Added Lightbox functionality
+
+20/05/2015 - 3.1.1.28
+- Fixed issue with XML sitemaps on multi-store
+
+13/04/2015 - 3.1.1.27
+- Added wordpress_page_parent_{{ID}} layout handles for pages
+
+09/03/2015 - 3.1.1.26
+- Stopped XML sitemap being generated when blog disabled for sitemap scope
+
+06/03/2015 - 3.1.1.25
+- Added support for Custom Sidebars plugin
+
+02/03/2015 - 3.1.1.24
+- Added support for the 'List Custom Taxonomy' WordPress plugin/widget
+
+24/02/2015 - 3.1.1.23
+- Fixed issue that broke permalink strings with trailing static strings (eg. .html)
+
+24/02/2015 - 3.1.1.22
+- Fixed update checking system and added config option to disable this
+
+15/01/2015 - 3.1.1.21
+- Added redirect for broken search URLs
+
+04/10/2014 - 3.1.1.18
+- Included a fix for Root when enabling the 'Replace Homepage' option
+
+19/09/2014 - 3.1.1.17
+- Allow tag URL prefix with a '/' character
+- Allow removing of category base from inside WordPress SEO
+
+18/09/2014 - 3.1.1.16
+- Added HTTPS URLs for Gravatar images when isCurrentlySecure() returns true
+- Added Pages to the XML sitemap
+
+24/08/2014 - 3.1.1.15
+- Added attribute, value, order, dir and limit to the product shortcode. This allows you to display products based on an attribute filter
+
+19/08/2014 - 3.1.1.14
+- Added redirect from non-canonical post URL to canonical when using categories
+
+14/08/2014 - 3.1.1.13
+- Added support for the Category Images plugin (http://wordpress.org/plugins/categories-images/)
+
+10/08/2014 - 3.1.1.12
+- Added Turkish (tr_TR) translation file
+
+06/08/2014 - 3.1.1.11
+- Added the getPostFormat() method to posts
+
+05/08/2014 - 3.1.1.10
+- Bug fix for duplicate 'Home' breadcrumb item
+
+30/07/2014 - 3.1.1.9
+- Fix for XML sitemap
+
+18/07/2014 - 3.1.1.8
+- Use homepage template option when WP Page set as blog homepage
+- Remove 'Blog' breadcrumb for Pages when using Root
+
+12/07/2014 - 3.1.1.7
+- Fixed pager links when refreshing Bolt cache
+
+10/07/2014 - 3.1.1.6
+- Improved disabling per store/website
+
+01/07/2014 - 3.1.1.5
+- Use homepage template for custom page set as homepage
+
+29/06/2014 - 3.1.1.4
+- Fixed issue when performing a search with Legacy installed.
+- Added addPostTypeFilter('*')
+
+26/06/2014 - 3.1.1.3
+- Added the abstract widget template
+
+02/06/2014 - 3.1.1.1
+- Improved auto login for small percentage of users who it did not work for
+
+02/06/2014 - 3.1.1.0
+- Added XML Sitemap back to the extension. Links are now added to Magento sitemap automatically
+
+31/05/2014 - 3.1.0.20
+- Improved translations
+
+31/05/2014 - 3.1.0.19
+- Fixed Enabled/Disable option
+
+29/05/2014 - 3.1.0.17
+- Added custom post types to associations system
+
+29/05/2014 - 3.1.0.16
+- Cleaned SQL installation files
+
+27/05/2014 - 3.1.0.15
+- Fixed category items in menu
+
+27/05/2014 - 3.1.0.14
+- Added support for 'Image Widget' plugin
+
+26/05/2014 - 3.1.0.11
+- Trimmed locale translation files
+
+21/05/2014 - 3.1.0.10
+- Fixed previous/next post links to point to correct post type
+
+18/05/2014 - 3.1.0.9
+- Updated WordPressSEO add-on to support latest version of WordPress SEO plugin.
+
+15/05/2014 - 3.1.0.8
+- Fixed bug that stopped custom open graph image from displaying for post
+
+12/05/2014 - 3.1.0.7
+- Breadcrumb and title fixes
+
+23/04/2014 - 3.1.0.6
+- Added updated add-on versions
+
+20/04/2014 - 3.1.0.5
+- Added G+ button to AddThis
+
+18/04/2014 - 3.1.0.3
+- Small fix for categories
+
+15/04/2014 - 3.1.0.0
+- Removed support for older versions of Magento
+
+14/04/2014 - 3.0.60.0
+- Fixed menu sidebar widget
+- Improved OG Tag support
+- Fixed ACL values for auto-login
+
+12/04/2014 - 3.0.56.0
+- Fix for CPT
+
+11/04/2014 - 3.0.55.0
+- Fix for Windows servers
+
+06/04/2014 - 3.0.53.0
+- Added legacy support for menu integration
+
+03/04/2014 - 3.0.51.0
+- Added fix that stops DB connection when disabled via config
+
+01/04/2014 - 3.0.49.0
+- Added wordpress/post_comment_abstract block
+
+26/03/2014 - 3.0.47.0
+- Added addIsViewableFilter to Post collection
+- Fixed bug in Yarpp for WordPress Multisite
+
+26/03/2014 - 3.0.46.0
+- Fixed bug that stopped private posts from displaying in recent posts widget even when logged in
+- Added the Slovenian language file
+
+26/03/2014 - 3.0.44.0
+- Fix for Customer Synchronisation
+
 23/03/2014 - 3.0.42.0
 - Fix for Chinese characters in post permalink
 

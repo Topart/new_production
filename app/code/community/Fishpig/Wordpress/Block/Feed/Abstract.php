@@ -134,7 +134,7 @@ abstract class Fishpig_Wordpress_Block_Feed_Abstract extends Fishpig_Wordpress_B
 	*/
 	public function decode($value)
 	{
-		return html_entity_decode($value, ENT_NOQUOTES, $this->getBlogCharset());
+		return html_entity_decode($value, ENT_NOQUOTES, $this->getCharset());
 	}
 	
 	/**

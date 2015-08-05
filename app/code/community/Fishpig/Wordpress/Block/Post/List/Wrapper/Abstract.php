@@ -16,14 +16,10 @@ abstract class Fishpig_Wordpress_Block_Post_List_Wrapper_Abstract extends Fishpi
 	public function getPostCollection()
 	{
 		if (!$this->hasPostCollection()  && ($collection = $this->_getPostCollection()) !== false) {
-			if (Mage::getSingleton('customer/session')->isLoggedIn() && Mage::helper('wordpress')->isAddonInstalled('CS')) {
-				$collection->addStatusFilter(array('publish', 'private'));
-			}
-			else {
-				$collection->addStatusFilter('publish');
-			}
+			$collection->addIsViewableFilter()
+				->addOrder('post_date', 'desc');
 			
-			$this->setPostCollection($collection->addOrder('post_date', 'desc'));
+			$this->setPostCollection($collection);
 			
 			$collection->setFlag('after_load_event_name', $this->_getPostCollectionEventName() . '_after_load');
 			$collection->setFlag('after_load_event_block', $this);

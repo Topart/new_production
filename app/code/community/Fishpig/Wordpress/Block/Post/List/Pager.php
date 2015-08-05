@@ -47,7 +47,7 @@ class Fishpig_Wordpress_Block_Post_List_Pager extends Mage_Page_Block_Html_Pager
 			'_current' => true,
 			'_escape' => true,
 			'_use_rewrite' => true,
-			'_query' => array(),
+			'_query' => array('___refresh' => null),
 		)), '/') . '/' . $slug;
 	}
 }

@@ -23,7 +23,11 @@
 				<?php endif; ?>
                 <!--JP: Ticket 125 - remove post data-->
                 <!--<p class="post-date when"><?php //echo stripslashes($this->__('This entry was posted on %s<span class=\"by-author\"> by %s</span>.', $post->getPostDate(), $post->getAuthor()->getDisplayName())) ?></p>-->
-
+                <div>
+                    <!-- active buttons sharethis-->
+                    <?php echo Mage::helper('wordpress/social')->getButtons($post) ?>
+                    <!-- active buttons sharethis-->
+                </div>
                 <div class="page-title post-title">
                     <h1><?php echo $this->escapeHtml($post->getPostTitle()) ?></h1>
                 </div>

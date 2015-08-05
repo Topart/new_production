@@ -67,7 +67,7 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 	{
 		if ($this->isFullyIntegrated()) {
 			if (!$this->_isCached('blog_route')) {
-				$transport = new Varien_Object(array('blog_route' => trim(strtolower($this->getConfigValue('wordpress/integration/route')), '/')));
+				$transport = new Varien_Object(array('blog_route' => trim(strtolower(Mage::getStoreConfig('wordpress/integration/route', Mage::helper('wordpress/app')->getStore()->getId())), '/')));
 			
 				Mage::dispatchEvent('wordpress_get_blog_route', array('transport' => $transport));
 			
@@ -88,7 +88,7 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 	  */
 	public function isFullyIntegrated()
 	{
-		return $this->getConfigValue('wordpress/integration/full');
+		return Mage::getStoreConfigFlag('wordpress/integration/full', Mage::helper('wordpress/app')->getStore()->getId());
 	}
 	
 	/**
@@ -100,24 +100,41 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 	 */
 	public function getWpOption($key, $default = null)
 	{
-		$cacheKey = '_wp_option_' . $key;
-		
-		if (!$this->_isCached($cacheKey)) {
-			$this->_cache($cacheKey, $default);
+		$db = $this instanceof Fishpig_Wordpress_Helper_App
+			? $this->getDbConnection()
+			: Mage::helper('wordpress/app')->getDbConnection();
 			
-			try {
-				$option = Mage::getModel('wordpress/option')->load($key, 'option_name');
-				
-				if ($option->getId() && $option->getOptionValue()) {
-					$this->_cache($cacheKey, $option->getOptionValue());
-				}
-			}
-			catch (Exception $e) {
-				$this->_cache($cacheKey, '');
-			}
+		if ($db === false) {
+			return false;
 		}
 		
-		return $this->_cached($cacheKey);
+		$cacheKey = 'wp_option_' . $key;
+		
+		if ($this->_isCached($cacheKey)) {
+			return $this->_cached($cacheKey);
+		}
+		
+		$this->_cache($cacheKey, $default);
+		
+		try {
+			$select = $db->select()
+				->from(Mage::getSingleton('core/resource')->getTableName('wordpress/option'), 'option_value')
+				->where('option_name = ?', $key)
+				->limit(1);
+
+			if ($value = $db->fetchOne($select)) {
+				$this->_cache($cacheKey, $value);
+				
+				return $value;
+			}
+
+			return $default;
+		}
+		catch (Exception $e) {
+			$this->log($e->getMessage());
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -134,28 +151,6 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 			return Mage::log($message, null, 'wordpress.log', true);
 		}
 	}
-	
-	/**
-	 * Retrieve a cached config value
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function getConfigValue($key)
-	{
-		return Mage::helper('wordpress/config')->getConfigValue($key);
-	}
-
-	/**
-	 * Retrieve a value from the config as a flag (bool)
-	 *
-	 * @param string $key
-	 * @return bool
-	 */
-	public function getConfigFlag($key)
-	{
-		return $this->getConfigValue($key) !== '0';
-	}
 
 	/**
 	 * Retrieve the default store model
@@ -165,9 +160,10 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 	public function getDefaultStore($websiteCode = null)
 	{
 		if (!$this->_isCached('default_store')) {	
-			$connection = Mage::getSingleton('core/resource')->getConnection('core_read');
+			$resource = Mage::getSingleton('core/resource');
+			$connection = $resource->getConnection('core_read');
 			$select = $connection->select()
-				->from(array('_store_table' => Mage::helper('wordpress/database')->getTableName('core/store')), 'store_id')
+				->from(array('_store_table' => $resource->getTableName('core/store')), 'store_id')
 				->where('_store_table.store_id > ?', 0)
 				->where('_store_table.code != ?', 'admin')
 				->limit(1)
@@ -175,7 +171,7 @@ class Fishpig_Wordpress_Helper_Abstract extends Mage_Core_Helper_Abstract
 			
 			if (!is_null($websiteCode)) {
 				$select->join(
-					array('_website_table' => $this->getTableName('core/website')),
+					array('_website_table' => $resource->getTableName('core/website')),
 					$connection->quoteInto('`_website_table`.`website_id`=`_store_table`.`website_id` AND `_website_table`.`code`=?', $websiteCode),
 					''
 				);
