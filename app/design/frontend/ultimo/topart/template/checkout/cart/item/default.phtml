@@ -56,12 +56,13 @@ if(count($items)>1){
                         }
                     }
                 }else{
-                    if($_formatedOptionLabel == 'Material'){
-                        if ($_formatedOptionValue['value'] != "Poster"){
-                            if($time_shipping_free == 0){
-                                $time_shipping_free = 1;
+                    if($_formatedOptionLabel == 'Size'){
+                         if (strpos($_option['value'],'Poster') == false) {
+                             if($time_shipping_free == 0){
+                                    $time_shipping_free = 1;
+                              }
                             }
-                        }
+
                     }
                 }
             }
@@ -109,10 +110,18 @@ $is_poster = false;
                 <dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
                 <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>>
                     <?php
-                    if ($_formatedOptionValue['value'] == "No Frame")
-                        $is_framed = false;
-                    if ($_formatedOptionValue['value'] == "Poster")
-                        $is_poster = true;
+                    if($_option['label'] == "Frame"){
+                        if ($_option['value'] == "No Frame"){
+                            $is_framed = false;
+                        }
+                    }
+
+                    if ($_option['label'] == "Size"){
+                        if (strpos($_option['value'],'Poster') !== false) {
+                            $is_poster = true;
+                        }
+                    }
+
                     echo $_formatedOptionValue['value'] ?>
                     <?php if (isset($_formatedOptionValue['full_view'])): ?>
                         <div class="truncated_full_value">
