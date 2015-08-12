@@ -23,15 +23,43 @@
 				<?php endif; ?>
                 <!--JP: Ticket 125 - remove post data-->
                 <!--<p class="post-date when"><?php //echo stripslashes($this->__('This entry was posted on %s<span class=\"by-author\"> by %s</span>.', $post->getPostDate(), $post->getAuthor()->getDisplayName())) ?></p>-->
-                <div>
-                    <!-- active buttons sharethis-->
-                    <?php echo Mage::helper('wordpress/social')->getButtons($post) ?>
-                    <!-- active buttons sharethis-->
-                </div>
+
                 <div class="page-title post-title">
                     <h1><?php echo $this->escapeHtml($post->getPostTitle()) ?></h1>
                 </div>
 				<?php echo $post->getPostContent() ?>
+				<div>
+					<!-- active buttons sharethis-->
+					<?php echo Mage::helper('wordpress/social')->getButtons($post) ?>
+
+					<script>
+						jQuery(document).ready(function(){
+							var checkExistTwitter = setInterval(function() {
+								if (jQuery('.st_twitter span span').length) {
+									console.log("Exists twi!");
+									jQuery('.st_twitter span span').removeClass('chicklets').addClass('icon icon-hover i-twitter-w');
+									clearInterval(checkExistTwitter);
+								}
+							}, 100);
+							var checkExistFacebook = setInterval(function() {
+								if (jQuery('.st_facebook span span').length) {
+									console.log("Exists face!");
+									jQuery('.st_facebook span span').removeClass('chicklets').addClass('icon icon-hover i-facebook-w');
+									clearInterval(checkExistFacebook);
+								}
+							}, 100);
+							var checkExistPinterest = setInterval(function() {
+								if (jQuery('.st_pinterest span span').length) {
+									console.log("Exists pin!");
+									jQuery('.st_pinterest span span').removeClass('chicklets').addClass('icon icon-hover i-pinterest-w');
+									clearInterval(checkExistPinterest);
+								}
+							}, 100);
+
+						});
+					</script>
+					<!-- active buttons sharethis-->
+				</div>
 			<?php else: ?>
 				<?php echo $this->getPasswordProtectHtml() ?>
 			<?php endif; ?>

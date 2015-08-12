@@ -412,3 +412,25 @@
 
 /* End product
 ~~~~~~~~~~~~~~*/
+
+/*social shareThis*/
+.st_facebook, .st_twitter, .st_pinterest{
+   display: inline-block;
+    width: 35px;
+}
+.st_facebook span.icon,.st_twitter span.icon, .st_pinterest span.icon{
+    background-color: #bbb;
+}
+.st_facebook span.icon:hover, .st_twitter span.icon:hover, .st_pinterest span.icon:hover {
+    background-color: #b19d68;
+}
+.stButton .facebook{
+    background-image:url("/skin/frontend/ultimo/default/images/sprite-icons-social.png")!important;
+}
+.stButton .twitter{
+    background-image:url("/skin/frontend/ultimo/default/images/sprite-icons-social.png")!important;
+}
+.stButton .pinterest{
+    background-image:url("/skin/frontend/ultimo/default/images/sprite-icons-social.png")!important;
+}
+/*social shareThis*/
