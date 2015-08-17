@@ -35,6 +35,43 @@ $isVisibleProduct = $_item->getProduct()->isVisibleInSiteVisibility();
 $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage_Catalog_Model_Product_Attribute_Source_Msrp_Type::TYPE_BEFORE_ORDER_CONFIRM);
 $sku = $_item->getProduct()->getData('sku');
 
+$time_shipping_free = 0;
+$multiple_items = false;
+$cart = Mage::getModel('checkout/cart')->getQuote();
+$items = $cart->getAllItems();
+
+if(count($items)>1){
+    $multiple_items = true;
+    foreach($items as $item_aux){
+        $options_aux = $item_aux->getProduct()->getTypeInstance(true)->getOrderOptions($item_aux->getProduct());
+        if (isset($options_aux['options'])){
+            foreach ($options_aux['options'] as $option_aux){
+                $_formatedOptionLabel = $option_aux['label'];
+                $_formatedOptionValue = $option_aux['value'];
+
+                if($_formatedOptionLabel == 'Frame'){
+                    if ($_formatedOptionValue != "No Frame"){
+                        if($time_shipping_free == 0 || $time_shipping_free == 1){
+                            $time_shipping_free = 2;
+                        }
+                    }
+                }else{
+                    if($_formatedOptionLabel == 'Material'){
+                         if (strpos($_formatedOptionValue,'Poster') == false) {
+                             if($time_shipping_free == 0){
+                                    $time_shipping_free = 1;
+                              }
+                            }
+
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+
 $is_framed = true;
 $is_poster = false;
 
@@ -73,10 +110,18 @@ $is_poster = false;
                 <dt><?php echo $this->escapeHtml($_option['label']) ?></dt>
                 <dd<?php if (isset($_formatedOptionValue['full_view'])): ?> class="truncated"<?php endif; ?>>
                     <?php
-                    if ($_formatedOptionValue['value'] == "No Frame")
-                        $is_framed = false;
-                    if ($_formatedOptionValue['value'] == "Poster")
-                        $is_poster = true;
+                    if($_option['label'] == "Frame"){
+                        if ($_option['value'] == "No Frame"){
+                            $is_framed = false;
+                        }
+                    }
+
+                    if ($_option['label'] == "Material"){
+                        if (strpos($_option['value'],'Poster') !== false) {
+                            $is_poster = true;
+                        }
+                    }
+
                     echo $_formatedOptionValue['value'] ?>
                     <?php if (isset($_formatedOptionValue['full_view'])): ?>
                         <div class="truncated_full_value">
@@ -106,36 +151,65 @@ $is_poster = false;
     <ul>
 
         <?php
-
-        if ($is_framed && $is_poster) {
-            ?>
-
-            <li class="bentonsansmedium">Shipping Option:</li>
-            <li class="bentonsanslight">Free- Ships in 7-12</li>
-            <li class="bentonsanslight">business days</li>
-            <li class="bentonsanslight">(faster shipping options available during checkout)</li>
-
-        <?php
-        } else {
-            if ($is_poster) {
+        if($multiple_items){
+            switch($time_shipping_free){
+                case 0:
+                    ?>
+                    <li class="bentonsansmedium">Shipping Option:</li>
+                    <li class="bentonsanslight">Free - Ships in 1-2</li>
+                    <li class="bentonsanslight">business days</li>
+                    <li class="bentonsanslight">(faster shipping options available during checkout)</li>
+                    <?php
+                    break;
+                case 1:
+                    ?>
+                    <li class="bentonsansmedium">Shipping Option:</li>
+                    <li class="bentonsanslight">Free - Ships in 5-7</li>
+                    <li class="bentonsanslight">business days</li>
+                    <li class="bentonsanslight">(faster shipping options available during checkout)</li>
+                    <?php
+                    break;
+                case 2:
+                    ?>
+                    <li class="bentonsansmedium">Shipping Option:</li>
+                    <li class="bentonsanslight">Free- Ships in 7-12</li>
+                    <li class="bentonsanslight">business days</li>
+                    <li class="bentonsanslight">(faster shipping options available during checkout)</li>
+                    <?php
+                    break;
+            }
+        }else{
+            if ($is_framed) {
                 ?>
+
                 <li class="bentonsansmedium">Shipping Option:</li>
-                <li class="bentonsanslight">Free - Ships in 1-2</li>
+                <li class="bentonsanslight">Free- Ships in 7-12</li>
                 <li class="bentonsanslight">business days</li>
                 <li class="bentonsanslight">(faster shipping options available during checkout)</li>
 
             <?php
-
             } else {
-                ?>
-                <li class="bentonsansmedium">Shipping Option:</li>
-                <li class="bentonsanslight">Free - Ships in 5-7</li>
-                <li class="bentonsanslight">business days</li>
-                <li class="bentonsanslight">(faster shipping options available during checkout)</li>
+                if ($is_poster && $is_framed==false) {
+                    ?>
+                    <li class="bentonsansmedium">Shipping Option:</li>
+                    <li class="bentonsanslight">Free - Ships in 1-2</li>
+                    <li class="bentonsanslight">business days</li>
+                    <li class="bentonsanslight">(faster shipping options available during checkout)</li>
 
-            <?php
+                <?php
+
+                } else {
+                    ?>
+                    <li class="bentonsansmedium">Shipping Option:</li>
+                    <li class="bentonsanslight">Free - Ships in 5-7</li>
+                    <li class="bentonsanslight">business days</li>
+                    <li class="bentonsanslight">(faster shipping options available during checkout)</li>
+
+                <?php
+                }
             }
         }
+
 
         ?>
 
