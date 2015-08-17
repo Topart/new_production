@@ -9,7 +9,35 @@
 <?php if ($post = $this->getPost()): ?>
 	<?php $tagString = $this->getTermsAsHtml($post, 'post_tag') ?>
 	<?php $categoryString = $this->getTermsAsHtml($post, 'category') ?>
+	<!-- active buttons sharethis-->
 	<?php echo Mage::helper('wordpress/social')->getButtons($post) ?>
+	<script>
+		jQuery(document).ready(function(){
+			var checkExistTwitter = setInterval(function() {
+				if (jQuery('.st_twitter span span').length) {
+					console.log("Exists twi!");
+					jQuery('.st_twitter span span').removeClass('chicklets').addClass('icon icon-hover i-twitter-w');
+					clearInterval(checkExistTwitter);
+				}
+			}, 100);
+			var checkExistFacebook = setInterval(function() {
+				if (jQuery('.st_facebook span span').length) {
+					console.log("Exists face!");
+					jQuery('.st_facebook span span').removeClass('chicklets').addClass('icon icon-hover i-facebook-w');
+					clearInterval(checkExistFacebook);
+				}
+			}, 100);
+			var checkExistPinterest = setInterval(function() {
+				if (jQuery('.st_pinterest span span').length) {
+					console.log("Exists pin!");
+					jQuery('.st_pinterest span span').removeClass('chicklets').addClass('icon icon-hover i-pinterest-w');
+					clearInterval(checkExistPinterest);
+				}
+			}, 100);
+
+		});
+	</script>
+	<!-- active buttons sharethis-->
 	<p class="post-meta details">
 	<?php if ($tagString): ?>
 		<?php echo stripslashes($this->__('This entry was posted in %s and tagged %s on %s<span class=\"by-author\"> by %s</span>.', $categoryString, $tagString, $post->getPostDate(), $post->getAuthor()->getDisplayName())) ?>
