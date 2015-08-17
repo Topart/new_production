@@ -93,6 +93,9 @@
 	 */
 	-->
 	<wordpress_homepage>
+		<reference name="root">
+			<action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
 		<reference name="content">
 			<block type="wordpress/homepage" name="wordpress_homepage" as="wp.home" template="wordpress/homepage.phtml">
 				<block type="wordpress/post_list" name="wordpress_post_list" as="post_list" template="wordpress/post/list.phtml" />
