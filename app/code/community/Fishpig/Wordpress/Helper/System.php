@@ -9,6 +9,20 @@
 class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 {
 	/**
+	 * Useragent for CURL request
+	 *
+	 * @var string
+	 */
+	const CURL_USERAGENT = 'FishPig-MagentoWordPressIntegration';
+	
+	/**
+	 * Cache for the integration results
+	 *
+	 * @var array
+	 */
+	protected $_integrationTestResults = null;
+	
+	/**
 	 * Generate and retrieve the integration test results
 	 *
 	 * @return array
@@ -18,30 +32,30 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 		if (!Mage::helper('wordpress')->isEnabled()) {
 			return false;
 		}
-
-		$results = array();
-
-		Mage::dispatchEvent('wordpress_integration_tests_before', array('results' => $results, 'helper' => $this));
 		
-		if ($this->applyTest('_validateDatabaseConnection', $results)) {
+		if ($this->_integrationTestResults !== null) {
+			return $this->_integrationTestResults;
+		}
+
+		$this->_integrationTestResults = array();
+
+		Mage::dispatchEvent('wordpress_integration_tests_before', array('helper' => $this));
+		
+		if ($this->applyTest('_validateDatabaseConnection')) {
 			if (Mage::helper('wordpress')->isFullyIntegrated()) {
-				$this->applyTest('_validateHomeUrl', $results);
-				$this->applyTest('_validatePath', $results);
-				$this->applyTest('_validateTheme', $results);
-				$this->applyTest('_validatePlugins', $results, array());
-				$this->applyTest('_validatePermalinks', $results);
-				$this->applyTest('_validateHtaccess', $results);
-				$this->applyTest('_upsellCustomerSynchronisation', $results);
-				$this->applyTest('_upsellReCaptcha', $results);
-				$this->applyTest('_recommendGoogleXmlSitemap', $results);
-				$this->applyTest('_checkForAllInOneSeo', $results);
-				$this->applyTest('_checkForShareThis', $results);
+				$this->applyTest('_validateHomeUrl');
+				$this->applyTest('_validatePath');
+				$this->applyTest('_validateTheme');
+				$this->applyTest('_validatePlugins', array());
+				$this->applyTest('_validatePermalinks');
+				$this->applyTest('_validateHtaccess');
+				
+				Mage::dispatchEvent('wordpress_integration_tests_after', array('helper' => $this));
 			}
 		}
 
-		Mage::dispatchEvent('wordpress_integration_tests_after', array('results' => $results, 'helper' => $this));
 
-		return $results;
+		return $this->_integrationTestResults;
 	}
 	
 	/**
@@ -51,7 +65,7 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	protected function _validateDatabaseConnection()
 	{
-		if (!Mage::helper('wordpress/database')->isConnected()) {
+		if (Mage::helper('wordpress/app')->getDbConnection() === false) {
 			throw Fishpig_Wordpress_Exception::error(
 				'Database Error',
 				$this->__('Error establishing a database connection')
@@ -86,7 +100,6 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 				. $this->__(' Change to %s', $mage)
 			);
 		}
-
 
 		if ($helper->getBlogRoute() && is_dir(Mage::getBaseDir() . DS . $helper->getBlogRoute())) {
 			throw Fishpig_Wordpress_Exception::warning('Home URL', 
@@ -148,7 +161,7 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 		$results = $params->getResults();
 		
 		foreach((array)$xml->fishpig->extensions as $moduleName => $data) {
-			$this->applyTest('_validatePlugin', $results, array_merge(
+			$this->applyTest('_validatePlugin', array_merge(
 				(array)$data, 
 				array('current_version' => (string)Mage::getConfig()->getNode()->modules->$moduleName->version)
 			));
@@ -193,7 +206,9 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 	 */
 	protected function _validatePermalinks()
 	{
-		if (Mage::helper('wordpress/post')->useGuidLinks()) {
+		Mage::helper('wordpress/app')->init();
+		
+		if (Mage::getModel('wordpress/post')->setPostType('post')->getTypeInstance()->useGuidLinks()) {
 			throw Fishpig_Wordpress_Exception::warning(
 				'Permalinks',
 				'You are using the default permalinks. To stop potential duplicate content issues, change them to something else in the WordPress Admin.'
@@ -202,151 +217,7 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 		
 		return $this;
 	}
-	
-	/**
-	 * Recommend Customer Synchronisation if multiple WP users exist
-	 *
-	 * @return $this
-	 */
-	protected function _upsellCustomerSynchronisation()
-	{
-		try {
-			if (count(Mage::getResourceModel('wordpress/user_collection')) > 9) {			
-				if (!Mage::helper('wordpress')->isAddonInstalled('Fishpig_Wordpress_Addon_CS')) {
-					throw Fishpig_Wordpress_Exception::warning(
-						'Single Sign-On',
-						$this->__(
-							'Synchronise your WordPress users and Magento customers with the <a href="%s" target="_blank">Customer Synchronisation</a> addon.',
-							'http://fishpig.co.uk/magento/wordpress-integration/customer-synchronisation/?utm_source=Fishpig_Wordpress&utm_medium=System%20Configuration&utm_term=Fishpig_Wordpress_Addon_CS&utm_campaign=UpSell'
-						)
-					);
-				}
-			}
-		}
-		catch (Fishpig_Wordpress_Exception $e) {
-			throw $e;	
-		}
-		catch (Exception $e) {
-			Mage::helper('wordpress')->log($e);
-		}
-		
-		return $this;
-	}
-	
-	/**
-	 * Recommend ReCaptcha to combat spam comments
-	 *
-	 * @return void
-	 */
-	protected function _upsellReCaptcha()
-	{
-		if (!Mage::helper('wordpress')->isAddonInstalled('Fishpig_Wordpress_Addon_ReCaptcha')) {
-			$comments = Mage::getResourceModel('wordpress/post_comment_collection')
-				->addCommentApprovedFilter('spam')
-				->load();
-			
-			if (count($comments) > 10) {
-				throw Fishpig_Wordpress_Exception::warning(
-					'ReCaptcha',
-					$this->__(
-						'Stop WordPress comment spam with <a href="%s" target="_blank">ReCaptcha</a>.',
-						'http://fishpig.co.uk/magento/wordpress-integration/recaptcha/?utm_source=Fishpig_Wordpress&utm_medium=System%20Configuration&utm_term=Fishpig_Wordpress_Addon_ReCaptcha&utm_campaign=UpSell'
-					)
-				);
-			}
-		}
-	}
 
-	/**
-	 * Recommend ReCaptcha to combat spam comments
-	 *
-	 * @return void
-	 */
-	protected function _checkForAllInOneSeo()
-	{
-		if (Mage::helper('wordpress')->isPluginEnabled('all-in-one-seo')) {
-			throw Fishpig_Wordpress_Exception::warning(
-				$this->__('Plugin'),
-				$this->__(
-					'All in One SEO Pack is no longer supported. Please use <a href="%s" target="_blank">WordPress SEO</a>.',
-					'http://wordpress.org/plugins/wordpress-seo/'
-				)
-			);
-		}
-		
-		return $this;
-	}	
-
-	/**
-	 * Recommend ReCaptcha to combat spam comments
-	 *
-	 * @return void
-	 */
-	protected function _checkForShareThis()
-	{
-		if (Mage::helper('wordpress')->isPluginEnabled('sharethis')) {
-			throw Fishpig_Wordpress_Exception::warning(
-				$this->__('Plugin'),
-				$this->__(
-					'ShareThis is no longer supported. Please use <a href="%s" target="_blank">AddThis</a>.',
-					'http://wordpress.org/plugins/addthis/'
-				)
-			);
-		}
-		
-		return $this;
-	}
-				
-	/**
-	 * Check whether the user has left a review
-	 *
-	 * @return void
-	 */
-	protected function _checkForReviews()
-	{
-		return $this;
-
-		$modules = array_keys(Mage::app()->getConfig()->getNode('modules')->asArray());
-		$fishpigModules = array();
-
-		foreach($modules as $module) {
-			if (strpos($module, 'Fishpig_Wordpress') === 0) {
-				if (is_null(Mage::getStoreConfig('wordpress/review/' . strtolower($module)))) {
-					$fishpigModules[] = $module;
-				}
-			}
-		}
-		
-		if (in_array('Fishpig_Wordpress', $fishpigModules) !== false) {
-			throw Fishpig_Wordpress_Exception::warning(
-				'Review',
-				$this->__(
-					'Do you like WordPress Integration? Help keep the extension free by <a href="%s" class="fp-review" target="_blank">leaving a review</a>.',
-					'http://fishpig.co.uk/magento/wordpress-integration/#reviews'
-				)
-			);
-		}
-		
-		shuffle($fishpigModules);
-		
-		foreach($fishpigModules as $module) {
-			$moduleUrl = (string)Mage::app()->getConfig()->getNode('modules/' . $module . '/fishpig/url');
-			$moduleName = (string)Mage::app()->getConfig()->getNode('modules/' . $module . '/fishpig/name');
-			
-			if ($moduleUrl && $moduleName) {
-				throw Fishpig_Wordpress_Exception::warning(
-					'Review',
-					$this->__(
-						'Do you like %s? Help keep the %s great by <a href="%s#reviews" class="fp-review" target="_blank">leaving a review</a>.',
-						$moduleName, $moduleName, $moduleUrl
-					)
-				);
-			}
-		}
-		
-		return $this;
-	}
-	
 	/**
 	 * Ensure the .htaccess file exists and doesn't reference the blog route
 	 *
@@ -378,25 +249,6 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 
 		return $this;
 	}
-
-	/**
-	 * Recommend installing Google XML Sitemap
-	 *
-	 * @return $this
-	 */
-	protected function _recommendGoogleXmlSitemap()
-	{
-		if (!Mage::helper('wordpress')->isPluginEnabled('google-sitemap-generator')) {	
-			if (!Mage::helper('wordpress')->isAddonInstalled('Multisite')) {
-				throw Fishpig_Wordpress_Exception::warning(
-					'Google Sitemap',
-					$this->__('Install the <a href="%s" target="_blank">Google XML Sitemaps</a> plugin to generate an XML sitemap for your blog.', 'http://wordpress.org/plugins/google-sitemap-generator/')
-				);
-			}
-		}
-
-		return $this;
-	}
 	
 	/**
 	 * Apply an integration test
@@ -406,14 +258,14 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 	 * @param mixed $params = null
 	 * @return mixed
 	 */
-	public function applyTest($func, &$results, $params = null)
+	public function applyTest($func, $params = null)
 	{
 		$funcResult = false;
 		
 		try {
 			if (is_array($params)) {
 				$params = new Varien_Object($params);
-				$params->setResults($results);
+				$params->setResults($this->_integrationTestResults);
 			}
 			else {
 				$params = null;
@@ -446,15 +298,15 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 				default:
 					$colour = '#444';
 			}
-			
-			$results[] = new Varien_Object(array(
+
+			$this->_integrationTestResults[] = new Varien_Object(array(
 				'title' => Mage::helper('wordpress')->__($e->getMessage()),
 				'message' => $e->getLongMessage(),
 				'bg_colour' => $colour,
 			));
 		}
 		catch (Exception $e) {
-			$results[] = new Varien_Object(array(
+			$this->_integrationTestResults[] = new Varien_Object(array(
 				'title' => Mage::helper('wordpress')->__('An unidentified error has occurred.'),
 				'message' => $e->getMessage(),
 				'bg_colour' => '#444',
@@ -478,14 +330,14 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 			$destination = Mage::helper('wordpress')->getAdminUrl('index.php');
 		}
 		
+		// Required for some hosting companies (1&1)
+		$result = $this->makeHttpGetRequest(Mage::helper('wordpress')->getBaseUrl('wp-login.php'));
+
 		$result = $this->makeHttpPostRequest(Mage::helper('wordpress')->getBaseUrl('wp-login.php'), array(
 			'log' => $username,
 			'pwd' => $password,
 			'rememberme' => 'forever',
 			'redirect_to' => $destination,
-			/* Removed for WordPress 3.7
-				'testcookie' => 1
-			*/
 		));
 
 		if ($result !== false) {
@@ -506,6 +358,58 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 		
 		return false;
 	}
+	
+	public function makeHttpGetRequest($url)
+	{
+		if (!$this->hasValidCurlMethods()) {
+			$ch = curl_init();
+
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_USERAGENT, self::CURL_USERAGENT);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+			curl_setopt($ch, CURLOPT_HEADER, true);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+			if (strpos($url, 'https://') !== false) {
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			}
+		
+			$response = curl_exec($ch);
+
+			if (curl_errno($ch) || curl_error($ch)) {
+				throw new Exception(Mage::helper('wordpress')->__('CURL (%s): %s', curl_errno($ch), curl_error($ch)));
+			}
+
+			curl_close($ch);	
+
+			return $response;
+		}
+
+		$curl = new Varien_Http_Adapter_Curl();
+
+		$curl->setConfig(array(
+			'verifypeer' => strpos($url, 'https://') !== false,
+			'header' => true,
+			'timeout' => 15,
+			'referrer' => Mage::helper('wordpress')->getBaseUrl('wp-login.php'),
+		));
+		
+		$curl->addOption(CURLOPT_FOLLOWLOCATION, true);
+		$curl->addOption(CURLOPT_USERAGENT, self::CURL_USERAGENT);
+		$curl->addOption(CURLOPT_REFERER, true);
+
+		$curl->write(Zend_Http_Client::GET, $url, '1.1');
+
+		$response = $curl->read();
+
+		if ($curl->getErrno() || $curl->getError()) {
+			throw new Exception(Mage::helper('wordpress')->__('CURL (%s): %s', $curl->getErrno(), $curl->getError()));
+		}
+
+		$curl->close();
+		
+		return $response;
+	}
 		
 	/**
 	 * Send a HTTP Post request
@@ -517,7 +421,35 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 	public function makeHttpPostRequest($url, array $data = array())
 	{
 		if (!$this->hasValidCurlMethods()) {
-			return $this->_makeLegacyHttpPostRequest($url, $data);
+			foreach($data as $key => $value) {
+				$data[$key] = urlencode($key) . '=' . urlencode($value);
+			}
+		
+			$body = implode('&', $data);
+		
+			$ch = curl_init();
+
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_POST, count($data));
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+			curl_setopt($ch, CURLOPT_USERAGENT, self::CURL_USERAGENT);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+			curl_setopt($ch, CURLOPT_HEADER, true);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			
+			if (strpos($url, 'https://') !== false) {
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+			}
+			
+			$response = curl_exec($ch);
+
+			if (curl_errno($ch) || curl_error($ch)) {
+				throw new Exception(Mage::helper('wordpress')->__('CURL (%s): %s', curl_errno($ch), curl_error($ch)));
+			}
+
+			curl_close($ch);	
+
+			return $response;
 		}
 
 		$curl = new Varien_Http_Adapter_Curl();
@@ -530,9 +462,10 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 		));
 		
 		$curl->addOption(CURLOPT_FOLLOWLOCATION, false);
-		$curl->addOption(CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)');
+		$curl->addOption(CURLOPT_USERAGENT, self::CURL_USERAGENT);
+		$curl->addOption(CURLOPT_REFERER, true);
 
-		$curl->write(Zend_Http_Client::POST, $url, '1.1', array(), $data);
+		$curl->write(Zend_Http_Client::POST, $url, '1.1', array('Expect:'), $data);
 
 		$response = $curl->read();
 
@@ -542,47 +475,6 @@ class Fishpig_Wordpress_Helper_System extends Fishpig_Wordpress_Helper_Abstract
 
 		$curl->close();
 		
-		return $response;
-	}
-
-	/**
-	 * Send a HTTP Post request through older Magento
-	 * Please upgrade Magento!
-	 *
-	 * @param string $url
-	 * @param array $data = array
-	 * @return false|string
-	 */
-	protected function _makeLegacyHttpPostRequest($url, array $data = array())
-	{
-		foreach($data as $key => $value) {
-			$data[$key] = urlencode($key) . '=' . urlencode($value);
-		}
-		
-		$body = implode('&', $data);
-		
-		$ch = curl_init();
-
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_POST, count($data));
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-		curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)');
-		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-		curl_setopt($ch, CURLOPT_HEADER, true);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		
-		if (strpos($url, 'https://') !== false) {
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		}
-		
-		$response = curl_exec($ch);
-
-		if (curl_errno($ch) || curl_error($ch)) {
-			throw new Exception(Mage::helper('wordpress')->__('CURL (%s): %s', curl_errno($ch), curl_error($ch)));
-		}
-
-		curl_close($ch);	
-
 		return $response;
 	}
 

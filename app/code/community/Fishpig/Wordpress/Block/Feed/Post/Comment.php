@@ -36,7 +36,9 @@ class Fishpig_Wordpress_Block_Feed_Post_Comment extends Fishpig_Wordpress_Block_
 				);
 			}
 
-			$entry->setLink($comment->getUrl());
+			if (strpos($comment->getUrl(), 'http') !== false) {
+				$entry->setLink($comment->getUrl());
+			}
 
 			if ($comment->getCommentAuthorEmail() && $comment->getCommentAuthor()) {
 				$entry->addAuthor(array(
