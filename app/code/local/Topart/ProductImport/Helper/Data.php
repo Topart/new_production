@@ -14,7 +14,7 @@ class MagmiLogger
 {
     public function log($data, $type)
     {
-        echo "$type:$data\n";
+        Mage::log("$type:$data\n");
     }
 }
 
@@ -32,7 +32,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
     public function getTempDir()
     {
         $dir = Mage::getBaseDir('upload') . DS . 'topart_productimport' . DS;
-        mkdir($dir);
+        if (!is_dir($dir))
+            mkdir($dir);
         return $dir;
     }
 
@@ -87,7 +88,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
     public function process()
     {
-        echo "START TIME: " . microtime(true) . "\r\n<br />";
+        Mage::log("START TIME: " . microtime(true) . "\r\n<br />");
 
         /***
          * Load/Upload Files
@@ -161,9 +162,12 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
             $retail_framing_table[$i] = array();
             # Store all the MAS specific fields, which means the majority of them
-            foreach($retail_framing_dictionary as $header => $column)
+            //foreach($retail_framing_dictionary as $header => $column)
+            for($column_index = 0; $column_index <= 17; $column_index++)
             {
-                $retail_framing_table[$i][$header] = $sourceSheet_arr[$source_line][$source_dictionary[$header]];
+                $header = $retail_framing->getCellByColumnAndRow($column_index, 1)->getValue();
+                if (isset($source_dictionary[$header]))
+                    $retail_framing_table[$i][$header] = $sourceSheet_arr[$source_line][$source_dictionary[$header]];
             }
 
             # Store the spreadsheet retail prices only
@@ -321,7 +325,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 # Compute the correspondig DG item code
                 $dg_item_code = $item_code . "DG";
                 # If the poster has a corresponding DG item available
-                if ($item_source_line[$dg_item_code])
+                if (isset($item_source_line[$dg_item_code]) && $item_source_line[$dg_item_code])
                 {
                     $posters_and_dgs_hash_table[$dg_item_code] = "true";
                     # This will be the line of the corresponding DG item, used for the DG specific attributes only.
@@ -452,7 +456,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 			$udf_fmaxssxcm = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FMAXSSXCM"], $source_line);
 
 
-			$df_colorcode = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_COLORCODE"], $source_line);
+			$udf_colorcode = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_COLORCODE"], $source_line);
 			$udf_framecat = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_FRAMECAT"], $source_line);
 			$udf_prisubnsubcat = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PRISUBNSUBCAT"], $source_line);
 			$udf_pricolor = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_PRICOLOR"], $source_line);
@@ -485,9 +489,10 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 $importItems[$destination_line] = array();
             $importItems[$destination_line] = array(
                 'sku' => $item_code,
-                '_attribute_set' => "Topart - Products",
+                //'_attribute_set' => "Topart - Products",
                 '_type' => "simple",
                 //for Magmi:
+                //'type' => "simple",
                 'attribute_set' => "Topart - Products",
             );
 
@@ -1130,7 +1135,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             if ($udf_photopaper == "Y")
             {
 				# If not available as poster only
-                if ($poster_only_hash_table[$item_code] != "true")
+                if (!isset($poster_only_hash_table[$item_code]) || $poster_only_hash_table[$item_code] != "true")
                 {
 					$custom_size_ui_to_skip = 0;
 					$min_delta = 1000;
@@ -1262,6 +1267,12 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 # Master Canvas Sheet
                 for ($i = 2; $i <= $retail_canvas->getHighestRow(); $i++)
                 { 
+                    //skip empty rows
+                    if (!isset($retail_canvas_arr[$i]))
+                        continue;
+                    if (!isset($retail_photo_paper_arr[$i]))
+                        continue;
+
                     $retail_ratio_dec = floatval($retail_canvas_arr[$i][$retail_canvas_dictionary["Decimal Ratio"]]);
                     $image_source = $retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Image Source"]];
 					
@@ -1385,7 +1396,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
 				# BORDER TREATMENTS for canvas
 				# If not available as poster only
-                if ($poster_only_hash_table[$item_code] != "true")
+                if (!isset($poster_only_hash_table[$item_code]) || $poster_only_hash_table[$item_code] != "true")
                 {
 
 					########### Border Treatments ###############
@@ -1685,13 +1696,16 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                 end
              */
 
+            //TODO: DEBUG BREAK EARLY
+            //if ($destination_line >= 1) break;
+
             /***LINE 1785***/
             $source_line = $scan_line + 1;
 	
         }
         /*** END MAIN PARALLEL WRITE FOR ***/
 
-        echo "END INITIAL PROCESS TIME: " . microtime(true) . "\r\n<br />";
+        Mage::log("END INITIAL PROCESS TIME: " . microtime(true) . "\r\n<br />");
 
         /*
         for ($i=0; $i <= 100; $i++)
@@ -1702,7 +1716,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
         //
 
         /*** POST PROCESS INTO MAGMI FORMAT ***/
-        echo "START POST PROCESS TIME: " . microtime(true) . "\r\n<br />";
+        Mage::log("START POST PROCESS TIME: " . microtime(true) . "\r\n<br />");
         $magmiData = array();
         $currentSku = null;
         $currentSkuRow = array();
@@ -1734,7 +1748,11 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                     isset($row['_custom_option_title']) && !empty($row['_custom_option_title']))
                 {
                     $currentOptionTitle = $row['_custom_option_title'];
-                    $currentOptionColumn = $row['_custom_option_title'] . ':' . $row['_custom_option_type'];
+
+                    //replace colons in title - Magmi can't handle them
+                    $currentOptionTitle = str_replace(":"," - ",$currentOptionTitle);
+
+                    $currentOptionColumn = $currentOptionTitle . ':' . $row['_custom_option_type'];
                     if (isset($row['_custom_option_is_required']))
                         $currentOptionColumn .= ':' . $row['_custom_option_is_required'];
                     if (isset($row['_custom_option_sort_order']))
@@ -1744,7 +1762,10 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                     //record the first row
                     if (isset($row['_custom_option_row_title']) && !empty($row['_custom_option_row_title']))
                     {
-                        $magmiData[$currentSku][$currentOptionColumn] .= $row['_custom_option_row_title'] . ':fixed'; //HACK hardcoded fixed
+                        $optionRowTitle = $row['_custom_option_row_title'];
+                        $optionRowTitle = str_replace(":"," - ",$optionRowTitle);
+
+                        $magmiData[$currentSku][$currentOptionColumn] .= $optionRowTitle . ':fixed'; //HACK hardcoded fixed
 
                         if (isset($row['_custom_option_row_price']))
                             $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_price'];
@@ -1776,7 +1797,10 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                     isset($row['_custom_option_title']) && !empty($row['_custom_option_title']))
                 {
                     $currentOptionTitle = $row['_custom_option_title'];
-                    $currentOptionColumn = $row['_custom_option_title'] . ':' . $row['_custom_option_type'];
+                    //replace colons in title - Magmi can't handle them
+                    $currentOptionTitle = str_replace(":"," - ",$currentOptionTitle);
+
+                    $currentOptionColumn = $currentOptionTitle . ':' . $row['_custom_option_type'];
                     if (isset($row['_custom_option_is_required']))
                         $currentOptionColumn .= ':' . $row['_custom_option_is_required'];
                     if (isset($row['_custom_option_sort_order']))
@@ -1790,7 +1814,10 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                     if (!empty($magmiData[$currentSku][$currentOptionColumn]))
                         $magmiData[$currentSku][$currentOptionColumn] .= "|";
 
-                    $magmiData[$currentSku][$currentOptionColumn] .= $row['_custom_option_row_title'] . ':fixed'; //HACK hardcoded fixed
+                    $optionRowTitle = $row['_custom_option_row_title'];
+                    $optionRowTitle = str_replace(":"," - ",$optionRowTitle);
+
+                    $magmiData[$currentSku][$currentOptionColumn] .= $optionRowTitle . ':fixed'; //HACK hardcoded fixed
 
                     if (isset($row['_custom_option_row_price']))
                         $magmiData[$currentSku][$currentOptionColumn] .= ':' . $row['_custom_option_row_price'];
@@ -1822,16 +1849,24 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             unset($magmiData[$currentSku]['_root_category']);
         }
 
-        echo "END POST PROCESS TIME: " . microtime(true) . "\r\n<br />";
+        Mage::log("END POST PROCESS TIME: " . microtime(true) . "\r\n<br />");
 
         //print_r($magmiData);
         //
 
+        /*
+        foreach($magmiData as $sku => $line)
+        {
+            Mage::log('MAGMI LINE:');
+            Mage::log(print_r($line,true));
+            break;
+        }
+         */
 
         //do the actual import
-        echo "START IMPORT TIME: " . microtime(true) . "\r\n<br />";
+        Mage::log("START IMPORT TIME: " . microtime(true) . "\r\n<br />");
         $this->magmiImport($magmiData);
-        echo "END IMPORT TIME: " . microtime(true) . "\r\n<br />";
+        Mage::log("END IMPORT TIME: " . microtime(true) . "\r\n<br />");
     }
 
     protected function magmiImport($magmiData)
@@ -1858,10 +1893,34 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
         foreach($magmiData as $sku => $item)
         {
+            //Mage::log("ITEM BEFORE: " . print_r($item, true));
+
+            //set store on each item
+            $item['store'] = 'admin';
+
+            //convert columns
+            foreach($item as $col => $val)
+            {
+                //Mage::log("COL $col VAL $val");
+
+                if ($val === 'Yes')
+                    $item[$col] = 1;
+                else if ($val === 'No')
+                    $item[$col] = 0;
+                else if ("$val" === "0")
+                    $item[$col] = '0.0';
+
+                //Mage::log("COL $col VAL " . $item[$col]);
+            }
+
             //debug append test to item sku
-            $item['sku'] .= '-TEST-MAGMI';
+            //$item['sku'] .= '-TEST-MAGMI-v46';
+
+            //Mage::log("ITEM AFTER: " . print_r($item, true));
 
             $dp->ingest($item);
+
+            //break;
         }
 
         /* end import session, will run post import plugins */
