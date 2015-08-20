@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <productImport>
+            <title>Topart ProductImport</title>
+            <sort_order>600</sort_order>
+            <children>
+                <manager>
+                    <title>Manager</title>
+                    <sort_order>1</sort_order>
+                    <action>adminhtml/productImport_productImport</action>
+                </manager>
+            </children>
+        </productImport>
+    </menu>
+</config>
