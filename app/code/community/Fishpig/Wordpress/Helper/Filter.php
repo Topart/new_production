@@ -12,7 +12,7 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 	 * Applies a set of filters to the given string
 	 *
 	 * @param string $content
-	 * @param Fishpig_Wordpress_Model_Post_Abstract $object
+	 * @param Fishpig_Wordpress_Model_Post $object
 	 * @param string $context
 	 * @return string
 	 */
@@ -30,7 +30,7 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 		$this->_addMagentoFilters($content);
 
 		if (Mage::getStoreConfigFlag('wordpress/misc/autop')) {
-			$this->_addParagraphsToString($content);
+			$content = $this->addParagraphsToString($content);
 		}
 		
 		$contentObj = new Varien_Object(array('content' => $content));
@@ -46,7 +46,7 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 	 * Apply shortcodes to the content
 	 *
 	 * @param string &$content
-	 * @param Fishpig_Wordpress_Model_Post_Abstract $object
+	 * @param Fishpig_Wordpress_Model_Post $post
 	 */
 	protected function _applyShortcodes(&$content, $object, $context)
 	{
@@ -88,9 +88,9 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 	 * Taken from the WordPress core
 	 * Long live open source!
 	 *
-	 * @param string &$content
+	 * @param string $content
 	 */
-	protected function _addParagraphsToString(&$content)
+	public function addParagraphsToString($content)
 	{
 		$protectedTags = array(
 			'script',
@@ -192,6 +192,8 @@ class Fishpig_Wordpress_Helper_Filter extends Fishpig_Wordpress_Helper_Abstract
 		foreach($safe as $key => $value) {
 			$content = str_replace('<!--KEY' . $key . '-->', $value, $content);
 		}
+		
+		return $content;
 	}
 
 	/**

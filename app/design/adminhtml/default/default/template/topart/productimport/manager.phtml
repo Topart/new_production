@@ -1,0 +1,84 @@
+<h1>Topart Product Import Manager</h1>
+
+<style type="text/css">
+#topart_productimport_submit
+{
+    margin-top: 60px;
+    padding: 8px 15px;
+    font-size: 18px;
+}
+</style>
+
+<?php
+
+$helper = Mage::helper('productimport/data');
+
+//get latest upload files
+$latestProductSource = $helper->getLatestInputFile('topart_productimport_file_source');
+$latestProductTemplate = $helper->getLatestInputFile('topart_productimport_file_template');
+$latestRetail = $helper->getLatestInputFile('topart_productimport_file_retail');
+
+?>
+
+<h3>Existing Inputs:</h3>
+
+<p>Product Source Excel File: <?php echo $latestProductSource; ?></p>
+<p>Template ODS File: <?php echo $latestProductTemplate; ?></p>
+<p>Retail Master Excel File: <?php echo $latestRetail; ?></p>
+
+<br/>
+<br/>
+
+<?php
+
+
+/*** RENDER FORM ***/
+
+$form = new Varien_Data_Form(array(
+    'id' => 'topart_productimport',
+    'action' => Mage::getUrl('*/*/run', array('id' => Mage::app()->getRequest()->getParam('id'))),
+    'method' => 'post',
+    'enctype' => 'multipart/form-data',
+));
+$form->setUseContainer(true);
+
+$fieldset = $form->addFieldset('topart_productimport_info', array(
+    //'legend'			=>$this->__('Excel Product File'),
+));
+
+$fieldset->addField('topart_productimport_process', 'hidden', array(
+    'name'      => 'topart_productimport_process',
+    'value'     => 'process'
+));
+
+$fieldset->addField('topart_productimport_file_source', 'file', array(
+    'label'     => $this->__('Product Source Excel File (source.xls)'),
+    'required'  => true,
+    'name'      => 'topart_productimport_file_source',
+));
+$fieldset->addField('topart_productimport_file_template', 'file', array(
+    'label'     => $this->__('Template ODS File (template.ods)'),
+    'required'  => true,
+    'name'      => 'topart_productimport_file_template',
+));
+$fieldset->addField('topart_productimport_file_retail', 'file', array(
+    'label'     => $this->__('Retail Master Excel File (retail_master.xls)'),
+    'required'  => true,
+    'name'      => 'topart_productimport_file_retail',
+));
+
+
+$fieldset->addField('topart_productimport_submit', 'submit', array(
+    'name'      => 'topart_productimport_submit',
+    'value'     => 'Import'
+));
+
+?>
+
+<h3>Upload New Input Files:</h3>
+<?php
+echo $form->toHtml();
+?>
+<br/>
+<br/>
+
