@@ -37,7 +37,7 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 		}
 
 		if($file =="alternative")
-			$sku = $sku."_alternative";
+			$sku = $sku."_Alternative";
 
 
                 $cpath = $cloudFontBaseUrl .DS. $version . DS;
