@@ -40,15 +40,15 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 			$sku = $sku."_Alternative";
 
 
-                $cpath = $cloudFontBaseUrl .DS. $version . DS;
-		$imgSku = $this->cleanSkuImg($sku,'DG',$cpath);
-		$url = $cloudFontBaseUrl .DS. $version . DS. $imgSku;
+                $cpath = $cloudFontBaseUrl .'/'. $version . '/';
+		$imgSku = $this->cleanSkuImg($sku,'/',$cpath);
+		$url = $cloudFontBaseUrl .'/'. $version . '/'. $imgSku;
                 
                 /*JP: Fix for ticket 257 Start*/
                 $size = false;//getimagesize($url);
                 
                 if(!$size){
-                    $url = str_replace("DG.", ".", $url);
+                    $url = str_replace("/.", ".", $url);
                 }
                 /*JP: Fix for ticket 257 End*/
                 
@@ -76,11 +76,11 @@ class Onetree_Infortis_Helper_Image extends Infortis_Infortis_Helper_Image
 		if ( substr( $sku, strlen( $sku ) - strlen( $endSku ) ) === $endSku )
 		{
 			$dg_suffix_index = strrpos($sku, $endSku);
-			$imgSku = substr_replace($sku, "", $endSku, 2) . ".jpg";
+			$imgSku = strtoupper(substr_replace($sku, "", $endSku, 2)) . ".jpg";
 		}
 		else
 		{
-			$imgSku = $sku . ".jpg";
+			$imgSku = strtoupper($sku) . ".jpg";
 		}
                 
                 $cpath .= $imgSku;
