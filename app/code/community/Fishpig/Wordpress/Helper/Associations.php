@@ -8,15 +8,20 @@
 
 class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abstract
 {
+	public function isConnected()
+	{
+		return Mage::helper('wordpress/app')->getDbConnection() !== false;
+	}
+	
 	/**
 	 * Retrieve a collection of post's associated with the given product
 	 *
 	 * @param Mage_Catalog_Model_Product $product
-	 * @return false|Fishpig_Wordpress_Model_Resource_Post_Collection_Abstract
+	 * @return false|Fishpig_Wordpress_Model_Resource_Post_Collection
 	 */
 	public function getAssociatedPostsByProduct(Mage_Catalog_Model_Product $product)
 	{
-		if (!($product instanceof Mage_Catalog_Model_Product)) {
+		if (!$this->isConnected() || !($product instanceof Mage_Catalog_Model_Product)) {
 			return false;
 		}
 		
@@ -33,7 +38,7 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 		if (count($associations) > 0) {
 			return Mage::getResourceModel('wordpress/post_collection')
 				->addFieldToFilter('ID', array('IN' => $associations))
-				->addIsPublishedFilter();
+				->addIsViewableFilter();
 		}
 		
 		return false;
@@ -43,11 +48,11 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 	 * Retrieve a collection of post's associated with the given product
 	 *
 	 * @param Mage_Cms_Model_Page $page
-	 * @return false|Fishpig_Wordpress_Model_Resource_Post_Collection_Abstract
+	 * @return false|Fishpig_Wordpress_Model_Resource_Post_Collection
 	 */
 	public function getAssociatedPostsByCmsPage(Mage_Cms_Model_Page $page)
 	{
-		if (!($page instanceof Mage_Cms_Model_Page)) {
+		if (!$this->isConnected() || !($page instanceof Mage_Cms_Model_Page)) {
 			return false;
 		}
 
@@ -58,7 +63,7 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 		if (count($associations) > 0) {
 			return Mage::getResourceModel('wordpress/post_collection')
 				->addFieldToFilter('ID', array('IN' => $associations))
-				->addIsPublishedFilter();
+				->addIsViewableFilter();
 		}
 		
 		return false;
@@ -70,9 +75,9 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 	 * @param Fishpig_Wordpress_Model_Post $post
 	 * @return Mage_Catalog_Model_Resource_Eav_Mysql4_Product_Collection
 	 */
-	public function getAssociatedProductsByPost(Fishpig_Wordpress_Model_Post_Abstract $post)
+	public function getAssociatedProductsByPost(Fishpig_Wordpress_Model_Post $post)
 	{
-		if (!($post instanceof Fishpig_Wordpress_Model_Post)) {
+		if (!$this->isConnected() || !($post instanceof Fishpig_Wordpress_Model_Post)) {
 			return false;
 		}
 
@@ -348,8 +353,8 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 			));
 			
 			$dbname = $collection->getTable('wordpress/association');
-			
-			if (!Mage::helper('wordpress/database')->isSameDatabase()) {
+
+			if (!Mage::getStoreConfigFlag('wordpress/database/is_shared')) {
 				$dbname = (string)Mage::getConfig()->getNode('global/resources/default_setup/connection/dbname') . '.' . $dbname;
 			}
 			
@@ -362,7 +367,6 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 				);
 				
 			$collection->getSelect()->order('assoc.store_id DESC');
-//				->order('assoc.position ASC');
 		}
 		
 		return $this;
@@ -436,7 +440,7 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 			'object_id'
 		);
 		
-		return Mage::helper('wordpress/database')->getReadAdapter()->fetchCol($select);
+		return Mage::helper('wordpress/app')->getDbConnection()->fetchCol($select);
 	}
 
 	/**
@@ -468,5 +472,77 @@ class Fishpig_Wordpress_Helper_Associations extends Fishpig_Wordpress_Helper_Abs
 	protected function _getTable($entity)
 	{
 		return Mage::getSingleton('core/resource')->getTableName($entity);	
+	}
+	
+	/**
+	 * Ensure association tables are installed
+	 *
+	 * @return $this
+	 */
+	public function checkForTables()
+	{
+		$resource = Mage::getSingleton('core/resource');
+		$write = $resource->getConnection('core_write');
+		$read = $resource->getConnection('core_read');
+		
+		$associationTypeTable = $resource->getTableName('wordpress/association_type');
+		$associationTable = $resource->getTableName('wordpress/association');
+		
+		$tables = array(
+			$associationTypeTable => "CREATE TABLE IF NOT EXISTS %s (
+				`type_id` int(11) unsigned NOT NULL auto_increment,
+				`object` varchar(16) NOT NULL default '',
+				`wordpress_object` varchar(16) NOT NULL default '',
+				PRIMARY KEY(type_id)
+			)  ENGINE=InnoDB DEFAULT CHARSET=utf8;",
+			$associationTable => "CREATE TABLE IF NOT EXISTS %s (
+				`assoc_id` int(11) unsigned NOT NULL auto_increment,
+				`type_id` int(3) unsigned NOT NULL default 0,
+				`object_id` int(11) unsigned NOT NULL default 0,
+				`wordpress_object_id` int(11) unsigned NOT NULL default 0,
+				`position` int(4) unsigned NOT NULL default 4444,
+				`store_id` smallint(5) unsigned NOT NULL default 0,
+				PRIMARY KEY (`assoc_id`),
+				CONSTRAINT `FK_WP_ASSOC_TYPE_ID_WP_ASSOC_TYPE` FOREIGN KEY (`type_id`) REFERENCES `{$associationTypeTable}` (`type_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+				KEY `FK_WP_ASSOC_TYPE_ID_WP_ASSOC_TYPE` (`type_id`),
+				KEY `FK_STORE_ID_WP_ASSOC` (`store_id`),
+				CONSTRAINT `FK_STORE_ID_WP_ASSOC` FOREIGN KEY (`store_id`) REFERENCES `{$resource->getTableName('core_store')}` (`store_id`) ON DELETE CASCADE ON UPDATE CASCADE
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		");
+	
+		$missingTables = false;
+
+		foreach($tables as $table => $createSql) {
+			try {
+				$read->fetchOne($read->select()->from($table)->limit(1));
+			}
+			catch (Exception $e) {
+				$missingTables = true;
+				$write->query(sprintf($createSql, $table));
+			}
+		}
+	
+		if ($missingTables) {
+			$types = array(
+				1 => array('product', 'post'),
+				2 => array('product', 'category'),
+				3 => array('category', 'post'),
+				4 => array('category', 'category'),
+				5 => array('cms_page', 'post'),
+				6 => array('cms_page', 'category'),
+			);
+				
+			$select = $read->select()
+				->from($associationTypeTable, 'type_id')
+				->limit(1);
+				
+			if (!$read->fetchOne($select)) {
+				foreach($types as $typeId => $data) {
+					$write->query(sprintf("INSERT INTO %s VALUES (%d, '%s', '%s');\n", $associationTypeTable, $typeId, $data[0], $data[1]));
+				}
+			}
+		}			
+
+		return $this;
 	}
 }

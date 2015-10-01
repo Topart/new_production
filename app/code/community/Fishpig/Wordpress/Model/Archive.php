@@ -80,7 +80,8 @@ class Fishpig_Wordpress_Model_Archive extends Varien_Object
 	{
 		if (!$this->hasPostCollection()) {
 			$collection = Mage::getResourceModel('wordpress/post_collection')
-				->addIsPublishedFilter()
+				->setFlag('source', $this)
+				->addIsViewableFilter()
 				->addArchiveDateFilter($this->getId(), $this->getIsDaily())
 				->setOrderByPostDate();
 

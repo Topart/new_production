@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Topart_ProductImport>
+            <version>1.0.0</version>
+        </Topart_ProductImport>
+    </modules>
+    <global>
+        <helpers>
+            <productimport>
+                <class>Topart_ProductImport_Helper</class>
+            </productimport>
+        </helpers>
+    </global>	
+    <frontend>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <Topart_ProductImport before="Mage_Adminhtml">Topart_ProductImport_Adminhtml</Topart_ProductImport>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <!--
+    <adminhtml>
+        <layout>
+            <updates>
+                <topart_productimport>
+                    <file>topart/productimport.xml</file>
+                </topart_productimport>
+            </updates>
+        </layout>
+    </adminhtml>
+    -->
+</config>

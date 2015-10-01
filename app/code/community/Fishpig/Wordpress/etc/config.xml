@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Fishpig_Wordpress>
-            <version>3.0.42.0</version>
+            <version>4.0.0.28</version>
         </Fishpig_Wordpress>
     </modules>
     <global>
@@ -25,6 +25,15 @@
 					</wordpress>
                 </observers>
             </controller_front_init_routers>
+            <sitemap_sitemap_save_before>
+                <observers>
+					<wordpress>
+						<type>singleton</type>
+						<class>wordpress/observer</class>
+						<method>injectXmlSitemapLinksObserver</method>
+					</wordpress>
+                </observers>
+            </sitemap_sitemap_save_before>
         </events>
 		<blocks>
 			<wordpress>
@@ -44,9 +53,7 @@
 					<association_type><table>wordpress_association_type</table></association_type>
 					<!-- WordPress tables -->
 					<post><table>posts</table></post>
-					<page><table>posts</table></page>
 					<post_meta><table>postmeta</table></post_meta>
-					<page_meta><table>postmeta</table></page_meta>
 					<post_comment><table>comments</table></post_comment>
 					<post_comment_meta><table>commentmeta</table></post_comment_meta>
 					<post_category><table>terms</table></post_category>
@@ -59,11 +66,14 @@
 					<menu_item><table>posts</table></menu_item>
 					<user_meta><table>usermeta</table></user_meta>
 					<user><table>users</table></user>
-					<link><table>links</table></link>
-					<link_category><table>terms</table></link_category>
 					<image><table>posts</table></image>
 				</entities>
 			</wordpress_resource>
+			<sitemap>
+				<rewrite>
+					<sitemap>Fishpig_Wordpress_Model_Sitemap_Sitemap</sitemap>
+				</rewrite>
+			</sitemap>
 		</models>
 		<helpers>
 			<wordpress>
@@ -72,14 +82,20 @@
 		</helpers>
 		<resources>
 			<wordpress_read>
-				<connection><use>wordpress</use></connection>
+				<connection>
+					<use>wordpress</use>
+				</connection>
 			</wordpress_read>
 			<wordpress_write>
-				<connection><use>wordpress</use></connection>
+				<connection>
+					<use>wordpress</use>
+				</connection>
 			</wordpress_write>
 			<wordpress_setup>
-				<setup><module>Fishpig_Wordpress</module></setup>
-				<connection><use>core_setup</use></connection>
+				<setup>
+					<module>Fishpig_Wordpress</module>
+					<class>Fishpig_Wordpress_Model_Resource_Setup</class>
+				</setup>
 			</wordpress_setup>
 		</resources>
 	</global>
@@ -183,6 +199,7 @@
 		<wordpress>
 			<module>
 				<enabled>1</enabled>
+				<check_for_updates>1</check_for_updates>
 			</module>
 			<database>
 				<is_shared>1</is_shared>
@@ -193,6 +210,7 @@
 				<full>1</full>
 				<route>blog</route>
 				<path>wp</path>
+				<remove_trailing_slash>1</remove_trailing_slash>
 			</integration>
 			<toplink>
 				<enabled>1</enabled>
@@ -218,7 +236,6 @@
 			<before_connect>
 				<tables>
 					<post><table>posts</table></post>
-					<page><table>posts</table></page>
 					<post_meta><table>postmeta</table></post_meta>
 					<page_meta><table>postmeta</table></page_meta>
 					<post_comment><table>comments</table></post_comment>
@@ -231,10 +248,8 @@
 					<term_taxonomy><table>term_taxonomy</table></term_taxonomy>
 					<menu><table>terms</table></menu>
 					<menu_item><table>posts</table></menu_item>
-					<user_meta><table>usermeta</table></user_meta>
 					<user><table>users</table></user>
-					<link><table>links</table></link>
-					<link_category><table>terms</table></link_category>
+					<user_meta><table>usermeta</table></user_meta>
 					<image><table>posts</table></image>
 				</tables>
 			</before_connect>
@@ -249,35 +264,14 @@
 				<categories><block>sidebar_widget_categories</block><template>wordpress/sidebar/widget/categories.phtml</template></categories>
 				<tag_cloud><block>sidebar_widget_tagcloud</block><template>wordpress/sidebar/widget/tagcloud.phtml</template></tag_cloud>
 				<text><block>sidebar_widget_text</block><template>wordpress/sidebar/widget/text.phtml</template></text>
-				<links><block>sidebar_widget_links</block><template>wordpress/sidebar/widget/links.phtml</template></links>
 				<meta><block>sidebar_widget_meta</block><template>wordpress/sidebar/widget/meta.phtml</template></meta>
 				<rss><block>sidebar_widget_rss</block><template>wordpress/sidebar/widget/rss.phtml</template></rss>
 				<nav_menu><block>sidebar_widget_menu</block><template>wordpress/sidebar/widget/menu.phtml</template></nav_menu>
 				<calendar><block>sidebar_widget_calendar</block></calendar>
-				<!-- Non-Default Widgets -->
 				<categoryposts><block>sidebar_widget_posts</block><template>wordpress/sidebar/widget/categoryposts.phtml</template></categoryposts>
+				<widget_sp_image><block>sidebar_widget_image</block></widget_sp_image>
+				<lc_taxonomy><block>sidebar_widget_taxonomy</block><template>wordpress/sidebar/widget/taxonomy.phtml</template></lc_taxonomy>
 			</widgets>
 		</sidebar>
 	</wordpress>
-	<unit>
-		<models>
-			<wordpress>
-				<image />
-				<link />
-				<option />
-				<page />
-				<post />
-				<post_category />
-				<post_comment />
-				<post_tag />
-				<menu />
-				<menu_item />
-				<term />
-				<user />
-			</wordpress>
-		</models>
-		<dirs>
-			<WordPressIntegration>app/code/community/Fishpig/Wordpress</WordPressIntegration>
-		</dirs>
-	</unit>
 </config>

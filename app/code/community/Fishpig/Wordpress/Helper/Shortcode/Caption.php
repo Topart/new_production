@@ -22,16 +22,20 @@ class Fishpig_Wordpress_Helper_Shortcode_Caption extends Fishpig_Wordpress_Helpe
 	 * Apply the Vimeo short code
 	 *
 	 * @param string &$content
-	 * @param Fishpig_Wordpress_Model_Post_Abstract $object
+	 * @param Fishpig_Wordpress_Model_Post $post
 	 * @return void
 	 */	
-	protected function _apply(&$content, Fishpig_Wordpress_Model_Post_Abstract $object)
+	protected function _apply(&$content, Fishpig_Wordpress_Model_Post $post)
 	{
 		if (($shortcodes = $this->_getShortcodes($content)) !== false) {
 			foreach($shortcodes as $shortcode) {
 				$params = $shortcode->getParams();
 				$caption = $params->getCaption() ? sprintf('<p class="wp-caption-text">%s</p>', trim($params->getCaption())) : '';
-				$style = $params->getAlign() != 'center' ? ' style="width:'.($params->getWidth()+10).'px;"' : '';
+				$style = '';
+				
+				if ($params->getWidth()) {
+					$style = $params->getAlign() != 'center' ? ' style="width:'.($params->getWidth()+10).'px;"' : '';
+				}
 
 				$html = array(
 					sprintf('<div id="%s" class="wp-caption %s"%s>', $params->getId(), $params->getAlign(), $style),
