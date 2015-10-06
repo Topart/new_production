@@ -413,7 +413,10 @@
 /* End product
 ~~~~~~~~~~~~~~*/
 
+
+
 /*social shareThis*/
+
 .st_facebook, .st_twitter, .st_pinterest{
    display: inline-block;
     width: 35px;
@@ -433,4 +436,5 @@
 .stButton .pinterest{
     background-image:url("/skin/frontend/ultimo/default/images/sprite-icons-social.png")!important;
 }
+
 /*social shareThis*/
