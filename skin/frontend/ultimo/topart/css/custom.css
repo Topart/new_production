@@ -387,6 +387,20 @@
     .user-menu.clearer.v-grid.grid12-4 {
         right: 23px;
     }
+    #s3_file_input {
+        left: 0!important;
+        width: 100px !important;
+
+    }
+    .custom-upload-button {
+        width: 250px;
+    }
+    .create-art-list-container > ul > li {
+        width: 80%!important;
+    }
+    .create-art-list-container .create-art-list > ul > li.middle-li {
+        margin: auto !important;
+    }
 }
 
 @media only screen and (max-width: 320px) {
@@ -403,6 +417,54 @@
 /* End  Header and footer
   ~~~~~~~~~~~~~~~~~~~~~~~*/
 
+/* Category view
+~~~~~~~~~~~~~~~~*/
+
+.catalog-category-view .category-products .category-products-grid .item, .catalogsearch-result-index .category-products .category-products-grid .item {
+    width: 47.33%;
+}
+.catalog-category-view .itemgrid-adaptive.itemgrid-3col .item:nth-child(3n+1) ,.catalogsearch-result-index .itemgrid-adaptive.itemgrid-3col .item:nth-child(3n+1) {
+    clear: none !important;
+}
+.catalog-category-view .itemgrid-adaptive.itemgrid-2col .item:nth-child(3n+1) ,.catalogsearch-result-index .itemgrid-adaptive.itemgrid-2col .item:nth-child(3n+1) {
+  clear: none !important;
+}
+
+.products-list .product-image img, .category-products-grid .product-image img {
+    max-height: 400px !important;
+}
+.catalog-category-view .category-products .category-products-grid .item, .catalogsearch-result-index .category-products .category-products-grid .item {
+    height: 463px;
+}
+.catalog-category-view .category-products div.product-image-wrapper a, .catalogsearch-result-index .category-products div.product-image-wrapper a {
+    height: 400px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .products-list .product-image img, .category-products-grid .product-image img {
+        max-height: 200px !important;
+    }
+    .catalog-category-view .category-products .category-products-grid .item, .catalogsearch-result-index .category-products .category-products-grid .item {
+        height: 263px;
+    }
+
+    .catalog-category-view .category-products div.product-image-wrapper a, .catalogsearch-result-index .category-products div.product-image-wrapper a {
+        height: 200px;
+    }
+
+}
+@media only screen and (max-width: 479px) {
+
+    /* Category view
+    -------------------------------------------------------------- */
+    .catalog-category-view .category-products div.product-image-wrapper a,.catalogsearch-result-index .category-products div.product-image-wrapper a { height: 200px; }
+    .catalog-category-view .category-products div.product-image-wrapper a img,.catalogsearch-result-index .category-products div.product-image-wrapper a img{ max-height: 200px !important; }
+
+}
+
+/* End Category view
+~~~~~~~~~~~~~~~~~~~~*/
+
 /* product
 ~~~~~~~~~~*/
 
@@ -413,12 +475,47 @@
 /* End product
 ~~~~~~~~~~~~~~*/
 
+/*Category view
+~~~~~~~~~~~~~~~*/
 
+.create-art-content{
+    float:left;
+}
+.create-art-list-container > ul > li.middle-li {
+    margin: 0 4% 2em !important;
+}
+ul.create-art-list li:nth-child(3) {
+    width: 31.4%;
+}
 
+@media only screen and (max-width: 375px) {
+    #s3_file_input {
+        left: 0!important;
+        width: 100px !important;
+
+    }
+    .custom-upload-button {
+        width: 100%;
+    }
+    .create-art-list-container > ul > li {
+        width: 80%!important;
+    }
+    .create-art-list-container .create-art-list > ul > li.middle-li {
+        margin: auto !important;
+    }
+    .create-art-list-container > ul > li.middle-li {
+        margin: auto!important;
+    }
+    .create-art-list-container .category-collections .category-isotope img.image-isotope{
+        width: 580px!important;
+        height: 250px!important;
+    }
+}
+/* End Category view
+~~~~~~~~~~~~~~~~~~~*/
 /*social shareThis*/
-
 .st_facebook, .st_twitter, .st_pinterest{
-   display: inline-block;
+    display: inline-block;
     width: 35px;
 }
 .st_facebook span.icon,.st_twitter span.icon, .st_pinterest span.icon{
@@ -436,5 +533,4 @@
 .stButton .pinterest{
     background-image:url("/skin/frontend/ultimo/default/images/sprite-icons-social.png")!important;
 }
-
 /*social shareThis*/

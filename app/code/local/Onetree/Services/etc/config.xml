@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Onetree_Services>
+            <version>0.1.0</version>
+        </Onetree_Services>
+    </modules>
+    <global>
+        <models>
+            <onetree_services>
+                <class>Onetree_Services_Model</class>
+                <resourceModel>onetree_services_resource</resourceModel>
+            </onetree_services>
+            <onetree_services_resource>
+                <class>Onetree_Services_Model_Resource</class>
+            </onetree_services_resource>
+            <services>
+                <rewrite>
+                    <catalog_product_api>Onetree_Services_Model_Services_Catalog_Product_Api</catalog_product_api>
+                </rewrite>
+            </services>
+        </models>
+        <blocks>
+            <onetree_services>
+                <class>Onetree_Services_Block</class>
+            </onetree_services>
+        </blocks>
+        <helpers>
+            <onetree_services>
+                <class>Onetree_Services_Helper</class>
+            </onetree_services>
+        </helpers>
+    </global>
+</config>
