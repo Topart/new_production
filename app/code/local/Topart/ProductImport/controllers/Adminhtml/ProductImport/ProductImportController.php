@@ -18,11 +18,13 @@ class Topart_ProductImport_Adminhtml_ProductImport_ProductImportController exten
     public function runAction()
     {
         /*** PROCESS ***/
+        Mage::log("ProductImport PROCESS BEGIN");
         $helper = Mage::helper('productimport/data');
         if (isset($_POST['topart_productimport_process']))
         {
             $helper->process();
         }
+        Mage::log("ProductImport PROCESS END");
 
         return $this->indexAction();
     }
