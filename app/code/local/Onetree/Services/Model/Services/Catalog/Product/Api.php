@@ -4,7 +4,7 @@
  * User: David
  * Date: 7/23/15
  * Time: 11:20
- */ 
+ */
 class Onetree_Services_Model_Services_Catalog_Product_Api extends GoDataFeed_Services_Model_Catalog_Product_Api {
 
     public function extendedList(
@@ -218,6 +218,7 @@ class Onetree_Services_Model_Services_Catalog_Product_Api extends GoDataFeed_Ser
 
                 // ABSOLUTE URL & IMAGE
                 if($absoluteUrlRequested || $absoluteImageUrlRequested) {
+
                     $productUrl = $productToRetrieve->getUrlPath();
                     $productImage = $productToRetrieve->getImage();
 
@@ -258,14 +259,11 @@ class Onetree_Services_Model_Services_Catalog_Product_Api extends GoDataFeed_Ser
                     }
 
                     //if($absoluteImageUrlRequested && !empty($productImage) && $productImage != $noSelectionValue) {
-                    $urlimage = $helpImg->getImg($productToRetrieve->getData('sku'), 500, 500, 'small_image',null);
+                    $urlimage = $helpImg->getImg($productToRetrieve, 500, 500, 'small_image',null,true);
                     $exist = $helpImg->file_exists_remote($urlimage);
                     if( $exist ){
                         $responseField = $absoluteImageUrlConfig[1];
                         $resultItem[$responseField] = $urlimage;
-                        if (in_array('image',$customAttributes)) {
-                            $resultItem['image'] = $urlimage;
-                        }
                     }
                 }
 
@@ -284,12 +282,12 @@ class Onetree_Services_Model_Services_Catalog_Product_Api extends GoDataFeed_Ser
                 // ADDITIONAL IMAGES
                 $additionalImagesRequested = $additionalImagesConfig[0];
                 if($additionalImagesRequested) {
+
                     $additionalImageURLs = array();
-                    $urlimage = $helpImg->getImg($productToRetrieve->getData('sku'), 500, 500, 'small_image','alternative');
-                    $exist = $helpImg->file_exists_remote($urlimage);
-                    if( $exist ){
-                        $additionalImageURLs[] = $urlimage;
+                    foreach (Mage::getModel('catalog/product')->load($productIdToRetrieve)->getMediaGalleryImages() as $image) {
+                        $additionalImageURLs[] = $image['url'];
                     }
+
                     $resultItem[$additionalImagesConfig[1]] = $additionalImageURLs;
                 }
 
