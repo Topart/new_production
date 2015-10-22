@@ -87,7 +87,10 @@
 			<action method="addItem"><type>skin_css</type><name>css/styles-ie7.css</name><params/><if>lte IE 7</if></action>
 			<action method="addItem"><type>skin_css</type><name>css/styles-ie8.css</name><params/><if>lte IE 8</if></action>
 			
-			<action method="addCss"><stylesheet>css/prettyPhoto.css</stylesheet></action>
+            <action method="addCss"><stylesheet>css/prettyPhoto.css</stylesheet></action>
+
+            <!-- Redesign Overrides 20151016 -->
+			<action method="addCss"><stylesheet>css/redesign-20151016.css</stylesheet></action>
 			
 			<block type="core/template" name="head.theme.css" template="page/html/head_theme_css.phtml" before="-" />
 			
@@ -759,16 +762,24 @@
 	<cms_index_index>
 	
 		<!-- Preface ====================================================================== -->
-		<reference name="preface">
-			<block type="page/html_wrapper" name="i_block_home_preface">
-				<action method="setElementClass"><value>block_home_preface std</value></action>
-				<block type="cms/block" name="block_home_preface">
-					<action method="setBlockId"><block_id>block_home_preface</block_id></action>
-				</block>
-			</block>
-		</reference>
-		
-		<!-- Left column ====================================================================== -->
+        <reference name="preface">
+            <action method="unsetChild">
+                <alias>ultraslideshow</alias>
+            </action>
+            <block type="core/template" name="homepage_slideshow" template="topart/homepage_slideshow.phtml" output="toHtml" before="-">
+                <action method="insert">
+                    <block>ultraslideshow</block>
+                </action>
+            </block>
+            <block type="page/html_wrapper" name="i_block_home_preface">
+                <action method="setElementClass"><value>block_home_preface std</value></action>
+                <block type="cms/block" name="block_home_preface">
+                    <action method="setBlockId"><block_id>block_home_preface</block_id></action>
+                </block>
+            </block>
+        </reference>
+
+        <!-- Left column ====================================================================== -->
 		<reference name="left">
 			<block type="core/text_list" name="home_left" as="home_left" translate="label" before="-">
 				<label>Home Left</label>

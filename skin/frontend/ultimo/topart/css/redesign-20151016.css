@@ -1,0 +1,189 @@
+/******************************************************************************
+ *
+ * Redesign 20151016
+ *
+ *****************************************************************************/
+
+body,
+.main-font,
+h1,
+h2,
+h3,
+h4,
+h5,
+.section-title,
+.products-list .product-name,
+.products-grid .product-name,
+h3.product-name,
+.feature .heading,
+.accordion .heading,
+#mobnav-trigger,
+#nav > li > a,
+#nav.wide ul.level0 > li > a,
+.vertnav-top li a,
+.block .block-title,
+#opc-login h3,
+.box-account .box-head h2,
+.order-items h2.table-caption,
+.order-items h2.sub-title,
+.order-items .order-comments h2,
+.product-view .box-reviews dt .heading,
+.gen-tabs .tabs a,
+.footer .heading,
+#subscribe-form label,
+.caption .heading {
+    font-family: Arial,Helvetica,sans-serif;
+}
+
+#nav li a span {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+}
+
+#nav>li>a {
+    border-bottom: 3px solid transparent;
+}
+
+#nav > li:hover > a,
+.vertnav-top li>a:hover {
+    background-color: transparent !important;
+    color: inherit !important;
+    border-bottom: 3px solid black;
+}
+
+.home-content h2.home-sections-title,
+.page .main-container h2.inner-sections-title,
+.home-content h2.home-sections-title {
+    border-color: black;
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    font-style: oblique;
+    font-size: 28px !important;
+    letter-spacing: 1px;
+}
+
+.home-sections-title .title-link {
+    text-transform: none;
+    color: black;
+}
+
+#homepage-hero-container .right h2 {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    text-transform: uppercase;
+    color: black;
+    font-style: oblique;
+    padding: 25px 0;
+    border-top: 8px solid black;
+    border-bottom: 8px solid black;
+    text-align: right;
+    font-size: 39px;
+    margin-top: 19px;
+    padding-left: 40px;
+}
+
+#homepage-hero-container .right .button {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    text-transform: uppercase;
+    color: black;
+    font-style: oblique;
+    padding: 18px 38px;
+    border: 4px solid black;
+    font-size: 24px;
+    width: auto;
+    display: block;
+    float: none;
+    text-align: center;
+    margin-top: 40px;
+}
+
+body > #homepage-hero-container {
+    display: none;
+}
+
+.block-layered-nav .block-title strong,
+.block-layered-nav dt {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    color: black;
+}
+
+.catalog-category-view .page-title h1 {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    color: black;
+    font-style: oblique;
+    letter-spacing: 1px;
+}
+
+.block .block-title,
+.section-title {
+    border-bottom: 3px solid black;
+}
+
+.block-layered-nav dd a {
+    color: black;
+}
+
+.products-grid.centered .item h2 a {
+    color: black;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+}
+
+.footer-container .footer-bottom-container .footer-bottom .item-left .footer-bottom-slogan {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    color: black;
+    font-style: oblique;
+    text-transform: uppercase;
+    font-size: 23px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid black;
+    margin-bottom: 15px;
+}
+
+.footer a,
+.footer-bottom {
+    color: black;
+}
+
+.footer a {
+    font-style: italic;
+}
+
+.footer-container .footer-primary .block-title.heading {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    color: black;
+    border-color: black;
+}
+
+#newsletter-validate-detail label {
+    color: black;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+}
+
+.block-layered-nav dl {
+    padding-left: 0;
+}
+
+.category-products > .toolbar {
+    display: none !important;
+}
+
+.header-top-container .header-top .top-text {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif !important;
+    color: black;
+    font-style: oblique !important;
+    font-size: 15px !important;
+}
+
+.header .dropdown {
+    color: black;
+    font-family: Arial,Helvetica,sans-serif;
+    font-weight: bold;
+}
+
+#nav .level0-wrapper,
+#nav.classic ul {
+    border-color: #adc1be !important;
+}
+
+#nav ul.level0>li>a:hover {
+    color: #adc1be !important;
+}
