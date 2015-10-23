@@ -42,6 +42,7 @@ h3.product-name,
 
 #nav>li>a {
     border-bottom: 3px solid transparent;
+    font-size: 15px;
 }
 
 #nav > li:hover > a,
