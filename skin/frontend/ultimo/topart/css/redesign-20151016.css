@@ -106,7 +106,8 @@ body > #homepage-hero-container {
     color: black;
 }
 
-.catalog-category-view .page-title h1 {
+.catalog-category-view .page-title h1,
+.catalogsearch-result-index .page-title h1 {
     font-family: "Arial Black",Arial,Helvetica,sans-serif;
     color: black;
     font-style: oblique;
