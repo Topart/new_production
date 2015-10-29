@@ -191,3 +191,8 @@ body > #homepage-hero-container {
 #nav ul.level0>li>a:hover {
     color: #adc1be !important;
 }
+
+/*** Adjust spacing on editors picks blocks on homepage ***/
+#editor-picks-wrapper li {
+    margin: 0 4px 4px;
+}
