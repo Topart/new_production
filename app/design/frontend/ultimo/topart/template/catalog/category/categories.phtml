@@ -50,12 +50,12 @@ $_categories->addAttributeToSelect('url_key')
             $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name');
             if(!empty($categoryImg)): ?>
                 
-                <div class="category-isotope" style="width:386px;height:386px;overflow:hidden;float:left;position:relative;">
+                <div class="category-isotope">
                     <a href="<?php echo $anchor; ?>" title="<?php echo $categoryName; ?>">
                         <div class="overlay-opacity"></div>
                         <div class="overlay-icon"></div>
                         <div class="overlay-info <?php if(in_array(strtolower(trim($catVar)), $black)) echo "black"?>"><?php echo $categoryName; ?></div>
-                        <img class="image-isotope" src="<?php echo $categoryImg; ?>" title="<?php echo $categoryName; ?>" alt="<?php echo $categoryName; ?>" style="max-width:none;" />
+                        <img class="image-isotope" src="<?php echo $categoryImg; ?>" title="<?php echo $categoryName; ?>" alt="<?php echo $categoryName; ?>" />
                     </a>
                 </div>
             

@@ -196,3 +196,18 @@ body > #homepage-hero-container {
 #editor-picks-wrapper li {
     margin: 0 4px 4px;
 }
+
+/***
+ * New Layout on Subcategories
+ */
+.category-collections .category-isotope {
+    width: 386px;
+    height: 386px;
+    overflow: hidden;
+    float: left;
+    position: relative;
+}
+
+.category-collections .category-isotope .image-isotope {
+    max-width: none;
+}
