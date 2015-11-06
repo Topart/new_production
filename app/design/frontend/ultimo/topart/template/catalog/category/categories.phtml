@@ -50,12 +50,12 @@ $_categories->addAttributeToSelect('url_key')
             $catVar = $_helper->categoryAttribute($_category, $_category->getName(), 'name');
             if(!empty($categoryImg)): ?>
                 
-                <div class="category-isotope">
+                <div class="category-isotope" style="width:386px;height:386px;overflow:hidden;float:left;position:relative;">
                     <a href="<?php echo $anchor; ?>" title="<?php echo $categoryName; ?>">
                         <div class="overlay-opacity"></div>
                         <div class="overlay-icon"></div>
                         <div class="overlay-info <?php if(in_array(strtolower(trim($catVar)), $black)) echo "black"?>"><?php echo $categoryName; ?></div>
-                        <img class="image-isotope" src="<?php echo $categoryImg; ?>" title="<?php echo $categoryName; ?>" alt="<?php echo $categoryName; ?>" />
+                        <img class="image-isotope" src="<?php echo $categoryImg; ?>" title="<?php echo $categoryName; ?>" alt="<?php echo $categoryName; ?>" style="max-width:none;" />
                     </a>
                 </div>
             
@@ -78,13 +78,34 @@ $_categories->addAttributeToSelect('url_key')
             ];
             var $container = jQuery('.category-collections');
 
+            function adjustCategoryImageSize(e) {
+                var width = jQuery(e).width();
+                var height = jQuery(e).height();
+                //All images are wider than tall currently
+                //if (width > height)
+                //{
+                    var margin = 386 / 2 - (width * 386 / height) / 2;
+                    jQuery(e).css({
+                        'width': 'auto',
+                        'height': '386px',
+                        'max-width': 'none',
+                        'margin-left': margin + 'px'
+                    });
+                //}
+            }
+
             $container.find(".image-isotope").each(function (index) {
                 var i = index % itemSizes.length;
 
-                jQuery(this).width(itemSizes[i][0]);
-                jQuery(this).height(itemSizes[i][1]);
-            });
+                adjustCategoryImageSize(this);
 
+                jQuery(this).load(function() {
+                    adjustCategoryImageSize(this);
+                });
+
+            });
+            /*
+            * DISABLE ISOTOPE BEHAVIOR
             $container.isotope({
                 itemSelector: '.category-isotope',
                 layoutMode: 'masonry',
@@ -92,6 +113,7 @@ $_categories->addAttributeToSelect('url_key')
                     columnWidth: 1
                 }
             });
+             */
         });
     </script>
 </div>
