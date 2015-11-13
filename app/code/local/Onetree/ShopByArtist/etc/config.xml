@@ -26,10 +26,10 @@
         </resources>
     </global>
     <default>
-    	<shopbyartist>
-    		<shopbyartist_config>
-    			<category_id>1598</category_id>
-    		</shopbyartist_config>
-    	</shopbyartist>
+        <shopbyartist>
+            <shopbyartist_config>
+                <category_id>1580</category_id>
+            </shopbyartist_config>
+        </shopbyartist>
     </default>
 </config>
