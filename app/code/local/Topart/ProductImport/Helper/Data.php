@@ -337,10 +337,14 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                     $scan_line = $source_line;
                 }
             }
-
-            if ($udf_entity_type == "Image")
+            else if ($udf_entity_type == "Image")
             {
                 $scan_line = $item_source_line[$item_code];
+            }
+            else
+            {
+                $source_line += 1;
+                continue;
             }
 
             /***LINE 469***/
@@ -624,6 +628,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 			$importItems[$destination_line]["meta_description"] = $description;
 			$keywords_list = strtolower($udf_attributes);
 			$importItems[$destination_line]["meta_keyword"] = $keywords_list;
+			$importItems[$destination_line]["keywords"] = $keywords_list;
             $importItems[$destination_line]["meta_title"] = $description;
 
             /*** LINE 733 ***/
@@ -1701,6 +1706,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
             /***LINE 1785***/
             $source_line = $scan_line + 1;
+
+            //Mage::log("IMPORTING LINE $source_line: " . microtime(true) . "\r\n<br />");
 	
         }
         /*** END MAIN PARALLEL WRITE FOR ***/
