@@ -380,3 +380,9 @@ body .product-view .product-options-bottom .add-to-cart {
 .product-view .short-description .std a {
     text-decoration: underline;
 }
+
+.std .tab-free-shipping .truck{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-01.png); background-size: auto 49px;}
+.std .tab-free-shipping .plane{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-02.png); background-size: auto 49px;}
+.std .tab-free-shipping .hand{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-03.png); background-size: auto 49px;}
+.std .tab-free-shipping .gift{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-04.png); background-size: auto 49px;}
+.std .tab-free-shipping .information{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-05.png); background-size: auto 49px;}
