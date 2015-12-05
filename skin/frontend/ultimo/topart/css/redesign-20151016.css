@@ -386,3 +386,43 @@ body .product-view .product-options-bottom .add-to-cart {
 .std .tab-free-shipping .hand{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-03.png); background-size: auto 49px;}
 .std .tab-free-shipping .gift{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-04.png); background-size: auto 49px;}
 .std .tab-free-shipping .information{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-05.png); background-size: auto 49px;}
+
+.social-links .icon.icon-hover:hover {
+    background-color: #444 !important;
+}
+
+.social-links .icon.i-twitter-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-06.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-twitter-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-16.png);
+}
+
+.social-links .icon.i-facebook-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-10.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-facebook-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-20.png);
+}
+
+.social-links .icon.i-pinterest-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-09.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-pinterest-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-19.png);
+}
+
+.social-links .icon.i-instagram-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-07.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-instagram-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-17.png);
+}
