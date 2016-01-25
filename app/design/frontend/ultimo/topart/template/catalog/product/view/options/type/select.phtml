@@ -25,11 +25,21 @@
  */
 ?>
 <?php /* @var $this Mage_Catalog_Block_Product_View_Options_Type_Select */ ?>
+<?php $isStoreMetric = (Mage::app()->getStore()->getStoreId() != 1); ?>
 <?php $_option = $this->getOption() ?>
 <?php $product_option_title = $option_title = strtolower(str_replace(" ", "_", $this->htmlEscape($_option->getTitle()))); ?>
 <?php if ($option_title != 'size'): ?>
     <div class="option-reloaded">
 <?php endif; ?>
+
+<script type="text/javascript">
+<?php if ($isStoreMetric): ?>
+    window.topart_metric = true;
+<?php else: ?>
+    window.topart_metric = false;
+<?php endif; ?>
+</script>
+
     <dt class='<?php echo $option_title; ?>'><label<?php if ($_option->getIsRequire())
             echo ' class="required"' ?>><?php if ($_option->getIsRequire())
                 echo '<em>*</em>' ?>
@@ -270,7 +280,10 @@
                             $is_a_number = true;
                         }
 
-                        $product_size = $size_value_array[6] . "&#34; x " . $size_value_array[8] . "&#34;";
+                        if ($isStoreMetric)
+                            $product_size = round(2.54 * $size_value_array[6],0) . "cm x " . round(2.54 * $size_value_array[8],0) . "cm";
+                        else
+                            $product_size = $size_value_array[6] . "&#34; x " . $size_value_array[8] . "&#34;";
 
                         $product_size = $this->getSize($option_sku);
                         //47&#34; x 35&#34;
@@ -285,7 +298,10 @@
                                     $show_fraction = false;
                                 } else {
                                     //custom_option_size_posterpaper_xl_ui_82_width_47_length_35
-                                    $product_size = $product_size["width"] . "&#34; x " . $product_size["length"] . "&#34;";
+                                    if ($isStoreMetric)
+                                        $product_size = round(2.54 * $product_size["width"],0) . "cm x " . round(2.54 * $product_size["length"],0) . "cm";
+                                    else
+                                        $product_size = $product_size["width"] . "&#34; x " . $product_size["length"] . "&#34;";
                                     //47&#34; x 35&#34;
                                     $size_initial = $product_size;
                                 }

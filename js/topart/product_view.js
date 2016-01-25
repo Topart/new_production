@@ -1110,15 +1110,24 @@ var globals = {};
 
 				// Display the selected width and height
 				selected_width_index = jQuery(".current_size").html().indexOf("width_");
-				selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 2);
+				selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 5);
 
 				if (selected_width.indexOf("_") >= 0)
-					selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, 1);
+					selected_width = jQuery(".current_size").html().substr(selected_width_index + 6, selected_width.indexOf("_"));
 
 				selected_length_index = jQuery(".current_size").html().indexOf("length_");
 				selected_length = jQuery(".current_size").html().substr(selected_length_index + 7, 4);
 
-				selected_size = selected_width + "\"" + "x" + selected_length + "\"";
+                //convert for metric units
+                if (window.topart_metric) {
+                    var selected_width_display = selected_width * 2.54;
+                    var selected_length_display = selected_length * 2.54;
+
+                    selected_size = Math.round(selected_width_display) + "cm " + "x " + Math.round(selected_length_display) + "cm";
+                }
+                else {
+                    selected_size = selected_width + "\"" + "x" + selected_length + "\"";
+                }
 
 				// If the the current substrate selection is Poster, show the corresponding dimension
 				if (jQuery.trim(selected_substrate) == jQuery.trim(Translator.translate("Poster")))

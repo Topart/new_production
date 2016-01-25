@@ -7,6 +7,12 @@
     padding: 8px 15px;
     font-size: 18px;
 }
+
+#topart_productimport label
+{
+    min-width: 275px;
+    display: inline-block;
+}
 </style>
 
 <?php
@@ -65,6 +71,24 @@ $fieldset->addField('topart_productimport_file_retail', 'file', array(
     'label'     => $this->__('Retail Master Excel File (retail_master.xls)'),
     'required'  => true,
     'name'      => 'topart_productimport_file_retail',
+));
+
+$fieldset->addField('topart_productimport_metric', 'checkbox', array(
+    'label'     => $this->__('Convert Dimensions to Metric Units'),
+    'onclick'   => 'this.value = this.checked ? 1 : 0;',
+    'name'      => 'topart_productimport_metric',
+));
+
+$fieldset->addField('topart_productimport_parse_retail_as_metric', 'checkbox', array(
+    'label'     => $this->__('Parse Retail Dimensions as Metric Units'),
+    'onclick'   => 'this.value = this.checked ? 1 : 0;',
+    'name'      => 'topart_productimport_parse_retail_as_metric',
+));
+
+$fieldset->addField('topart_productimport_disable_framing', 'checkbox', array(
+    'label'     => $this->__('Disable Framing'),
+    'onclick'   => 'this.value = this.checked ? 1 : 0;',
+    'name'      => 'topart_productimport_disable_framing',
 ));
 
 

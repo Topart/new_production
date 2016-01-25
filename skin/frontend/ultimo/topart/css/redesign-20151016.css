@@ -426,3 +426,10 @@ body .product-view .product-options-bottom .add-to-cart {
 .social-links .icon.i-instagram-w:hover {
     background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-17.png);
 }
+
+.product-view #custom_option_size LI {
+    min-height: 23px;
+    padding-bottom: 3px;
+    border-radius: 0px;
+    border-bottom: 3px solid transparent;
+}

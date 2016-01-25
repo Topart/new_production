@@ -90,6 +90,11 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
     {
         Mage::log("START TIME: " . microtime(true) . "\r\n<br />");
 
+        $bConvertToMetric = !empty($_POST['topart_productimport_metric']);
+        $bParseRetailAsMetric = !empty($_POST['topart_productimport_parse_retail_as_metric']);
+        $bUseFixedPricing = !empty($_POST['topart_productimport_use_fixed_pricing']);
+        $bDisableFraming = !empty($_POST['topart_productimport_disable_framing']);
+
         /***
          * Load/Upload Files
          */
@@ -289,11 +294,13 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             $primary_vendor_no = $sourceSheet_arr[$source_line][$source_dictionary["PrimaryVendorNo"]];
 
             # Skip importing the framing related items
+            /**
             if ($primary_vendor_no == "F21066")
             {
                 $source_line++;
 				continue;
             }
+            **/
 
             $item_code = $sourceSheet_arr[$source_line][$source_dictionary["Item Code"]];
             $udf_entity_type = $sourceSheet_arr[$source_line][$source_dictionary["UDF_ENTITYTYPE"]];
@@ -341,6 +348,10 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             {
                 $scan_line = $item_source_line[$item_code];
             }
+            else if ($udf_entity_type == "Frame")
+            {
+                $scan_line = $item_source_line[$item_code];
+            }
             else
             {
                 $source_line += 1;
@@ -362,14 +373,14 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             $udf_image_size_in = $this->getSheetValue($sourceSheet, $source_dictionary["UDF_IMAGE_SIZE_IN"], $source_line);
 
             if (empty($udf_paper_size_in) && !empty($udf_paper_size_cm))
-                $udf_paper_size_in = round($this->compute_image_size_width($udf_paper_size_cm) / 2.54, 2) . " x " .
-                round($this->compute_image_size_length($udf_paper_size_cm) / 2.54, 2);
+                $udf_paper_size_in = round($this->compute_image_size_width($udf_paper_size_cm) / 2.54, 3) . " x " .
+                round($this->compute_image_size_length($udf_paper_size_cm) / 2.54, 3);
 
             if (empty($udf_image_size_in))
             {
 				if (!empty($udf_image_size_cm))
-                    $udf_image_size_in = round($this->compute_image_size_width(udf_image_size_cm) / 2.54, 2) . " x " .
-                    round($this->compute_image_size_length($udf_image_size_cm) / 2.54, 2);
+                    $udf_image_size_in = round($this->compute_image_size_width(udf_image_size_cm) / 2.54, 3) . " x " .
+                    round($this->compute_image_size_length($udf_image_size_cm) / 2.54, 3);
 				else
                     $udf_image_size_in = $udf_paper_size_in;
             }
@@ -488,6 +499,8 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
             ### End of Fields variables assignments ###
             /***LINE 612***/
+
+            $base_product_destination_line = $destination_line;
 
             if (!isset($importItems[$destination_line]))
                 $importItems[$destination_line] = array();
@@ -1134,6 +1147,9 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
             /*** LINE 1246 ***/
 
+            //track if we found any valid substrates
+            $bFoundSubstrates = false;
+
             ///echo "$source_line TIME check B: " . microtime(true) . "\r\n<br />";
 
             ########## IF UDF_PHOTOPAPER == Y ####################
@@ -1211,6 +1227,12 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                                 $size_photopaper_length = intval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Length"]]);
                                 $size_photopaper_width = intval($retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Width"]]);
 
+                                if ($bParseRetailAsMetric)
+                                {
+                                    $size_photopaper_length = (float)$size_photopaper_length / 2.54;
+                                    $size_photopaper_width = (float)$size_photopaper_width / 2.54;
+                                }
+
 								$orientation = strtolower($udf_orientation);
                                 if ($orientation == "landscape")
                                 {
@@ -1235,19 +1257,34 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                                     # Do nothing, Square Images are set already
                                 }
 
-								$size_photopaper_width = (string)$size_photopaper_width;
-								$size_photopaper_length = (string)$size_photopaper_length;
 
-								$importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $size_photopaper_width . "\""  . "x" . $size_photopaper_length . "\"";
-								$importItems[$destination_line]["_custom_option_row_price"] = $size_price;
+                                if ($bConvertToMetric)
+                                {
+                                    $size_photopaper_width = (string)$size_photopaper_width;
+                                    $size_photopaper_length = (string)$size_photopaper_length;
+
+                                    $importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . ((string)intval($size_photopaper_width * 2.54)) . "cm "  . "x " . ((string)intval($size_photopaper_length * 2.54)) . "cm";
+                                    $importItems[$destination_line]["_custom_option_row_price"] = $size_price;
+                                }
+                                else
+                                {
+                                    $size_photopaper_width = (string)$size_photopaper_width;
+                                    $size_photopaper_length = (string)$size_photopaper_length;
+
+                                    $importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $size_photopaper_width . "\""  . "x" . $size_photopaper_length . "\"";
+                                    $importItems[$destination_line]["_custom_option_row_price"] = $size_price;
+                                }
 
 								if (strtolower($size_name) == "oversize large")
 									$size_name = "Oversize_Large";
 
 				
                                 $importItems[$destination_line]["_custom_option_row_sku"] = "size_photopaper_" . strtolower($size_name) . "_ui_" . $size_photopaper_ui .
-                                    "_width_" . $size_photopaper_width . "_length_" . $size_photopaper_length;
-								$importItems[$destination_line]["_custom_option_row_sort"] = $match_index;
+                                    "_width_" . round($size_photopaper_width,3) . "_length_" . round($size_photopaper_length,3);
+                                $importItems[$destination_line]["_custom_option_row_sort"] = $match_index;
+
+                                $bFoundSubstrates = true;
+                                //Mage::log("IMPORT: FOUND SUBSTRATE PHOTOPAPER");
 
                                 $destination_line++;
                                 if (!isset($importItems[$destination_line]))
@@ -1279,10 +1316,16 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                         continue;
 
                     $retail_ratio_dec = floatval($retail_canvas_arr[$i][$retail_canvas_dictionary["Decimal Ratio"]]);
-                    $image_source = $retail_photo_paper_arr[$i][$retail_photo_paper_dictionary["Image Source"]];
+                    $image_source = $retail_canvas_arr[$i][$retail_canvas_dictionary["Image Source"]];
 					
                     $size_canvas_length_1 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["WH_Length"]]);
                     $size_canvas_width_1 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["WH_Width"]]);
+
+                    if ($bParseRetailAsMetric)
+                    {
+                        $size_canvas_length_1 = (float)$size_canvas_length_1 / 2.54;
+                        $size_canvas_width_1 = (float)$size_canvas_width_1 / 2.54;
+                    }
 
 					$short_side = 0;
 					if ($size_canvas_length_1 < $size_canvas_width_1)
@@ -1302,6 +1345,15 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 						
                         $size_canvas_length_3 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["MR_Length"]]);
                         $size_canvas_width_3 = intval($retail_canvas_arr[$i][$retail_canvas_dictionary["MR_Width"]]);
+
+                        if ($bParseRetailAsMetric)
+                        {
+                            $size_canvas_length_2 = (float)$size_canvas_length_2 / 2.54;
+                            $size_canvas_width_2 = (float)$size_canvas_width_2 / 2.54;
+
+                            $size_canvas_length_3 = (float)$size_canvas_length_3 / 2.54;
+                            $size_canvas_width_3 = (float)$size_canvas_width_3 / 2.54;
+                        }
 
 						$allowed_size = "false";
 							
@@ -1348,14 +1400,14 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
                                 # Do nothing, Square Images are set already
                             }
 
-							$size_canvas_width_1 = (string)$size_canvas_width_1;
-							$size_canvas_length_1 = (string)$size_canvas_length_1;
+							$size_canvas_width_1 = (string)round($size_canvas_width_1,4);
+							$size_canvas_length_1 = (string)round($size_canvas_length_1,4);
 
-							$size_canvas_width_2 = (string)$size_canvas_width_2;
-							$size_canvas_length_2 = (string)$size_canvas_length_2;
+							$size_canvas_width_2 = (string)round($size_canvas_width_2,4);
+							$size_canvas_length_2 = (string)round($size_canvas_length_2,4);
 
-							$size_canvas_width_3 = (string)$size_canvas_width_3;
-							$size_canvas_length_3 = (string)$size_canvas_length_3;
+							$size_canvas_width_3 = (string)round($size_canvas_width_3,4);
+							$size_canvas_length_3 = (string)round($size_canvas_length_3,4);
 						
 
 							$size_prices = array(
@@ -1373,17 +1425,28 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 
                             for ($count = 0; $count <= 2; $count++)
                             {
-                                $importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $size_canvas_width[$count] . "\""  . "x" . $size_canvas_length[$count] . "\"";
-								$importItems[$destination_line]["_custom_option_row_price"] = $size_prices[$count];
+                                if ($bConvertToMetric)
+                                {
+                                    $importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . round(2.54 * $size_canvas_width[$count],0) . "cm "  . "x" . round(2.54 * $size_canvas_length[$count],0) . "cm";
+                                    $importItems[$destination_line]["_custom_option_row_price"] = $size_prices[$count];
+                                }
+                                else
+                                {
+                                    $importItems[$destination_line]["_custom_option_row_title"] = $size_name . ": " . $size_canvas_width[$count] . "\""  . "x" . $size_canvas_length[$count] . "\"";
+                                    $importItems[$destination_line]["_custom_option_row_price"] = $size_prices[$count];
+                                }
 
 								if (strtolower($size_name) == "oversize large")
 									$size_name = "Oversize_Large";
 
 								#_custom_option_row_sku
                                 $importItems[$destination_line]["_custom_option_row_sku"] = "size_canvas_" . strtolower($size_name) . "_treatment_" .
-                                    ((string)($count+1)) . "_ui_" . (string)$size_canvas_ui[$count] . "_width_" . (string)$size_canvas_width[$count] . "_length_" . (string)$size_canvas_length[$count];
+                                    ((string)($count+1)) . "_ui_" . (string)$size_canvas_ui[$count] . "_width_" . (string)round($size_canvas_width[$count],3) . "_length_" . (string)round($size_canvas_length[$count],3);
 								#_custom_option_row_sort
-								$importItems[$destination_line]["_custom_option_row_sort"] = $match_index + $count;
+                                $importItems[$destination_line]["_custom_option_row_sort"] = $match_index + $count;
+
+                                $bFoundSubstrates = true;
+                                //Mage::log("IMPORT: FOUND SUBSTRATE CANVAS");
 
 								$destination_line++;
                                 if (!isset($importItems[$destination_line]))
@@ -1491,7 +1554,7 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
             ########### FRAMING ###########
 			
 			########## if UDF_FRAMED == Y ####################
-            if ($udf_framed == "Y")
+            if ($udf_framed == "Y" && !$bDisableFraming)
             {
 				$importItems[$destination_line]["_custom_option_type"] = "drop_down";
 				$importItems[$destination_line]["_custom_option_title"] = "Frame";
@@ -1673,7 +1736,16 @@ class Topart_ProductImport_Helper_Data extends Topart_ProductImport_Helper_Abstr
 			if ($udf_entity_type == "Image")
 				$multi_select_options[] = $custom_options_array_size;
 
-			$max_count =  max( $multi_select_options );
+            $max_count =  max( $multi_select_options );
+
+
+            // if we didn't find substrates, disable the product
+            if (!$bFoundSubstrates)
+            {
+                //Mage::log("IMPORT: NO SUBSTRATE FOUND - DISABLING");
+                $importItems[$base_product_destination_line]["status"] = "2";
+            }
+
 			
 			# Increase the destination line to the correct number
 			$destination_line = $destination_line + $max_count;
