@@ -154,6 +154,15 @@ class Onetree_Catalog_Block_Product_View_Options_Type_Select extends Mage_Catalo
                 }
             }
 
+            if ($sku == "material_canvas") {
+                for ($count = 7; $count >= 1; $count--) {
+                    $html .= '<div id="custom_option_' . $sku . '" class="custom_option_viewport" 
+                               style="position: absolute; right: -' . $count . 'px; top: -' . $count . 'px;">
+                             <img src="' . $thumbnailUrl . '" style="box-shadow: none;" />
+                          </div>';
+                }
+            }
+
             $html .= '</div>';
         } elseif ($title == "mat") {
             if ($this->endsWith($sku, '2')) {

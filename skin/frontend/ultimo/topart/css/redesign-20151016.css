@@ -211,3 +211,218 @@ body > #homepage-hero-container {
 .category-collections .category-isotope .image-isotope {
     max-width: none;
 }
+
+/***
+ * Product Page Updates
+ */
+#final_product_image_background {
+    border: none !important;
+    /*background: none !important;*/
+    box-shadow: none !important;
+}
+
+.product-view .product-name h1,
+.product-view .product-shop .price-box .regular-price .price {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif !important;
+    color: black !important;
+    font-style: oblique !important;
+    text-transform: uppercase !important;
+    font-size: 25px !important;
+}
+
+.product-view .product-shop .price-box .regular-price .price {
+    font-size: 40px !important;
+}
+
+.product-view .product-name h1 {
+    padding-bottom: 15px;
+    border-bottom: 3px solid black;
+    margin-bottom: 15px;
+}
+
+.product-view .short-description .std,
+.product-view .short-description .std a {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    color: black;
+}
+
+/*
+.product-view .box-additional {
+    width: 90%;
+    margin-left: 10%;
+}
+*/
+
+.product-view .option-reloaded dt label span {
+    font-family: "Arial Black",Arial,Helvetica,sans-serif;
+    color: black;
+}
+
+.product-view .product-options label.required,
+.option-reloaded dt .step-selection {
+    font-family: Arial,Helvetica,sans-serif;
+    color: black;
+    font-weight: normal;
+}
+
+.product-view .option-reloaded dt label {
+    border-bottom: 3px solid black;
+    border-radius: 0px;
+}
+
+.product-view .container2-wrapper .product-options dd.material .background_border img {
+    border: 0;
+    box-shadow: 10px 10px 20px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+}
+
+.product-view .product-options ul.options-list label {
+    color: black;
+}
+
+.product-view #size_info {
+    text-transform: none;
+    font-size: inherit !important;
+    color: black;
+}
+
+.product-view .size_container {
+    padding-bottom: 5px;
+    border-bottom: 3px solid black;
+}
+
+#custom_size_link {
+    color: black;
+}
+
+.product-view #custom_option_size .background_border_size {
+    width: auto;
+    min-width: 0;
+    margin-top: 10px;
+    margin-right: 50px;
+}
+
+.product-view #custom_option_size .background_border_size label {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.product-view #custom_option_size .background_border_size input {
+    display: none;
+}
+
+.product-view #custom_option_size .selected-size-option {
+    padding-bottom: 3px;
+    border-radius: 0px;
+    border-bottom: 3px solid black;
+}
+
+.product-view ul#custom_option_size {
+    display: inline-block;
+}
+
+.product-view .product-options-bottom {
+    margin-top: 60px;
+}
+
+body .product-view .product-options-bottom .btn-cart span {
+    color: white;
+    background: #8ec25a !important;
+    height: auto;
+}
+
+body .product-view .product-options-bottom .btn-cart,
+body .product-view .product-options-bottom .btn-cart span,
+body .product-view .product-options-bottom .btn-cart span span {
+    width: auto;
+    height: auto;
+    line-height: normal;
+    font-size: 16px;
+}
+
+body .product-view .product-options-bottom .btn-cart > span {
+    padding: 10px 0;
+}
+
+body .product-view .product-options-bottom .add-to-cart {
+    white-space: nowrap;
+}
+
+body .product-view .product-options-bottom .add-to-links .feature > span:first-child {
+    color: black;
+    padding-right: 10px;
+}
+
+body .product-view .product-options-bottom .add-to-cart {
+    color: black;
+}
+
+.product-view .feature-icon-hover:hover span.icon.icon-color-productview {
+    background-color: black; 
+}
+
+#product_view_container .related_products a,
+#product_view_container .tab-easy-return p .golden-letters,
+#product_view_container .tab-easy-return .left-column,
+#product_view_container .tab-free-shipping li span,
+#product_view_container #customer-reviews h2,
+#product_view_container #customer-reviews h2#title-review {
+    color: black;
+}
+
+#product_view_container .tab-easy-return .left-column,
+#product_view_container .related_products {
+    border-color: black;
+}
+
+.product-view .short-description .std a {
+    text-decoration: underline;
+}
+
+.std .tab-free-shipping .truck{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-01.png); background-size: auto 49px;}
+.std .tab-free-shipping .plane{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-02.png); background-size: auto 49px;}
+.std .tab-free-shipping .hand{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-03.png); background-size: auto 49px;}
+.std .tab-free-shipping .gift{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-04.png); background-size: auto 49px;}
+.std .tab-free-shipping .information{background-image:url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-05.png); background-size: auto 49px;}
+
+.social-links .icon.icon-hover:hover {
+    background-color: #444 !important;
+}
+
+.social-links .icon.i-twitter-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-06.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-twitter-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-16.png);
+}
+
+.social-links .icon.i-facebook-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-10.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-facebook-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-20.png);
+}
+
+.social-links .icon.i-pinterest-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-09.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-pinterest-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-19.png);
+}
+
+.social-links .icon.i-instagram-w {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-07.png);
+    background-position: 0px 0px;
+    background-size: 100% auto;
+}
+.social-links .icon.i-instagram-w:hover {
+    background-image: url(/skin/frontend/ultimo/topart/images/icons/Icone_TopArt-17.png);
+}

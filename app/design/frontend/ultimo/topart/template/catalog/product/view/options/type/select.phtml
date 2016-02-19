@@ -93,6 +93,7 @@
         }
 
         if ($option_title == "size") {
+            echo "<div class='size_container'>";
             echo "<div id='size_info' class='custom_option_label label_size_custom'>" . $this->__("Select Your Size (Inches):") . " <div id='size_data'></div></div>";
 
             $udf_limited = $_product->getAttributeText('udf_limited');
@@ -100,6 +101,7 @@
             // Custom Size is not available on Limited Edition items
             if ($udf_limited != "Yes")
                 echo "<a id='custom_size_link' class='fancybox' href='#info_custom_size'>" . $this->__("Custom Size?") . "</a>";
+            echo "</div>";
         }
 
         if ($option_title == "borders") {

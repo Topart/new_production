@@ -159,11 +159,13 @@ var globals = {};
 				// Show the option label
 				jQuery(".custom_options_images #custom_option_" + "size").prev(".custom_option_label").show();
 
+				jQuery(".size_container").show();
 				jQuery("#size_info").show();
 			}
 
 			else
 			{
+				jQuery(".size_container").hide();
 				jQuery("#size_info").hide();
 			}
 		}
@@ -286,7 +288,11 @@ var globals = {};
 					selected_canvas_size = jQuery("ul#custom_option_size li[id*='" + size_name + "_treatment_" + index + "']:eq(0)");
 
 					if (elements_exists(selected_canvas_size))
+                    {
+						selected_canvas_size.siblings().removeClass('selected-size-option');
+						selected_canvas_size.addClass('selected-size-option');
 						selected_canvas_size.css("background-color", selected_size_background_color);
+                    }
 				}
 
 				else
@@ -294,6 +300,8 @@ var globals = {};
 					jQuery("dd.size li[class*='" + material_name + "']:eq(0) input").attr('checked','checked');
 					buildArt(jQuery("dd.size li[class*='" + material_name + "']:eq(0) input"));
 
+					jQuery("ul#custom_option_size li[id*='" + material_name + "']:eq(0)").siblings().removeClass('selected-size-option');
+					jQuery("ul#custom_option_size li[id*='" + material_name + "']:eq(0)").addClass('selected-size-option');
 					jQuery("ul#custom_option_size li[id*='" + material_name + "']:eq(0)").css("background-color", selected_size_background_color);
 				}
 			}
@@ -318,6 +326,8 @@ var globals = {};
 		{
 			jQuery("dd.size li[class='" + size_sku + "'] input").attr('checked','checked');
 			jQuery("dd.size li[class='" + size_sku + "'] input").trigger('click');
+			jQuery("ul#custom_option_size li[id*='" + size_sku + "']:eq(0)").siblings().removeClass('selected-size-option');
+			jQuery("ul#custom_option_size li[id*='" + size_sku + "']:eq(0)").addClass('selected-size-option');
 			jQuery("ul#custom_option_size li[id*='" + size_sku + "']:eq(0)").css("background-color", selected_size_background_color);
 		}
 
@@ -1034,6 +1044,8 @@ var globals = {};
 				// Make the currently selected size background dark green and deselect all the others
 				clicked_size_index = jQuery(option).index() + 1;
 				jQuery(".custom_options_images ul .background_border_size").css("background-color", "");
+				jQuery(".custom_options_images ul .background_border_size:nth-child(" + clicked_size_index + ")").siblings().removeClass('selected-size-option');
+				jQuery(".custom_options_images ul .background_border_size:nth-child(" + clicked_size_index + ")").addClass('selected-size-option');
 				jQuery(".custom_options_images ul .background_border_size:nth-child(" + clicked_size_index + ")").css("background-color", selected_size_background_color);
 
 				oversize_flag = false;
@@ -2715,6 +2727,8 @@ var globals = {};
                             if ( jQuery(this).parent().attr("id") != "custom_size_button_background" )
                             {
                                 jQuery(".background_border_size").css("background-color", "");
+                                jQuery(this).parent().siblings().removeClass('selected-size-option');
+                                jQuery(this).parent().addClass('selected-size-option');
                                 jQuery(this).parent().css("background-color", selected_size_background_color);
                             }
                             
