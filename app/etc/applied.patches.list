@@ -166,3 +166,17 @@ patching file lib/Unserialize/Reader/Str.php
 patching file lib/Varien/Data/Collection/Db.php
 
 
+2016-02-19 20:09:47 UTC | SUPEE-7616 | CE_1.9.2.2-CE_1.8.0.0 | v1 | 1609c0d0be86473d357346fa51f93c12b365d7a1 | Tue Dec 8 12:53:31 2015 +0200 | e1fc3c59c9587427b8a9c88655715f27afbfe970..1609c0d0be86473d357346fa51f93c12b365d7a1
+patching file app/code/core/Mage/Usa/Model/Shipping/Carrier/Usps.php
+Hunk #1 succeeded at 569 (offset -10 lines).
+Hunk #2 succeeded at 600 (offset -10 lines).
+Hunk #3 succeeded at 611 (offset -10 lines).
+Hunk #4 succeeded at 646 (offset -10 lines).
+Hunk #5 succeeded at 677 (offset -10 lines).
+Hunk #6 succeeded at 726 (offset -10 lines).
+Hunk #7 succeeded at 765 (offset -10 lines).
+Hunk #8 succeeded at 816 (offset -10 lines).
+Hunk #9 succeeded at 839 (offset -10 lines).
+Hunk #10 succeeded at 1405 (offset -10 lines).
+
+
